@@ -25,10 +25,8 @@ public class WebAppContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         String dburl = sce.getServletContext().getInitParameter("dburl");
-        String dbusername = sce.getServletContext().getInitParameter("dbusername");
-        String dbpassword = sce.getServletContext().getInitParameter("dbpassword");
         try {
-            JDBCDAOFactory.configure(dburl+ "?user=" + dbusername + "&password=" + dbpassword);
+            JDBCDAOFactory.configure(dburl);
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
             sce.getServletContext().setAttribute("daoFactory", daoFactory);
         } catch (DAOFactoryException ex) {
