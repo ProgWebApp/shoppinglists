@@ -222,7 +222,7 @@ public class JDBCMessageDAO extends JDBCDAO<Message, Integer> implements Message
     private Message setAllMessageFields(ResultSet rs) throws SQLException {
         Message message = new Message();
         message.setId(rs.getInt("id"));
-        message.setSenderId(rs.getInt("sneder"));
+        message.setSenderId(rs.getInt("sender"));
         message.setDate(rs.getString("date"));
         message.setBody(rs.getString("body"));
         message.setShoppingListId(rs.getInt("list"));
