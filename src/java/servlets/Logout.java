@@ -40,7 +40,6 @@ public class Logout extends HttpServlet {
             if (user != null) {
                 session.setAttribute("user", null);
                 session.invalidate();
-                user = null;
             }
         }
 

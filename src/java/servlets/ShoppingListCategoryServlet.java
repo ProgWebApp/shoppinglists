@@ -6,9 +6,7 @@
 package servlets;
 
 import db.daos.ShoppingListCategoryDAO;
-import db.daos.UserDAO;
 import db.entities.ShoppingListCategory;
-import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
@@ -23,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ShoppingListCategoryServlet extends HttpServlet {
 
     private ShoppingListCategoryDAO shoppingListCategoryDao;
-    private UserDAO userDao;
 
     @Override
     public void init() throws ServletException {
@@ -35,11 +32,6 @@ public class ShoppingListCategoryServlet extends HttpServlet {
             shoppingListCategoryDao = daoFactory.getDAO(ShoppingListCategoryDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for shopping-list-Category storage system", ex);
-        }
-        try {
-            userDao = daoFactory.getDAO(UserDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
     }
 
@@ -59,9 +51,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         if (!contextPath.endsWith("/")) {
             contextPath += "/";
         }
-        User user = (User) request.getSession().getAttribute("user");
-
-        Integer userId = user.getId();
+        
         Integer shoppingListCategoryId = null;
         try {
             shoppingListCategoryId = Integer.valueOf(request.getParameter("shoppingListCategoryId"));

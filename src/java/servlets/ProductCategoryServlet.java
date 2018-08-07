@@ -6,9 +6,7 @@
 package servlets;
 
 import db.daos.ProductCategoryDAO;
-import db.daos.UserDAO;
 import db.entities.ProductCategory;
-import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
@@ -23,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ProductCategoryServlet extends HttpServlet {
  private ProductCategoryDAO productCategoryDao;
-    private UserDAO userDao;
 
     @Override
     public void init() throws ServletException {
@@ -36,11 +33,6 @@ public class ProductCategoryServlet extends HttpServlet {
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for productCategory storage system", ex);
         }
-        try {
-            userDao = daoFactory.getDAO(UserDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for user storage system", ex);
-        }
     }
 
     @Override
@@ -50,9 +42,7 @@ public class ProductCategoryServlet extends HttpServlet {
         if (!contextPath.endsWith("/")) {
             contextPath += "/";
         }
-        User user = (User) request.getSession().getAttribute("user");
 
-        Integer userId = user.getId();
         Integer productCategoryId = null;
         try {
             productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));

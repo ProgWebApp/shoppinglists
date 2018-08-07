@@ -5,16 +5,12 @@
  */
 package servlets;
 
-import db.daos.ProductDAO;
 import db.daos.UserDAO;
-import db.entities.Product;
 import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -78,7 +74,7 @@ public class UserServlet extends HttpServlet {
 
             if (userId == null) {
                 userDao.insert(user);
-            } else if (activeUser.isAdmin() || activeUserId == userId) {
+            } else if (activeUser.isAdmin() || activeUserId.equals(userId)) {
                 userDao.update(user);
             }
         } catch (DAOException ex) {
@@ -99,7 +95,7 @@ public class UserServlet extends HttpServlet {
         } catch (RuntimeException ex) {
             //TODO: log the exception
         }
-        if (userId != null && ((activeUser.isAdmin()) || (activeUserId==userId))) {
+        if (userId != null && ((activeUser.isAdmin()) || activeUserId.equals(userId))) {
             try {
                 userDao.delete(userId);
             } catch (DAOException ex) {

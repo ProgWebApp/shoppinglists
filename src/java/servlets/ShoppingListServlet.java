@@ -6,7 +6,6 @@
 package servlets;
 
 import db.daos.ShoppingListDAO;
-import db.daos.UserDAO;
 import db.entities.ShoppingList;
 import db.entities.User;
 import db.exceptions.DAOException;
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ShoppingListServlet extends HttpServlet {
 
     private ShoppingListDAO shoppingListDao;
-    private UserDAO userDao;
 
     @Override
     public void init() throws ServletException {
@@ -35,11 +33,6 @@ public class ShoppingListServlet extends HttpServlet {
             shoppingListDao = daoFactory.getDAO(ShoppingListDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for shopping-list storage system", ex);
-        }
-        try {
-            userDao = daoFactory.getDAO(UserDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
     }
 
@@ -86,7 +79,7 @@ public class ShoppingListServlet extends HttpServlet {
 
             if (shoppingListId == null) {
                 shoppingListDao.insert(shoppingList);
-                shoppingListDao.addLinkWithUser(shoppingListId, userId, 2);
+                shoppingListDao.addMember(shoppingListId, userId, 2);
             } else {
                 shoppingListDao.update(shoppingList);
             }

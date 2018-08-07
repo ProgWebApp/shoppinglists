@@ -77,9 +77,9 @@ public class ProductServlet extends HttpServlet {
             product.setOwnerId(productOwnerId);
             product.setProductCategoryId(productCategoryId);
             if (user.isAdmin()) {
-                product.setPublic(1);
+                product.setReserved(false);
             } else {
-                product.setPublic(0);
+                product.setReserved(true);
             }
             if (productId == null) {
                 productDao.insert(product);
