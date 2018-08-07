@@ -29,8 +29,8 @@ public interface ProductDAO extends DAO<Product, Integer> {
 
     /**
      * Returns the list of {@link Product product} that are compatible with the
-     * shoppingListCategory passed as paramenter, that are shared with the
-     * user passed as parameter and that contais {@code query}.
+     * shoppingListCategory passed as paramenter, that are shared with the user
+     * passed as parameter and that contais {@code query} in the name field.
      *
      * @param query the letters that the name of the product must contains.
      * @param shoppingListCategoryId the id of the {@code ShoppingListCategory}
@@ -38,8 +38,9 @@ public interface ProductDAO extends DAO<Product, Integer> {
      * @param userId the {@code id} of the {@code user} for which retrieve the
      * product list.
      * @return the list of {@link Product product} that are compatible with the
-     * shoppingListCategory passed as paramenter, that are shared with the
-     * user passed as parameter and that contais {@code query}, or an empty list.
+     * shoppingListCategory passed as paramenter, that are shared with the user
+     * passed as parameter and that contais {@code query} in the name field, or
+     * an empty list.
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */

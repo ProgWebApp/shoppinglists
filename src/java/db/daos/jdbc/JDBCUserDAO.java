@@ -169,26 +169,6 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         }
     }
 
-    @Override
-    public User getByEmailAndPassword(String email, String password) throws DAOException {
-        if ((email == null) || (password == null)) {
-            throw new DAOException("Email and password are mandatory fields", new NullPointerException("email or password are null"));
-        }
-
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
-                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM user_list WHERE user = ?")) {
-            stm.setString(1, email);
-            stm.setString(2, password);
-
-            ResultSet rs = stm.executeQuery();
-            rs.next();
-            return setAllUserFields(rs, countStatement);
-
-        } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
-        }
-    }
-
     /**
      * Returns the list of all the valid {@link User users} stored by the
      * storage system.
@@ -216,6 +196,46 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         }
     }
 
+    @Override
+    public User getByEmailAndPassword(String email, String password) throws DAOException {
+        if ((email == null) || (password == null)) {
+            throw new DAOException("Email and password are mandatory fields", new NullPointerException("email or password are null"));
+        }
+
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
+                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM user_list WHERE user = ?")) {
+            stm.setString(1, email);
+            stm.setString(2, password);
+
+            ResultSet rs = stm.executeQuery();
+            rs.next();
+            return setAllUserFields(rs, countStatement);
+
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of users", ex);
+        }
+    }
+
+    @Override
+    public List<User> searchByName(String query) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE name LIKE ?")) {
+
+            List<User> user = new ArrayList<>();
+
+            stm.setString(1, "%" + query + "%");
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                user.add(setAllUserFields(rs, null));
+            }
+
+            return user;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of users for the passed query", ex);
+        }
+    }
+
     /**
      * Convinience method for setting all the fileds of a {@code user} after
      * retriving it from the storage system.
@@ -228,7 +248,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
      * @throws SQLException if an error occurred during the information
      * retriving
      */
-    private User setAllUserFields(ResultSet rs, PreparedStatement countStatement) throws SQLException {
+    public static User setAllUserFields(ResultSet rs, PreparedStatement countStatement) throws SQLException {
         User user = new User();
         user.setId(rs.getInt("id"));
         user.setFirstName(rs.getString("firstname"));
@@ -238,11 +258,12 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         user.setAvatarPath(rs.getString("avatar"));
         user.setAdmin(rs.getBoolean("admin"));
 
-        countStatement.setInt(1, user.getId());
-
-        ResultSet counter = countStatement.executeQuery();
-        counter.next();
-        user.setShoppingListsCount(counter.getInt(1));
+        if (countStatement != null) {
+            countStatement.setInt(1, user.getId());
+            ResultSet counter = countStatement.executeQuery();
+            counter.next();
+            user.setShoppingListsCount(counter.getInt(1));
+        }
 
         return user;
     }

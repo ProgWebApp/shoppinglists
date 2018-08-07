@@ -2,6 +2,7 @@ package db.daos.jdbc;
 
 import db.daos.ShoppingListDAO;
 import db.entities.ShoppingList;
+import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.UniqueConstraintException;
 import java.sql.Connection;
@@ -214,16 +215,15 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
     }
 
     @Override
-    public void addLinkWithUser(Integer shoppingListId, Integer userId, int permissions, boolean notifications) throws DAOException {
+    public void addMember(Integer shoppingListId, Integer userId, int permissions) throws DAOException {
         if ((shoppingListId == null) || (userId == null)) {
             throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("shoppingListId or userId are null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users_lists (user, list, permissions, notifications) VALUES (?, ?, ?, ?)")) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users_lists (user, list, permissions) VALUES (?, ?, ?)")) {
 
             ps.setInt(1, userId);
             ps.setInt(2, shoppingListId);
             ps.setInt(3, permissions);
-            ps.setBoolean(4, notifications);
 
             ps.executeUpdate();
 
@@ -236,7 +236,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
     }
 
     @Override
-    public void removeLinkWithUser(Integer shoppingListId, Integer userId) throws DAOException {
+    public void removeMember(Integer shoppingListId, Integer userId) throws DAOException {
         if ((shoppingListId == null) || (userId == null)) {
             throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("shoppingListId or userId are null"));
         }
@@ -250,19 +250,50 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
     }
 
     @Override
-    public void updateLinkWithUser(Integer shoppingListId, Integer userId, int permissions, boolean notifications) throws DAOException {
+    public List<User> getMembers(Integer shoppingListId) throws DAOException {
+        if (shoppingListId == null) {
+            throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users, users_lists WHERE (id = user AND list = ?) ORDER BY name")) {
+
+            List<User> users = new ArrayList<>();
+
+            stm.setInt(1, shoppingListId);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                users.add(JDBCUserDAO.setAllUserFields(rs, null));
+            }
+
+            return users;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of members for the passed shoppingListId", ex);
+        }
+    }
+
+    @Override
+    public void addNotifications(Integer shoppingListId) throws DAOException {
+        if ((shoppingListId == null)) {
+            throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
+        }
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE users_lists SET notifications = notification + 1 WHERE list = ?")) {
+            ps.setInt(1, shoppingListId);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to update the link between the passed shoppingList and the passed user", ex);
+        }
+    }
+
+    @Override
+    public void removeNotifications(Integer shoppingListId, Integer userId) throws DAOException {
         if ((shoppingListId == null) || (userId == null)) {
             throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("shoppingListId or userId are null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE users_lists SET permissions = ?, notifications = ? WHERE user = ? AND list = ?")) {
-
-            ps.setInt(1, permissions);
-            ps.setBoolean(2, notifications);
-            ps.setInt(3, userId);
-            ps.setInt(4, shoppingListId);
-
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE users_lists SET notifications = 0 WHERE user = ? AND list = ?")) {
+            ps.setInt(1, userId);
+            ps.setInt(2, shoppingListId);
             ps.executeUpdate();
-
         } catch (SQLException ex) {
             throw new DAOException("Impossible to update the link between the passed shoppingList and the passed user", ex);
         }

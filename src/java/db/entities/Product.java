@@ -11,7 +11,8 @@ public class Product {
     private String logoPath;
     private String photoPath;
     private Integer productCategoryId;
-    private Integer ownerId;    //set to null if the product is created by an administrator
+    private Integer ownerId;
+    private boolean reserved;
 
     /**
      * Returns the primary key of this product.
@@ -114,7 +115,7 @@ public class Product {
 
     /**
      * Sets the id of the product_category of this product.
-     * 
+     *
      * @param productCategoryId the id of the product_category of this product.
      */
     public void setProductCategoryId(Integer productCategoryId) {
@@ -132,11 +133,28 @@ public class Product {
 
     /**
      * Sets the id of the owner of this product.
-     * 
+     *
      * @param ownerId the id of the owner of this product.
      */
     public void setOwnerId(Integer ownerId) {
         this.ownerId = ownerId;
     }
 
+    /**
+     * Returns the value of the property reserved of this product.
+     *
+     * @return the value of the property reserved of this product
+     */
+    public boolean isReserved() {
+        return reserved;
+    }
+
+    /**
+     * Sets the new value for the property reserved of this product.
+     *
+     * @param reserved the new value of the property reserved of this product.
+     */
+    public void setReserved(boolean reserved) {
+        this.reserved = reserved;
+    }
 }

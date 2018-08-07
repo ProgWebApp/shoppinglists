@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet that handles the login web page.
- *
- * @author Stefano Chirico
  */
 public class LoginServlet extends HttpServlet {
 
@@ -40,8 +38,6 @@ public class LoginServlet extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     *
-     * @author Stefano Chirico
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

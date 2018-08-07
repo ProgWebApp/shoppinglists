@@ -39,7 +39,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         if (product == null) {
             throw new DAOException("product is not valid", new NullPointerException("product is null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO products (name, notes, logo, photo, product_category, owner) VALUES (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO products (name, notes, logo, photo, product_category, owner, reserved) VALUES (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, product.getName());
             ps.setString(2, product.getNotes());
@@ -47,6 +47,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             ps.setString(4, product.getPhotoPath());
             ps.setInt(5, product.getProductCategoryId());
             ps.setInt(6, product.getOwnerId());
+            ps.setBoolean(7, product.isReserved());
 
             ps.executeUpdate();
 
@@ -79,7 +80,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             throw new DAOException("product is not valid", new NullPointerException("product id is null"));
         }
 
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE products SET name = ?, notes = ?, logo = ?, photo = ?, productCategory = ?, owner = ? WHERE id = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE products SET name = ?, notes = ?, logo = ?, photo = ?, productCategory = ?, owner = ?, reserved = ? WHERE id = ?")) {
 
             ps.setString(1, product.getName());
             ps.setString(2, product.getNotes());
@@ -88,6 +89,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             ps.setInt(5, product.getProductCategoryId());
             ps.setInt(6, product.getOwnerId());
             ps.setInt(7, product.getId());
+            ps.setBoolean(8, product.isReserved());
 
             ps.executeUpdate();
 
@@ -200,7 +202,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products, users_products, PC_LC"
                 + "WHERE products.product_category = PC_LC.product_category"
                 + "AND PC_LC.list_category = ?"
-                + "AND (product.owner IS NULL"
+                + "AND (product.reserved = false"
                 + "OR (product.id = users_products.product"
                 + "AND users_product.user = ?))")) {
 
@@ -229,7 +231,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products, users_products, PC_LC"
                 + "WHERE products.product_category = PC_LC.product_category"
                 + "AND PC_LC.list_category = ?"
-                + "AND (product.owner IS NULL"
+                + "AND (product.reserved = false"
                 + "OR (product.id = users_products.product"
                 + "AND users_product.user = ?))"
                 + "AND product.name LIKE ?")) {
@@ -305,6 +307,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         product.setPhotoPath(rs.getString("photo"));
         product.setProductCategoryId(rs.getInt("product_category"));
         product.setOwnerId(rs.getInt("owner"));
+        product.setReserved(rs.getBoolean("reserved"));
 
         return product;
     }
