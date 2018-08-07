@@ -11,11 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet that handles the login web page.
- *
- * @author Stefano Chirico
- */
 public class LoginServlet extends HttpServlet {
 
     private UserDAO userDao;
@@ -60,11 +55,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
             } else {
                 request.getSession().setAttribute("user", user);
-                if (user.getEmail().equals("stefano.chirico@unitn.it")) {
-                    response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/users.html"));
-                } else {
-                    response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shopping_lists.html?id=" + user.getId()));
-                }
+                response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shopping_lists.html?id=" + user.getId()));
             }
         } catch (DAOException ex) {
             request.getServletContext().log("Impossible to retrieve the user", ex);

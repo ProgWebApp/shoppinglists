@@ -32,6 +32,10 @@
         <servlet-name>ProductCategoryServlet</servlet-name>
         <servlet-class>servlets.ProductCategoryServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>servlets.Logout</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.handler</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>ProductCategoryServlet</servlet-name>
         <url-pattern>/ProductCategoryServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
