@@ -1,16 +1,17 @@
 package db.exceptions;
 
 /**
- * The exception thrown when something goes wrong in data retrieving.
+ * The exception thrown when trying to insert duplicated values in the storage
+ * system.
  */
-public class DAOException extends Exception {
+public class UniqueConstraintException extends Exception {
 
     /**
      * Constructs a new exception with {@code null} as its detail message. The
      * cause is not initialized, and may subsequently be initialized by a call
      * to {@link #initCause}.
      */
-    public DAOException() {
+    public UniqueConstraintException() {
         super();
     }
 
@@ -22,7 +23,7 @@ public class DAOException extends Exception {
      * @param message the detail message. The detail message is saved for later
      * retrieval by the {@link #getMessage()} method.
      */
-    public DAOException(String message) {
+    public UniqueConstraintException(String message) {
         super(message);
     }
 
@@ -38,7 +39,7 @@ public class DAOException extends Exception {
      * {@link #getCause()} method). (A <tt>null</tt> value is permitted, and
      * indicates that the cause is nonexistent or unknown.)
      */
-    public DAOException(Throwable cause) {
+    public UniqueConstraintException(Throwable cause) {
         super(cause);
     }
 
@@ -54,7 +55,7 @@ public class DAOException extends Exception {
      * {@link #getCause()} method). (A <tt>null</tt> value is permitted, and
      * indicates that the cause is nonexistent or unknown.)
      */
-    public DAOException(String message, Throwable cause) {
+    public UniqueConstraintException(String message, Throwable cause) {
         super(message, cause);
     }
 }
