@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import db.daos.UserDAO;
@@ -19,11 +14,13 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+@MultipartConfig
 public class UserServlet extends HttpServlet {
 
     private UserDAO userDao;
@@ -57,7 +54,8 @@ public class UserServlet extends HttpServlet {
         } catch (RuntimeException ex) {
             //TODO: log the exception
         }
-        String userFirstName = request.getParameter("firstName");
+        String userFirstName = request.getParameter("a");
+        System.out.println(userFirstName);
         String userLastName = request.getParameter("lastName");
         String userEmail = request.getParameter("email");
         String userPassword = request.getParameter("password");
@@ -66,12 +64,13 @@ public class UserServlet extends HttpServlet {
             throw new ServletException("Avatars folder not configured");
         }
         avatarsFolder = getServletContext().getRealPath(avatarsFolder);
-        //TODO: If avatarsFolder doesn't exist, create it
         Part filePart = request.getPart("avatar");
         String filename = null;
         if ((filePart != null) && (filePart.getSize() > 0)) {
             filename = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();//MSIE  fix.
             try (InputStream fileContent = filePart.getInputStream()) {
+                File directory = new File(avatarsFolder);
+                directory.mkdirs();
                 File file = new File(avatarsFolder, filename);
                 Files.copy(fileContent, file.toPath());
             } catch (FileAlreadyExistsException ex) {
@@ -105,20 +104,22 @@ public class UserServlet extends HttpServlet {
         } catch (DAOException ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user.html"));
+        if (!response.isCommitted()) {
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user.html"));
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer userId = null;
+        System.out.println(userId);
         User activeUser = (User) request.getSession().getAttribute("user");
         Integer activeUserId = activeUser.getId();
 
         try {
             userId = Integer.valueOf(request.getParameter("userId"));
         } catch (RuntimeException ex) {
-            //TODO: log the exception
+            System.out.println(ex);
         }
         if (userId != null && ((activeUser.isAdmin()) || activeUserId.equals(userId))) {
             try {

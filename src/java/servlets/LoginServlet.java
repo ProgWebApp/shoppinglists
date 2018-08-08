@@ -57,7 +57,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
             } else {
                 request.getSession().setAttribute("user", user);
-                Email.send("pberizz@gmail.com", "subject", "messaggio di testo", getServletContext());
+                Email.send("cozza500@gmail.com", "subject", "messaggio di testo", getServletContext());
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shopping_lists.html?id=" + user.getId()));
             }
         } catch (DAOException ex) {

@@ -9,6 +9,22 @@
         <param-name>avatarsFolder</param-name>
         <param-value>images/avatars</param-value>
     </context-param>
+    <context-param>
+        <param-name>smtp-hostname</param-name>
+        <param-value>smtp.gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>smtp-port</param-name>
+        <param-value>465</param-value>
+    </context-param>
+    <context-param>
+        <param-name>smtp-username</param-name>
+        <param-value>prog.sistemi1@gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>smtp-password</param-name>
+        <param-value>hmrrhijtvbvwfkbr</param-value>
+    </context-param>
     <listener>
         <description>ServletContextListener</description>
         <listener-class>listeners.WebAppContextListener</listener-class>

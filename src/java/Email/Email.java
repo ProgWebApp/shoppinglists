@@ -45,7 +45,7 @@ public class Email {
         port = context.getInitParameter("smtp-port");
         username = context.getInitParameter("smtp-username");
         password = context.getInitParameter("smtp-password");
-
+        System.out.println(username+" "+password);
         plainTextMessageBuilder = new StringBuilder();
         plainTextMessageBuilder.append(message).append("\n");
         htmlMessageBuilder = new StringBuilder();

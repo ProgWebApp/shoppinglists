@@ -39,7 +39,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             throw new DAOException("user is not valid", new NullPointerException("user is null"));
         }
         try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users (firstname, lastname, email, password, avatar, admin) VALUES (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
-
+            System.out.println(user.getFirstName());
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getEmail());
@@ -157,7 +157,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             throw new DAOException("primaryKey is not valid", new NullPointerException("primaryKey is null"));
         }
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE id = ?");
-                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM user_list WHERE user = ?")) {
+                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user = ?")) {
             stm.setInt(1, primaryKey);
 
             ResultSet rs = stm.executeQuery();
@@ -198,12 +198,15 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
 
     @Override
     public User getByEmailAndPassword(String email, String password) throws DAOException {
-        if ((email == null) || (password == null)) {
-            throw new DAOException("Email and password are mandatory fields", new NullPointerException("email or password are null"));
+        if (email == null) {
+            throw new DAOException("Email is a mandatory fields", new NullPointerException("email is null"));
+        }
+        if (password == null) {
+            throw new DAOException("Password is a mandatory fields", new NullPointerException("password is null"));
         }
 
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
-                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user = ?")) {
+                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE \"user\" = ?")) {
             stm.setString(1, email);
             stm.setString(2, password);
 
@@ -212,7 +215,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             return setAllUserFields(rs, countStatement);
 
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
+            throw new DAOException("Impossible to get the user", ex);
         }
     }
 
