@@ -10,14 +10,19 @@ import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.Part;
 
 public class UserServlet extends HttpServlet {
 
@@ -56,7 +61,26 @@ public class UserServlet extends HttpServlet {
         String userLastName = request.getParameter("lastName");
         String userEmail = request.getParameter("email");
         String userPassword = request.getParameter("password");
-        String userAvatarPath = request.getParameter("avatarPath");
+        String avatarsFolder = getServletContext().getInitParameter("avatarsFolder");
+        if (avatarsFolder == null) {
+            throw new ServletException("Avatars folder not configured");
+        }
+        avatarsFolder = getServletContext().getRealPath(avatarsFolder);
+        //TODO: If avatarsFolder doesn't exist, create it
+        Part filePart = request.getPart("avatar");
+        String filename = null;
+        if ((filePart != null) && (filePart.getSize() > 0)) {
+            filename = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();//MSIE  fix.
+            try (InputStream fileContent = filePart.getInputStream()) {
+                File file = new File(avatarsFolder, filename);
+                Files.copy(fileContent, file.toPath());
+            } catch (FileAlreadyExistsException ex) {
+                getServletContext().log("File \"" + filename + "\" already exists on the server");
+            } catch (RuntimeException ex) {
+                //TODO: handle the exception
+                getServletContext().log("impossible to upload the file", ex);
+            }
+        }
         Boolean userIsAdmin = Boolean.valueOf(request.getParameter("isAdmin"));
 
         if (userFirstName == null || userLastName == null || userEmail == null || userPassword == null) {
@@ -69,7 +93,7 @@ public class UserServlet extends HttpServlet {
             user.setLastName(userLastName);
             user.setEmail(userEmail);
             user.setPassword(userPassword);
-            user.setAvatarPath(userAvatarPath);
+            user.setAvatarPath(filename);
             user.setAdmin(userIsAdmin);
 
             if (userId == null) {

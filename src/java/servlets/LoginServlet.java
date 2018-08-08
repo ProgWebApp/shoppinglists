@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("username");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         String contextPath = getServletContext().getContextPath();
@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
         try {
             User user = userDao.getByEmailAndPassword(email, password);
             if (user == null) {
-                System.out.println("Username o password errati");
+                System.out.println("Email o password errati");
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
             } else {
                 request.getSession().setAttribute("user", user);
