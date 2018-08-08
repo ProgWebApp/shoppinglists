@@ -47,7 +47,6 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             ps.setString(5, user.getAvatarPath());
             ps.setBoolean(6, user.isAdmin());
             ps.setString(7, user.getCheck());
-
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();

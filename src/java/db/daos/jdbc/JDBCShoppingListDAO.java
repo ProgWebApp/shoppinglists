@@ -315,6 +315,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
 
         } catch (SQLException ex) {
             if (ex.getSQLState().equals("23505")) {
+                updateProduct(shoppingListId, productId, quantity, necessary);
                 throw new DAOException("Impossible to link the passed shoppingList with the passed product", new UniqueConstraintException("This link already exist in the system"));
             }
             throw new DAOException("Impossible to link the passed shoppingList with the passed product", ex);
