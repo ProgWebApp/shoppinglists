@@ -38,7 +38,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         if (user == null) {
             throw new DAOException("user is not valid", new NullPointerException("user is null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users (firstname, lastname, email, password, avatar, admin) VALUES (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users (firstname, lastname, email, password, avatar, admin, check) VALUES (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
             System.out.println(user.getFirstName());
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
@@ -46,6 +46,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getAvatarPath());
             ps.setBoolean(6, user.isAdmin());
+            ps.setInt(7, user.getCheck());
 
             ps.executeUpdate();
 
@@ -80,7 +81,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             throw new DAOException("user is not valid", new NullPointerException("User id is null"));
         }
 
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE users SET firstname = ?, lastname = ?, email = ?, password = ?, avatar = ?, admin = ? WHERE id = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE users SET firstname = ?, lastname = ?, email = ?, password = ?, avatar = ?, admin = ?, check = ? WHERE id = ?")) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
@@ -88,7 +89,8 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getAvatarPath());
             ps.setBoolean(6, user.isAdmin());
-            ps.setInt(7, user.getId());
+            ps.setInt(7, user.getCheck());
+            ps.setInt(8, user.getId());
 
             ps.executeUpdate();
 
@@ -260,6 +262,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         user.setPassword(rs.getString("password"));
         user.setAvatarPath(rs.getString("avatar"));
         user.setAdmin(rs.getBoolean("admin"));
+        user.setCheck(rs.getInt("check"));
 
         if (countStatement != null) {
             countStatement.setInt(1, user.getId());
