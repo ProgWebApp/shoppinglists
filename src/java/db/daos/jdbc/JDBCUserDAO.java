@@ -38,15 +38,17 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         if (user == null) {
             throw new DAOException("user is not valid", new NullPointerException("user is null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users (firstname, lastname, email, password, avatar, admin, check) VALUES (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users (firstname, lastname, email, password, avatar, code, admin) VALUES (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
             System.out.println(user.getFirstName());
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getAvatarPath());
-            ps.setBoolean(6, user.isAdmin());
-            ps.setString(7, user.getCheck());
+            ps.setString(6, user.getCheck());
+            ps.setBoolean(7, user.isAdmin());
+            
+
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -80,7 +82,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             throw new DAOException("user is not valid", new NullPointerException("User id is null"));
         }
 
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE users SET firstname = ?, lastname = ?, email = ?, password = ?, avatar = ?, admin = ?, check = ? WHERE id = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE users SET firstname = ?, lastname = ?, email = ?, password = ?, avatar = ?, admin = ?, code = ? WHERE id = ?")) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
@@ -226,7 +228,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             throw new DAOException("checkCode is a mandatory fields", new NullPointerException("checkCode is null"));
         }
 
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE check = ?")) {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE code = ?")) {
             stm.setString(1, checkCode);
 
             ResultSet rs = stm.executeQuery();
@@ -279,7 +281,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         user.setPassword(rs.getString("password"));
         user.setAvatarPath(rs.getString("avatar"));
         user.setAdmin(rs.getBoolean("admin"));
-        user.setCheck(rs.getString("check"));
+        user.setCheck(rs.getString("code"));
 
         if (countStatement != null) {
             countStatement.setInt(1, user.getId());
