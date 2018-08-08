@@ -222,6 +222,24 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
     }
 
     @Override
+    public User getByCheckCode(String checkCode) throws DAOException {
+        if (checkCode == null) {
+            throw new DAOException("checkCode is a mandatory fields", new NullPointerException("checkCode is null"));
+        }
+
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE check = ?")) {
+            stm.setString(1, checkCode);
+
+            ResultSet rs = stm.executeQuery();
+            rs.next();
+            return setAllUserFields(rs, null);
+
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the user", ex);
+        }
+    }
+
+    @Override
     public List<User> searchByName(String query) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE name LIKE ?")) {
 
