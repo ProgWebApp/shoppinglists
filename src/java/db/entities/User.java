@@ -12,6 +12,7 @@ public class User {
     private String password;
     private String avatarPath;
     private boolean admin;
+    private int check;
 
     private Integer shoppingListsCount;
 
@@ -158,6 +159,24 @@ public class User {
      */
     public void setShoppingListsCount(Integer shoppingListsCount) {
         this.shoppingListsCount = shoppingListsCount;
+    }
+
+    /**
+     * Retrurns the check code for the registration of this user
+     *
+     * @return the code for the registration of this user
+     */
+    public int getCheck() {
+        return check;
+    }
+
+    /**
+     * Sets the check code for the registration of this user
+     *
+     * @param check the check code to set
+     */
+    public void setCheck(int check) {
+        this.check = check;
     }
 
 }
