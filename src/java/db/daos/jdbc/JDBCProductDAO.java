@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The JDBC implementation of the {@link ProductDAO} interface.
@@ -312,4 +314,35 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         return product;
     }
 
+    /**
+     * Link the reserved product of the passed shoppingList {@code shoppingList}
+     * to the passed {@code user}.
+     *
+     * @param shoppingListId the id of the list to share with the user.
+     * @param userId the id of user.
+     * @throws DAOException if an error occurred during the persist action.
+     */
+    public void shareProductFromList(Integer shoppingListId, Integer userId) throws DAOException {
+        if ((shoppingListId == null) || (userId == null)) {
+            throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("productId or userId are null"));
+        }
+        try (PreparedStatement stm1 = CON.prepareStatement("SELECT product FROM list_product where list = ?");
+                PreparedStatement stm2 = CON.prepareStatement("INSERT INTO users_products (user, product) VALUES (?,?)")) {
+            stm1.setInt(1, shoppingListId);
+            ResultSet rs = stm1.executeQuery();
+            while (rs.next()) {
+                try {
+                    stm2.setInt(1, userId);
+                    stm2.setInt(2, rs.getInt("product"));
+                    stm2.executeUpdate();
+                } catch (SQLException ex) {
+                    if (!ex.getSQLState().equals("23505")) {
+                        throw new DAOException("Impossible to link the product with the user", ex);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to link the product with the user", ex);
+        }
+    }
 }
