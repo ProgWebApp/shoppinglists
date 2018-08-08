@@ -54,6 +54,15 @@ public interface ProductDAO extends DAO<Product, Integer> {
      * @throws DAOException if an error occurred during the persist action.
      */
     public void addLinkWithUser(Integer productId, Integer userId) throws DAOException;
+    
+    /**
+     * Links the passed {@code product} with al the users that are members of the passed shoppingList.
+     *
+     * @param productId the id of the product to link.
+     * @param shoppingListId the id of the shoppingList.
+     * @throws DAOException if an error occurred during the persist action.
+     */
+    public void shareProductToList(Integer productId, Integer shoppingListId) throws DAOException;
 
     /**
      * Removes the link between the passed {@code product} and the passed

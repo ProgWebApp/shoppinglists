@@ -2,6 +2,7 @@ package db.daos.jdbc;
 
 import db.daos.ProductDAO;
 import db.entities.Product;
+import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.UniqueConstraintException;
 import java.sql.Connection;
@@ -273,6 +274,34 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
                 throw new DAOException("Impossible to link the passed product with the passed user", new UniqueConstraintException("This link already exist in the system"));
             }
             throw new DAOException("Impossible to link the passed product with the passed user", ex);
+        }
+    }
+
+    @Override
+    public void shareProductToList(Integer productId, Integer shoppingListId) throws DAOException {
+        if ((productId == null) || (shoppingListId == null)) {
+            throw new DAOException("productId and shoppingListId are mandatory fields", new NullPointerException("productId or shoppingListId are null"));
+        }
+        try (PreparedStatement ps1 = CON.prepareStatement("SELECT user FROM users_lists WHERE list = ?");
+                PreparedStatement ps2 = CON.prepareStatement("INSERT INTO users_products (user, product) VALUES (?,?)")) {
+
+            ps1.setInt(1, shoppingListId);
+
+            ResultSet rs = ps1.executeQuery();
+            while (rs.next()) {
+                try {
+                    ps2.setInt(1, rs.getInt("user"));
+                    ps2.setInt(2, productId);
+                    ps2.executeUpdate();
+                } catch (SQLException ex) {
+                    if (!ex.getSQLState().equals("23505")) {
+                        throw new DAOException("Impossible to link the passed product with the passed user", ex);
+                    }
+                }
+            }
+
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of users for the passed shoppingList", ex);
         }
     }
 
