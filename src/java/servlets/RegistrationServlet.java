@@ -58,7 +58,7 @@ public class RegistrationServlet extends HttpServlet {
                 System.out.println("non esiste il check code");
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
             } else {
-                user.setCheckCode = 0;
+                user.setCheck("0");
                 userDao.update(user);
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/login.html"));
             }
