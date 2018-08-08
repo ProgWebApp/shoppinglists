@@ -1,5 +1,6 @@
 package servlets;
 
+import Email.Email;
 import db.daos.UserDAO;
 import db.entities.User;
 import db.exceptions.DAOException;
@@ -56,6 +57,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
             } else {
                 request.getSession().setAttribute("user", user);
+                Email.send("pberizz@gmail.com", "subject", "messaggio di testo", getServletContext());
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shopping_lists.html?id=" + user.getId()));
             }
         } catch (DAOException ex) {

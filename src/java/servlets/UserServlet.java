@@ -98,6 +98,7 @@ public class UserServlet extends HttpServlet {
 
             if (userId == null) {
                 userDao.insert(user);
+                
             } else if (activeUser.isAdmin() || activeUserId.equals(userId)) {
                 userDao.update(user);
             }
