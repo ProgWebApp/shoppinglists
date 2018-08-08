@@ -99,6 +99,7 @@ public class UserServlet extends HttpServlet {
 
             if (userId == null) {
                 String check = UUID.randomUUID().toString();
+                
                 user.setCheck(check);
                 userDao.insert(user);
                 String testo = "Grazie per esserti iscritto al sito, per completare la registrazione clicca sul link sottostante\n"
