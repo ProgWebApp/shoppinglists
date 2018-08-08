@@ -46,7 +46,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getAvatarPath());
             ps.setBoolean(6, user.isAdmin());
-            ps.setInt(7, user.getCheck());
+            ps.setString(7, user.getCheck());
 
             ps.executeUpdate();
 
@@ -89,7 +89,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getAvatarPath());
             ps.setBoolean(6, user.isAdmin());
-            ps.setInt(7, user.getCheck());
+            ps.setString(7, user.getCheck());
             ps.setInt(8, user.getId());
 
             ps.executeUpdate();
@@ -280,7 +280,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         user.setPassword(rs.getString("password"));
         user.setAvatarPath(rs.getString("avatar"));
         user.setAdmin(rs.getBoolean("admin"));
-        user.setCheck(rs.getInt("check"));
+        user.setCheck(rs.getString("check"));
 
         if (countStatement != null) {
             countStatement.setInt(1, user.getId());

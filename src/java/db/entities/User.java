@@ -12,7 +12,7 @@ public class User {
     private String password;
     private String avatarPath;
     private boolean admin;
-    private int check;
+    private String check;
 
     private Integer shoppingListsCount;
 
@@ -166,7 +166,7 @@ public class User {
      *
      * @return the code for the registration of this user
      */
-    public int getCheck() {
+    public String getCheck() {
         return check;
     }
 
@@ -175,7 +175,7 @@ public class User {
      *
      * @param check the check code to set
      */
-    public void setCheck(int check) {
+    public void setCheck(String check) {
         this.check = check;
     }
 
