@@ -329,7 +329,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
      * @throws SQLException if an error occurred during the information
      * retriving
      */
-    private Product setAllProductFields(ResultSet rs) throws SQLException {
+    public static Product setAllProductFields(ResultSet rs) throws SQLException {
         Product product = new Product();
         product.setId(rs.getInt("id"));
         product.setName(rs.getString("name"));
