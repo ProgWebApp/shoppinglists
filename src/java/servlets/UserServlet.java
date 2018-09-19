@@ -57,7 +57,7 @@ public class UserServlet extends HttpServlet {
             //TODO: log the exception
         }
         String userFirstName = request.getParameter("a");
-        System.out.println(userFirstName);
+       
         String userLastName = request.getParameter("lastName");
         String userEmail = request.getParameter("email");
         String userPassword = request.getParameter("password");
@@ -121,7 +121,7 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer userId = null;
-        System.out.println(userId);
+        
         User activeUser = (User) request.getSession().getAttribute("user");
         Integer activeUserId = activeUser.getId();
 

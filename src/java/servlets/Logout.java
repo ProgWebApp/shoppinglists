@@ -48,7 +48,7 @@ public class Logout extends HttpServlet {
         }
 
         if (!response.isCommitted()) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "login.handler"));
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "LoginServlet"));
         }
     }
 

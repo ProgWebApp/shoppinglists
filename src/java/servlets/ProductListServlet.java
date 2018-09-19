@@ -7,13 +7,11 @@ package servlets;
 
 import db.daos.ProductDAO;
 import db.daos.ShoppingListDAO;
-import db.entities.ShoppingList;
 import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;

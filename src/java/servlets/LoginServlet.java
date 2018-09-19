@@ -1,6 +1,6 @@
 package servlets;
 
-import Email.Email;
+
 import db.daos.UserDAO;
 import db.entities.User;
 import db.exceptions.DAOException;

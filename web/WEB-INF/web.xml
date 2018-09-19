@@ -9,6 +9,15 @@
         <param-name>avatarsFolder</param-name>
         <param-value>images/avatars</param-value>
     </context-param>
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>filters.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/restricted/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
     <listener>
         <description>ServletContextListener</description>
         <listener-class>listeners.WebAppContextListener</listener-class>
@@ -63,27 +72,27 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MessagesServlet</servlet-name>
-        <url-pattern>/MessagesServlet</url-pattern>
+        <url-pattern>/restricted/MessagesServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShoppingListServlet</servlet-name>
-        <url-pattern>/ShoppingListServlet</url-pattern>
+        <url-pattern>/restricted/ShoppingListServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
-        <url-pattern>/ProductServlet</url-pattern>
+        <url-pattern>/restricted/ProductServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/UserServlet</url-pattern>
+        <url-pattern>/restricted/UserServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShoppingListCategoryServlet</servlet-name>
-        <url-pattern>/ShoppingListCategoryServlet</url-pattern>
+        <url-pattern>/restricted/ShoppingListCategoryServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductCategoryServlet</servlet-name>
-        <url-pattern>/ProductCategoryServlet</url-pattern>
+        <url-pattern>/restricted/ProductCategoryServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
@@ -95,11 +104,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
-        <url-pattern>/ProductListServlet</url-pattern>
+        <url-pattern>/restricted/ProductListServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShareListsServlet</servlet-name>
-        <url-pattern>/ShareListsServlet</url-pattern>
+        <url-pattern>/restricted/ShareListsServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
