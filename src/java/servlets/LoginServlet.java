@@ -52,10 +52,15 @@ public class LoginServlet extends HttpServlet {
 
         try {
             User user = userDao.getByEmailAndPassword(email, password);
+            
             if (user == null) {
                 System.out.println("Email o password errati");
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
-            } else {
+            } else if(!user.getCheck().equals("0")) {
+                
+                System.out.println("Account non verificato tramite mail");
+                response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
+            }else{
                 request.getSession().setAttribute("user", user);
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "index.html"));
             }
