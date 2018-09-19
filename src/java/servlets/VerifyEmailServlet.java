@@ -1,5 +1,9 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package servlets;
-
 
 import db.daos.UserDAO;
 import db.entities.User;
@@ -12,10 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet that handles the login web page.
- */
-public class LoginServlet extends HttpServlet {
+public class VerifyEmailServlet extends HttpServlet {
 
     private UserDAO userDao;
 
@@ -41,26 +42,22 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String check = request.getParameter("check");
+
         String contextPath = getServletContext().getContextPath();
         if (!contextPath.endsWith("/")) {
             contextPath += "/";
         }
 
         try {
-            User user = userDao.getByEmailAndPassword(email, password);
-            
+            User user = userDao.getByCheckCode(check);
             if (user == null) {
-                System.out.println("Email o password errati");
+                System.out.println("non esiste il check code");
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
-            } else if(!user.getCheck().equals("0")) {
-                System.out.println("Account non verificato tramite mail");
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
-            }else{
-                request.getSession().setAttribute("user", user);
+            } else {
+                user.setCheck("0");
+                userDao.update(user);
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "index.html"));
             }
         } catch (DAOException ex) {

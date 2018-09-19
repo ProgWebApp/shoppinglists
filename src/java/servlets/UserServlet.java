@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -56,8 +55,7 @@ public class UserServlet extends HttpServlet {
         } catch (RuntimeException ex) {
             //TODO: log the exception
         }
-        String userFirstName = request.getParameter("a");
-       
+        String userFirstName = request.getParameter("firstName");
         String userLastName = request.getParameter("lastName");
         String userEmail = request.getParameter("email");
         String userPassword = request.getParameter("password");
@@ -95,33 +93,25 @@ public class UserServlet extends HttpServlet {
             user.setEmail(userEmail);
             user.setPassword(userPassword);
             user.setAvatarPath(filename);
-            user.setAdmin(userIsAdmin);
-
-            if (userId == null) {
-                String check = UUID.randomUUID().toString();
-                
-                user.setCheck(check);
-                userDao.insert(user);
-                String testo = "Grazie per esserti iscritto al sito, per completare la registrazione clicca sul link sottostante\n"
-                        + contextPath + "RegistrationServlet?check=" + check
-                        + "\nQuesta è una mail generata automaticamente, si prega di non ispondere a questo messaggio.";
-                Email.send(userEmail, "Registrazione shopping-list", testo);
-
-            } else if (activeUser.isAdmin() || activeUserId.equals(userId)) {
+            if (!activeUserId.equals(userId)) {
+                user.setAdmin(userIsAdmin);
+            }
+            
+            if (activeUser.isAdmin() || activeUserId.equals(userId)) {
                 userDao.update(user);
             }
         } catch (DAOException ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (!response.isCommitted()) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user.html"));
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "index.html"));
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer userId = null;
-        
+
         User activeUser = (User) request.getSession().getAttribute("user");
         Integer activeUserId = activeUser.getId();
 

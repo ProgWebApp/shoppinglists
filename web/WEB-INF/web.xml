@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    
+    <!-- VARIABILI DI CONTESTO -->
     <context-param>
         <param-name>dburl</param-name>
         <param-value>jdbc:postgresql://aa38g7gb5o7fwo.cap31ujhgu5y.us-east-2.rds.amazonaws.com:5432/mydb?user=ProgWeb&amp;password=Operativi1</param-value>
@@ -9,6 +11,8 @@
         <param-name>avatarsFolder</param-name>
         <param-value>images/avatars</param-value>
     </context-param>
+    
+    <!-- FILTRI -->
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>filters.AuthenticationFilter</filter-class>
@@ -18,10 +22,14 @@
         <url-pattern>/restricted/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
+    
+    <!-- LISTENER -->
     <listener>
         <description>ServletContextListener</description>
         <listener-class>listeners.WebAppContextListener</listener-class>
     </listener>
+    
+    <!-- SERVLET -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>servlets.LoginServlet</servlet-class>
@@ -59,6 +67,10 @@
         <servlet-class>servlets.RegistrationServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>VerifyEmailServlet</servlet-name>
+        <servlet-class>servlets.VerifyEmailServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ProductListServlet</servlet-name>
         <servlet-class>servlets.ProductListServlet</servlet-class>
     </servlet>
@@ -66,6 +78,8 @@
         <servlet-name>ShareListsServlet</servlet-name>
         <servlet-class>servlets.ShareListsServlet</servlet-class>
     </servlet>
+   
+    <!-- SERVLET MAPPING -->
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -103,6 +117,10 @@
         <url-pattern>/RegistrationServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>VerifyEmailServlet</servlet-name>
+        <url-pattern>/VerifyEmailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/restricted/ProductListServlet</url-pattern>
     </servlet-mapping>
@@ -110,6 +128,8 @@
         <servlet-name>ShareListsServlet</servlet-name>
         <url-pattern>/restricted/ShareListsServlet</url-pattern>
     </servlet-mapping>
+    
+    <!-- CONFIGURAZIONI -->
     <session-config>
         <session-timeout>
             30
