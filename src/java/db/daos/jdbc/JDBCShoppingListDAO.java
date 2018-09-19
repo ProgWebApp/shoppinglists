@@ -1,6 +1,7 @@
 package db.daos.jdbc;
 
 import db.daos.ShoppingListDAO;
+import db.entities.Product;
 import db.entities.ShoppingList;
 import db.entities.User;
 import db.exceptions.DAOException;
@@ -377,4 +378,26 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         return shoppingList;
     }
 
+    @Override
+    public List<Product> getProducts(Integer shoppingListId) throws DAOException {
+        if (shoppingListId == null) {
+            throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products, list_products WHERE (id = product AND list = ?)")) {
+
+            List<Product> products = new ArrayList<>();
+
+            stm.setInt(1, shoppingListId);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                products.add(JDBCProductDAO.setAllProductFields(rs));
+            }
+
+            return products;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of products for the passed shoppingListId", ex);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package db.daos;
 
+import db.entities.Product;
 import db.entities.ShoppingList;
 import db.entities.User;
 import db.exceptions.DAOException;
@@ -111,4 +112,13 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
      * @throws DAOException if an error occurred during the persist action.
      */
     public void updateProduct(Integer shoppingListId, Integer productId, int quantity, boolean necessary) throws DAOException;
+    
+    /**
+     * Returns the list of the products in the passed {@code shoppingList}
+     *
+     * @param shoppingListId the id of the shoppingList
+     * @return the list of the products in the passed {@code shoppingList}
+     * @throws DAOException if an error occurred during the persist action.
+     */
+    public List<Product> getProducts(Integer shoppingListId) throws DAOException;
 }
