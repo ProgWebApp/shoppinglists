@@ -60,7 +60,7 @@ public class RegistrationServlet extends HttpServlet {
             } else {
                 user.setCheck("0");
                 userDao.update(user);
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/login.html"));
+                response.sendRedirect(response.encodeRedirectURL(contextPath + "index.html"));
             }
         } catch (DAOException ex) {
             request.getServletContext().log("Impossible to retrieve the user", ex);

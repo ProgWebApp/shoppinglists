@@ -235,9 +235,11 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             stm.setString(1, checkCode);
 
             ResultSet rs = stm.executeQuery();
-            rs.next();
-            return setAllUserFields(rs, null);
-
+            if(rs.next()){
+                return setAllUserFields(rs, null);
+            }else{
+                return null;
+            }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the user", ex);
         }
