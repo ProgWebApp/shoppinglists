@@ -14,6 +14,17 @@
             <div align="center">
                 <h3>Authentication Area</h3>
                 <p>You must authenticate to access, view, modify and share your Shopping Lists</p>
+                <% if(request.getParameter("err")!=null){
+                    int err = Integer.parseInt(request.getParameter("err"));
+                    String errore = "";
+                   switch(err){
+                       case 1: errore="Email o password errati"; break;
+                       case 2: errore="Account non verificato tramite email"; break;
+                       default: errore="Errore";
+                   }
+                   out.print(errore);
+                }
+   %>
             </div>
             <div align="center">
                 <input type="email" id="email" name="email" placeholder="Email" required autofocus>
@@ -28,7 +39,8 @@
                     <input type="checkbox" name="rememberMe" value="true"> Remember me
                 </label>
             </div>
-            <div align="center"><button type="submit" class="buttonlike">Sign in</button></div>
+            <div align="center"><button type="submit" class="buttonlike">Accedi</button></div>
+            <div align="center"><button onclick="window.location.href='registration.jsp'" class="buttonlike">Iscriviti</button></div>
         </form>
     </body>
 </html>

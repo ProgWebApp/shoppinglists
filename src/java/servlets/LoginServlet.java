@@ -51,17 +51,18 @@ public class LoginServlet extends HttpServlet {
         }
 
         try {
-            User user = userDao.getByEmailAndPassword(email, password);
+            User user = null;
+            user = userDao.getByEmailAndPassword(email, password);
             
             if (user == null) {
                 System.out.println("Email o password errati");
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
+                response.sendRedirect(response.encodeRedirectURL(contextPath + "login.jsp?err=1"));
             } else if(!user.getCheck().equals("0")) {
                 System.out.println("Account non verificato tramite mail");
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
+                response.sendRedirect(response.encodeRedirectURL(contextPath + "login.jsp?err=2"));
             }else{
                 request.getSession().setAttribute("user", user);
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "index.html"));
+                response.sendRedirect(response.encodeRedirectURL(contextPath + "mainpagelogged.html"));
             }
         } catch (DAOException ex) {
             request.getServletContext().log("Impossible to retrieve the user", ex);

@@ -9,6 +9,7 @@ import db.factories.DAOFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -75,7 +76,7 @@ public class RegistrationServlet extends HttpServlet {
         }
 
         if (userFirstName == null || userLastName == null || userEmail == null || userPassword == null) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "registration.html"));
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "registration.jsp"));
         }
         try {
             User user = new User();
@@ -89,8 +90,13 @@ public class RegistrationServlet extends HttpServlet {
 
             user.setCheck(check);
             userDao.insert(user);
-            String testo = "Grazie per esserti iscritto al sito, per completare la registrazione clicca sul link sottostante:\n"
-                    + contextPath + "VerifyEmailServlet?check=" + check
+            request.getRemoteAddr();
+            String serverName = request.getServerName();
+            int portNumber = request.getServerPort();
+            String hostName = serverName+":"+portNumber;
+            String testo = "Grazie per esserti iscritto al sito, per completare la registrazione clicca "
+                    + "http://"+hostName+contextPath+ "VerifyEmailServlet?check=" + check+ "\n"
+                    + "in caso il link non dovesse funzionare ricopialo nella barra del browser"
                     + "\nQuesta è una mail generata automaticamente, si prega di non ispondere a questo messaggio.";
             Email.send(userEmail, "Registrazione shopping-list", testo);
 
@@ -98,7 +104,7 @@ public class RegistrationServlet extends HttpServlet {
             Logger.getLogger(RegistrationServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (!response.isCommitted()) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "login.jsp"));
         }
     }
 }
