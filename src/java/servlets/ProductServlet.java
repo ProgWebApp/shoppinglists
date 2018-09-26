@@ -92,8 +92,9 @@ public class ProductServlet extends HttpServlet {
         } catch (DAOException ex) {
             Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/product.html"));
+        if (!response.isCommitted()) {
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/products.html"));
+        }
     }
 
     @Override

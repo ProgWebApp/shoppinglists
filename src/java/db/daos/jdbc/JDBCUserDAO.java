@@ -39,7 +39,6 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             throw new DAOException("user is not valid", new NullPointerException("user is null"));
         }
         try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users (firstname, lastname, email, password, avatar, code, admin) VALUES (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
-            System.out.println(user.getFirstName());
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getEmail());
@@ -48,7 +47,6 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             ps.setString(6, user.getCheck());
             ps.setBoolean(7, user.isAdmin());
             
-
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();

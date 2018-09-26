@@ -2,7 +2,6 @@ package db.daos.jdbc;
 
 import db.daos.ProductDAO;
 import db.entities.Product;
-import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.UniqueConstraintException;
 import java.sql.Connection;
@@ -12,8 +11,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The JDBC implementation of the {@link ProductDAO} interface.
@@ -351,6 +348,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
      * @param userId the id of user.
      * @throws DAOException if an error occurred during the persist action.
      */
+    @Override
     public void shareProductFromList(Integer shoppingListId, Integer userId) throws DAOException {
         if ((shoppingListId == null) || (userId == null)) {
             throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("productId or userId are null"));

@@ -40,7 +40,7 @@
                 </label>
             </div>
             <div align="center"><button type="submit" class="buttonlike">Accedi</button></div>
-            <div align="center"><button onclick="window.location.href='registration.jsp'" class="buttonlike">Iscriviti</button></div>
+            <div align="center"><button type="button" class="buttonlike" onclick="window.location.href='registration.jsp'">Iscriviti</button></div>
         </form>
     </body>
 </html>

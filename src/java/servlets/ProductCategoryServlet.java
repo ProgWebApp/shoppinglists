@@ -73,7 +73,9 @@ public class ProductCategoryServlet extends HttpServlet {
             Logger.getLogger(ProductCategoryServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/product.html"));
+        if (!response.isCommitted()) {
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/products.html"));
+        }
     }
 
     @Override

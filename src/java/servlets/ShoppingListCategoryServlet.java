@@ -79,8 +79,9 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         } catch (DAOException ex) {
             Logger.getLogger(ShoppingListCategoryServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shoppingListCategory.html"));
+        if (!response.isCommitted()) {
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shoppingListCategories.html"));
+        }
     }
 
     @Override

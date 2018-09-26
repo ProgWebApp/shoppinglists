@@ -5,17 +5,15 @@ import db.daos.UserDAO;
 import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
+import db.exceptions.UniqueConstraintException;
 import db.factories.DAOFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetAddress;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -59,49 +57,55 @@ public class RegistrationServlet extends HttpServlet {
         }
         avatarsFolder = getServletContext().getRealPath(avatarsFolder);
         Part filePart = request.getPart("avatar");
-        String filename = null;
-        if ((filePart != null) && (filePart.getSize() > 0)) {
-            filename = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();//MSIE  fix.
-            try (InputStream fileContent = filePart.getInputStream()) {
-                File directory = new File(avatarsFolder);
-                directory.mkdirs();
-                File file = new File(avatarsFolder, filename);
-                Files.copy(fileContent, file.toPath());
-            } catch (FileAlreadyExistsException ex) {
-                getServletContext().log("File \"" + filename + "\" already exists on the server");
-            } catch (RuntimeException ex) {
-                //TODO: handle the exception
-                getServletContext().log("impossible to upload the file", ex);
-            }
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); //MSIE  fix.
+        
+        User user = new User();
+        user.setFirstName(userFirstName);
+        user.setLastName(userLastName);
+        user.setEmail(userEmail);
+        user.setPassword(userPassword);
+        user.setAvatarPath(fileName);
+        String check = UUID.randomUUID().toString();
+        user.setCheck(check);
+
+        if (userFirstName.equals("") || userLastName.equals("") || userEmail.equals("") || userPassword.equals("") || filePart.getSize() == 0) {
+            request.getSession().setAttribute("message", 1);
+            request.getSession().setAttribute("newUser", user);
+            //response.sendRedirect(response.encodeRedirectURL(contextPath + "registration.jsp"));
+            getServletContext().getRequestDispatcher("/registration.jsp").forward(request, response);
+            return;
+        }
+        
+        fileName = UUID.randomUUID().toString() + fileName;
+        try (InputStream fileContent = filePart.getInputStream()) {
+            File directory = new File(avatarsFolder);
+            directory.mkdirs();
+            File file = new File(avatarsFolder, fileName);
+            Files.copy(fileContent, file.toPath());
+        } catch (FileAlreadyExistsException ex) {
+            throw new ServletException("File \"" + fileName + "\" already exists on the server", ex);
+        } catch (RuntimeException ex) {
+            throw new ServletException("Impossible to upload the file \"" + fileName + "\"", ex);
         }
 
-        if (userFirstName == null || userLastName == null || userEmail == null || userPassword == null) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "registration.jsp"));
-        }
         try {
-            User user = new User();
-            user.setFirstName(userFirstName);
-            user.setLastName(userLastName);
-            user.setEmail(userEmail);
-            user.setPassword(userPassword);
-            user.setAvatarPath(filename);
 
-            String check = UUID.randomUUID().toString();
-
-            user.setCheck(check);
             userDao.insert(user);
-            request.getRemoteAddr();
-            String serverName = request.getServerName();
-            int portNumber = request.getServerPort();
-            String hostName = serverName+":"+portNumber;
-            String testo = "Grazie per esserti iscritto al sito, per completare la registrazione clicca "
-                    + "http://"+hostName+contextPath+ "VerifyEmailServlet?check=" + check+ "\n"
-                    + "in caso il link non dovesse funzionare ricopialo nella barra del browser"
-                    + "\nQuesta è una mail generata automaticamente, si prega di non ispondere a questo messaggio.";
+
+            String hostName = request.getServerName() + ":" + request.getServerPort();
+            String testo = "Grazie per esserti iscritto al sito, per completare la registrazione clicca sul seguente link:\n"
+                    + "http://" + hostName + contextPath + "VerifyEmailServlet?check=" + check + "\n"
+                    + "Nel caso il link non dovesse funzionare copialo nella barra del browser e premi invio.\n"
+                    + "Questa è una mail generata automaticamente, si prega di non ispondere a questo messaggio.";
             Email.send(userEmail, "Registrazione shopping-list", testo);
 
         } catch (DAOException ex) {
-            Logger.getLogger(RegistrationServlet.class.getName()).log(Level.SEVERE, null, ex);
+            if (ex.getCause() instanceof UniqueConstraintException) {
+                request.setAttribute("error", 2);
+                getServletContext().getRequestDispatcher("/registration.jsp").forward(request, response);
+                return;
+            }
+            throw new ServletException(ex);
         }
         if (!response.isCommitted()) {
             response.sendRedirect(response.encodeRedirectURL(contextPath + "login.jsp"));

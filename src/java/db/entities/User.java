@@ -1,9 +1,11 @@
 package db.entities;
 
+import java.io.Serializable;
+
 /**
  * The entity that describe a {@code user}.
  */
-public class User {
+public class User implements Serializable{
 
     private Integer id;
     private String firstName;
