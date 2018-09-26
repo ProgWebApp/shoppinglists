@@ -57,8 +57,8 @@ public class RegistrationServlet extends HttpServlet {
         }
         avatarsFolder = getServletContext().getRealPath(avatarsFolder);
         Part filePart = request.getPart("avatar");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); //MSIE  fix.
-        
+        String fileName = UUID.randomUUID().toString() + Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); //MSIE  fix.
+
         User user = new User();
         user.setFirstName(userFirstName);
         user.setLastName(userLastName);
@@ -68,15 +68,14 @@ public class RegistrationServlet extends HttpServlet {
         String check = UUID.randomUUID().toString();
         user.setCheck(check);
 
-        if (userFirstName.equals("") || userLastName.equals("") || userEmail.equals("") || userPassword.equals("") || filePart.getSize() == 0) {
+        if (userFirstName.isEmpty() || userLastName.isEmpty() || userEmail.isEmpty() || userPassword.isEmpty() || filePart.getSize() == 0) {
+            user.setAvatarPath("");
             request.getSession().setAttribute("message", 1);
             request.getSession().setAttribute("newUser", user);
-            //response.sendRedirect(response.encodeRedirectURL(contextPath + "registration.jsp"));
-            getServletContext().getRequestDispatcher("/registration.jsp").forward(request, response);
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "registration.jsp"));
             return;
         }
-        
-        fileName = UUID.randomUUID().toString() + fileName;
+
         try (InputStream fileContent = filePart.getInputStream()) {
             File directory = new File(avatarsFolder);
             directory.mkdirs();
@@ -89,9 +88,8 @@ public class RegistrationServlet extends HttpServlet {
         }
 
         try {
-
             userDao.insert(user);
-
+            
             String hostName = request.getServerName() + ":" + request.getServerPort();
             String testo = "Grazie per esserti iscritto al sito, per completare la registrazione clicca sul seguente link:\n"
                     + "http://" + hostName + contextPath + "VerifyEmailServlet?check=" + check + "\n"
@@ -101,14 +99,16 @@ public class RegistrationServlet extends HttpServlet {
 
         } catch (DAOException ex) {
             if (ex.getCause() instanceof UniqueConstraintException) {
-                request.setAttribute("error", 2);
-                getServletContext().getRequestDispatcher("/registration.jsp").forward(request, response);
+                user.setEmail("");
+                user.setAvatarPath("");
+                request.getSession().setAttribute("newUser", user);
+                request.getSession().setAttribute("message", 2);
+                response.sendRedirect(response.encodeRedirectURL(contextPath + "registration.jsp"));
                 return;
             }
             throw new ServletException(ex);
         }
-        if (!response.isCommitted()) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "login.jsp"));
-        }
+        request.getSession().setAttribute("message", 3);
+        response.sendRedirect(response.encodeRedirectURL(contextPath + "login.jsp"));
     }
 }
