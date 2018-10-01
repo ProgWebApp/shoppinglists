@@ -50,7 +50,7 @@ public class UserServlet extends HttpServlet {
         User activeUser = null;
         activeUser = (User) request.getSession().getAttribute("user");
         if (activeUser != null) {
-            if (request.getParameter("changeAvatar")!=null && Integer.parseInt(request.getParameter("changeAvatar")) == 1) {
+            if (request.getParameter("changeAvatar") != null && Integer.parseInt(request.getParameter("changeAvatar")) == 1) {
                 String avatarsFolder = getServletContext().getInitParameter("avatarsFolder");
                 if (avatarsFolder == null) {
                     throw new ServletException("Avatars folder not configured");
@@ -73,7 +73,7 @@ public class UserServlet extends HttpServlet {
                     }
                 }
                 activeUser.setAvatarPath(filename);
-            } else if (request.getParameter("changeName")!=null && Integer.parseInt(request.getParameter("changeName"))==1) {
+            } else if (request.getParameter("changeName") != null && Integer.parseInt(request.getParameter("changeName")) == 1) {
                 String userFirstName = capitalize(request.getParameter("firstName"));
                 String userLastName = capitalize(request.getParameter("lastName"));
                 if (userFirstName == null || userLastName == null) {
@@ -83,22 +83,40 @@ public class UserServlet extends HttpServlet {
                     activeUser.setLastName(userLastName);
                     request.getSession().setAttribute("message", 22);
                 }
-            } else if (request.getParameter("changePassword")!=null && Integer.parseInt(request.getParameter("changePassword")) == 1) {
+            } else if (request.getParameter("changePassword") != null && Integer.parseInt(request.getParameter("changePassword")) == 1) {
                 String realOldPassword = activeUser.getPassword();
-                System.out.println("vecchia password: "+realOldPassword);
+                System.out.println("vecchia password: " + realOldPassword);
                 String oldPassword = request.getParameter("oldPassword");
                 String newPassword = request.getParameter("newPassword");
                 String newPassword2 = request.getParameter("newPassword2");
                 if (oldPassword == null || newPassword == null || newPassword2 == null) {
                     request.getSession().setAttribute("message", 31);
-                } else {    
+                } else {
                     if (!oldPassword.equals(realOldPassword)) {
-                        request.getSession().setAttribute("message", 32);                        
+                        request.getSession().setAttribute("message", 32);
                     } else if (!newPassword.equals(newPassword2)) {
                         request.getSession().setAttribute("message", 33);
                     } else {
                         activeUser.setPassword(newPassword2);
                         request.getSession().setAttribute("message", 34);
+                    }
+                }
+            } else if (request.getParameter("deleteUser") != null && Integer.parseInt(request.getParameter("deleteUser")) == 1) {
+                if (request.getParameter("idUser") == null) {
+                    try {
+                        userDao.delete(((User) request.getSession().getAttribute("user")).getId());
+                        response.sendRedirect(response.encodeRedirectURL(contextPath + "login.jsp"));
+                        return;
+                    } catch (DAOException ex) {
+                        Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    if (activeUser.isAdmin()) {
+                        try {
+                            userDao.delete(Integer.parseInt(request.getParameter("idUser")));
+                        } catch (DAOException ex) {
+                            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
             }

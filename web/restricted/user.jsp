@@ -91,9 +91,12 @@
                 </div>
             </form>
             <div>
+                <form action="UserServlet" method="POST">
+                    <input type="hidden" name="deleteUser" value="1">
+                    <button type="submit">Elimina</button>
+                </form>
                 <br>
                 <br>
-
 
                 <div align="center">
                     <a href="mainpage.html" class="buttonlike-pagecontrol"> Back </a>
