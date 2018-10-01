@@ -12,21 +12,23 @@
         <div>
             <h3>Profile </h3>
             <br>
-            <br>
-            <br>
-            <br>
+        
         </div>
         <div>
-
-            
-            <form action="UserServlet" method="POST">
+            <form action="UserServlet" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="changeAvatar" value=1>
                 <div >
-                    <input type="file" name="avatar" id="avatar">
+                    <img src="../images/<c:out value="${user.avatarPath}"/>" alt="Avatar" height="80" width="80">
+                </div>
+                <div>
+                    <input type="file" name="avatar" id="avatar" >
                     <label for="avatar">Avatar</label>
                     <img src="${avatarPath}">
-                </div><br>
+                </div>
+                <button type="submit" >Save</button>
             </form>
+        </div>
+        <div>
             <form action="UserServlet" method="POST">
                 <c:choose>
                     <c:when test="${message==21}">
@@ -37,22 +39,22 @@
                     </c:when>
                 </c:choose>
                 <input type="hidden" name="changeName" value="1">
-                <div>
-                    <input type="text" name="lastName" id="lastname" placeholder="Last name" value="<c:out value="${user.lastName}"/>" required autofocus>
-                    <label for="lastname">Last name</label>
-                </div><br>
-                <div>
-                    <input type="text" name="firstName" id="firstname" placeholder="First name" value="<c:out value="${user.firstName}"/>" required>
-                    <label for="firstname">Name</label>
-                </div><br>
-                </div>
-                <div>
-                    <button type="submit" >Save</button>
-                    <button type="button" data-dismiss="modal">Cancel</button>
-                </div>
-            </form>
 
-            <br><br>
+                <input type="text" name="lastName" id="lastname" placeholder="Last name" value="<c:out value="${user.lastName}"/>" required autofocus>
+                <label for="lastname">Last name</label>
+
+
+                <input type="text" name="firstName" id="firstname" placeholder="First name" value="<c:out value="${user.firstName}"/>" required>
+                <label for="firstname">Name</label>
+
+
+
+                <button type="submit" >Save</button>
+                <button type="button" data-dismiss="modal">Cancel</button>
+
+            </form>
+        </div>
+        <div>
             <form action="UserServlet" method="POST">
                 <c:choose>
                     <c:when test="${message==31}">
@@ -60,7 +62,7 @@
                     </c:when>
                     <c:when test="${message==32}">
                         La vecchia password non corrisponde
-                        
+
                     </c:when>
                     <c:when test="${message==33}">
                         Le nuove password non corrispondono
@@ -70,37 +72,31 @@
                     </c:when>
                 </c:choose>
                 <input type="hidden" name="changePassword" value=1>
-                <div>
-                    <div >
-                        <input type="password" name="oldPassword" id="oldpassword" placeholder="Old password" required>
-                        <label for="oldpassword">Old Password</label>
-                    </div>
-                    <br>
-                    <div >
-                        <input type="password" name="newPassword" id="newpassword" placeholder="New password" required>
-                        <label for="newpassword">New Password</label>
-                    </div>
-                    <br>
-                    <div>
-                        <input type="password" name="newPassword2" id="newpassword2" placeholder="New password" required>
-                        <label for="newpassword2">Confirm New Password</label>
-                    </div>
-                    <br>
-                    <button type="submit">Save</button>
-                    <button type="button" data-dismiss="modal">Cancel</button>
-                </div>
-            </form>
-            <div>
-                <form action="UserServlet" method="POST">
-                    <input type="hidden" name="deleteUser" value="1">
-                    <button type="submit">Elimina</button>
-                </form>
-                <br>
-                <br>
 
-                <div align="center">
-                    <a href="mainpage.html" class="buttonlike-pagecontrol"> Back </a>
-                </div>
+
+                <input type="password" name="oldPassword" id="oldpassword" placeholder="Old password" required>
+                <label for="oldpassword">Old Password</label>
+
+                <input type="password" name="newPassword" id="newpassword" placeholder="New password" required>
+                <label for="newpassword">New Password</label>
+
+                <input type="password" name="newPassword2" id="newpassword2" placeholder="New password" required>
+                <label for="newpassword2">Confirm New Password</label>
+
+                <button type="submit">Save</button>
+                <button type="button" data-dismiss="modal">Cancel</button>
+
+            </form>
+        </div>
+        <div>
+            <form action="UserServlet" method="POST">
+                <input type="hidden" name="deleteUser" value="1">
+                <button type="submit">Elimina</button>
+            </form>
+
+            <div align="center">
+                <a href="mainpage.html" class="buttonlike-pagecontrol"> Back </a>
             </div>
+        </div>
     </body>
 </html>

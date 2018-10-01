@@ -54,7 +54,7 @@ public class VerifyEmailServlet extends HttpServlet {
             User user = userDao.getByCheckCode(check);
             if (user == null) {
                 System.out.println("non esiste il check code");
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
+                response.sendRedirect(response.encodeRedirectURL(contextPath + "login.jsp"));
             } else {
                 user.setCheck("0");
                 userDao.update(user);

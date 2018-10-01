@@ -105,7 +105,7 @@ public class UserServlet extends HttpServlet {
                 if (request.getParameter("idUser") == null) {
                     try {
                         userDao.delete(((User) request.getSession().getAttribute("user")).getId());
-                        response.sendRedirect(response.encodeRedirectURL(contextPath + "login.jsp"));
+                        response.sendRedirect(response.encodeRedirectURL(contextPath + "Logout"));
                         return;
                     } catch (DAOException ex) {
                         Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
