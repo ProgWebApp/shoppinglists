@@ -22,11 +22,6 @@ public class Logout extends HttpServlet {
             }
         }
 
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
-
-        response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.html"));
     }
 }

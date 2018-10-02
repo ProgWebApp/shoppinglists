@@ -46,11 +46,6 @@ public class ShoppingListCategoryServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
         
         Integer shoppingListCategoryId = null;
         try {
@@ -63,7 +58,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         String logoPath = request.getParameter("logo");
 
         if (name == null) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shoppinglistcategory.html"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppinglistcategory.html"));
         }
         try {
             ShoppingListCategory shoppingListCategory = new ShoppingListCategory();
@@ -80,7 +75,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
             Logger.getLogger(ShoppingListCategoryServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (!response.isCommitted()) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shoppingListCategories.html"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingListCategories.html"));
         }
     }
 

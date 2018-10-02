@@ -44,11 +44,6 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
 
         try {
             User user = null;
@@ -56,13 +51,13 @@ public class LoginServlet extends HttpServlet {
             
             if (user == null) {
                 System.out.println("Email o password errati");
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "login.jsp?err=1"));
+                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.jsp?err=1"));
             } else if(!user.getCheck().equals("0")) {
                 System.out.println("Account non verificato tramite mail");
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "login.jsp?err=2"));
+                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.jsp?err=2"));
             }else{
                 request.getSession().setAttribute("user", user);
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "mainpagelogged.html"));
+                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "mainpagelogged.html"));
             }
         } catch (DAOException ex) {
             request.getServletContext().log("Impossible to retrieve the user", ex);

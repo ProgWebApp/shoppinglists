@@ -41,12 +41,6 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
-
         String userFirstName = request.getParameter("firstName");
         String userLastName = request.getParameter("lastName");
         String userEmail = request.getParameter("email");
@@ -72,7 +66,7 @@ public class RegistrationServlet extends HttpServlet {
             user.setAvatarPath("");
             request.getSession().setAttribute("message", 1);
             request.getSession().setAttribute("newUser", user);
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "registration.jsp"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "registration.jsp"));
             return;
         }
 
@@ -92,7 +86,7 @@ public class RegistrationServlet extends HttpServlet {
             
             String hostName = request.getServerName() + ":" + request.getServerPort();
             String testo = "Grazie per esserti iscritto al sito, per completare la registrazione clicca sul seguente link:\n"
-                    + "http://" + hostName + contextPath + "VerifyEmailServlet?check=" + check + "\n"
+                    + "http://" + hostName + request.getAttribute("contextPath") + "VerifyEmailServlet?check=" + check + "\n"
                     + "Nel caso il link non dovesse funzionare copialo nella barra del browser e premi invio.\n"
                     + "Questa è una mail generata automaticamente, si prega di non ispondere a questo messaggio.";
             Email.send(userEmail, "Registrazione shopping-list", testo);
@@ -103,12 +97,12 @@ public class RegistrationServlet extends HttpServlet {
                 user.setAvatarPath("");
                 request.getSession().setAttribute("newUser", user);
                 request.getSession().setAttribute("message", 2);
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "registration.jsp"));
+                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "registration.jsp"));
                 return;
             }
             throw new ServletException(ex);
         }
         request.getSession().setAttribute("message", 3);
-        response.sendRedirect(response.encodeRedirectURL(contextPath + "login.jsp"));
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.jsp"));
     }
 }

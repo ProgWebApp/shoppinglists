@@ -59,10 +59,6 @@ public class ShareListsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
         User userActive = (User) request.getSession().getAttribute("user");
         User user = null;
         Integer userActiveId = user.getId();
@@ -91,7 +87,7 @@ public class ShareListsServlet extends HttpServlet {
         } catch (DAOException ex) {
             Logger.getLogger(ShoppingListServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shopping.lists.html"));
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shopping.lists.html"));
     }
 
     @Override

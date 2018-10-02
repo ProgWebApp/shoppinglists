@@ -45,20 +45,15 @@ public class VerifyEmailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String check = request.getParameter("check");
 
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
-
         try {
             User user = userDao.getByCheckCode(check);
             if (user == null) {
                 System.out.println("non esiste il check code");
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
+                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.html"));
             } else {
                 user.setCheck("0");
                 userDao.update(user);
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "index.html"));
+                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "index.html"));
             }
         } catch (DAOException ex) {
             request.getServletContext().log("Impossible to retrieve the user", ex);

@@ -80,7 +80,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             throw new DAOException("product is not valid", new NullPointerException("product id is null"));
         }
 
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE products SET name = ?, notes = ?, logo = ?, photo = ?, productCategory = ?, owner = ?, reserved = ? WHERE id = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE products SET name = ?, notes = ?, logo = ?, photo = ?, product_category = ?, owner = ?, reserved = ? WHERE id = ?")) {
 
             ps.setString(1, product.getName());
             ps.setString(2, product.getNotes());
@@ -88,8 +88,8 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             ps.setString(4, product.getPhotoPath());
             ps.setInt(5, product.getProductCategoryId());
             ps.setInt(6, product.getOwnerId());
-            ps.setInt(7, product.getId());
-            ps.setBoolean(8, product.isReserved());
+            ps.setBoolean(7, product.isReserved());
+            ps.setInt(8, product.getId());
 
             ps.executeUpdate();
 

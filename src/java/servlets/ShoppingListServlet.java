@@ -48,10 +48,6 @@ public class ShoppingListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
         User user = (User) request.getSession().getAttribute("user");
 
         Integer userId = user.getId();
@@ -67,7 +63,7 @@ public class ShoppingListServlet extends HttpServlet {
         Integer ownerId = Integer.valueOf(request.getParameter("ownerId"));
 
         if (name == null || shoppingListCategoryId == null || ownerId == null) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shoppinglist.html"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppinglist.html"));
         }
         try {
             ShoppingList shoppingList = new ShoppingList();
@@ -88,7 +84,7 @@ public class ShoppingListServlet extends HttpServlet {
         }
 
         if (!response.isCommitted()) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shoppinglists.html"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppinglists.html"));
         }
     }
 

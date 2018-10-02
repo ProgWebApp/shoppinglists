@@ -41,11 +41,6 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
         User activeUser = (User) request.getSession().getAttribute("user");
         Integer activeUserId = activeUser.getId();
         Integer userId = null;
@@ -83,7 +78,7 @@ public class UserServlet extends HttpServlet {
         Boolean userIsAdmin = Boolean.valueOf(request.getParameter("isAdmin"));
 
         if (userFirstName == null || userLastName == null || userEmail == null || userPassword == null) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user.html"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/user.html"));
         }
         try {
             User user = new User();
@@ -104,7 +99,7 @@ public class UserServlet extends HttpServlet {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (!response.isCommitted()) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "index.html"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "index.html"));
         }
     }
 

@@ -37,12 +37,6 @@ public class ProductCategoryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
-
         Integer productCategoryId = null;
         try {
             productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));
@@ -54,7 +48,7 @@ public class ProductCategoryServlet extends HttpServlet {
         String logoPath = request.getParameter("logo");
 
         if (name == null ) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/productCategory.html"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "productCategory.html"));
         }
         try {
             ProductCategory productCategory = new ProductCategory();
@@ -74,7 +68,7 @@ public class ProductCategoryServlet extends HttpServlet {
         }
 
         if (!response.isCommitted()) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/products.html"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "products.html"));
         }
     }
 

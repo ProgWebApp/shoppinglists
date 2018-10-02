@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 public class ProductServlet extends HttpServlet {
 
     private ProductDAO productDao;
@@ -46,41 +45,44 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
         User user = (User) request.getSession().getAttribute("user");
 
         Integer userId = user.getId();
         Integer productId = null;
-        try {
+        if (request.getParameter("productId") != null) {
             productId = Integer.valueOf(request.getParameter("productId"));
-        } catch (RuntimeException ex) {
-            //TODO: log the exception
         }
+
         String productName = request.getParameter("name");
         String productNotes = request.getParameter("notes");
-        Integer productCategoryId = Integer.valueOf(request.getParameter("producttCategoryId"));
-        Integer productOwnerId = Integer.valueOf(request.getParameter("productOwnerId"));
-        //logo e photo?
+        //Integer productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));
+        //Integer productOwnerId = Integer.valueOf(request.getParameter("productOwnerId"));
 
-        if (productName == null || productNotes == null || productCategoryId == null || productOwnerId == null) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/product.html"));
+        Product product = new Product();
+        product.setId(productId);
+        product.setName(productName);
+        product.setNotes(productNotes);
+        //product.setOwnerId(productOwnerId);
+        product.setOwnerId(1);
+        //product.setProductCategoryId(productCategoryId);
+        product.setProductCategoryId(1);
+        if (user.isAdmin()) {
+            product.setReserved(false);
+        } else {
+            product.setReserved(true);
         }
+        //logo e photo?
+        product.setLogoPath("");
+        product.setPhotoPath("");
+
+        if (productName.isEmpty() || productNotes.isEmpty()) { // || productCategoryId == null || productOwnerId == null) {
+            request.getSession().setAttribute("message", 1);
+            request.getSession().setAttribute("product", product);
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/product.jsp"));
+            return;
+        }
+
         try {
-            Product product = new Product();
-            product.setId(productId);
-            product.setName(productName);
-            product.setNotes(productNotes);
-            product.setOwnerId(productOwnerId);
-            product.setProductCategoryId(productCategoryId);
-            if (user.isAdmin()) {
-                product.setReserved(false);
-            } else {
-                product.setReserved(true);
-            }
             if (productId == null) {
                 productDao.insert(product);
                 if (!user.isAdmin()) {
@@ -90,11 +92,9 @@ public class ProductServlet extends HttpServlet {
                 productDao.update(product);
             }
         } catch (DAOException ex) {
-            Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServletException("Impossible to insert or update the product", ex);
         }
-        if (!response.isCommitted()) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/products.html"));
-        }
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/products.html"));
     }
 
     @Override
