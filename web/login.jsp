@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,17 +15,17 @@
             <div align="center">
                 <h3>Authentication Area</h3>
                 <p>You must authenticate to access, view, modify and share your Shopping Lists</p>
-                <% if(request.getParameter("err")!=null){
-                    int err = Integer.parseInt(request.getParameter("err"));
-                    String errore = "";
-                   switch(err){
-                       case 1: errore="Email o password errati"; break;
-                       case 2: errore="Account non verificato tramite email"; break;
-                       default: errore="Errore";
-                   }
-                   out.print(errore);
-                }
-   %>
+                <c:choose>
+                    <c:when test="${message==1}">
+                        Email o password errati
+                    </c:when>
+                    <c:when test="${message==2}">
+                        Account non verificato tramite email
+                    </c:when>
+                    <c:when test="${message==3}">
+                        Registrazione effettuata, clicca sulla mail ricevuta
+                    </c:when>
+                </c:choose>
             </div>
             <div align="center">
                 <input type="email" id="email" name="email" placeholder="Email" required autofocus>
@@ -42,5 +43,6 @@
             <div align="center"><button type="submit" class="buttonlike">Accedi</button></div>
             <div align="center"><button type="button" class="buttonlike" onclick="window.location.href='registration.jsp'">Iscriviti</button></div>
         </form>
+        <c:remove var="message" scope="session" />
     </body>
 </html>

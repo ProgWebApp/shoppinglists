@@ -1,6 +1,5 @@
 package servlets;
 
-import Email.Email;
 import db.daos.UserDAO;
 import db.entities.User;
 import db.exceptions.DAOException;
@@ -20,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import static org.apache.tomcat.jdbc.naming.GenericNamingResourcesFactory.capitalize;
 
 @MultipartConfig
 public class UserServlet extends HttpServlet {
@@ -41,65 +41,81 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User activeUser = (User) request.getSession().getAttribute("user");
-        Integer activeUserId = activeUser.getId();
-        Integer userId = null;
-
-        try {
-            userId = Integer.valueOf(request.getParameter("userId"));
-        } catch (RuntimeException ex) {
-            //TODO: log the exception
-        }
-        String userFirstName = request.getParameter("firstName");
-        String userLastName = request.getParameter("lastName");
-        String userEmail = request.getParameter("email");
-        String userPassword = request.getParameter("password");
-        String avatarsFolder = getServletContext().getInitParameter("avatarsFolder");
-        if (avatarsFolder == null) {
-            throw new ServletException("Avatars folder not configured");
-        }
-        avatarsFolder = getServletContext().getRealPath(avatarsFolder);
-        Part filePart = request.getPart("avatar");
-        String filename = null;
-        if ((filePart != null) && (filePart.getSize() > 0)) {
-            filename = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();//MSIE  fix.
-            try (InputStream fileContent = filePart.getInputStream()) {
-                File directory = new File(avatarsFolder);
-                directory.mkdirs();
-                File file = new File(avatarsFolder, filename);
-                Files.copy(fileContent, file.toPath());
-            } catch (FileAlreadyExistsException ex) {
-                getServletContext().log("File \"" + filename + "\" already exists on the server");
-            } catch (RuntimeException ex) {
-                //TODO: handle the exception
-                getServletContext().log("impossible to upload the file", ex);
+        User activeUser = null;
+        activeUser = (User) request.getSession().getAttribute("user");
+        if (activeUser != null) {
+            if (request.getParameter("changeAvatar") != null && Integer.parseInt(request.getParameter("changeAvatar")) == 1) {
+                String avatarsFolder = getServletContext().getInitParameter("avatarsFolder");
+                if (avatarsFolder == null) {
+                    throw new ServletException("Avatars folder not configured");
+                }
+                avatarsFolder = getServletContext().getRealPath(avatarsFolder);
+                Part filePart = request.getPart("avatar");
+                String filename = null;
+                if ((filePart != null) && (filePart.getSize() > 0)) {
+                    filename = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();//MSIE  fix.
+                    try (InputStream fileContent = filePart.getInputStream()) {
+                        File directory = new File(avatarsFolder);
+                        directory.mkdirs();
+                        File file = new File(avatarsFolder, filename);
+                        Files.copy(fileContent, file.toPath());
+                    } catch (FileAlreadyExistsException ex) {
+                        getServletContext().log("File \"" + filename + "\" already exists on the server");
+                    } catch (RuntimeException ex) {
+                        //TODO: handle the exception
+                        getServletContext().log("impossible to upload the file", ex);
+                    }
+                }
+                activeUser.setAvatarPath(filename);
+            } else if (request.getParameter("changeName") != null && Integer.parseInt(request.getParameter("changeName")) == 1) {
+                String userFirstName = capitalize(request.getParameter("firstName"));
+                String userLastName = capitalize(request.getParameter("lastName"));
+                if (userFirstName == null || userLastName == null) {
+                    request.getSession().setAttribute("message", 21);
+                } else {
+                    activeUser.setFirstName(userFirstName);
+                    activeUser.setLastName(userLastName);
+                    request.getSession().setAttribute("message", 22);
+                }
+            } else if (request.getParameter("changePassword") != null && Integer.parseInt(request.getParameter("changePassword")) == 1) {
+                String realOldPassword = activeUser.getPassword();
+                System.out.println("vecchia password: " + realOldPassword);
+                String oldPassword = request.getParameter("oldPassword");
+                String newPassword = request.getParameter("newPassword");
+                String newPassword2 = request.getParameter("newPassword2");
+                if (oldPassword == null || newPassword == null || newPassword2 == null) {
+                    request.getSession().setAttribute("message", 31);
+                } else {
+                    if (!oldPassword.equals(realOldPassword)) {
+                        request.getSession().setAttribute("message", 32);
+                    } else if (!newPassword.equals(newPassword2)) {
+                        request.getSession().setAttribute("message", 33);
+                    } else {
+                        activeUser.setPassword(newPassword2);
+                        request.getSession().setAttribute("message", 34);
+                    }
+                }
+            } else if (request.getParameter("deleteUser") != null && Integer.parseInt(request.getParameter("deleteUser")) == 1) {
+                if (request.getParameter("idUser") == null) {
+                    try {
+                        userDao.delete(((User) request.getSession().getAttribute("user")).getId());
+                        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "Logout"));
+                        return;
+                    } catch (DAOException ex) {
+                        Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    if (activeUser.isAdmin()) {
+                        try {
+                            userDao.delete(Integer.parseInt(request.getParameter("idUser")));
+                        } catch (DAOException ex) {
+                            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
             }
-        }
-        Boolean userIsAdmin = Boolean.valueOf(request.getParameter("isAdmin"));
-
-        if (userFirstName == null || userLastName == null || userEmail == null || userPassword == null) {
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/user.html"));
-        }
-        try {
-            User user = new User();
-            user.setId(userId);
-            user.setFirstName(userFirstName);
-            user.setLastName(userLastName);
-            user.setEmail(userEmail);
-            user.setPassword(userPassword);
-            user.setAvatarPath(filename);
-            if (!activeUserId.equals(userId)) {
-                user.setAdmin(userIsAdmin);
-            }
-            
-            if (activeUser.isAdmin() || activeUserId.equals(userId)) {
-                userDao.update(user);
-            }
-        } catch (DAOException ex) {
-            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (!response.isCommitted()) {
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "index.html"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/user.jsp"));
+            return;
         }
     }
 
