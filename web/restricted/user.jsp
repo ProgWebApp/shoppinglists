@@ -18,7 +18,7 @@
             <form action="UserServlet" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="changeAvatar" value=1>
                 <div >
-                    <img src="../images/<c:out value="${user.avatarPath}"/>" alt="Avatar" height="80" width="80">
+                    <img src="../images/avatars/<c:out value="${user.avatarPath}"/>" alt="Avatar" height="80" width="80">
                 </div>
                 <div>
                     <input type="file" name="avatar" id="avatar" >
