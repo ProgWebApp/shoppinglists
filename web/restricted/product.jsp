@@ -45,16 +45,23 @@
                 </c:when>
             </c:choose>
             <div class="form-label-group">
+                <label for="name">Name: </label>
                 <input type="text" id="name" name="name" class="form-control" placeholder="Name" value="${product.name}" autofocus>
-                <label for="name">Name</label>
             </div>
             <div class="form-label-group">
+                <label for="notes">Notes: </label>
                 <input type="text" id="notes" name="notes" class="form-control" placeholder="Notes" value="${product.notes}">
-                <label for="notes">Notes</label>
             </div>
             <div class="form-label-group">
+                <label for="photos">Add images: </label>
                 <input type="file" id="photos" name="photos" class="form-control" placeholder="Images" multiple="multiple">
-                <label for="photos">Images</label>
+            </div>
+            <div>
+                Remove images:
+                <c:forEach items="${product.photoPath}" var="photo">
+                    <input type="checkbox" id="${photo}" name="removePhotos" value="${photo}">
+                    <label for="${photo}"><img height="50px" src="../images/products/${photo}"></label>
+                </c:forEach>
             </div>
             <c:if test="${not empty product.id}"><input type="hidden" name="productId" value="${product.id}"></c:if>
                 <button class="buttonlike" type="submit">Confirm</button>
