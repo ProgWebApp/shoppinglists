@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -44,7 +46,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             ps.setString(1, product.getName());
             ps.setString(2, product.getNotes());
             ps.setString(3, product.getLogoPath());
-            ps.setString(4, product.getPhotoPath());
+            ps.setString(4, product.getPhotoPath().toString());
             ps.setInt(5, product.getProductCategoryId());
             ps.setInt(6, product.getOwnerId());
             ps.setBoolean(7, product.isReserved());
@@ -85,7 +87,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             ps.setString(1, product.getName());
             ps.setString(2, product.getNotes());
             ps.setString(3, product.getLogoPath());
-            ps.setString(4, product.getPhotoPath());
+            ps.setString(4, product.getPhotoPath().toString());
             ps.setInt(5, product.getProductCategoryId());
             ps.setInt(6, product.getOwnerId());
             ps.setBoolean(7, product.isReserved());
@@ -332,7 +334,8 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         product.setName(rs.getString("name"));
         product.setNotes(rs.getString("notes"));
         product.setLogoPath(rs.getString("logo"));
-        product.setPhotoPath(rs.getString("photo"));
+        String[] paths = rs.getString("photo").replace("[", "").replace("]", "").split(", ");
+        product.setPhotoPath(new HashSet<>(Arrays.asList(paths)));
         product.setProductCategoryId(rs.getInt("product_category"));
         product.setOwnerId(rs.getInt("owner"));
         product.setReserved(rs.getBoolean("reserved"));

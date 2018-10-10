@@ -1,5 +1,7 @@
 package db.entities;
 
+import java.util.HashSet;
+
 /**
  * The entity that describe a {@code product}.
  */
@@ -9,7 +11,7 @@ public class Product {
     private String name;
     private String notes;
     private String logoPath;
-    private String photoPath;
+    private HashSet<String> photoPath;
     private Integer productCategoryId;
     private Integer ownerId;
     private boolean reserved;
@@ -91,16 +93,16 @@ public class Product {
      *
      * @return the photo path of this product.
      */
-    public String getPhotoPath() {
+    public HashSet<String> getPhotoPath() {
         return photoPath;
     }
 
     /**
      * Sets the photo path of this product.
      *
-     * @param photoPath the photo path of this product.
+     * @param photoPath the photo paths of this product.
      */
-    public void setPhotoPath(String photoPath) {
+    public void setPhotoPath(HashSet<String> photoPath) {
         this.photoPath = photoPath;
     }
 
