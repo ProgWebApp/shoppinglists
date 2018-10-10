@@ -34,11 +34,13 @@
     </head>
     <body>
         <h1>My Products</h1>
-    <c:forEach items="${products}" var="product">
-        Nome: <a href="${pageContext.response.encodeURL("product.jsp?productId=".concat(product.id))}">${product.name}</a><br>
-        Note: ${product.notes}<br>
-        Foto: ${product.photoPath}<br>
-        <br>
-    </c:forEach>
-</body>
+        <c:forEach items="${products}" var="product">
+            Nome: <a href="${pageContext.response.encodeURL("product.jsp?productId=".concat(product.id))}">${product.name}</a><br>
+            Note: ${product.notes}<br>
+            <c:forEach items="${product.photoPath}" var="photo">
+                <img height="50px" src="../images/products/${photo}">
+            </c:forEach>
+            <br>
+        </c:forEach>
+    </body>
 </html>

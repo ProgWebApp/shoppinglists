@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" crossorigin="anonymous">
     </head>
     <body>
-        <form class="form-signin" action="${pageContext.response.encodeURL("ProductServlet")}" method="POST">
+        <form class="form-signin" action="${pageContext.response.encodeURL("ProductServlet")}" method="POST" enctype="multipart/form-data">
             <div class="text-center mb-4">
                 <h3>Edit Product</h3>
             </div>
@@ -51,6 +51,10 @@
             <div class="form-label-group">
                 <input type="text" id="notes" name="notes" class="form-control" placeholder="Notes" value="${product.notes}">
                 <label for="notes">Notes</label>
+            </div>
+            <div class="form-label-group">
+                <input type="file" id="photos" name="photos" class="form-control" placeholder="Images" multiple="multiple">
+                <label for="photos">Images</label>
             </div>
             <c:if test="${not empty product.id}"><input type="hidden" name="productId" value="${product.id}"></c:if>
                 <button class="buttonlike" type="submit">Confirm</button>
