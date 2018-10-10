@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import db.daos.ProductDAO;
-import db.daos.UserDAO;
 import db.entities.Product;
 import db.entities.User;
 import db.exceptions.DAOException;
@@ -23,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ProductServlet extends HttpServlet {
 
     private ProductDAO productDao;
-    private UserDAO userDao;
 
     @Override
     public void init() throws ServletException {
@@ -35,11 +28,6 @@ public class ProductServlet extends HttpServlet {
             productDao = daoFactory.getDAO(ProductDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for product storage system", ex);
-        }
-        try {
-            userDao = daoFactory.getDAO(UserDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
     }
 

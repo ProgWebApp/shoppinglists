@@ -20,10 +20,13 @@
                         Email o password errati
                     </c:when>
                     <c:when test="${message==2}">
-                        Account non verificato tramite email
+                        Account non verificato tramite email, clicca sulla email ricevuta
                     </c:when>
                     <c:when test="${message==3}">
-                        Registrazione effettuata, clicca sulla mail ricevuta
+                        Registrazione effettuata, clicca sulla email ricevuta
+                    </c:when>
+                    <c:when test="${message==4}">
+                        Il codice di controllo inserito non è valido
                     </c:when>
                 </c:choose>
             </div>
