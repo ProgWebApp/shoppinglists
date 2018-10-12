@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <title>Liste</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    
+    .jumbotron {
+      margin-bottom: 0;
+      text-align:center;
+    }
+    
+    footer{
+    	background-color: #ff6336;
+    	color: #FFFFFF;
+    	padding: 25px;
+        margin-top: 30px;
+	}
+    
+    
+    
+    button.list-group-item-action{
+    	background-color:#e6e6e6;
+        color:black;
+        margin: 6px 0px 6px 0px;
+        border:0px;
+    }
+    div.pre-scrollable{
+    	min-height:450px;
+        max-height:450px;
+    }
+    .list-group{
+    	font-size:18px;
+    }
+    
+    .navbar-inverse{
+    	background-color: #ff6336;
+    	border: 0px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+	<div class="jumbotron">
+		<h2>Liste della spesa di ...</h2>
+    </div>
+    
+    <nav class="navbar navbar-inverse">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse"></button>
+      <a class="navbar-brand" style="color:white" href="mainpagelogged.html"><span class="glyphicon glyphicon-home"></span>Home</a>
+    </div>
+    </nav>
+    
+    <div class="col-sm-6">
+    <div class="pre-scrollable">
+    	<ul class="list-group">
+            <li class="list-group-item justify-content-between align-items-center"> Lista alimentari 
+            	<a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
+                <a class="pull-right" style="color:black" href="eslista.html" title="Modifica"><span class="glyphicon glyphicon-list-alt" style="margin:0px 10px 0px 0px"></span></a>
+            </li>
+            
+            <li class="list-group-item justify-content-between align-items-center"> Lista alimentari 
+            	<a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
+                <a class="pull-right" style="color:black" href="" title="Modifica"><span class="glyphicon glyphicon-list-alt" style="margin:0px 10px 0px 0px"></span></a>
+            </li>
+            
+            
+            <button type="button" class="list-group-item list-group-item-action">Aggiungi nuova lista </button>
+  
+</ul>
+</div>
+    </div>
+    <div class="col-sm-6">
+	Clicca su una lista per vedere l'anteprima dei prodotti contenuti...
+</div>
+</div>
+
+
+<footer class="container-fluid text-center">
+  <p>&copy; 2018, ListeSpesa.it, All right reserved</p>
+</footer>
+
+</body>
+</html>

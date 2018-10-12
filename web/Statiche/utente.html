@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <title>Utente</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    
+    .jumbotron {
+      margin-bottom: 0;
+      text-align:center;
+    }
+    .jumbotron img{
+    display:block;
+    margin-left:auto;
+    margin-right:auto;}
+    
+    .btn-custom{
+    	font: 17px monospace;
+    	background-color:#ff6336;
+    	padding: 4px 7px 4px 7px;
+    	border-radius: 5px 5px; 
+    	color:white;
+        margin:8px 1px 8px 1px;
+    }
+    .fit-image{
+width: 100%;
+object-fit: cover;
+height: 200px;
+width:150px;
+}
+    footer{
+    	background-color: #ff6336;
+    	color: #FFFFFF;
+    	padding: 25px;
+	}
+  </style>
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container">
+  
+    <img src="ste_vino.jpg" class="img-responsive fit-image" alt="Profilo">
+    <p>Luigi Mario</p>
+    <a class="btn btn-custom" href="" role="button">Cambia immagine... <span class="glyphicon glyphicon-file"></span></a>
+  </div>
+</div>
+
+<div class="col-sm-3">
+</div>
+
+<div class="container-fluid text-center col-sm-6">    
+  <h3>Informazioni personali</h3><br>
+  <div class="col-md-4"> </div>
+  <div class="container-fluid">
+  	<table class="table table-custom">
+      <tbody>
+        <tr>
+          <td><b>Nome</b></td>
+          <td>Luigi</td>
+        </tr>
+        <tr>
+          <td><b>Cognome</b></td>
+          <td>Mario</td>
+        </tr>
+        <tr>
+          <td><b>Email</b></td>
+          <td>luigimario@mail.com</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="container-fluid text-center">    
+    <h3>Modifica</h3><br>
+      <div class="container-fluid">
+        <form>
+          <table class="table table-custom">
+            <tbody>
+              <tr>
+               <td>Nome
+               </td>
+                <td><div class="input-group col-xs-6">
+                        <input type="username" class="form-control" id="username" placeholder="Nome">
+                     </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Cognome</td>
+                <td>
+                  <div class="input-group col-xs-6">
+                     <input type="lastname" class="form-control" id="cognome" placeholder="Cognome">
+                   </div>
+                </td>
+              </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td>
+                        <div class="input-group col-xs-6">
+                        <input type="email" class="form-control" id="email" placeholder="Email">
+                        </div></td>
+                      </tr>
+                     <tr>
+                        <td>Nuova Password</td>
+                        <td>
+                        <div class="input-group col-xs-6">
+                        <input type="password" class="form-control" id="pass" placeholder="Password">
+                        </div></td>                        
+                      </tr>
+                      <tr>
+                        <td>Conferma Password</td>
+                        <td>
+                        <div class="input-group col-xs-6">
+                        <input type="password" class="form-control" id="Confpass" placeholder="Password">
+                        </div></td>                        
+                      </tr>
+                      <tr>
+                      <td colspan="2"><button type="submit" class="btn btn-custom">Invia</button></td>
+                      </tr>
+                    </tbody>
+          </table>
+        </form>
+        <h3><a style="color:black" href="mainpagenologged.html"><span class="glyphicon glyphicon-home"></span> Home</a>
+        </h3>
+  </div>
+</div>
+
+
+<footer class="container-fluid text-center">
+  <p>&copy; 2018, ListeSpesa.it, All right reserved</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <title>Lista Alimentari</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    
+    .jumbotron {
+      background-color:#ffffff;
+      margin-bottom: 0;
+      text-align:center;
+      padding: 40px 5px 25px 5px;
+    }
+    
+    footer{
+    	background-color: #ff6336;
+    	color: #FFFFFF;
+    	padding: 25px;
+        margin-top: 30px;
+	}
+    
+    .list-button{
+    	display:block;
+    	background-color:#FFFFFF;
+    	padding: 1px 3px 1px 4px;
+    	border-radius: 3px 3px;
+        margin: 0px 4px 5px 4px;
+        border: 0px;
+    }
+    
+    button.list-group-item-action{
+    	background-color:#ffe0cc;
+        color:black;
+        margin: 6px 0px 6px 0px;
+        border:0px;
+    }
+    .list-group{
+    	font-size:18px;
+    }
+    .user-list-group{
+    	font-size:13px;
+    }
+
+    .user-list-button{
+    	display:block;
+    	background-color:#e6e6e6;
+    	padding: 0px 2px 0px 2px;
+    	border-radius: 2px 2px;
+        margin: 0px 2px 3px 2px;
+        border: 1px solid black;
+    }
+    
+    button.user-list-group-item-action{
+    	background-color:#ffe0cc;
+        color:black;
+        margin: 6px 0px 6px 0px;
+        border:0px;
+    }
+    
+    div.pre-scrollable{
+    	min-height:450px;
+        max-height:450px;
+    }
+    
+    
+    .navbar-inverse{
+    	background-color: #ff6336;
+    	color: white;
+    	border: 0px;
+        padding: 4px 20px 0px 20px;
+    }
+   .fit-image{
+width: 100%;
+object-fit: cover;
+height: 250px;
+width:200px;
+}
+    
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+	<div class="jumbotron">
+    	<img src="alimentare.jpg" class="fit-image" alt="Immagine lista">
+		<h2>Lista Alimentari</h2>
+        <h4>Categoria: Alimentare</h4>
+    </div>
+    <nav class="navbar navbar-inverse">
+        	<label>Descrizione della lista:</label><p> Lista dei prodotti alimentari da acquistare </p>
+    </nav>
+    
+    <div class="col-sm-6">
+    <div class="pre-scrollable">
+    	<ul class="list-group">
+        	<li class="list-group-item justify-content-between align-items-center"> Pasta 
+            	<a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
+                
+                
+		</li>
+            
+            <li class="list-group-item justify-content-between align-items-center"> Sugo
+            	<a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
+                
+            </li>
+            
+            
+            <button type="button" class="list-group-item list-group-item-action">Aggiungi nuovo prodotto </button>
+            </ul>
+            </div>
+    </div>
+    <div class="col-sm-1">
+    </div>
+     <div class="col-sm-4">
+     <div class="row">
+     	<form>
+  		<div>
+        	<label for="comment">Chat:</label>
+      		<textarea class="form-control" rows="10" id="chat" readonly></textarea>
+        </div>
+        <div class="input-group">
+    		<input type="text" class="form-control" placeholder="Scrivi messaggio...">
+    		<div class="input-group-btn">
+      <button class="btn btn-default" type="submit">
+        Invia
+      </button>
+      </div>
+      </div>
+      </form>
+      </div>
+      <br>
+      <div class="row">
+      	<label> Utenti che condividono la lista: </label>
+      	 <ul class="list-group user-list-group">
+        
+        	<li class="list-group-item"> Mario Piero
+            	<span class="btn pull-right user-list-button" data-toggle="tooltip" title="Rimuovi"><i class="glyphicon glyphicon-remove" style="color:black;font-size:10px;"></i></span>
+            </li>
+            
+            <li class="list-group-item justify-content-between align-items-center"> Luca Salvo <span class="btn pull-right user-list-button" data-toggle="tooltip" title="Rimuovi"><i class="glyphicon glyphicon-remove" style="color:black;font-size:10px;"></i></span>
+            </li>
+            
+            
+            <button type="button" class="list-group-item user-list-group-item-action">Condividi... </button>
+            </ul>
+      </div>
+      
+      </div>
+      
+     </div>
+
+
+<footer class="container-fluid text-center">
+  <p>&copy; 2018, ListeSpesa.it, All right reserved</p>
+</footer>
+
+</body>
+</html>
