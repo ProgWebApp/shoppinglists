@@ -47,7 +47,7 @@ public class ProductServlet extends HttpServlet {
 
         Integer userId = user.getId();
         Integer productId = null;
-        
+
         if (request.getParameter("productId") != null) {
             productId = Integer.valueOf(request.getParameter("productId"));
             try {
@@ -63,23 +63,37 @@ public class ProductServlet extends HttpServlet {
         /* NAME */
         String productName = request.getParameter("name");
         product.setName(productName);
-        
+
         /* NOTES */
         String productNotes = request.getParameter("notes");
         product.setNotes(productNotes);
-        
+
         /* CATEGORY */
         Integer productCategoryId;
         boolean emptyCategory = false;
-        try{
+        boolean newCategory = false;
+        try {
             productCategoryId = Integer.valueOf(request.getParameter("category"));
+            if(productId != null && !product.getProductCategoryId().equals(productCategoryId)){
+                newCategory = true;
+            }
             product.setProductCategoryId(productCategoryId);
-        }catch(NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             emptyCategory = true;
         }
         
+        /* LOGO */
+        String logo = request.getParameter("logo");
+        boolean emptyLogo = false;
+        if(logo != null){
+            product.setLogoPath(logo);
+        } else if(productId == null || newCategory){    //il logo è obbligatorio solo quando creo o cambio categoria
+            emptyLogo = true;
+            product.setLogoPath("");
+        }
+
         /* CONTROLLO CAMPI VUOTI */
-        if (productName.isEmpty() || productNotes.isEmpty() || emptyCategory) {
+        if (productName.isEmpty() || productNotes.isEmpty() || emptyCategory || emptyLogo) {
             request.getSession().setAttribute("message", 1);
             request.getSession().setAttribute("product", product);
             response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/product.jsp"));
@@ -99,9 +113,6 @@ public class ProductServlet extends HttpServlet {
                 product.setReserved(true);
             }
         }
-
-        /* LOGO */
-        product.setLogoPath("");
 
         /* PHOTO */
         String productsFolder = getServletContext().getInitParameter("productsFolder");

@@ -7,20 +7,30 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" crossorigin="anonymous">
         <script>
-            function showLogos(logo, category){
+            function showIcons(logo, category) {
+                var div = document.getElementById(logo);
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                        console.log(this.responseText);
+                        var response = JSON.parse(this.responseText);
+                        console.log(response);
+                        div.innerHTML = "";
+                        response.icons.forEach(function (icon) {
+                            var radio = '<input id="' + icon + '" type="radio" name="logo" value="' + icon + '">'
+                                    + '<label for="' + icon + '">'
+                                    + '<img height="50px" src="../images/productCategories/icons/' + icon + '">'
+                                    + '</label>';
+                            div.innerHTML += radio;
+                        });
                     }
                 };
-                xhttp.open("GET", "${pageContext.response.encodeURL("LogosServlet")}", true);
-                xhttp.send("category=" + category);
-            }
+                var url = "${pageContext.response.encodeURL("IconsServlet")}";
+                xhttp.open("GET", url + "?category=" + category, true);
+                xhttp.send();
             }
         </script>    
     </head>
-    <body>
+    <body onload="showIcons('logo', ${product.productCategoryId})">
         <form class="form-signin" action="${pageContext.response.encodeURL("ProductServlet")}" method="POST" enctype="multipart/form-data">
             <div class="text-center mb-4">
                 <h3>Edit Product</h3>
@@ -31,6 +41,7 @@
                     <c:if test="${empty product.name}">Name</c:if>
                     <c:if test="${empty product.notes}">Notes</c:if>
                     <c:if test="${empty product.productCategoryId}">Category</c:if>
+                    <c:if test="${empty product.logoPath}">Logo</c:if>
                 </c:when>
             </c:choose>
             <div class="form-label-group">
@@ -43,7 +54,7 @@
             </div>
             <div class="form-label-group">
                 <label for="category">Category: </label>
-                <select id="category" name="category" class="form-control" onchange="showLogos(logo, this.value)">
+                <select id="category" name="category" class="form-control" onchange="showIcons('logo', this.value)">
                     <option value="" <c:if test="${empty product.productCategoryId}">selected</c:if> disabled>Select category...</option>
                     <c:forEach items="${categories}" var="category">
                         <option value="${category.id}" <c:if test="${category.id==product.productCategoryId}">selected</c:if>>${category.name}</option>
@@ -51,10 +62,12 @@
                 </select>
             </div>
             <div class="form-label-group">
-                <img height="50px" src="../images/productCategories/${product.logoPath}">
+                <c:if test="${not empty product.logoPath}">
+                    <img height="50px" src="../images/productCategories/icons/${product.logoPath}">
+                </c:if>
                 <label for="logo">New Logo: </label>
-                <select id="logo" name="logo" class="form-control">
-                </select>
+                <div id="logo">
+                </div>
             </div>
             <div class="form-label-group">
                 <label for="photos">Add images: </label>
@@ -66,8 +79,8 @@
                     <c:forEach items="${product.photoPath}" var="photo">
                         <input type="checkbox" id="${photo}" name="removePhotos" value="${photo}">
                         <label for="${photo}"><img height="50px" src="../images/products/${photo}"></label>
-                    </c:forEach>
-                </c:if>
+                        </c:forEach>
+                    </c:if>
             </div>
             <c:if test="${not empty product.id}"><input type="hidden" name="productId" value="${product.id}"></c:if>
                 <button class="buttonlike" type="submit">Confirm</button>

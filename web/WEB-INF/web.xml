@@ -115,8 +115,8 @@
     </servlet>
     <!-- SERVLET MAPPING -->
     <servlet>
-        <servlet-name>LogosServlet</servlet-name>
-        <servlet-class>servlets.LogosServlet</servlet-class>
+        <servlet-name>IconsServlet</servlet-name>
+        <servlet-class>servlets.IconsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -167,8 +167,8 @@
         <url-pattern>/restricted/ShareListsServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>LogosServlet</servlet-name>
-        <url-pattern>/restricted/LogosServlet</url-pattern>
+        <servlet-name>IconsServlet</servlet-name>
+        <url-pattern>/restricted/IconsServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MapServlet</servlet-name>
