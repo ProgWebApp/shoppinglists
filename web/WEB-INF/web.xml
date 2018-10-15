@@ -13,6 +13,14 @@
         <param-name>productsFolder</param-name>
         <param-value>images/products</param-value>
     </context-param>
+    <context-param>
+        <param-name>iconsFolder</param-name>
+        <param-value>images/productCategories/icons</param-value>
+    </context-param>
+    <context-param>
+        <param-name>logosFolder</param-name>
+        <param-value>images/productCategories</param-value>
+    </context-param>
     <!-- FILTRI -->
     <filter>
         <filter-name>ContextPathFilter</filter-name>
@@ -26,6 +34,10 @@
         <filter-name>ProductFilter</filter-name>
         <filter-class>filters.ProductFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>ProductCategoryFilter</filter-name>
+        <filter-class>filters.ProductCategoryFilter</filter-class>
+    </filter>
     <!-- FILTER MAPPING -->
     <filter-mapping>
         <filter-name>ContextPathFilter</filter-name>
@@ -38,6 +50,10 @@
     <filter-mapping>
         <filter-name>ProductFilter</filter-name>
         <url-pattern>/restricted/product.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ProductCategoryFilter</filter-name>
+        <url-pattern>/restricted/productCategory.jsp</url-pattern>
     </filter-mapping>
     <!-- LISTENER -->
     <listener>
@@ -98,6 +114,10 @@
         <servlet-class>servlets.MapServlet</servlet-class>
     </servlet>
     <!-- SERVLET MAPPING -->
+    <servlet>
+        <servlet-name>LogosServlet</servlet-name>
+        <servlet-class>servlets.LogosServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -147,6 +167,10 @@
         <url-pattern>/restricted/ShareListsServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>LogosServlet</servlet-name>
+        <url-pattern>/restricted/LogosServlet</url-pattern>
+    </servlet-mapping>
+    
         <servlet-name>MapServlet</servlet-name>
         <url-pattern>/MapServlet</url-pattern>
     </servlet-mapping>

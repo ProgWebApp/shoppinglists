@@ -1,5 +1,7 @@
 package db.entities;
 
+import java.util.HashSet;
+
 /**
  * The entity that describe a {@code product-category}.
  */
@@ -8,6 +10,7 @@ public class ProductCategory {
     private String name;
     private String description;
     private String logoPath;
+    private HashSet<String> iconPath;
 
     /**
      * The primary key of this product-category.
@@ -72,5 +75,22 @@ public class ProductCategory {
     public void setLogoPath(String logoPath) {
         this.logoPath = logoPath;
     }
+
+    /**
+     * Returns the icons path of this product-cateogry.
+     *
+     * @return the icons path of this product-category.
+     */
+    public HashSet<String> getIconPath() {
+        return iconPath;
+    }
     
+    /**
+     * Sets the icons path of this product-category.
+     *
+     * @param iconPath the icons paths of this product-category.
+     */
+    public void setIconPath(HashSet<String> iconPath) {
+        this.iconPath = iconPath;
+    }
 }

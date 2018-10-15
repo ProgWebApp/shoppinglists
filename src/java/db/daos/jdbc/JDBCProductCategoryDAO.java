@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class JDBCProductCategoryDAO extends JDBCDAO<ProductCategory, Integer> implements ProductCategoryDAO {
@@ -36,11 +38,12 @@ public class JDBCProductCategoryDAO extends JDBCDAO<ProductCategory, Integer> im
         if (productCategory == null) {
             throw new DAOException("productCategory is not valid", new NullPointerException("productCategory is null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO product_categories (name, description, logo) VALUES (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO product_categories (name, description, logo, icons) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, productCategory.getName());
             ps.setString(2, productCategory.getDescription());
             ps.setString(3, productCategory.getLogoPath());
+            ps.setString(4, productCategory.getIconPath().toString());
 
             ps.executeUpdate();
 
@@ -76,12 +79,13 @@ public class JDBCProductCategoryDAO extends JDBCDAO<ProductCategory, Integer> im
             throw new DAOException("productCategory is not valid", new NullPointerException("productCategory id is null"));
         }
 
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE product_categories SET name = ?, description = ?, logo = ? WHERE id = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE product_categories SET name = ?, description = ?, logo = ?, icons = ? WHERE id = ?")) {
 
             ps.setString(1, productCategory.getName());
             ps.setString(2, productCategory.getDescription());
             ps.setString(3, productCategory.getLogoPath());
-            ps.setInt(4, productCategory.getId());
+            ps.setString(4, productCategory.getIconPath().toString());
+            ps.setInt(5, productCategory.getId());
 
             ps.executeUpdate();
 
@@ -206,6 +210,12 @@ public class JDBCProductCategoryDAO extends JDBCDAO<ProductCategory, Integer> im
         productCategory.setName(rs.getString("name"));
         productCategory.setDescription(rs.getString("description"));
         productCategory.setLogoPath(rs.getString("logo"));
+        String[] paths = rs.getString("icons").replace("[", "").replace("]", "").split(", ");
+        if(paths[0].equals("")){
+            productCategory.setIconPath(new HashSet<>());
+        }else{
+            productCategory.setIconPath(new HashSet<>(Arrays.asList(paths)));
+        }
 
         return productCategory;
     }
