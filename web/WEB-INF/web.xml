@@ -170,7 +170,7 @@
         <servlet-name>LogosServlet</servlet-name>
         <url-pattern>/restricted/LogosServlet</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
         <servlet-name>MapServlet</servlet-name>
         <url-pattern>/MapServlet</url-pattern>
     </servlet-mapping>
