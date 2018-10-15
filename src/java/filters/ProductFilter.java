@@ -10,8 +10,6 @@ import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;

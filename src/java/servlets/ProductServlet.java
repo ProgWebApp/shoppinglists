@@ -118,7 +118,6 @@ public class ProductServlet extends HttpServlet {
         }
         for (Part part : request.getParts()) {
             if (part.getContentType() != null && part.getContentType().contains("image")) {
-                System.out.println(part.getName());
                 String fileName = UUID.randomUUID().toString() + Paths.get(part.getSubmittedFileName()).getFileName().toString(); //MSIE  fix.
                 photoPaths.add(fileName);
                 File directory = new File(productsFolder);
