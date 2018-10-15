@@ -8,6 +8,7 @@ import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.UUID;
@@ -42,11 +43,11 @@ public class ProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User user = (User) request.getSession().getAttribute("user");
+        Product product = new Product();
 
         Integer userId = user.getId();
         Integer productId = null;
-        Product product = new Product();
-
+        
         if (request.getParameter("productId") != null) {
             productId = Integer.valueOf(request.getParameter("productId"));
             try {
@@ -56,35 +57,53 @@ public class ProductServlet extends HttpServlet {
             }
         }
 
-        String productName = request.getParameter("name");
-        String productNotes = request.getParameter("notes");
-        //Integer productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));
-        //Integer productOwnerId = Integer.valueOf(request.getParameter("productOwnerId"));
-
+        /* ID */
         product.setId(productId);
-        product.setName(productName);
-        product.setNotes(productNotes);
 
-        if (productName.isEmpty() || productNotes.isEmpty()) { // || productCategoryId == null || productOwnerId == null) {
+        /* NAME */
+        String productName = request.getParameter("name");
+        product.setName(productName);
+        
+        /* NOTES */
+        String productNotes = request.getParameter("notes");
+        product.setNotes(productNotes);
+        
+        /* CATEGORY */
+        Integer productCategoryId;
+        boolean emptyCategory = false;
+        try{
+            productCategoryId = Integer.valueOf(request.getParameter("category"));
+            product.setProductCategoryId(productCategoryId);
+        }catch(NumberFormatException ex){
+            emptyCategory = true;
+        }
+        
+        /* CONTROLLO CAMPI VUOTI */
+        if (productName.isEmpty() || productNotes.isEmpty() || emptyCategory) {
             request.getSession().setAttribute("message", 1);
             request.getSession().setAttribute("product", product);
             response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/product.jsp"));
             return;
         }
 
-        //product.setOwnerId(productOwnerId);
-        product.setOwnerId(1);
-        //product.setProductCategoryId(productCategoryId);
-        product.setProductCategoryId(1);
-
-        if (user.isAdmin()) {
-            product.setReserved(false);
-        } else {
-            product.setReserved(true);
+        /* OWNER */
+        if (productId == null) {
+            product.setOwnerId(userId);
         }
 
+        /* RESERVED */
+        if (productId == null) {
+            if (user.isAdmin()) {
+                product.setReserved(false);
+            } else {
+                product.setReserved(true);
+            }
+        }
+
+        /* LOGO */
         product.setLogoPath("");
 
+        /* PHOTO */
         String productsFolder = getServletContext().getInitParameter("productsFolder");
         if (productsFolder == null) {
             throw new ServletException("Products folder not configured");
@@ -111,10 +130,12 @@ public class ProductServlet extends HttpServlet {
         if (remove != null) {
             for (String photo : remove) {
                 photoPaths.remove(photo);
+                Files.delete(Paths.get(productsFolder + File.separator + photo));
             }
         }
         product.setPhotoPath(photoPaths);
 
+        /* INSERT OR UPDATE */
         try {
             if (productId == null) {
                 productId = productDao.insert(product);

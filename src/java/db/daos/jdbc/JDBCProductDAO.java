@@ -335,7 +335,11 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         product.setNotes(rs.getString("notes"));
         product.setLogoPath(rs.getString("logo"));
         String[] paths = rs.getString("photo").replace("[", "").replace("]", "").split(", ");
-        product.setPhotoPath(new HashSet<>(Arrays.asList(paths)));
+        if(paths[0].equals("")){
+            product.setPhotoPath(new HashSet<>());
+        }else{
+            product.setPhotoPath(new HashSet<>(Arrays.asList(paths)));
+        }
         product.setProductCategoryId(rs.getInt("product_category"));
         product.setOwnerId(rs.getInt("owner"));
         product.setReserved(rs.getBoolean("reserved"));

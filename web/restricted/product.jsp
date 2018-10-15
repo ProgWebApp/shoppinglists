@@ -1,29 +1,4 @@
-<%@page import="db.entities.Product"%>
-<%@page import="db.exceptions.DAOFactoryException"%>
-<%@page import="db.factories.DAOFactory"%>
-<%@page import="db.daos.ProductDAO"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%! private ProductDAO productDao;
-
-    @Override
-    public void init() throws ServletException {
-        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-        if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
-        }
-        try {
-            productDao = daoFactory.getDAO(ProductDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for product storage system", ex);
-        }
-    }
-%>
-<%
-    if (request.getSession().getAttribute("product") == null && request.getParameter("productId") != null) {
-        Product product = productDao.getByPrimaryKey(Integer.valueOf(request.getParameter("productId")));
-        request.getSession().setAttribute("product", product);
-    }
-%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -42,6 +17,7 @@
                     Compila i campi mancanti!
                     <c:if test="${empty product.name}">Name</c:if>
                     <c:if test="${empty product.notes}">Notes</c:if>
+                    <c:if test="${empty product.productCategoryId}">Category</c:if>
                 </c:when>
             </c:choose>
             <div class="form-label-group">
@@ -53,15 +29,26 @@
                 <input type="text" id="notes" name="notes" class="form-control" placeholder="Notes" value="${product.notes}">
             </div>
             <div class="form-label-group">
+                <label for="category">Category: </label>
+                <select id="category" name="category" class="form-control">
+                    <option value="" <c:if test="${empty product.productCategoryId}">selected</c:if> disabled>Select category...</option>
+                    <c:forEach items="${categories}" var="category">
+                        <option value="${category.id}" <c:if test="${category.id==product.productCategoryId}">selected</c:if>>${category.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="form-label-group">
                 <label for="photos">Add images: </label>
                 <input type="file" id="photos" name="photos" class="form-control" placeholder="Images" multiple="multiple">
             </div>
             <div>
-                Remove images:
-                <c:forEach items="${product.photoPath}" var="photo">
-                    <input type="checkbox" id="${photo}" name="removePhotos" value="${photo}">
-                    <label for="${photo}"><img height="50px" src="../images/products/${photo}"></label>
-                </c:forEach>
+                <c:if test="${not empty product.photoPath}">
+                    Remove images:
+                    <c:forEach items="${product.photoPath}" var="photo">
+                        <input type="checkbox" id="${photo}" name="removePhotos" value="${photo}">
+                        <label for="${photo}"><img height="50px" src="../images/products/${photo}"></label>
+                    </c:forEach>
+                </c:if>
             </div>
             <c:if test="${not empty product.id}"><input type="hidden" name="productId" value="${product.id}"></c:if>
                 <button class="buttonlike" type="submit">Confirm</button>
