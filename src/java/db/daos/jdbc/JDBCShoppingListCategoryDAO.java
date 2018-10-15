@@ -2,6 +2,7 @@ package db.daos.jdbc;
 
 import db.daos.ShoppingListCategoryDAO;
 import db.entities.ShoppingListCategory;
+import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.UniqueConstraintException;
 import java.sql.Connection;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, Integer> implements ShoppingListCategoryDAO {
 
+    
     /**
      * The default constructor of the class.
      *
@@ -246,5 +248,34 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
 
         return shoppingListCategory;
     }
-
+    
+    /**
+     * Returns the list of all the valid shops where the user has to buy something
+     * system.
+     *
+     * @param user the user which we are checking
+     * @return the list of all the shops where {@code user} has to buy something
+     * @throws DAOException if an error occurred during the information
+     * retrieving.
+     */
+    public List<String> getShopsByUser(User user) throws DAOException {
+        if (user == null) {
+            throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT list_categories.Shop FROM list_categories, lists, list_products, users_lists"
+                    + "WHERE (list_categories.Id=lists.List_category AND lists.Id=list_products.List AND list_products.necessary=true AND users_lists.List=lists.Id AND user_lists.User=?)")) {
+            List<String> shops = new ArrayList<>();
+            stm.setInt(1, user.getId());
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+              shops.add(rs.getString("Shop"));
+            }
+            if(shops.isEmpty()){
+                System.out.println("Non sono stati trovati shops da cercare");
+            }
+            return shops;
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of shoppingListCategory", ex);
+        }
+    }
 }

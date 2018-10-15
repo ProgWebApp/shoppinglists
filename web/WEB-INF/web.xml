@@ -13,7 +13,6 @@
         <param-name>productsFolder</param-name>
         <param-value>images/products</param-value>
     </context-param>
-    
     <!-- FILTRI -->
     <filter>
         <filter-name>ContextPathFilter</filter-name>
@@ -94,8 +93,11 @@
         <servlet-name>ShareListsServlet</servlet-name>
         <servlet-class>servlets.ShareListsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MapServlet</servlet-name>
+        <servlet-class>servlets.MapServlet</servlet-class>
+    </servlet>
     <!-- SERVLET MAPPING -->
-    
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -143,6 +145,10 @@
     <servlet-mapping>
         <servlet-name>ShareListsServlet</servlet-name>
         <url-pattern>/restricted/ShareListsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MapServlet</servlet-name>
+        <url-pattern>/MapServlet</url-pattern>
     </servlet-mapping>
     <!-- CONFIGURAZIONI -->
     <session-config>
