@@ -48,6 +48,16 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
     public void removeMember(Integer shoppingListId, Integer userId) throws DAOException;
 
     /**
+     * Update the the passed {@code user} in the passed {@code shoppingList} with the passed {@code permissions]
+     *
+     * @param shoppingListId the id of the shoppingList
+     * @param userId the id of user to update
+     * @param permissions the new permissions to set to the user
+     * @throws DAOException if an error occurred during the persist action.
+     */
+    public void updateMember(Integer shoppingListId, Integer userId, Integer permissions) throws DAOException;
+    
+    /**
      * Returns the list of all the {@code user} that are members of the passed
      * {@code shoppingList}
      *
@@ -121,4 +131,6 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
      * @throws DAOException if an error occurred during the persist action.
      */
     public List<Product> getProducts(Integer shoppingListId) throws DAOException;
+
+    public Integer getPermission(Integer shoppingListId, Integer userActiveId) throws DAOException;
 }

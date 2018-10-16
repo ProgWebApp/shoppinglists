@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ShareListsServlet extends HttpServlet {
 
-   private ShoppingListDAO shoppingListDao;
-   private ProductDAO productDao;
+    private ShoppingListDAO shoppingListDAO;
+    private ProductDAO productDAO;
 
     @Override
     public void init() throws ServletException {
@@ -36,14 +36,14 @@ public class ShareListsServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            shoppingListDao = daoFactory.getDAO(ShoppingListDAO.class);
+            shoppingListDAO = daoFactory.getDAO(ShoppingListDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for shopping-list storage system", ex);
         }
         try {
-            productDao = daoFactory.getDAO(ProductDAO.class);
+            productDAO = daoFactory.getDAO(ProductDAO.class);
         } catch (DAOFactoryException ex) {
-           throw new ServletException("Impossible to get dao factory for product storage system", ex);
+            throw new ServletException("Impossible to get dao factory for product storage system", ex);
         }
     }
 
@@ -60,54 +60,56 @@ public class ShareListsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User userActive = (User) request.getSession().getAttribute("user");
-        User user = null;
-        Integer userActiveId = user.getId();
+        Integer userActiveId = userActive.getId();
         Integer userId = null;
         Integer shoppingListId = null;
+        Integer action = null;
         Integer permission = null;
-        try {
-            userId = Integer.valueOf(request.getParameter("userId"));
-        } catch (RuntimeException ex) {
-            //TODO: log the exception
+        if (request.getParameter("userId") != null && request.getParameter("shoppingListId") != null && request.getParameter("action") != null) {
+
+            try {
+                userId = Integer.valueOf(request.getParameter("userId"));
+                shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
+                action = Integer.valueOf(request.getParameter("action"));
+            } catch (RuntimeException ex) {
+                //TODO: log the exception
+            }
+            if (request.getParameter("permission") != null) {
+                try {
+                    permission = Integer.valueOf(request.getParameter("permission"));
+                } catch (RuntimeException ex) {
+                    //TODO: log the exception
+                }
+            } else {
+                permission = 0; //imposto il valore minimo di permission
+            }
+            try {
+                if (shoppingListDAO.getPermission(shoppingListId, userActiveId) == 1) {
+                    switch (action) {
+                        case 0:
+                            shoppingListDAO.removeMember(shoppingListId, userId);
+                            break;
+                        case 1:
+                            shoppingListDAO.addMember(shoppingListId, userId, permission);
+                            productDAO.shareProductFromList(shoppingListId, userId);
+                            break;
+                        case 2:
+                            shoppingListDAO.updateMember(shoppingListId, userId, permission);
+                            break;
+                    }
+                }
+            } catch (DAOException ex) {
+                Logger.getLogger(ShareListsServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            request.getSession().setAttribute("message", 1);
         }
-        try {
-            shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
-        } catch (RuntimeException ex) {
-            //TODO: log the exception
-        }
-        try {
-            permission = Integer.valueOf(request.getParameter("permission"));
-        } catch (RuntimeException ex) {
-            //TODO: log the exception
-        }
-        
-        try {
-            shoppingListDao.addMember(shoppingListId, userId, permission);
-            productDao.shareProductFromList(shoppingListId, userId);
-        } catch (DAOException ex) {
-            Logger.getLogger(ShoppingListServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shopping.lists.html"));
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingLists.jsp"));
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer shoppingListId = null;
-        Integer userId = null;
-        try {
-            shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
-        } catch (RuntimeException ex) {
-            //TODO: log the exception
-        }
-        try {
-            userId = Integer.valueOf(request.getParameter("userId"));
-        } catch (RuntimeException ex) {
-            //TODO: log the exception
-        }
-            try {
-                shoppingListDao.removeMember(shoppingListId, userId);
-            } catch (DAOException ex) {
-                Logger.getLogger(ShoppingListServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response
+    ) {
     }
 }

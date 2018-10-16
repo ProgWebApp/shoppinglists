@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The JDBC implementation of the {@link ShoppingListDAO} interface.
@@ -225,7 +227,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             ps.setInt(1, userId);
             ps.setInt(2, shoppingListId);
             ps.setInt(3, permissions);
-        
+
             ps.executeUpdate();
 
         } catch (SQLException ex) {
@@ -243,13 +245,26 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         }
         try (PreparedStatement stm = CON.prepareStatement("DELETE FROM users_lists WHERE (user_id = ? AND list = ?)")) {
             stm.setInt(1, userId);
-            stm.setInt(1, shoppingListId);
+            stm.setInt(2, shoppingListId);
             stm.executeUpdate();
         } catch (SQLException ex) {
             throw new DAOException("Impossible to delete the link between the passed shoppingList and the passed user", ex);
         }
     }
-
+    @Override
+    public void updateMember(Integer shoppingListId, Integer userId, Integer permissions) throws DAOException {
+        if ((shoppingListId == null) || (userId == null) || (permissions==null)) {
+            throw new DAOException("shoppingListId, userId and permissions are mandatory fields", new NullPointerException("shoppingListId or userId are null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("UPDATE users_lists SET permissions = ? WHERE (user_id = ? AND list = ?)")) {
+            stm.setInt(1, permissions);
+            stm.setInt(2, userId);
+            stm.setInt(3, shoppingListId);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to update the permission of the passed user in the passed shoppingList", ex);
+        }
+    }
     @Override
     public List<User> getMembers(Integer shoppingListId) throws DAOException {
         if (shoppingListId == null) {
@@ -330,7 +345,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         }
         try (PreparedStatement stm = CON.prepareStatement("DELETE FROM lists_products WHERE (list = ? AND product = ?)")) {
             stm.setInt(1, shoppingListId);
-            stm.setInt(1, productId);
+            stm.setInt(2, productId);
             stm.executeUpdate();
         } catch (SQLException ex) {
             throw new DAOException("Impossible to delete the link between the passed shoppingList and the passed product", ex);
@@ -399,5 +414,29 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of products for the passed shoppingListId", ex);
         }
+    }
+
+    /**
+     *
+     * @param shoppingListId
+     * @param userId
+     * @return
+     * @throws DAOException
+     */
+    @Override
+    public Integer getPermission(Integer shoppingListId, Integer userId) throws DAOException {
+        if (shoppingListId == null || userId == null) {
+            throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT permissions FROM users_lists WHERE user_id=? AND list=?")) {
+            stm.setInt(1, shoppingListId);
+            stm.setInt(2, userId);
+            ResultSet rs = stm.executeQuery();
+            rs.next();
+            return Integer.valueOf(rs.getString("permissions"));
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShoppingListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 }

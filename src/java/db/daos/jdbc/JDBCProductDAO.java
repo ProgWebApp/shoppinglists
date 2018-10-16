@@ -311,7 +311,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         }
         try (PreparedStatement stm = CON.prepareStatement("DELETE FROM users_products WHERE (user_id = ? AND product = ?)")) {
             stm.setInt(1, userId);
-            stm.setInt(1, productId);
+            stm.setInt(2, productId);
             stm.executeUpdate();
         } catch (SQLException ex) {
             throw new DAOException("Impossible to delete the link between the passed product and the passed user", ex);
