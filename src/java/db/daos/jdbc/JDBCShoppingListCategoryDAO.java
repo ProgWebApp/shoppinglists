@@ -1,6 +1,7 @@
 package db.daos.jdbc;
 
 import db.daos.ShoppingListCategoryDAO;
+import db.entities.ProductCategory;
 import db.entities.ShoppingListCategory;
 import db.entities.User;
 import db.exceptions.DAOException;
@@ -229,6 +230,28 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
         }
     }
 
+    @Override
+    public List<ProductCategory> getProductCategories(Integer shoppingListCategoryId) throws DAOException{
+        if (shoppingListCategoryId == null) {
+            throw new DAOException("shoppingListCategoryId is a mandatory fields", new NullPointerException("shoppingListCategoryId is null"));
+        }
+        try (PreparedStatement ps = CON.prepareStatement("SELECT * FROM PC_LC, product_categories WHERE list_category=? AND product_category=id")) {
+            List<ProductCategory> productCategories = new ArrayList<>();
+            ps.setInt(1, shoppingListCategoryId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                productCategories.add(JDBCProductCategoryDAO.setAllProductCategoryFields(rs));
+            }
+
+            return productCategories;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of productCategory", ex);
+        }
+        
+    }
+    
     /**
      * Convinience method for setting all the fileds of a
      * {@code shoppingListCategory} after retriving it from the storage system.
@@ -258,17 +281,18 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
+    @Override
     public List<String> getShopsByUser(User user) throws DAOException {
         if (user == null) {
             throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("SELECT list_categories.Shop FROM list_categories, lists, list_products, users_lists"
-                    + "WHERE (list_categories.Id=lists.List_category AND lists.Id=list_products.List AND list_products.necessary=true AND users_lists.List=lists.Id AND user_lists.User=?)")) {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT list_categories.shop FROM list_categories, lists, list_products, users_lists"
+                    + "WHERE (list_categories.id=lists.list_category AND lists.id=list_products.list AND list_products.necessary=true AND users_lists.list=lists.id AND user_lists.user_id=?)")) {
             List<String> shops = new ArrayList<>();
             stm.setInt(1, user.getId());
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-              shops.add(rs.getString("Shop"));
+              shops.add(rs.getString("shop"));
             }
             if(shops.isEmpty()){
                 System.out.println("Non sono stati trovati shops da cercare");

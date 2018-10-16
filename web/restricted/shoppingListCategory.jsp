@@ -38,10 +38,11 @@
                 <label for="productCategory">Select product category</label>
                 <c:if test="${not empty productCategories}">
                     <c:forEach items="${productCategories}" var="productCategory">
-                        <input type="checkbox" id="${productCategory.id}" name="productCategories" value="${productCategory.id}">
+                        <input type="checkbox" id="${productCategory.id}" name="productCategories" value="${productCategory.id}" <c:if test="${productCategorySelected.contains(productCategory)}">checked</c:if>>
                         <label for="${productCategory.id}">${productCategory.name}</label>
                     </c:forEach>
                 </c:if>
+                    <c:forEach items="${productCategorySelected}" var="productCategorySelected">${productCategorySelected.name}</c:forEach>
             </div>
             <c:if test="${not empty shoppingListCategory.id}"><input type="hidden" name="shoppingListCategoryId" value="${shoppingListCategory.id}"></c:if>
                 <button class="buttonlike" type="submit">Confirm</button>

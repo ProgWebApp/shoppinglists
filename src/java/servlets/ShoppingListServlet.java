@@ -85,6 +85,7 @@ public class ShoppingListServlet extends HttpServlet {
             shoppingListCategoryId = Integer.valueOf(request.getParameter("shoppingListCategory"));
             shoppingList.setListCategoryId(shoppingListCategoryId);
         }catch(NumberFormatException ex){
+            shoppingList.setListCategoryId(null);
             emptyListCategory = true;
         }
         /* LOGO */
@@ -92,6 +93,7 @@ public class ShoppingListServlet extends HttpServlet {
         Boolean emptyImage = false;
         if (shoppingListId == null && imageFilePart.getSize() == 0) {
             emptyImage = true;
+            shoppingList.setImagePath(null);
         }
         /* CONTROLLO CAMPI VUOTI */
         if (shoppingListName.isEmpty() || shoppingListDescription.isEmpty() || emptyListCategory || emptyImage) {
@@ -133,7 +135,7 @@ public class ShoppingListServlet extends HttpServlet {
         } catch (DAOException ex) {
             throw new ServletException("Impossible to insert or update the shoppingList", ex);
         }
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppinglists.html"));
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingLists.jsp"));
     }
 
     @Override

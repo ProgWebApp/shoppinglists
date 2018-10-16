@@ -158,7 +158,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             throw new DAOException("primaryKey is not valid", new NullPointerException("primaryKey is null"));
         }
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE id = ?");
-                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user = ?")) {
+                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user_id = ?")) {
             stm.setInt(1, primaryKey);
 
             ResultSet rs = stm.executeQuery();
@@ -181,7 +181,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
     @Override
     public List<User> getAll() throws DAOException {
         try (Statement stm = CON.createStatement();
-                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user = ?")) {
+                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user_id = ?")) {
 
             List<User> users = new ArrayList<>();
             ResultSet rs = stm.executeQuery("SELECT * FROM users ORDER BY lastname");
@@ -207,7 +207,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         }
 
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
-                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE \"user\" = ?")) {
+                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE \"user_id\" = ?")) {
             stm.setString(1, email);
             stm.setString(2, password);
 

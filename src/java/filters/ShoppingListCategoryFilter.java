@@ -59,10 +59,12 @@ public class ShoppingListCategoryFilter implements Filter {
         if (httpRequest.getParameter("shoppingListCategoryId") != null) {
             User user = (User) session.getAttribute("user");
             ShoppingListCategory shoppingListCategory;
+            List<ProductCategory> productCategorySelected; 
             try {
                 shoppingListCategory = shoppingListCategoryDAO.getByPrimaryKey(Integer.valueOf(httpRequest.getParameter("shoppingListCategoryId")));
+                productCategorySelected = shoppingListCategoryDAO.getProductCategories(Integer.valueOf(httpRequest.getParameter("shoppingListCategoryId")));
             } catch (DAOException ex) {
-                //la shoppingListCategory non esiste
+                //ex.printStackTrace();
                 httpResponse.sendRedirect(httpResponse.encodeRedirectURL(httpRequest.getAttribute("contextPath") + "noPermissions.jsp0"));
                 return;
             }
@@ -72,6 +74,7 @@ public class ShoppingListCategoryFilter implements Filter {
                 return;
             }
             httpRequest.setAttribute("shoppingListCategory", shoppingListCategory);
+            httpRequest.setAttribute("productCategorySelected", productCategorySelected);    
         }
         List<ProductCategory> productCategories = null;
         try {

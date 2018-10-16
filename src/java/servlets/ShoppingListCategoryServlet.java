@@ -156,7 +156,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
                 }
             }
         }
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingListCategories.html"));
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingListCategories.jsp"));
     }
 
     @Override

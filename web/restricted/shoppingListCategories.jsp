@@ -34,9 +34,9 @@
     <body>
         <h1>Shopping List Categories</h1>
         <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
-            Nome: <a href="${pageContext.response.encodeURL("product.jsp?shoppingListCategory=".concat(shoppingListCategory.id))}">${shoppingListCategory.name}</a><br>
+            Nome: <a href="${pageContext.response.encodeURL("shoppingListCategory.jsp?shoppingListCategoryId=".concat(shoppingListCategory.id))}">${shoppingListCategory.name}</a><br>
             Description: ${shoppingListCategory.description}<br>
-            <img height="50px" src="../images/shoppingListCategories/${shoppingListCategory.logoPath}">
+            <img height="50px" src="../images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo">
             <br>
         </c:forEach>
     </body>

@@ -1,5 +1,6 @@
 package db.daos;
 
+import db.entities.ProductCategory;
 import db.entities.ShoppingListCategory;
 import db.entities.User;
 import db.exceptions.DAOException;
@@ -34,6 +35,14 @@ public interface ShoppingListCategoryDAO extends DAO<ShoppingListCategory, Integ
      * @throws DAOException if an error occurred during the persist action.
      */
     public void removeProductCategory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException;
+    
+    /**
+     * Returns the list of pruductCategory linked with the {@code shoppingListCategory}.
+     * @param shoppingListCategoryId the id of the shoppingListCategory
+     * @return 
+     * @throws DAOException if an error occurred during the persist action.
+     */
+    public List<ProductCategory> getProductCategories(Integer shoppingListCategoryId) throws DAOException;
     
     /**
      * Returns the list of all the valid shops where the user has to buy something

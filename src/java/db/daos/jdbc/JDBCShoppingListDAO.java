@@ -80,7 +80,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             throw new DAOException("shoppingList is not valid", new NullPointerException("shoppingList id is null"));
         }
 
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE lists SET name = ?, description = ?, logo = ?, listCategory = ?, owner = ? WHERE id = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE lists SET name = ?, description = ?, logo = ?, list_category = ?, owner = ? WHERE id = ?")) {
 
             ps.setString(1, shoppingList.getName());
             ps.setString(2, shoppingList.getDescription());

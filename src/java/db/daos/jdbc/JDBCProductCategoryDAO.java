@@ -204,7 +204,7 @@ public class JDBCProductCategoryDAO extends JDBCDAO<ProductCategory, Integer> im
      * @throws SQLException if an error occurred during the information
      * retriving
      */
-    private ProductCategory setAllProductCategoryFields(ResultSet rs) throws SQLException {
+    public static ProductCategory setAllProductCategoryFields(ResultSet rs) throws SQLException {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setId(rs.getInt("id"));
         productCategory.setName(rs.getString("name"));

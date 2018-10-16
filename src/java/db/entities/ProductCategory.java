@@ -93,4 +93,19 @@ public class ProductCategory {
     public void setIconPath(HashSet<String> iconPath) {
         this.iconPath = iconPath;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof ProductCategory)) {
+            return false;
+        }
+        ProductCategory productCategory = (ProductCategory) o;
+        return productCategory.id.equals(this.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

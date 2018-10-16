@@ -17,7 +17,7 @@
                     Compila i campi mancanti!
                     <c:if test="${empty shoppingList.name}">Name</c:if>
                     <c:if test="${empty shoppingList.description}">Description</c:if>
-                    <c:if test="${empty shoppingList.shoppingListCategoryId}">Category</c:if>
+                    <c:if test="${empty shoppingList.listCategoryId}">Category</c:if>
                     <c:if test="${empty shoppingList.imagePath}">Image</c:if>
                 </c:when>
             </c:choose>
@@ -32,14 +32,14 @@
             <div class="form-label-group">
                 <label for="shoppingListCategory">Shopping list category: </label>
                 <select id="shoppingListCategory" name="shoppingListCategory" class="form-control">
-                    <option value="" <c:if test="${empty shoppingList.shoppingListCategoryId}">selected</c:if> disabled>Select shopping list category...</option>
+                    <option value="" <c:if test="${empty shoppingList.listCategoryId}">selected</c:if> disabled>Select shopping list category...</option>
                     <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
-                        <option value="${shoppingListCategory.id}" <c:if test="${shoppingListCategory.id==shoppingList.shoppingListCategoryId}">selected</c:if>>${shoppingListCategory.name}</option>
+                        <option value="${shoppingListCategory.id}" <c:if test="${shoppingListCategory.id==shoppingList.listCategoryId}">selected</c:if>>${shoppingListCategory.name}</option>
                     </c:forEach>
                 </select>
             </div>
             <div class="form-label-group">
-                <c:if test="${not empty shoppingListCategory.imagePath}">
+                <c:if test="${not empty shoppingList.imagePath}">
                 <img src="../images/shoppingList/<c:out value="${shoppingList.imagePath}"/>" alt="Image" height="80" width="80">
                 </c:if>
                 <label for="image">Image</label>
