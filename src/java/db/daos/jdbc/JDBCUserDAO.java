@@ -207,7 +207,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         }
 
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
-                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE \"user_id\" = ?")) {
+                PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user_id = ?")) {
             stm.setString(1, email);
             stm.setString(2, password);
 

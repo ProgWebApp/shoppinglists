@@ -43,9 +43,9 @@ public class ProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User user = (User) request.getSession().getAttribute("user");
-        Product product = new Product();
-
         Integer userId = user.getId();
+        
+        Product product = new Product();
         Integer productId = null;
 
         if (request.getParameter("productId") != null) {
@@ -150,7 +150,7 @@ public class ProductServlet extends HttpServlet {
             if (productId == null) {
                 productId = productDao.insert(product);
                 if (!user.isAdmin()) {
-                    //productDao.addLinkWithUser(productId, userId); //solo per prodotti privati
+                    productDao.addLinkWithUser(productId, userId); //solo per prodotti privati
                 }
             } else {
                 productDao.update(product);
