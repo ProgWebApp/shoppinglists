@@ -118,6 +118,10 @@
         <servlet-name>IconsServlet</servlet-name>
         <servlet-class>servlets.IconsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DownloadImages</servlet-name>
+        <servlet-class>servlets.DownloadImages</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -175,6 +179,10 @@
         <url-pattern>/MapServlet</url-pattern>
     </servlet-mapping>
     <!-- CONFIGURAZIONI -->
+    <servlet-mapping>
+        <servlet-name>DownloadImages</servlet-name>
+        <url-pattern>/DownloadImages</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
