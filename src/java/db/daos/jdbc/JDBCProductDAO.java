@@ -206,7 +206,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
                 + "AND PC_LC.list_category = ?"
                 + "AND (product.reserved = false"
                 + "OR (product.id = users_products.product"
-                + "AND users_product.user = ?))")) {
+                + "AND users_product.user_id = ?))")) {
 
             List<Product> products = new ArrayList<>();
 
@@ -235,7 +235,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
                 + "AND PC_LC.list_category = ?"
                 + "AND (product.reserved = false"
                 + "OR (product.id = users_products.product"
-                + "AND users_product.user = ?))"
+                + "AND users_product.user_id = ?))"
                 + "AND product.name LIKE ?")) {
 
             List<Product> products = new ArrayList<>();
@@ -261,7 +261,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         if ((productId == null) || (userId == null)) {
             throw new DAOException("productId and userId are mandatory fields", new NullPointerException("productId or userId are null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users_products (user, product) VALUES (?, ?)")) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users_products (user_id, product) VALUES (?, ?)")) {
 
             ps.setInt(1, userId);
             ps.setInt(2, productId);
@@ -281,15 +281,15 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         if ((productId == null) || (shoppingListId == null)) {
             throw new DAOException("productId and shoppingListId are mandatory fields", new NullPointerException("productId or shoppingListId are null"));
         }
-        try (PreparedStatement ps1 = CON.prepareStatement("SELECT user FROM users_lists WHERE list = ?");
-                PreparedStatement ps2 = CON.prepareStatement("INSERT INTO users_products (user, product) VALUES (?,?)")) {
+        try (PreparedStatement ps1 = CON.prepareStatement("SELECT user_id FROM users_lists WHERE list = ?");
+                PreparedStatement ps2 = CON.prepareStatement("INSERT INTO users_products (user_id, product) VALUES (?,?)")) {
 
             ps1.setInt(1, shoppingListId);
 
             ResultSet rs = ps1.executeQuery();
             while (rs.next()) {
                 try {
-                    ps2.setInt(1, rs.getInt("user"));
+                    ps2.setInt(1, rs.getInt("user_id"));
                     ps2.setInt(2, productId);
                     ps2.executeUpdate();
                 } catch (SQLException ex) {
@@ -309,7 +309,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         if ((productId == null) || (userId == null)) {
             throw new DAOException("productId and userId are mandatory fields", new NullPointerException("productId or userId are null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("DELETE FROM users_products WHERE (user = ? AND product = ?)")) {
+        try (PreparedStatement stm = CON.prepareStatement("DELETE FROM users_products WHERE (user_id = ? AND product = ?)")) {
             stm.setInt(1, userId);
             stm.setInt(1, productId);
             stm.executeUpdate();
@@ -361,7 +361,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("productId or userId are null"));
         }
         try (PreparedStatement stm1 = CON.prepareStatement("SELECT product FROM list_product where list = ?");
-                PreparedStatement stm2 = CON.prepareStatement("INSERT INTO users_products (user, product) VALUES (?,?)")) {
+                PreparedStatement stm2 = CON.prepareStatement("INSERT INTO users_products (user_id, product) VALUES (?,?)")) {
             stm1.setInt(1, shoppingListId);
             ResultSet rs = stm1.executeQuery();
             while (rs.next()) {

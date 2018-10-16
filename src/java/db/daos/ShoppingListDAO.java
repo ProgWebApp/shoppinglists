@@ -35,7 +35,7 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
      * {@code shoppingList}.
      * @throws DAOException if an error occurred during the persist action.
      */
-    public void addMember(Integer shoppingListId, Integer userId, int permissions) throws DAOException;
+    public void addMember(Integer shoppingListId, Integer userId, Integer permissions) throws DAOException;
 
     /**
      * Removes the the passed {@code user} from the members of the passed

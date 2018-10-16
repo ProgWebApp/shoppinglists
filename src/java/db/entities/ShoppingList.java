@@ -8,7 +8,7 @@ public class ShoppingList {
     private Integer id;
     private String name;
     private String description;
-    private String logoPath;
+    private String imagePath;
     private Integer listCategoryId;
     private Integer ownerId;
 
@@ -71,17 +71,17 @@ public class ShoppingList {
      *
      * @return the logo path of this shopping-list.
      */
-    public String getLogoPath() {
-        return logoPath;
+    public String getImagePath() {
+        return imagePath;
     }
 
     /**
      * Sets the logo path of this shopping-list.
      *
-     * @param logoPath the logo path of this shopping-list.
+     * @param imagePath the logo path of this shopping-list.
      */
-    public void setLogoPath(String logoPath) {
-        this.logoPath = logoPath;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     /**

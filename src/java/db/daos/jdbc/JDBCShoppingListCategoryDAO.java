@@ -39,7 +39,7 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
         if (shoppingListCategory == null) {
             throw new DAOException("shoppingListCategory is not valid", new NullPointerException("shoppingListCategory is null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO list_categories (name, description, logo) VALUES (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO list_categories (name, description, logo) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, shoppingListCategory.getName());
             ps.setString(2, shoppingListCategory.getDescription());
@@ -196,7 +196,7 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
     }
 
     @Override
-    public void addProductCaregory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException {
+    public void addProductCategory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException {
         if ((shoppingListCategoryId == null) || (productCategoryId == null)) {
             throw new DAOException("shoppingListCategoryId and productCategoryId are mandatory fields", new NullPointerException("shoppingListCategoryId or productCategoryId are null"));
         }
@@ -216,13 +216,13 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
     }
 
     @Override
-    public void removeProductCaregory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException {
+    public void removeProductCategory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException {
         if ((shoppingListCategoryId == null) || (productCategoryId == null)) {
             throw new DAOException("shoppingListCategoryId and productCategoryId are mandatory fields", new NullPointerException("shoppingListCategoryId or productCategoryId are null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("DELETE FROM PC_LC WHERE (listCategory = ? AND productCategory = ?)")) {
+        try (PreparedStatement stm = CON.prepareStatement("DELETE FROM PC_LC WHERE (list_category = ? AND product_category = ?)")) {
             stm.setInt(1, shoppingListCategoryId);
-            stm.setInt(1, productCategoryId);
+            stm.setInt(2, productCategoryId);
             stm.executeUpdate();
         } catch (SQLException ex) {
             throw new DAOException("Impossible to delete the link between the passed shoppingListCategory and the productCategory product", ex);

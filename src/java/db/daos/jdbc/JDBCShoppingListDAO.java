@@ -45,7 +45,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
 
             ps.setString(1, shoppingList.getName());
             ps.setString(2, shoppingList.getDescription());
-            ps.setString(3, shoppingList.getLogoPath());
+            ps.setString(3, shoppingList.getImagePath());
             ps.setInt(4, shoppingList.getListCategoryId());
             ps.setInt(5, shoppingList.getOwnerId());
 
@@ -84,7 +84,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
 
             ps.setString(1, shoppingList.getName());
             ps.setString(2, shoppingList.getDescription());
-            ps.setString(3, shoppingList.getLogoPath());
+            ps.setString(3, shoppingList.getImagePath());
             ps.setInt(4, shoppingList.getListCategoryId());
             ps.setInt(5, shoppingList.getOwnerId());
             ps.setInt(6, shoppingListId);
@@ -197,7 +197,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if (userId == null) {
             throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists, users_lists WHERE (id = list AND user = ?) ORDER BY name")) {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists, users_lists WHERE (id = list AND user_id = ?) ORDER BY name")) {
 
             List<ShoppingList> shoppingLists = new ArrayList<>();
 
@@ -216,16 +216,16 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
     }
 
     @Override
-    public void addMember(Integer shoppingListId, Integer userId, int permissions) throws DAOException {
+    public void addMember(Integer shoppingListId, Integer userId, Integer permissions) throws DAOException {
         if ((shoppingListId == null) || (userId == null)) {
             throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("shoppingListId or userId are null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users_lists (user, list, permissions) VALUES (?, ?, ?)")) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users_lists (user_id, list, permissions, notifications) VALUES (?, ?, ?, 0)")) {
 
             ps.setInt(1, userId);
             ps.setInt(2, shoppingListId);
             ps.setInt(3, permissions);
-
+        
             ps.executeUpdate();
 
         } catch (SQLException ex) {
@@ -241,7 +241,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if ((shoppingListId == null) || (userId == null)) {
             throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("shoppingListId or userId are null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("DELETE FROM users_lists WHERE (user = ? AND list = ?)")) {
+        try (PreparedStatement stm = CON.prepareStatement("DELETE FROM users_lists WHERE (user_id = ? AND list = ?)")) {
             stm.setInt(1, userId);
             stm.setInt(1, shoppingListId);
             stm.executeUpdate();
@@ -255,7 +255,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if (shoppingListId == null) {
             throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users, users_lists WHERE (id = user AND list = ?) ORDER BY name")) {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users, users_lists WHERE (id = user_id AND list = ?) ORDER BY name")) {
 
             List<User> users = new ArrayList<>();
 
@@ -291,7 +291,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if ((shoppingListId == null) || (userId == null)) {
             throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("shoppingListId or userId are null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE users_lists SET notifications = 0 WHERE user = ? AND list = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE users_lists SET notifications = 0 WHERE user_id = ? AND list = ?")) {
             ps.setInt(1, userId);
             ps.setInt(2, shoppingListId);
             ps.executeUpdate();
@@ -371,7 +371,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         shoppingList.setId(rs.getInt("id"));
         shoppingList.setName(rs.getString("name"));
         shoppingList.setDescription(rs.getString("description"));
-        shoppingList.setLogoPath(rs.getString("logo"));
+        shoppingList.setImagePath(rs.getString("logo"));
         shoppingList.setListCategoryId(rs.getInt("list_category"));
         shoppingList.setOwnerId(rs.getInt("owner"));
 

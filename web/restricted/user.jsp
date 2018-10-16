@@ -40,11 +40,11 @@
                 </c:choose>
                 <input type="hidden" name="changeName" value="1">
 
-                <input type="text" name="lastName" id="lastname" placeholder="Last name" value="<c:out value="${user.lastName}"/>" required autofocus>
+                <input type="text" name="lastName" id="lastname" placeholder="Last name" value="<c:out value="${user.lastName}"/>"autofocus>
                 <label for="lastname">Last name</label>
 
 
-                <input type="text" name="firstName" id="firstname" placeholder="First name" value="<c:out value="${user.firstName}"/>" required>
+                <input type="text" name="firstName" id="firstname" placeholder="First name" value="<c:out value="${user.firstName}"/>">
                 <label for="firstname">Name</label>
 
 
@@ -74,13 +74,13 @@
                 <input type="hidden" name="changePassword" value=1>
 
 
-                <input type="password" name="oldPassword" id="oldpassword" placeholder="Old password" required>
+                <input type="password" name="oldPassword" id="oldpassword" placeholder="Old password">
                 <label for="oldpassword">Old Password</label>
 
-                <input type="password" name="newPassword" id="newpassword" placeholder="New password" required>
+                <input type="password" name="newPassword" id="newpassword" placeholder="New password">
                 <label for="newpassword">New Password</label>
 
-                <input type="password" name="newPassword2" id="newpassword2" placeholder="New password" required>
+                <input type="password" name="newPassword2" id="newpassword2" placeholder="New password">
                 <label for="newpassword2">Confirm New Password</label>
 
                 <button type="submit">Save</button>

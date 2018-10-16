@@ -21,7 +21,7 @@ public interface ShoppingListCategoryDAO extends DAO<ShoppingListCategory, Integ
      * shoppingListCategory.
      * @throws DAOException if an error occurred during the persist action.
      */
-    public void addProductCaregory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException;
+    public void addProductCategory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException;
 
     /**
      * Removes the passed {@code pruductCategory} from the passed
@@ -33,7 +33,7 @@ public interface ShoppingListCategoryDAO extends DAO<ShoppingListCategory, Integ
      * shoppingListCategory.
      * @throws DAOException if an error occurred during the persist action.
      */
-    public void removeProductCaregory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException;
+    public void removeProductCategory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException;
     
     /**
      * Returns the list of all the valid shops where the user has to buy something

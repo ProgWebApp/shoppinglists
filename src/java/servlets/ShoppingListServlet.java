@@ -11,14 +11,19 @@ import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.Part;
+@MultipartConfig
 public class ShoppingListServlet extends HttpServlet {
 
     private ShoppingListDAO shoppingListDao;
@@ -49,43 +54,86 @@ public class ShoppingListServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User user = (User) request.getSession().getAttribute("user");
-
+        ShoppingList shoppingList = new ShoppingList();
         Integer userId = user.getId();
         Integer shoppingListId = null;
-        try {
+        if (request.getParameter("shoppingListId")!=null) {
             shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
-        } catch (RuntimeException ex) {
-            //TODO: log the exception
+            try {
+                shoppingList = shoppingListDao.getByPrimaryKey(shoppingListId);
+                shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
+            } catch (DAOException ex) {
+                throw new ServletException("Impossible to get the shoppingList", ex);
+            }
         }
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
-        Integer shoppingListCategoryId = Integer.valueOf(request.getParameter("shoppingListCategoryId"));
-        Integer ownerId = Integer.valueOf(request.getParameter("ownerId"));
+        
+        /* ID */
+        shoppingList.setId(shoppingListId);
 
-        if (name == null || shoppingListCategoryId == null || ownerId == null) {
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppinglist.html"));
-        }
-        try {
-            ShoppingList shoppingList = new ShoppingList();
-            shoppingList.setId(shoppingListId);
-            shoppingList.setName(name);
-            shoppingList.setDescription(description);
+        /* NAME */
+        String shoppingListName = request.getParameter("name");
+        shoppingList.setName(shoppingListName);
+        
+        /* DESCRIPTION */
+        String shoppingListDescription = request.getParameter("description");
+        shoppingList.setDescription(shoppingListDescription);
+        
+        /* CATEGORY */
+        Integer shoppingListCategoryId;
+        boolean emptyListCategory = false;
+        try{
+            shoppingListCategoryId = Integer.valueOf(request.getParameter("shoppingListCategory"));
             shoppingList.setListCategoryId(shoppingListCategoryId);
-            shoppingList.setOwnerId(ownerId);
+        }catch(NumberFormatException ex){
+            emptyListCategory = true;
+        }
+        /* LOGO */
+        Part imageFilePart = request.getPart("image");
+        Boolean emptyImage = false;
+        if (shoppingListId == null && imageFilePart.getSize() == 0) {
+            emptyImage = true;
+        }
+        /* CONTROLLO CAMPI VUOTI */
+        if (shoppingListName.isEmpty() || shoppingListDescription.isEmpty() || emptyListCategory || emptyImage) {
+            request.getSession().setAttribute("message", 1);
+            request.getSession().setAttribute("shoppingList", shoppingList);
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingList.jsp"));
+            return;
+        }
+        
+        /* OWNER */
+        if (shoppingListId == null) {
+            shoppingList.setOwnerId(userId);
+        }
+        
+        
+        /* LOGO */
+        //carico il logo solo se è stato specificato
+        if (imageFilePart.getSize() > 0) {
+            String imageFileName = UUID.randomUUID().toString() + Paths.get(imageFilePart.getSubmittedFileName()).getFileName().toString(); //MSIE  fix.
+            String imagesFolder = "images/shoppingList";
+            imagesFolder = getServletContext().getRealPath(imagesFolder);
+            File imageDirectory = new File(imagesFolder);
+            imageDirectory.mkdirs();
+            imageFilePart.write(imagesFolder + File.separator + imageFileName);
+            shoppingList.setImagePath(imageFileName);
+        }
 
+        /* INSERT OR UPDATE */
+        try {
             if (shoppingListId == null) {
-                shoppingListDao.insert(shoppingList);
+                shoppingListId = shoppingListDao.insert(shoppingList);
                 shoppingListDao.addMember(shoppingListId, userId, 2);
+                if (!user.isAdmin()) {
+                    //productDao.addLinkWithUser(productId, userId); //solo per prodotti privati
+                }
             } else {
                 shoppingListDao.update(shoppingList);
             }
         } catch (DAOException ex) {
-            Logger.getLogger(ShoppingListServlet.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServletException("Impossible to insert or update the shoppingList", ex);
         }
-
-        if (!response.isCommitted()) {
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppinglists.html"));
-        }
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppinglists.html"));
     }
 
     @Override
