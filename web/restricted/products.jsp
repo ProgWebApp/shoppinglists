@@ -1,3 +1,4 @@
+<%@page import="db.entities.User"%>
 <%@page import="java.util.List"%>
 <%@page import="db.entities.Product"%>
 <%@page import="db.exceptions.DAOFactoryException"%>
@@ -23,7 +24,13 @@
 
 %>
 <%
-    List<Product> products = productDao.getAll();
+    User user = (User) request.getSession().getAttribute("user");
+    List<Product> products;
+    if (user.isAdmin()) {
+        products = productDao.getPublic();
+    } else {
+        products = productDao.getByUser(user.getId());
+    }
     pageContext.setAttribute("products", products);
 %>
 <!DOCTYPE html>
@@ -35,12 +42,15 @@
     <body>
         <h1>My Products</h1>
         <c:forEach items="${products}" var="product">
-            Nome: <a href="${pageContext.response.encodeURL("product.jsp?productId=".concat(product.id))}">${product.name}</a><br>
+            Nome: <a href="${pageContext.response.encodeURL("product?res=1&productId=".concat(product.id))}">${product.name}</a><br>
             Note: ${product.notes}<br>
-            <c:forEach items="${product.photoPath}" var="photo">
-                <img height="50px" src="../images/products/${photo}">
-            </c:forEach>
+            <c:forEach items="${categories}" var="category">
+                <c:if test="${category.id==product.productCategoryId}">${category.name}</c:if>
+            </c:forEach><br>
+            <img height="50px" src="../images/productCategories/icons/${product.logoPath}"><br>
             <br>
         </c:forEach>
+        <br>
+        <a href="${pageContext.response.encodeURL("product?res=2")}">Aggiungi prodotto</a>
     </body>
 </html>

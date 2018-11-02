@@ -197,6 +197,47 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
     }
 
     @Override
+    public List<Product> getPublic() throws DAOException {
+        try (Statement stm = CON.createStatement()) {
+
+            List<Product> products = new ArrayList<>();
+            ResultSet rs = stm.executeQuery("SELECT * FROM products WHERE reserved=false");
+
+            while (rs.next()) {
+                products.add(setAllProductFields(rs));
+            }
+
+            return products;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of public products", ex);
+        }
+    }
+
+    @Override
+    public List<Product> getByUser(Integer userId) throws DAOException {
+        if (userId == null) {
+            throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products WHERE reserved=true AND owner = ?")) {
+
+            List<Product> products = new ArrayList<>();
+
+            stm.setInt(1, userId);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                products.add(setAllProductFields(rs));
+            }
+
+            return products;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of products for the passed userId", ex);
+        }
+    }
+
+    @Override
     public List<Product> getByShoppingListCategory(Integer shoppingListCategoryId, Integer userId) throws DAOException {
         if (shoppingListCategoryId == null || userId == null) {
             throw new DAOException("shoppingListCategoryId and userId are mandatory fields", new NullPointerException("shoppingListCategoryId or userId is null"));
@@ -204,8 +245,8 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products, users_products, PC_LC"
                 + "WHERE products.product_category = PC_LC.product_category"
                 + "AND PC_LC.list_category = ?"
-                + "AND (product.reserved = false"
-                + "OR (product.id = users_products.product"
+                + "AND (products.reserved = false"
+                + "OR (products.id = users_products.product"
                 + "AND users_product.user_id = ?))")) {
 
             List<Product> products = new ArrayList<>();
@@ -233,10 +274,10 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products, users_products, PC_LC"
                 + "WHERE products.product_category = PC_LC.product_category"
                 + "AND PC_LC.list_category = ?"
-                + "AND (product.reserved = false"
-                + "OR (product.id = users_products.product"
+                + "AND (products.reserved = false"
+                + "OR (products.id = users_products.product"
                 + "AND users_product.user_id = ?))"
-                + "AND product.name LIKE ?")) {
+                + "AND products.name LIKE ?")) {
 
             List<Product> products = new ArrayList<>();
 
@@ -335,9 +376,9 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         product.setNotes(rs.getString("notes"));
         product.setLogoPath(rs.getString("logo"));
         String[] paths = rs.getString("photo").replace("[", "").replace("]", "").split(", ");
-        if(paths[0].equals("")){
+        if (paths[0].equals("")) {
             product.setPhotoPath(new HashSet<>());
-        }else{
+        } else {
             product.setPhotoPath(new HashSet<>(Arrays.asList(paths)));
         }
         product.setProductCategoryId(rs.getInt("product_category"));

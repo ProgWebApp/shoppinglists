@@ -33,12 +33,13 @@ public class IconsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer productCategoryId = null;
+        Integer productCategoryId;
         ProductCategory productCategory;
         try {
             productCategoryId = Integer.valueOf(request.getParameter("category"));
         } catch (RuntimeException ex) {
-            //TODO: log the exception
+            response.setStatus(403);
+            return;
         }
         if (productCategoryId != null) {
             try {
@@ -58,7 +59,7 @@ public class IconsServlet extends HttpServlet {
                 out.print(json);
                 out.flush();
             } catch (DAOException ex) {
-                throw new ServletException("Impossible to get product category", ex);
+                response.setStatus(500);
             }
         }
     }

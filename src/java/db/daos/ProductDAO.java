@@ -11,6 +11,29 @@ import java.util.List;
 public interface ProductDAO extends DAO<Product, Integer> {
 
     /**
+     * Returns the list of the {@link Product product} that are public.
+     *
+     * @return the list of {@link Product product} that are public, or an empty
+     * list.
+     * @throws DAOException if an error occurred during the information
+     * retrieving.
+     */
+    public List<Product> getPublic() throws DAOException;
+
+    /**
+     * Returns the list of the {@link Product product} that are owned by the
+     * user passed as parameter.
+     *
+     * @param userId the {@code id} of the {@code user} for which retrieve the
+     * product list.
+     * @return the list of {@link Product product} that are owned by the user
+     * passed as parameter, or an empty list.
+     * @throws DAOException if an error occurred during the information
+     * retrieving.
+     */
+    public List<Product> getByUser(Integer userId) throws DAOException;
+
+    /**
      * Returns the list of {@link Product product} that are compatible with the
      * shoppingListCategory passed as paramenter and that are shared with the
      * user passed as parameter.
@@ -54,9 +77,10 @@ public interface ProductDAO extends DAO<Product, Integer> {
      * @throws DAOException if an error occurred during the persist action.
      */
     public void addLinkWithUser(Integer productId, Integer userId) throws DAOException;
-    
+
     /**
-     * Links the passed {@code product} with al the users that are members of the passed shoppingList.
+     * Links the passed {@code product} with al the users that are members of
+     * the passed shoppingList.
      *
      * @param productId the id of the product to link.
      * @param shoppingListId the id of the shoppingList.
@@ -83,5 +107,5 @@ public interface ProductDAO extends DAO<Product, Integer> {
      * @throws DAOException if an error occurred during the persist action.
      */
     public void shareProductFromList(Integer shoppingListId, Integer userId) throws DAOException;
-    
+
 }
