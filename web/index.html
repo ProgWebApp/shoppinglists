@@ -8,26 +8,36 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
+    
     .navbar {
       margin-bottom: 50px;
       border-radius: 0;
     }
-    
-    .jumbotron {
-      margin-bottom: 0;
-    }
+    @media screen and (min-width: 1200px) {
+  	.navbar {
+      margin-bottom: 50px;
+      border-radius: 0;
+      padding-right: 0px;
+      padding-left: 150px;
+    }}
     
     .navbar-inverse{
     	background-color: #ff6336;
     	border: 0px;
     }
+
+    .jumbotron {
+      margin-bottom: 0;
+    }
     
-    .panel-heading-custom {
+    
+    
+    .panel > .panel-heading-custom {
     	background-color: #ffe0cc;
         padding:10px;
     	color: black;
         }
-    .panel-footer-custom {
+    .panel > .panel-footer-custom {
     	background-color: #ffe0cc;
         padding:10px;
     	color: black;
@@ -37,20 +47,27 @@
     }
     .navbar-form{    	
     	border: 0px;
-    }
-    .fit-image{
-	width: 100%;
-	object-fit: cover;
-	height: 200px;
-	width:320px;
-    }
+    } 
     
+    
+    
+    .dropdown-menu{
+    	padding-top:15px;
+    }
+   	
+.fit-image{
+width: 100%;
+object-fit: cover;
+height: 200px;
+width:320px;
+}
    
     footer{
     	background-color: #ff6336;
     	color: #FFFFFF;
     	padding: 25px;
 	}
+    
     
   </style>
 </head>
@@ -67,9 +84,23 @@
   <div class="container-fluid">
   
     	<ul class="nav navbar-nav navbar-right">
-        	<li><a href="login.html" style="color:white"><span class="glyphicon glyphicon-log-in"></span> ACCEDI</a></li>
-        	<li><a href="regist.html" style="color:white"><span class="glyphicon glyphicon-pencil"></span> REGISTRATI</a></li>
-        	<li><a href="liste.html" style="color:white"><span class="glyphicon glyphicon-shopping-cart"></span> Le mie liste</a></li>
+        	<li><a href="utente.html" style="color:white"><span class="glyphicon glyphicon-user"></span> PROFILO</a></li>
+            	<li><a href="mainpagenologged.html" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
+        	
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="color:white" href="#"><span class="glyphicon glyphicon-menu-hamburger"></span>MEN&Ugrave;</a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Le mie liste</a></li>
+          <li><a href="#">Nuova lista</a></li>
+          <li><hr></li>
+          <li><a href="#">I miei prodotti</a></li>
+          <li><a href="#">Aggiungi prodotto</a></li>
+          <li><hr></li>
+          <li><a href="#">Categorie lista</a></li>
+          <li><a href="#">Nuova categoria lista</a></li>
+          <li><a href="#">Categorie prodotto</a></li>
+          <li><a href="#">Nuova categoria prodotto</a></li>
+        </ul>
+      </li>
     	</ul>  
       	
     	
@@ -117,21 +148,21 @@
     <div class="col-sm-4">
       <div class="panel panel-default-custom">
         <div class="panel-heading-custom">CATEGORIA</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="fit-image img-responsive" alt="Image"></div>
         <div class="panel-footer-custom">Visualizza articoli di categoria</div>
       </div>
     </div>
     <div class="col-sm-4"> 
       <div class="panel panel-default-custom">
         <div class="panel-heading-custom">CATEGORIA</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="fit-image img-responsive" alt="Image"></div>
         <div class="panel-footer-custom">Visualizza articoli di categoria</div>
       </div>
     </div>
     <div class="col-sm-4"> 
       <div class="panel panel-default-custom">
         <div class="panel-heading-custom">CATEGORIA</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="fit-image img-responsive" alt="Image"></div>
         <div class="panel-footer-custom">Visualizza articoli di categoria</div>
       </div>
     </div>
@@ -142,6 +173,5 @@
   <p>&copy; 2018, ListeSpesa.it, All right reserved</p>  
   
 </footer>
-
 </body>
 </html>

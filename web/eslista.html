@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Lista Alimentari</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -10,6 +10,7 @@
   <style>
     
     .jumbotron {
+      background-color:#ffffff;
       margin-bottom: 0;
       text-align:center;
       padding: 40px 5px 25px 5px;
@@ -24,36 +25,70 @@
     
     .list-button{
     	display:block;
-    	background-color:#e6e6e6;
-    	padding: 1px 4px 1px 4px;
+    	background-color:#FFFFFF;
+    	padding: 1px 3px 1px 4px;
     	border-radius: 3px 3px;
         margin: 0px 4px 5px 4px;
-        border: 1px solid black;
+        border: 0px;
     }
     
     button.list-group-item-action{
-    	background-color:#e6e6e6;
+    	background-color:#ffe0cc;
         color:black;
         margin: 6px 0px 6px 0px;
         border:0px;
     }
+    .list-group{
+    	font-size:18px;
+    }
+    .user-list-group{
+    	font-size:13px;
+    }
+
+    .user-list-button{
+    	display:block;
+    	background-color:#e6e6e6;
+    	padding: 0px 2px 0px 2px;
+    	border-radius: 2px 2px;
+        margin: 0px 2px 3px 2px;
+        border: 1px solid black;
+    }
+    
+    button.user-list-group-item-action{
+    	background-color:#ffe0cc;
+        color:black;
+        margin: 6px 0px 6px 0px;
+        border:0px;
+    }
+    
     div.pre-scrollable{
     	min-height:450px;
         max-height:450px;
     }
-    .list-group{
-    	font-size:18px;
+    .navbar {
+      margin-bottom: 50px;
+      border-radius: 0;
+    }
+    @media screen and (min-width: 1200px) {
+  	.navbar {
+      margin-bottom: 50px;
+      border-radius: 0;
+      padding-right: 0px;
+      padding-left: 150px;
     }
     
     .navbar-inverse{
     	background-color: #ff6336;
     	border: 0px;
     }
-   .img {
-    
-    max-width:  300px;
-    max-height: 300px;
-   
+.dropdown-menu{
+    	padding-top:15px;
+    }
+   .fit-image{
+width: 100%;
+object-fit: cover;
+height: 250px;
+width:200px;
 }
     
   </style>
@@ -62,41 +97,69 @@
 
 <div class="container-fluid">
 	<div class="jumbotron">
-    	<img src="" class="img" alt="Immagine lista">
-    
+    	<img src="alimentare.jpg" class="fit-image" alt="Immagine lista">
 		<h2>Lista Alimentari</h2>
         <h4>Categoria: Alimentare</h4>
     </div>
+    <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+  
+    	<ul class="nav navbar-nav navbar-right">
+        	<li><a href="utente.html" style="color:white"><span class="glyphicon glyphicon-user"></span> PROFILO</a></li>
+            	<li><a href="mainpagenologged.html" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
+        	
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="color:white" href="#"><span class="glyphicon glyphicon-menu-hamburger"></span>MEN&Ugrave;</a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Le mie liste</a></li>
+          <li><a href="#">Nuova lista</a></li>
+          <li><hr></li>
+          <li><a href="#">I miei prodotti</a></li>
+          <li><a href="#">Aggiungi prodotto</a></li>
+          <li><hr></li>
+          <li><a href="#">Categorie lista</a></li>
+          <li><a href="#">Nuova categoria lista</a></li>
+          <li><a href="#">Categorie prodotto</a></li>
+          <li><a href="#">Nuova categoria prodotto</a></li>
+        </ul>
+      </li>
+    	</ul>  
+      	<button type="button" class="navbar-toggle" data-toggle="collapse"></button>
+      <a class="navbar-brand" style="color:white" href="mainpagelogged.html"><span class="glyphicon glyphicon-home"></span> Home</a>
     
-    <nav class="navbar navbar-inverse"></nav>
-    <div class="row">
-    	<div class="col-sm-3">
-        </div>
-        <div class="col-sm-6">
-        	Descrizione: Lista dei prodotti alimentari da acquistare
-        </div>
+  </div>
+</nav>
+    <div class="col-sm-1">
     </div>
-    <br>
-    <div class="col-sm-6">
+    <div class="col-sm-5">
     <div class="pre-scrollable">
     	<ul class="list-group">
-        
         	<li class="list-group-item justify-content-between align-items-center"> Pasta 
-            	<span class="btn pull-right list-button" data-toggle="tooltip" title="Elimina"><i class="glyphicon glyphicon-remove" style="color:red"></i></span>
+            	<a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
+                
+                
+		</li>
+            
+            <li class="list-group-item justify-content-between align-items-center"> Sugo
+            	<a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
+                
             </li>
             
-            <li class="list-group-item justify-content-between align-items-center"> Sugo 
-            	<span class="btn pull-right list-button" data-toggle="tooltip" title="Elimina"><i class="glyphicon glyphicon-remove" style="color:red"></i></span>
-            </li>
+            <div class="input-group">
+    		<input type="text" class="form-control" placeholder="Cerca prodotto da aggiungere...">
+    		<div class="input-group-btn">
+      	    <button class="btn btn-default" type="submit">
+              <span class="glyphicon glyphicon-search"></span>
+            </button>
+      		</div>
+            </div>
             
-            
-            <button type="button" class="list-group-item list-group-item-action">Aggiungi nuovo prodotto </button>
             </ul>
             </div>
     </div>
     <div class="col-sm-1">
     </div>
      <div class="col-sm-4">
+     <div class="row">
      	<form>
   		<div>
         	<label for="comment">Chat:</label>
@@ -108,12 +171,45 @@
       <button class="btn btn-default" type="submit">
         Invia
       </button>
-    </div>
-  </div>
-</form>
-	
+      </div>
+      </div>
+      </form>
+      </div>
+      <br>
+      <div class="row">
+      	<label> Utenti che condividono la lista: </label>
+      	 <ul class="list-group user-list-group">
+        
+        	<li class="list-group-item"> Mario Piero
+            
+		<a class="pull-right" href="#" title="Elimina"><span class="glyphicon glyphicon-remove" style="color:black;font-size:15px;margin-left:5px;"></span></a>
+            <select class="pull-right">
+  				<option value="visualizza">Visualizza lista</option>
+  				<option value="Modifica">Modifica lista</option>
+			</select>   
+            </li>
+            
+            <li class="list-group-item justify-content-between align-items-center"> Luca Salvo 
+			<a class="pull-right" href="#" title="Elimina"><span class="glyphicon glyphicon-remove" style="color:black;font-size:15px;margin-left:5px;"></span></a>
+			<select class="pull-right">
+  				<option value="visualizza">Visualizza lista</option>
+  				<option value="Modifica">Modifica lista</option>
+			</select>  
+            </li>
+            <div class="input-group">
+    		<input type="text" class="form-control" placeholder="Cerca utente...">
+    		<div class="input-group-btn">
+      	    <button class="btn btn-default" type="submit">
+              <span class="glyphicon glyphicon-search"></span>
+            </button>
+      		</div>
+            </div>
+            </ul>
+      </div>
+      
+      </div>
+      
      </div>
-</div>
 
 
 <footer class="container-fluid text-center">
