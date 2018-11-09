@@ -40,5 +40,7 @@
             <img height="50px" src="../images/shoppingList/${shoppingList.imagePath}" alt="Image">
             <br>
         </c:forEach>
+        <a href="${pageContext.response.encodeURL("shoppingListForm.jsp")}">Nuova shoppingList</a><br>
+            
     </body>
 </html>

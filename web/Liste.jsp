@@ -1,3 +1,5 @@
+<%@page import="db.entities.Product"%>
+<%@page import="db.daos.ProductDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="db.entities.ShoppingList"%>
@@ -7,6 +9,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%! private ShoppingListDAO shoppingListDao;
+private ProductDAO productDao;
 
     @Override
     public void init() throws ServletException {
@@ -16,6 +19,11 @@
         }
         try {
             shoppingListDao = daoFactory.getDAO(ShoppingListDAO.class);
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get dao factory for product storage system", ex);
+        }
+        try {
+            productDao = daoFactory.getDAO(ProductDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for product storage system", ex);
         }
@@ -35,7 +43,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        
+
         <style>
 
             .jumbotron {
@@ -148,7 +156,7 @@
 
                 </div>
             </nav>
-            
+
             <div class="col-sm-1">
             </div>
             <div class="col-sm-5">
@@ -158,14 +166,14 @@
                         <c:forEach items="${shoppingLists}" var="shoppingList">
                             <c:set var="i" value="${i + 1}"/>
                             <li>
-                                
+
                                 <button type="button" class="list-group-item group-item-custom" data-toggle="collapse" data-target="#anteprima${i}">
                                     <img src="../images/shoppingList/${shoppingList.imagePath}" alt="Logo" class="small-logo"> 
                                     ${shoppingList.name}
                                     <a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
                                     <a class="pull-right" style="color:black" href="${pageContext.response.encodeURL("shoppingList.jsp?shoppingListId=".concat(shoppingList.id))}" title="Modifica"><span class="glyphicon glyphicon-list-alt" style="margin:0px 10px 0px 0px"></span></a>
                                 </button>
-                                
+
                             </li>
                         </c:forEach>
                         <li>
@@ -181,11 +189,15 @@
                     <c:set var="j" value="${j + 1}"/>
                     <div id="anteprima${j}" class="collapse">
                         ${shoppingList.description}
+<%
+    List<Product> productList = shoppingListDao.getProducts($shoppingList.id);
+    pageContext.setAttribute("shoppingLists", shoppingLists);
+%>
                     </div>
                 </c:forEach>
             </div>
-        
-     </div>
+
+        </div>
 
         <footer class="container-fluid text-center">
             <p>&copy; 2018, ListeSpesa.it, All right reserved</p>

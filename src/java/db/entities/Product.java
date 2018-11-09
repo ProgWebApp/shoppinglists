@@ -159,4 +159,10 @@ public class Product {
     public void setReserved(boolean reserved) {
         this.reserved = reserved;
     }
+    
+    public String toJson(){
+        String json = "{\"id\": "+id+", \"text\": \""+name+"\"}";
+        return json;
+    }
+
 }

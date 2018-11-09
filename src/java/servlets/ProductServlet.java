@@ -52,47 +52,43 @@ public class ProductServlet extends HttpServlet {
         /* RECUPERO L'UTENTE */
         User user = (User) request.getSession().getAttribute("user");
 
-        /* RECUPERO L'ID DEL PRODOTTO, SE ESISTE */
-        Integer productId = null;
-        if (request.getParameter("productId") != null) {
-            try {
-                productId = Integer.valueOf(request.getParameter("productId"));
-            } catch (NumberFormatException ex) {
-                throw new ServletException("The productId value must be integer");
-            }
+        /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
+        if (request.getParameter("productId") != null || request.getParameter("res") != null) {
+            response.setStatus(400);
+            return;
         }
 
-        /* RECUPERO LA PAGINA DI DESTINAZIONE, SE ESISTE */
-        Integer res = null;
-        if (request.getParameter("res") != null) {
-            try {
-                res = Integer.valueOf(request.getParameter("res"));
-                if (res != 1 && res != 2) {
-                    throw new NumberFormatException();
-                }
-            } catch (NumberFormatException ex) {
-                throw new ServletException("The res value must be 1 or 2");
+        /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
+        Integer productId;
+        Integer res;
+        try {
+            productId = Integer.valueOf(request.getParameter("productId"));
+            res = Integer.valueOf(request.getParameter("res"));
+            if (res > 2) {
+                throw new NumberFormatException();
             }
+        } catch (NumberFormatException ex) {
+            response.setStatus(400);
+            return;
         }
 
-        /* RECUPERO IL PRODOTTO, SE HO UN ID */
+        /* RECUPERO IL PRODOTTO */
         Product product = null;
-        if (productId != null) {
-            try {
-                product = productDao.getByPrimaryKey(productId);
-            } catch (DAOException ex) {
-                throw new ServletException("Impossible to get the product", ex);
-            }
+        try {
+            product = productDao.getByPrimaryKey(productId);
+        } catch (DAOException ex) {
+            response.setStatus(500);
+            return;
+        }
 
-            /* SE IL PRODOTTO ESISTE, CONTROLLO I PERMESSI DELL'UTENTE */
-            if (checkPermissions(user, product) != 0) {
-                if (res != null) {
-                    response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
-                } else {
-                    response.setStatus(403);
-                }
-                return;
+        /* CONTROLLO CHE L'UTENTE ABBIA I PERMESSI, ALTRIMENTI RESTITUISCO ERRORE */
+        if (checkPermissions(user, product) != 0) {
+            if (res == 0) {
+                response.setStatus(403);
+            } else {
+                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
             }
+            return;
         }
 
         /* RISPONDO */
@@ -100,34 +96,25 @@ public class ProductServlet extends HttpServlet {
         try {
             categories = productCategoryDAO.getAll();
         } catch (DAOException ex) {
-            throw new ServletException("Impossible to get the categories", ex);
+            response.setStatus(500);
+            return;
         }
         request.setAttribute("categories", categories);
-
-        if (product == null) {
-            if (res == null || res != 2) {
-                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
-            } else {
-                getServletContext().getRequestDispatcher("/restricted/productForm.jsp").forward(request, response);
-            }
-        } else {
-            request.setAttribute("product", product);
-            if (res != null) {
-                switch (res) {
-                    case 1:
-                        getServletContext().getRequestDispatcher("/restricted/product.jsp").forward(request, response);
-                        break;
-                    case 2:
-                        getServletContext().getRequestDispatcher("/restricted/productForm.jsp").forward(request, response);
-                        break;
-                }
-            } else {
+        request.setAttribute("product", product);
+        switch (res) {
+            case 0:
                 PrintWriter out = response.getWriter();
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out.print(product.toString());
                 out.flush();
-            }
+                break;
+            case 1:
+                getServletContext().getRequestDispatcher("/restricted/product.jsp").forward(request, response);
+                break;
+            case 2:
+                getServletContext().getRequestDispatcher("/restricted/productForm.jsp").forward(request, response);
+                break;
         }
     }
 
@@ -273,14 +260,23 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /* RECUPERO IL PRODOTTO */
+        
+        /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
+        if (request.getParameter("productId") != null ) {
+            response.setStatus(400);
+            return;
+        }
+        
+        /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
         Integer productId;
         try {
             productId = Integer.valueOf(request.getParameter("productId"));
         } catch (NumberFormatException ex) {
-            response.setStatus(403);
+            response.setStatus(400);
             return;
         }
+        
+        /* RECUPERO IL PRODOTTO */
         Product product;
         try {
             product = productDao.getByPrimaryKey(productId);

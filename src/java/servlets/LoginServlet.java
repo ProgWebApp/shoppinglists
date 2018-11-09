@@ -57,7 +57,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.jsp"));
             }else{
                 request.getSession().setAttribute("user", user);
-                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "mainpagelogged.html"));
+                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "index.html"));
             }
         } catch (DAOException ex) {
             throw new ServletException("Impossible to retrieve the user");

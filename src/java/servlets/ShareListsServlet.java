@@ -57,7 +57,7 @@ public class ShareListsServlet extends HttpServlet {
      *
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User userActive = (User) request.getSession().getAttribute("user");
         Integer userActiveId = userActive.getId();
@@ -84,14 +84,16 @@ public class ShareListsServlet extends HttpServlet {
                 permission = 0; //imposto il valore minimo di permission
             }
             try {
-                if (shoppingListDAO.getPermission(shoppingListId, userActiveId) == 1) {
+                if (shoppingListDAO.getPermission(shoppingListId, userActiveId) == 2) {
                     switch (action) {
                         case 0:
                             shoppingListDAO.removeMember(shoppingListId, userId);
                             break;
                         case 1:
+                            System.out.println("aggiungo utente alla lista");
                             shoppingListDAO.addMember(shoppingListId, userId, permission);
                             productDAO.shareProductFromList(shoppingListId, userId);
+                            
                             break;
                         case 2:
                             shoppingListDAO.updateMember(shoppingListId, userId, permission);
@@ -109,7 +111,7 @@ public class ShareListsServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response
+    protected void doPost(HttpServletRequest request, HttpServletResponse response
     ) {
     }
 }

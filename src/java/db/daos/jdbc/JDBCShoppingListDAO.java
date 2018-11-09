@@ -429,11 +429,11 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
         }
         try (PreparedStatement stm = CON.prepareStatement("SELECT permissions FROM users_lists WHERE user_id=? AND list=?")) {
-            stm.setInt(1, shoppingListId);
-            stm.setInt(2, userId);
+            stm.setInt(1, userId);
+            stm.setInt(2, shoppingListId);
             ResultSet rs = stm.executeQuery();
             rs.next();
-            return Integer.valueOf(rs.getString("permissions"));
+            return Integer.valueOf(rs.getInt("permissions"));
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShoppingListDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

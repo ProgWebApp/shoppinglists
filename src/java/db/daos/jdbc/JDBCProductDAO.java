@@ -271,27 +271,23 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         if (shoppingListCategoryId == null || userId == null) {
             throw new DAOException("shoppingListCategoryId and userId are mandatory fields", new NullPointerException("shoppingListCategoryId or userId is null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products, users_products, PC_LC"
-                + "WHERE products.product_category = PC_LC.product_category"
-                + "AND PC_LC.list_category = ?"
-                + "AND (products.reserved = false"
-                + "OR (products.id = users_products.product"
-                + "AND users_product.user_id = ?))"
-                + "AND products.name LIKE ?")) {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM PC_LC, products LEFT JOIN users_products "
+                + " ON products.id = users_products.product"
+                + " WHERE products.product_category = PC_LC.product_category"
+                + " AND PC_LC.list_category = ?"
+                + " AND (products.reserved = false"
+                + " OR users_products.user_id = ?)"
+                + " AND products.name LIKE ?")) {
 
             List<Product> products = new ArrayList<>();
-
             stm.setInt(1, shoppingListCategoryId);
             stm.setInt(2, userId);
             stm.setString(3, "%" + query + "%");
             ResultSet rs = stm.executeQuery();
-
             while (rs.next()) {
                 products.add(setAllProductFields(rs));
             }
-
             return products;
-
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of products for the passed query, shoppingListCategoryId and userId", ex);
         }
@@ -345,7 +341,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         }
     }
 
-    @Override
+    //@Override
     public void removeLinkWithUser(Integer productId, Integer userId) throws DAOException {
         if ((productId == null) || (userId == null)) {
             throw new DAOException("productId and userId are mandatory fields", new NullPointerException("productId or userId are null"));
@@ -376,9 +372,9 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         product.setNotes(rs.getString("notes"));
         product.setLogoPath(rs.getString("logo"));
         String[] paths = rs.getString("photo").replace("[", "").replace("]", "").split(", ");
-        if (paths[0].equals("")) {
+        if(paths[0].equals("")){
             product.setPhotoPath(new HashSet<>());
-        } else {
+        }else{
             product.setPhotoPath(new HashSet<>(Arrays.asList(paths)));
         }
         product.setProductCategoryId(rs.getInt("product_category"));
@@ -401,7 +397,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         if ((shoppingListId == null) || (userId == null)) {
             throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("productId or userId are null"));
         }
-        try (PreparedStatement stm1 = CON.prepareStatement("SELECT product FROM list_product where list = ?");
+        try (PreparedStatement stm1 = CON.prepareStatement("SELECT product FROM list_products, products WHERE product=id AND list = ? AND reserved=true");
                 PreparedStatement stm2 = CON.prepareStatement("INSERT INTO users_products (user_id, product) VALUES (?,?)")) {
             stm1.setInt(1, shoppingListId);
             ResultSet rs = stm1.executeQuery();
@@ -412,12 +408,13 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
                     stm2.executeUpdate();
                 } catch (SQLException ex) {
                     if (!ex.getSQLState().equals("23505")) {
-                        throw new DAOException("Impossible to link the product with the user", ex);
+                        throw new DAOException("Impossible to link the product with the user (esiste già)", ex);
                     }
+                    throw new DAOException("Impossible to link the product with the user", ex);
                 }
             }
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to link the product with the user", ex);
+            throw new DAOException("Impossible to get list of products ", ex);
         }
     }
 }

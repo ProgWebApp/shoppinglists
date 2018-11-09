@@ -63,19 +63,17 @@ public class ProductListServlet extends HttpServlet {
      * @ 3 -> aggiunge il prodotto alla lista in questione
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         Integer userId = user.getId();
         Integer shoppingListId = null;
         Integer productId = null;
-        Boolean necessary = true;
         Integer action = null;
         Integer quantity = 1;
-        if (request.getParameter("shoppingListId") != null && request.getParameter("productId") != null && request.getParameter("necessary") != null && request.getParameter("action") != null) {
-            try {
+        if (request.getParameter("shoppingListId") != null && request.getParameter("productId") != null  && request.getParameter("action") != null) {
+            try { 
                 shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
                 productId = Integer.valueOf(request.getParameter("productId"));
-                necessary = Boolean.valueOf(request.getParameter("necessary"));
                 action = Integer.valueOf(request.getParameter("action"));
             } catch (RuntimeException ex) {
                 //TODO: log the exception
@@ -92,18 +90,17 @@ public class ProductListServlet extends HttpServlet {
                         shoppingListDao.updateProduct(shoppingListId, productId, quantity, true);
                         break;
                     case 3:
-                        shoppingListDao.addProduct(shoppingListId, productId, quantity, necessary);
+                        shoppingListDao.addProduct(shoppingListId, productId, quantity, true);
                         productDao.shareProductToList(productId, shoppingListId);
                         break;
                 }
             } catch (DAOException ex) {
                 Logger.getLogger(ShoppingListServlet.class.getName()).log(Level.SEVERE, null, ex);
+                response.setStatus(500);
             }
-
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingLists.jsp"));
         }
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {}
 }
