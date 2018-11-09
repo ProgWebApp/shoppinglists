@@ -17,8 +17,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -45,34 +43,91 @@ public class ProductCategoryServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        /* RECUPERO L'UTENTE */
         User user = (User) request.getSession().getAttribute("user");
-        ProductCategory productCategory = new ProductCategory();
 
-        Integer userId = user.getId();
+        /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
+        if (request.getParameter("productCategoryId") == null || request.getParameter("res") == null) {
+            response.setStatus(400);
+            return;
+        }
+
+        /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
+        Integer productCategoryId;
+        Integer res;
+        try {
+            productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));
+            res = Integer.valueOf(request.getParameter("res"));
+            if (res > 2) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException ex) {
+            response.setStatus(400);
+            return;
+        }
+
+        /* RECUPERO LA CATEGORIA DI PRODOTTO */
+        ProductCategory productCategory = null;
+        try {
+            productCategory = productCategoryDao.getByPrimaryKey(productCategoryId);
+        } catch (DAOException ex) {
+            response.setStatus(500);
+            return;
+        }
+
+        /* RISPONDO */
+        request.setAttribute("productCategory", productCategory);
+        switch (res) {
+            case 1:
+                getServletContext().getRequestDispatcher("/restricted/productCategory.jsp").forward(request, response);
+                break;
+            case 2:
+                if (!user.isAdmin()) {
+                    response.setStatus(403);
+                    return;
+                }else{
+                    getServletContext().getRequestDispatcher("/restricted/productCategoryForm.jsp").forward(request, response);
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        /* RECUPERO L'UTENTE */
+        User user = (User) request.getSession().getAttribute("user");
+        
+        /* RECUPERO LA CATEGORIA DI PRODOTTO, SE ESISTE, OPPURE NE CREO UNO NUOVA */
+        ProductCategory productCategory = new ProductCategory();
         Integer productCategoryId = null;
 
         if (request.getParameter("productCategoryId") != null) {
-            productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));
+            try {
+                productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));
+            } catch (NumberFormatException ex) {
+                throw new ServletException("This request require a parameter named productCategoryId whit an int value");
+            }
             try {
                 productCategory = productCategoryDao.getByPrimaryKey(productCategoryId);
             } catch (DAOException ex) {
                 throw new ServletException("Impossible to get the productCateogry", ex);
             }
+            /* SE LA CATEGORIA DI PRODOTTO ESISTE, CONTROLLO CHE L'UTENTE SIA ADMIN */
+            if (!user.isAdmin()) {
+                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+                return;
+            }
         }
 
         /* ID */
         productCategory.setId(productCategoryId);
-
         /* NAME */
         String productCategoryName = request.getParameter("name");
         productCategory.setName(productCategoryName);
-
         /* DESCRIPTION */
         String productCategoryDescription = request.getParameter("description");
         productCategory.setDescription(productCategoryDescription);
-
         /* LOGO */
         Part logoFilePart = request.getPart("logo");
         Boolean emptyLogo = false;
@@ -85,7 +140,7 @@ public class ProductCategoryServlet extends HttpServlet {
         if (productCategoryName.isEmpty() || productCategoryDescription.isEmpty() || emptyLogo) {
             request.getSession().setAttribute("message", 1);
             request.getSession().setAttribute("productCategory", productCategory);
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/productCategory.jsp"));
+            getServletContext().getRequestDispatcher("/restricted/productCategoryForm.jsp").forward(request, response);
             return;
         }
 
@@ -110,7 +165,6 @@ public class ProductCategoryServlet extends HttpServlet {
             throw new ServletException("Icons folder not configured");
         }
         iconsFolder = getServletContext().getRealPath(iconsFolder);
-
         HashSet<String> iconPaths;
         if (productCategoryId == null) {
             iconPaths = new HashSet<>();
@@ -138,30 +192,49 @@ public class ProductCategoryServlet extends HttpServlet {
         /* INSERT OR UPDATE */
         try {
             if (productCategoryId == null) {
-                productCategoryDao.insert(productCategory);
+                productCategoryId = productCategoryDao.insert(productCategory);
             } else {
                 productCategoryDao.update(productCategory);
             }
         } catch (DAOException ex) {
             throw new ServletException("Impossible to insert or update the productCategory", ex);
         }
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/productCategories.jsp"));
+        
+        /* REDIRECT ALLA PAGINA DELLA CATEGORIA DI PRODOTTO */
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/productCategory?res=1&productCategoryId="+productCategoryId));
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer productCategoryId = null;
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
+        if (request.getParameter("productCategoryId") == null) {
+            response.setStatus(400);
+            return;
+        }
+
+        /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
+        Integer productCategoryId;
         try {
             productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));
-        } catch (RuntimeException ex) {
-            //TODO: log the exception
+        } catch (NumberFormatException ex) {
+            response.setStatus(400);
+            return;
         }
-        if (productCategoryId != null) {
-            try {
-                productCategoryDao.delete(productCategoryId);
-            } catch (DAOException ex) {
-                Logger.getLogger(ProductCategoryServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
+        /* CONTROLLO CHE L'UTENTE SIA ADMIN */
+        User user = (User) request.getSession().getAttribute("user");
+        if (!user.isAdmin()) {
+            response.setStatus(403);
+            return;
+        }
+
+        /* RISPONDO */
+        try {
+            productCategoryDao.delete(productCategoryId);
+            response.setStatus(204);
+        } catch (DAOException ex) {
+            response.setStatus(500);
         }
     }
 }

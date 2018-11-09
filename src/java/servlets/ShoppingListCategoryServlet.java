@@ -53,6 +53,57 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        /* RECUPERO L'UTENTE */
+        User user = (User) request.getSession().getAttribute("user");
+
+        /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
+        if (request.getParameter("shoppingListCategoryId") == null || request.getParameter("res") == null) {
+            response.setStatus(400);
+            return;
+        }
+
+        /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
+        Integer shoppingListCategoryId;
+        Integer res;
+        try {
+            shoppingListCategoryId = Integer.valueOf(request.getParameter("shoppingListCategoryId"));
+            res = Integer.valueOf(request.getParameter("res"));
+            if (res > 2) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException ex) {
+            response.setStatus(400);
+            return;
+        }
+
+        /* RECUPERO LA CATEGORIA DI LISTA */
+        ShoppingListCategory shoppingListCategory = null;
+        try {
+            shoppingListCategory = shoppingListCategoryDAO.getByPrimaryKey(shoppingListCategoryId);
+        } catch (DAOException ex) {
+            response.setStatus(500);
+            return;
+        }
+
+        /* RISPONDO */
+        request.setAttribute("productCategory", shoppingListCategory);
+        switch (res) {
+            case 1:
+                getServletContext().getRequestDispatcher("/restricted/shoppingListCategory.jsp").forward(request, response);
+                break;
+            case 2:
+                if (!user.isAdmin()) {
+                    response.setStatus(403);
+                    return;
+                } else {
+                    getServletContext().getRequestDispatcher("/restricted/shoppingListCategoryForm.jsp").forward(request, response);
+                }
+                break;
+        }
+    }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -64,32 +115,40 @@ public class ShoppingListCategoryServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        /* RECUPERO L'UTENTE */
         User user = (User) request.getSession().getAttribute("user");
-        ShoppingListCategory shoppingListCategory = new ShoppingListCategory();
         Integer userId = user.getId();
+        
+        /* RECUPERO LA CATEGORIA DI PRODOTTO, SE ESISTE, OPPURE NE CREO UNO NUOVA */
+        ShoppingListCategory shoppingListCategory = new ShoppingListCategory();
         Integer shoppingListCategoryId = null;
 
         if (request.getParameter("shoppingListCategoryId") != null) {
-            shoppingListCategoryId = Integer.valueOf(request.getParameter("shoppingListCategoryId"));
+            try {
+                shoppingListCategoryId = Integer.valueOf(request.getParameter("shoppingListCategoryId"));
+            } catch (NumberFormatException ex) {
+                throw new ServletException("This request require a parameter named shoppingListCategoryId whit an int value");
+            }
             try {
                 shoppingListCategory = shoppingListCategoryDAO.getByPrimaryKey(shoppingListCategoryId);
             } catch (DAOException ex) {
                 throw new ServletException("Impossible to get the shoppingListCateogry", ex);
             }
+            /* SE LA CATEGORIA DI LISTA ESISTE, CONTROLLO CHE L'UTENTE SIA ADMIN */
+            if (!user.isAdmin()) {
+                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+                return;
+            }
         }
 
         /* ID */
         shoppingListCategory.setId(shoppingListCategoryId);
-
         /* NAME */
         String shoppingListCategoryName = request.getParameter("name");
         shoppingListCategory.setName(shoppingListCategoryName);
-
         /* DESCRIPTION */
         String shoppingListCategoryDescription = request.getParameter("description");
         shoppingListCategory.setDescription(shoppingListCategoryDescription);
-
         /* LOGO */
         Part logoFilePart = request.getPart("logo");
         Boolean emptyLogo = false;
@@ -97,12 +156,11 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         if (shoppingListCategoryId == null && logoFilePart.getSize() == 0) {
             emptyLogo = true;
         }
-
         /* CONTROLLO CAMPI VUOTI */
         if (shoppingListCategoryName.isEmpty() || shoppingListCategoryDescription.isEmpty() || emptyLogo) {
             request.getSession().setAttribute("message", 1);
             request.getSession().setAttribute("shoppingListCategory", shoppingListCategory);
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingListCategory.jsp"));
+            getServletContext().getRequestDispatcher("/restricted/shoppingListCategoryForm.jsp").forward(request, response);
             return;
         }
 
@@ -156,23 +214,42 @@ public class ShoppingListCategoryServlet extends HttpServlet {
                 }
             }
         }
+        
+        /* REDIRECT ALLA PAGINA DELLA CATEGORIA DI LISTA */
         response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingListCategories.jsp"));
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer shoppingListCategoryId = null;
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
+        if (request.getParameter("shoppingListCategoryId") == null) {
+            response.setStatus(400);
+            return;
+        }
+
+        /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
+        Integer shoppingListCategoryId;
         try {
             shoppingListCategoryId = Integer.valueOf(request.getParameter("shoppingListCategoryId"));
-        } catch (RuntimeException ex) {
-            //TODO: log the exception
+        } catch (NumberFormatException ex) {
+            response.setStatus(400);
+            return;
         }
-        if (shoppingListCategoryId != null) {
-            try {
-                shoppingListCategoryDAO.delete(shoppingListCategoryId);
-            } catch (DAOException ex) {
-                Logger.getLogger(ShoppingListCategoryServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
+        /* CONTROLLO CHE L'UTENTE SIA ADMIN*/
+        User user = (User) request.getSession().getAttribute("user");
+        if (!user.isAdmin()) {
+            response.setStatus(403);
+            return;
+        }
+
+        /* RISPONDO */
+        try {
+            shoppingListCategoryDAO.delete(shoppingListCategoryId);
+            response.setStatus(204);
+        } catch (DAOException ex) {
+            response.setStatus(500);
         }
     }
 }
