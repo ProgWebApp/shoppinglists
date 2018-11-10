@@ -44,7 +44,50 @@
                         }
                     };
                     var url = "${pageContext.response.encodeURL("ProductListServlet")}";
-                    xhttp.open("GET", url + "?shoppingListId=${shoppingList.id}&productId=" + $('#autocomplete-2').find(":selected").val() + "&action=3", true);
+                    xhttp.open("GET", url + "?shoppingListId=${shoppingList.id}&productId=" + $('#autocomplete-3').find(":selected").val() + "&action=3", true);
+                    xhttp.send();
+                });
+            });
+        </script>
+        <script>
+
+            $(function () {
+
+                function formatOption(option) {
+                    var res = $('<span class="optionClick" onClick="addprod()">' + option.text + '</span>');
+                    return res;
+                }
+                $("#autocomplete-3").select2({
+                    placeholder: "Cerca utente...",
+                    allowClear: true,
+                    ajax: {
+                        url: function (request) {
+                            return "UsersSearchServlet?query=" + request.term;
+                        },
+                        dataType: "json"
+                    },
+                    templateResult: formatOption
+                });
+                $("#autocomplete-3").val(null).trigger("change");
+                $('#autocomplete-3').on("select2:select", function () {
+
+
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState === 4 && this.status === 200) {
+                            $("#utenti").append("<li class=\"list-group-item justify-content-between align-items-center\">" + $('#autocomplete-3').find(":selected").text()
+                                + " <a class=\"pull-right\" href=\"#\" title=\"Elimina\"><span class=\"glyphicon glyphicon-remove\" style=\"color:black;font-size:15px;margin-left:5px;\"></span></a>"
+                                + " <select class=\"pull-right\">"
+                                + "     <option value=\"visualizza\">Visualizza lista</option>"
+                                + "     <option value=\"Modifica\">Modifica lista</option>"
+                                + " </select>"
+                                + " </li>")
+                        } else if (this.readyState === 4 && this.status === 500) {
+                            alert("Impossibile aggiungere l'utente");
+                        }
+                    };
+                    var url = "${pageContext.response.encodeURL("ShareListsServlet")}";
+                    xhttp.open("GET", url + "?shoppingListId=${shoppingList.id}&userId=" + $('#autocomplete-2').find(":selected").val(), true);
                     xhttp.send();
                 });
             });
@@ -174,6 +217,8 @@
                 </div>
                 <div class="col-sm-5">
                     <div class="pre-scrollable">
+                        <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear">
+                        </select>
                         <ul id="prodotti" class="list-group">
                             <li class="list-group-item justify-content-between align-items-center"> Pasta 
                                 <a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
@@ -182,10 +227,7 @@
                                 <a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
                             </li>
                             <!--<input type="text" class="form-control" placeholder="Cerca prodotto da aggiungere...">-->
-                        </ul>   
-                        <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear">
-                        </select>
-
+                        </ul>
                     </div>
                 </div>
                 <div class="col-sm-1">
@@ -210,8 +252,19 @@
                     <br>
                     <div class="row">
                         <label> Utenti che condividono la lista: </label>
-                        <ul class="list-group user-list-group">
-
+                        
+                        <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
+                        </select>
+                        <ul id="utenti" class="list-group user-list-group">
+                            <div class="input-group">
+                                
+                                <input type="text" class="form-control" placeholder="Cerca utente...">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </div>
+                            </div>
                             <li class="list-group-item"> Mario Piero
 
                                 <a class="pull-right" href="#" title="Elimina"><span class="glyphicon glyphicon-remove" style="color:black;font-size:15px;margin-left:5px;"></span></a>
@@ -228,14 +281,7 @@
                                     <option value="Modifica">Modifica lista</option>
                                 </select>  
                             </li>
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Cerca utente...">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">
-                                        <span class="glyphicon glyphicon-search"></span>
-                                    </button>
-                                </div>
-                            </div>
+                            
                         </ul>
                     </div>
 

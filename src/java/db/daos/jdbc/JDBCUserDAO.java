@@ -245,18 +245,18 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
 
     @Override
     public List<User> searchByName(String query) throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE name LIKE ?")) {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE (firstname LIKE ? OR lastname LIKE ?)")) {
 
-            List<User> user = new ArrayList<>();
-
+            List<User> users = new ArrayList<>();
             stm.setString(1, "%" + query + "%");
+            stm.setString(2, "%" + query + "%");
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
-                user.add(setAllUserFields(rs, null));
+                users.add(setAllUserFields(rs, null));
             }
 
-            return user;
+            return users;
 
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of users for the passed query", ex);

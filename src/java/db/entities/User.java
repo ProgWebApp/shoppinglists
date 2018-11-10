@@ -181,4 +181,8 @@ public class User implements Serializable{
         this.check = check;
     }
 
+    public String toJson() {
+        String json = "{\"id\": "+id+", \"text\": \""+firstName+lastName+"\"}";
+        return json;
+    }
 }
