@@ -15,7 +15,7 @@ public class Product {
     private Integer productCategoryId;
     private Integer ownerId;
     private boolean reserved;
-    private Integer necessary;
+    private boolean necessary;
 
     /**
      * Returns the primary key of this product.
@@ -163,7 +163,7 @@ public class Product {
      * Returns the necessary of this product.
      * @return the necessary of the product.
      */
-    public Integer getNecessary() {
+    public boolean getNecessary() {
         return necessary;
     }
 
@@ -171,7 +171,7 @@ public class Product {
      * Sets the new necessary of this product.
      * @param necessary the new necessary of this product.
      */
-    public void setNecessary(Integer necessary) {
+    public void setNecessary(boolean necessary) {
         this.necessary = necessary;
     }
     

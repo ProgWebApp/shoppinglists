@@ -245,7 +245,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
 
     @Override
     public List<User> searchByName(String query) throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE (firstname LIKE ? OR lastname LIKE ?)")) {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE (LOWER(firstname) LIKE LOWER(?) OR LOWER(lastname) LIKE LOWER(?))")) {
 
             List<User> users = new ArrayList<>();
             stm.setString(1, "%" + query + "%");

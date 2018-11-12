@@ -240,7 +240,7 @@ public class ShoppingListServlet extends HttpServlet {
         }
 
         /* REDIRECT ALLA PAGINA DELLA LISTA */
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingList?res=1&shoppingListId=" + shoppingListId));
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingListServlet?res=1&shoppingListId=" + shoppingListId));
     }
 
     @Override

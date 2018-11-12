@@ -276,7 +276,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
                 + " ON products.id = users_products.product"
                 + " WHERE (products.reserved = false"
                 + " OR users_products.user_id = ?)"
-                + " AND products.name LIKE ?")) {
+                + " AND LOWER(products.name) LIKE LOWER(?)")) {
 
             stm.setInt(1, userId);
             stm.setString(2, "%" + query + "%");
@@ -303,7 +303,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
                 + " AND PC_LC.list_category = ?"
                 + " AND (products.reserved = false"
                 + " OR users_products.user_id = ?)"
-                + " AND products.name LIKE ?")) {
+                + " AND LOWER(products.name) LIKE LOWER(?)")) {
 
             stm.setInt(1, shoppingListCategoryId);
             stm.setInt(2, userId);
@@ -461,9 +461,8 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
                     stm2.executeUpdate();
                 } catch (SQLException ex) {
                     if (!ex.getSQLState().equals("23505")) {
-                        throw new DAOException("Impossible to link the product with the user (esiste già)", ex);
-                    }
-                    throw new DAOException("Impossible to link the product with the user", ex);
+                        throw new DAOException("Impossible to link the product with the user", ex);
+                    }    
                 }
             }
         } catch (SQLException ex) {

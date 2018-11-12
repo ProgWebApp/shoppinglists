@@ -325,7 +325,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if ((shoppingListId == null)) {
             throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE users_lists SET notifications = notification + 1 WHERE list = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE users_lists SET notifications = notifications + 1 WHERE list = ?")) {
             ps.setInt(1, shoppingListId);
             ps.executeUpdate();
         } catch (SQLException ex) {
@@ -437,7 +437,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 product = JDBCProductDAO.setAllProductFields(rs);
-                product.setNecessary(rs.getInt("necessary"));
+                product.setNecessary(rs.getBoolean("necessary"));
                 products.add(product);
             }
             return products;

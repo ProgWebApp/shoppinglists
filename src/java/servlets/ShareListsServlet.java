@@ -64,6 +64,7 @@ public class ShareListsServlet extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI OBBLIGATORI*/
         if (request.getParameter("userId") == null || request.getParameter("shoppingListId") == null || request.getParameter("action") == null) {
+            System.out.println("errore parametri");
             response.setStatus(400);
             return;
         }
@@ -93,7 +94,7 @@ public class ShareListsServlet extends HttpServlet {
                 return;
             }
         } else {
-            permission = 0; //imposto il valore minimo di permission
+            permission = 1; //imposto il valore minimo di permission
         }
 
         /* RISPONDO */

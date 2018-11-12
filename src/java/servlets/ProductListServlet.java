@@ -25,8 +25,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ProductListServlet extends HttpServlet {
 
-    private ShoppingListDAO shoppingListDao;
-    private ProductDAO productDao;
+    private ShoppingListDAO shoppingListDAO;
+    private ProductDAO productDAO;
 
     @Override
     public void init() throws ServletException {
@@ -35,12 +35,12 @@ public class ProductListServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            shoppingListDao = daoFactory.getDAO(ShoppingListDAO.class);
+            shoppingListDAO = daoFactory.getDAO(ShoppingListDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for shopping-list storage system", ex);
         }
         try {
-            productDao = daoFactory.getDAO(ProductDAO.class);
+            productDAO = daoFactory.getDAO(ProductDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for product storage system", ex);
         }
@@ -70,28 +70,53 @@ public class ProductListServlet extends HttpServlet {
         Integer productId = null;
         Integer action = null;
         Integer quantity = 1;
-        if (request.getParameter("shoppingListId") != null && request.getParameter("productId") != null  && request.getParameter("action") != null) {
-            try { 
+        Integer permissions;
+        if (request.getParameter("shoppingListId") != null && request.getParameter("productId") != null && request.getParameter("action") != null) {
+            try {
                 shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
                 productId = Integer.valueOf(request.getParameter("productId"));
                 action = Integer.valueOf(request.getParameter("action"));
             } catch (RuntimeException ex) {
-                //TODO: log the exception
+                response.setStatus(400);
+                return;
             }
             try {
+                permissions = shoppingListDAO.getPermission(shoppingListId, userId);
                 switch (action) {
                     case 0:
-                        shoppingListDao.removeProduct(shoppingListId, productId);
+                        if (permissions == 2) {
+                            shoppingListDAO.removeProduct(shoppingListId, productId);
+                        } else {
+                            response.setStatus(403);
+                            return;
+                        }
                         break;
                     case 1:
-                        shoppingListDao.updateProduct(shoppingListId, productId, quantity, false);
+                        if (permissions == 1 || permissions == 2) {
+                            shoppingListDAO.updateProduct(shoppingListId, productId, quantity, false);
+                        } else {
+                            response.setStatus(403);
+                            return;
+                        }
                         break;
                     case 2:
-                        shoppingListDao.updateProduct(shoppingListId, productId, quantity, true);
+                        if (permissions == 1 || permissions == 2) {
+                            shoppingListDAO.updateProduct(shoppingListId, productId, quantity, true);
+                        } else {
+                            response.setStatus(403);
+                            return;
+                        }
                         break;
                     case 3:
-                        shoppingListDao.addProduct(shoppingListId, productId, quantity, true);
-                        productDao.shareProductToList(productId, shoppingListId);
+                        if (permissions == 2) {
+                            shoppingListDAO.addProduct(shoppingListId, productId, quantity, true);
+                            if (productDAO.getByPrimaryKey(productId).isReserved()) {
+                                productDAO.shareProductToList(productId, shoppingListId);
+                            }
+                        } else {
+                            response.setStatus(403);
+                            return;
+                        }
                         break;
                 }
             } catch (DAOException ex) {
@@ -99,10 +124,9 @@ public class ProductListServlet extends HttpServlet {
                 response.setStatus(500);
             }
         }
-        
-        getServletContext().getRequestDispatcher("/restricted/ShoppingListServlet?res=1&shoppingListId="+shoppingListId).forward(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
 }

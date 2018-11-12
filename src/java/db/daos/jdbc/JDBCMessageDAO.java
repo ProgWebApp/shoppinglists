@@ -39,12 +39,12 @@ public class JDBCMessageDAO extends JDBCDAO<Message, Integer> implements Message
         if (message == null) {
             throw new DAOException("message is not valid", new NullPointerException("message is null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO messages (sender, date, body, list) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO messages (sender, date, body, list) VALUES (?,NOW(),?,?)", Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setInt(1, message.getSenderId());
-            ps.setString(2, message.getDate());
-            ps.setString(3, message.getBody());
-            ps.setInt(4, message.getShoppingListId());
+            
+            ps.setString(2, message.getBody());
+            ps.setInt(3, message.getShoppingListId());
 
             ps.executeUpdate();
 
