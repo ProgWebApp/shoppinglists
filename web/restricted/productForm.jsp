@@ -1,4 +1,29 @@
+<%@page import="db.exceptions.DAOFactoryException"%>
+<%@page import="db.factories.DAOFactory"%>
+<%@page import="db.daos.ProductCategoryDAO"%>
+<%@page import="db.entities.ProductCategory"%>
+<%@page import="java.util.List"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%! private ProductCategoryDAO productCategoryDAO;
+
+    @Override
+    public void init() throws ServletException {
+        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+        if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+        }
+        try {
+            productCategoryDAO = daoFactory.getDAO(ProductCategoryDAO.class);
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get product category dao", ex);
+        }
+    }
+%>
+<%
+    List<ProductCategory> categories;
+    categories = productCategoryDAO.getAll();
+    pageContext.setAttribute("categories", categories);
+%>
 <!DOCTYPE html>
 <html>
     <head>

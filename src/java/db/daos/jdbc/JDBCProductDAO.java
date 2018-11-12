@@ -160,8 +160,8 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         }
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products WHERE id = ?")) {
             stm.setInt(1, primaryKey);
+            
             ResultSet rs = stm.executeQuery();
-
             rs.next();
             return setAllProductFields(rs);
 
@@ -265,9 +265,35 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             throw new DAOException("Impossible to get the list of products for the passed shoppingListCategoryId and userId", ex);
         }
     }
+    
+    
+    @Override
+    public List<Product> searchByName(String query, Integer userId) throws DAOException {
+        if (userId == null) {
+            throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products LEFT JOIN users_products "
+                + " ON products.id = users_products.product"
+                + " WHERE (products.reserved = false"
+                + " OR users_products.user_id = ?)"
+                + " AND products.name LIKE ?")) {
+
+            stm.setInt(1, userId);
+            stm.setString(2, "%" + query + "%");
+            
+            List<Product> products = new ArrayList<>();
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                products.add(setAllProductFields(rs));
+            }
+            return products;
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of products for the passed query and userId", ex);
+        }
+    }
 
     @Override
-    public List<Product> searchByName(String query, Integer shoppingListCategoryId, Integer userId) throws DAOException {
+    public List<Product> searchByNameAndCategory(String query, Integer shoppingListCategoryId, Integer userId) throws DAOException {
         if (shoppingListCategoryId == null || userId == null) {
             throw new DAOException("shoppingListCategoryId and userId are mandatory fields", new NullPointerException("shoppingListCategoryId or userId is null"));
         }
@@ -279,15 +305,42 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
                 + " OR users_products.user_id = ?)"
                 + " AND products.name LIKE ?")) {
 
-            List<Product> products = new ArrayList<>();
             stm.setInt(1, shoppingListCategoryId);
             stm.setInt(2, userId);
             stm.setString(3, "%" + query + "%");
+            
+            List<Product> products = new ArrayList<>();
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 products.add(setAllProductFields(rs));
             }
             return products;
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of products for the passed query, shoppingListCategoryId and userId", ex);
+        }
+    }
+
+    @Override
+    public Product getIfVisible(Integer productId, Integer userId) throws DAOException {
+        if (productId == null || userId == null) {
+            throw new DAOException("productId and userId are mandatory fields", new NullPointerException("productId or userId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products LEFT JOIN users_products "
+                + " ON products.id = users_products.product"
+                + " WHERE products.id = ?"
+                + " AND (products.reserved = false"
+                + " OR users_products.user_id = ?)")) {
+
+            stm.setInt(1, productId);
+            stm.setInt(2, userId);
+            
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                return setAllProductFields(rs);
+            }else{
+                return null;
+            }
+            
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of products for the passed query, shoppingListCategoryId and userId", ex);
         }
@@ -341,7 +394,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         }
     }
 
-    //@Override
+    @Override
     public void removeLinkWithUser(Integer productId, Integer userId) throws DAOException {
         if ((productId == null) || (userId == null)) {
             throw new DAOException("productId and userId are mandatory fields", new NullPointerException("productId or userId are null"));
@@ -417,4 +470,5 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             throw new DAOException("Impossible to get list of products ", ex);
         }
     }
+
 }

@@ -53,7 +53,7 @@ public class ProductServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
-        if (request.getParameter("productId") != null || request.getParameter("res") != null) {
+        if (request.getParameter("productId") == null || request.getParameter("res") == null) {
             response.setStatus(400);
             return;
         }
@@ -72,17 +72,15 @@ public class ProductServlet extends HttpServlet {
             return;
         }
 
-        /* RECUPERO IL PRODOTTO */
-        Product product = null;
+        /* RECUPERO IL PRODOTTO E RESTITUISCO ERRORE SE IL PRODOTTO NON ESISTE (O NON E VISIBILE) */
+        Product product;
         try {
-            product = productDao.getByPrimaryKey(productId);
+            product = productDao.getIfVisible(productId, user.getId());
         } catch (DAOException ex) {
             response.setStatus(500);
             return;
         }
-
-        /* CONTROLLO CHE L'UTENTE ABBIA I PERMESSI, ALTRIMENTI RESTITUISCO ERRORE */
-        if (checkPermissions(user, product) != 0) {
+        if (product == null) {
             if (res == 0) {
                 response.setStatus(403);
             } else {
@@ -92,14 +90,6 @@ public class ProductServlet extends HttpServlet {
         }
 
         /* RISPONDO */
-        List<ProductCategory> categories;
-        try {
-            categories = productCategoryDAO.getAll();
-        } catch (DAOException ex) {
-            response.setStatus(500);
-            return;
-        }
-        request.setAttribute("categories", categories);
         request.setAttribute("product", product);
         switch (res) {
             case 0:
@@ -110,10 +100,27 @@ public class ProductServlet extends HttpServlet {
                 out.flush();
                 break;
             case 1:
+                if (checkPermissions(user, product) == 0) {
+                    request.setAttribute("modifiable", true);
+                } else {
+                    request.setAttribute("modifiable", false);
+                }
+                ProductCategory category;
+                try {
+                    category = productCategoryDAO.getByPrimaryKey(product.getProductCategoryId());
+                } catch (DAOException ex) {
+                    response.setStatus(500);
+                    return;
+                }
+                request.setAttribute("productCategory", category);
                 getServletContext().getRequestDispatcher("/restricted/product.jsp").forward(request, response);
                 break;
             case 2:
-                getServletContext().getRequestDispatcher("/restricted/productForm.jsp").forward(request, response);
+                if (checkPermissions(user, product) == 0) {
+                    getServletContext().getRequestDispatcher("/restricted/productForm.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+                }
                 break;
         }
     }
@@ -260,13 +267,13 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
+
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
-        if (request.getParameter("productId") != null ) {
+        if (request.getParameter("productId") == null) {
             response.setStatus(400);
             return;
         }
-        
+
         /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
         Integer productId;
         try {
@@ -275,7 +282,7 @@ public class ProductServlet extends HttpServlet {
             response.setStatus(400);
             return;
         }
-        
+
         /* RECUPERO IL PRODOTTO */
         Product product;
         try {

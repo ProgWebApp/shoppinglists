@@ -51,6 +51,6 @@
             <br>
         </c:forEach>
         <br>
-        <a href="${pageContext.response.encodeURL("product?res=2")}">Aggiungi prodotto</a>
+        <a href="${pageContext.response.encodeURL("productForm.jsp")}">Aggiungi prodotto</a>
     </body>
 </html>
