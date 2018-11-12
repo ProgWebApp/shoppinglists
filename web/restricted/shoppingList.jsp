@@ -20,7 +20,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js" crossorigin="anonymous"></script>
         <script>
-        //FUNZIONE RICERCA E AGGIUNTA DEI PRODOTTI
+        /* FUNZIONE RICERCA E AGGIUNTA DEI PRODOTTI */
         $(function () {
             function formatOption(option) {
                 var res = $('<span class="optionClick" onClick="addprod()">' + option.text + '</span>');
@@ -31,7 +31,7 @@
                 allowClear: true,
                 ajax: {
                     url: function (request) {
-                        return "ProductsSearchServlet?listCategoryId=11&query=" + request.term;
+                        return "ProductsSearchServlet?shoppingListId=${shoppingList.id}&query=" + request.term;
                     },
                     dataType: "json"
                 },
@@ -54,7 +54,7 @@
                 xhttp.send();
             });
         });
-        //FUNZIONE DI RICERCA E AGGIUNTA DEGLI UTENTI
+        /* FUNZIONE DI RICERCA E AGGIUNTA DEGLI UTENTI */
         $(function () {
 
             function formatOption(option) {
@@ -78,12 +78,13 @@
 
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
+                    
                     if (this.readyState === 4 && this.status === 200) {
                         $("#utenti").append("<li class=\"list-group-item justify-content-between align-items-center\">" + $('#autocomplete-3').find(":selected").text()
                                 + " <a class=\"pull-right\" href=\"#\" title=\"Elimina\"><span class=\"glyphicon glyphicon-remove\" style=\"color:black;font-size:15px;margin-left:5px;\"></span></a>"
-                                + " <select class=\"pull-right\">"
-                                + "     <option value=\"visualizza\">Visualizza lista</option>"
-                                + "     <option value=\"Modifica\">Modifica lista</option>"
+                                + " <select class=\"pull-right\" onchange=\"changePermissions("+$('#autocomplete-3').find(":selected").text()+", this.value)\">"
+                                + "     <option value=1>Visualizza lista</option>"
+                                + "     <option value=2>Modifica lista</option>"
                                 + " </select>"
                                 + " </li>")
                     } else if (this.readyState === 4 && this.status === 500) {
@@ -95,6 +96,22 @@
                 xhttp.send();
             });
         });
+        /* MODIFICA ASINCRONA DEI PERMESSI DEGLI UTENTI */
+        function changePermissions(userId, permission) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        
+                    }else{
+                        alert("Impossibile modificare i permessi");
+                    }
+                };
+                var url = "${pageContext.response.encodeURL("ShareListServlet")}";
+                if (userid!=='' && permission !== '') {
+                    xhttp.open("GET", url + "?action=2&shoppingListId=${shoppingList.id}&userId="+userId+"&permission="+permission, true);
+                    xhttp.send();
+                }
+            }
         </script>
         <style>
             .jumbotron {
@@ -258,9 +275,9 @@
                             <c:forEach items="${users}" var="user">
                                 <li class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
                                     <a class="pull-right" href="#" title="Elimina"><span class="glyphicon glyphicon-remove" style="color:black;font-size:15px;margin-left:5px;"></span></a>
-                                    <select class="pull-right">
-                                        <option value="visualizza">Visualizza lista</option>
-                                        <option value="Modifica">Modifica lista</option>
+                                    <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
+                                        <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
+                                        <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
                                     </select>  
                                 </li>
                             </c:forEach>

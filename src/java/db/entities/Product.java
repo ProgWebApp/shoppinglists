@@ -15,10 +15,10 @@ public class Product {
     private Integer productCategoryId;
     private Integer ownerId;
     private boolean reserved;
+    private Integer necessary;
 
     /**
      * Returns the primary key of this product.
-     *
      * @return the id of the product.
      */
     public Integer getId() {
@@ -27,7 +27,6 @@ public class Product {
 
     /**
      * Sets the new primary key of this product.
-     *
      * @param id the new id of this product.
      */
     public void setId(Integer id) {
@@ -160,9 +159,39 @@ public class Product {
         this.reserved = reserved;
     }
     
+    /**
+     * Returns the necessary of this product.
+     * @return the necessary of the product.
+     */
+    public Integer getNecessary() {
+        return necessary;
+    }
+
+    /**
+     * Sets the new necessary of this product.
+     * @param necessary the new necessary of this product.
+     */
+    public void setNecessary(Integer necessary) {
+        this.necessary = necessary;
+    }
+    
     public String toJson(){
         String json = "{\"id\": "+id+", \"text\": \""+name+"\"}";
         return json;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof Product)) {
+            return false;
+        }
+        Product product = (Product) o;
+        return product.id.equals(this.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

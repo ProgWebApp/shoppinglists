@@ -83,7 +83,7 @@ public class ShoppingListServlet extends HttpServlet {
         try {
             shoppingList = shoppingListDAO.getIfVisible(shoppingListId, user.getId());
         } catch (DAOException ex) {
-            ex.getCause().printStackTrace();
+            System.out.println("fallita la ricerca della lista");
             response.setStatus(500);
             return;
         }
@@ -97,6 +97,22 @@ public class ShoppingListServlet extends HttpServlet {
         }
 
         /* RISPONDO */
+        List<Product> products;
+        try {
+            products = shoppingListDAO.getProducts(shoppingListId);
+        } catch (DAOException ex) {
+            System.out.println("fallita la ricerca dei prodotti");
+            response.setStatus(500);
+            return;
+        }
+        List<User> users;
+        try {
+            users = shoppingListDAO.getMembers(shoppingListId);
+        } catch (DAOException ex) {
+            System.out.println("fallito getMembers");
+            response.setStatus(500);
+            return;
+        }
         request.setAttribute("shoppingList", shoppingList);
         switch (res) {
             case 0:
@@ -138,6 +154,15 @@ public class ShoppingListServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     *
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         /* RECUPERO L'UTENTE */

@@ -15,6 +15,7 @@ public class User implements Serializable{
     private String avatarPath;
     private boolean admin;
     private String check;
+    private Integer permissions;
 
     private Integer shoppingListsCount;
 
@@ -181,8 +182,24 @@ public class User implements Serializable{
         this.check = check;
     }
 
+    /**
+     * Returns the permission of this user entity for a list.
+     * @return the permission of the user entity.
+     */
+    public Integer getPermissions() {
+        return permissions;
+    }
+
+    /**
+     * Sets the permissions of this user entity for a list.
+     * @param permissions the new permissions of this user entity for a list.
+     */
+    public void setPermissions(Integer permissions) {
+        this.permissions = permissions;
+    }
+    
     public String toJson() {
-        String json = "{\"id\": "+id+", \"text\": \""+firstName+lastName+"\"}";
+        String json = "{\"id\": "+id+", \"text\": \""+firstName+" "+lastName+"\"}";
         return json;
     }
 }
