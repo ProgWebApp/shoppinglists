@@ -182,16 +182,15 @@
             </style>
         </head>
         <body>
-
             <div class="container-fluid">
                 <div class="jumbotron">
-                    <img src="alimentare.jpg" class="fit-image" alt="Immagine lista">
-                    <h2>Lista Alimentari</h2>
-                    <h4>Categoria: Alimentare</h4>
+                    <img src="../images/shoppingList/${shoppingList.imagePath}" class="fit-image" alt="Immagine lista">
+                    <h2>${shoppingList.name}</h2>
+                    <h4>Categoria: ${shoppingListCategory.name}</h4>
+                    <h4>Descrizione: ${shoppingList.description}</h4>
                 </div>
                 <nav class="navbar navbar-inverse">
                     <div class="container-fluid">
-
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="utente.html" style="color:white"><span class="glyphicon glyphicon-user"></span> PROFILO</a></li>
                             <li><a href="mainpagenologged.html" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
@@ -213,7 +212,6 @@
                         </ul>  
                         <button type="button" class="navbar-toggle" data-toggle="collapse"></button>
                         <a class="navbar-brand" style="color:white" href="mainpagelogged.html"><span class="glyphicon glyphicon-home"></span> Home</a>
-
                     </div>
                 </nav>
                 <div class="col-sm-1">
@@ -254,21 +252,11 @@
                     <br>
                     <div class="row">
                         <label> Utenti che condividono la lista: </label>
-
                         <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
                         </select>
                         <ul id="utenti" class="list-group user-list-group">
-                            <div class="input-group">
-
-                                <input type="text" class="form-control" placeholder="Cerca utente...">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">
-                                        <span class="glyphicon glyphicon-search"></span>
-                                    </button>
-                                </div>
-                            </div>
                             <c:forEach items="${users}" var="user">
-                                <li class="list-group-item justify-content-between align-items-center">${user.firstname} ${user.lastname}  
+                                <li class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
                                     <a class="pull-right" href="#" title="Elimina"><span class="glyphicon glyphicon-remove" style="color:black;font-size:15px;margin-left:5px;"></span></a>
                                     <select class="pull-right">
                                         <option value="visualizza">Visualizza lista</option>

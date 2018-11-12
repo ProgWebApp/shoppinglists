@@ -342,7 +342,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             }
             
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of products for the passed query, shoppingListCategoryId and userId", ex);
+            throw new DAOException("Impossible to get the product for the passed id and userId", ex);
         }
     }
 

@@ -199,7 +199,9 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if (userId == null) {
             throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists, users_lists WHERE (id = list AND user_id = ?) ORDER BY name")) {
+                try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists LEFT JOIN users_lists "
+                + " ON lists.id = users_lists.list"
+                + " WHERE users_lists.user_id = ?")) {
 
             List<ShoppingList> shoppingLists = new ArrayList<>();
 
@@ -214,6 +216,31 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
 
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of shoppingLists for the passed userId", ex);
+        }
+    }
+    
+    @Override
+    public ShoppingList getIfVisible(Integer shoppingListId, Integer userId) throws DAOException {
+        if (shoppingListId == null || userId == null) {
+            throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("shoppingListId or userId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists LEFT JOIN users_lists "
+                + " ON lists.id = users_lists.list"
+                + " WHERE lists.id = ?"
+                + " AND users_lists.user_id = ?")) {
+
+            stm.setInt(1, shoppingListId);
+            stm.setInt(2, userId);
+            
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                return setAllShoppingListFields(rs);
+            }else{
+                return null;
+            }
+            
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the shoppingList for the passed id and userId", ex);
         }
     }
 
@@ -430,7 +457,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             stm.setInt(2, shoppingListId);
             ResultSet rs = stm.executeQuery();
             rs.next();
-            return Integer.valueOf(rs.getInt("permissions"));
+            return rs.getInt("permissions");
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShoppingListDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

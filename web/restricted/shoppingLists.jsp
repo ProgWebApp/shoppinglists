@@ -1,3 +1,4 @@
+<%@page import="db.entities.User"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="db.entities.ShoppingList"%>
@@ -22,8 +23,9 @@
     }
 
 %>
-<%
-    List<ShoppingList> shoppingLists = shoppingListDao.getAll();
+<%  
+    User user = (User) request.getSession().getAttribute("user");
+    List<ShoppingList> shoppingLists = shoppingListDao.getByUserId(user.getId());
     pageContext.setAttribute("shoppingLists", shoppingLists);
 %>
 <!DOCTYPE html>
