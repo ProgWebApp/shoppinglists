@@ -5,55 +5,15 @@
         <title>Utente</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/default-element.css">
+        <link rel="stylesheet" type="text/css" href="css/form.css">
+        <link rel="stylesheet" type="text/css" href="css/table.css">
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <style>
-            .jumbotron {
-                margin-bottom: 0;
-                text-align:center;
-            }
-            .jumbotron img{
-                display:block;
-                margin-left:auto;
-                margin-right:auto;}
-            .btn-custom{
-                font: 17px monospace;
-                background-color:#ff6336;
-                padding: 4px 7px 4px 7px;
-                border-radius: 5px 5px; 
-                color:white;
-                margin:8px 1px 8px 1px;
-            }
-            .fit-image{
-                width: 100%;
-                object-fit: cover;
-                height: 200px;
-                width:150px;
-            }
-            footer{
-                background-color: #ff6336;
-                color: #FFFFFF;
-                padding: 25px;
-            } 
-
-            td {
-                width:100px;
-            }
-            @media screen and (min-width: 500px) {
-                td {
-                    width:200px;
-                }}
-            @media screen and (min-width: 700px) {
-                td {
-                    width:350px;
-                }}
-            @media screen and (min-width: 1200px) {
-                td {
-                    width:500px;
-                }}
-
-        </style>
+        
     </head>
     <body>
         <div class="jumbotron">

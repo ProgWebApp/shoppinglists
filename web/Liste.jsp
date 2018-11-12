@@ -40,82 +40,24 @@ private ProductDAO productDao;
         <title>Liste</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/default-element.css">
+        <link rel="stylesheet" type="text/css" href="css/liste.css">
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
         <style>
 
-            .jumbotron {
-                margin-bottom: 0;
-                text-align:center;
-            }
-
-            footer{
-                background-color: #ff6336;
-                color: #FFFFFF;
-                padding: 25px;
-                margin-top: 30px;
-            }
-
-
-
-            button.list-group-item-action{
-                background-color:#e6e6e6;
-                color:black;
-                margin: 3px 0px 3px 0px;
-                border:0px;
-            }
-            div.pre-scrollable{
-                min-height:450px;
-                max-height:450px;
-            }
-            .list-group{
-                font-size:18px;
-            }
-            .group-item-custom{
-                background-color:#ffffff;
-                margin: 3px 0px 3px 0px;
-                color:#000000;
-                border:1px solid #e6e6e6;
-            }
             button:focus{
                 outline:none;
             }
-            .navbar {
-                margin-bottom: 50px;
-                border-radius: 0;
-            }
-            @media screen and (min-width: 1200px) {
-                .navbar {
-                    margin-bottom: 50px;
-                    border-radius: 0;
-                    padding-right: 0px;
-                    padding-left: 150px;
-                }}
-
-            .navbar-inverse{
-                background-color: #ff6336;
-                border: 0px;
-            }
-
-            .dropdown-menu{
-                padding-top:15px;
-            }
+            
             a.disabled {
                 pointer-events: none;
                 cursor: default;
             }
-
-            .small-logo{
-                width: 100%;
-                object-fit: cover;
-                height: 50px;
-                width:50px;
-                float:left;
-                margin-right:10px;
-            }
-
         </style>
     </head>
     <body>

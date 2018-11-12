@@ -1,0 +1,19 @@
+.fit-image{
+    width: 100%;
+    object-fit: cover;
+    height: 200px;
+    width: 320px;
+}
+.container-img {
+    position: relative;
+    width: 150px; 
+    height: 150px; 
+    float: left; 
+    margin-left: 20px; 
+}
+.fit-image-small{
+    width: 100%;
+    object-fit: cover;
+    height: 150px;
+    width:150px;
+}

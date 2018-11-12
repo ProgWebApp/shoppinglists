@@ -1,0 +1,39 @@
+.navbar {
+    margin-bottom: 50px;
+    border-radius: 0;
+}
+@media screen and (min-width: 1200px) {
+    .navbar {
+        margin-bottom: 50px;
+        border-radius: 0;
+        padding-right: 0px;
+        padding-left: 150px;
+    }
+}
+.navbar-inverse{
+    background-color: #ff6336;
+    border: 0px;
+}
+.navbar-form{    	
+    border: 0px;
+} 
+.dropdown-menu{
+    padding-top:15px;
+}
+footer{
+    background-color: #ff6336;
+    color: #FFFFFF;
+    padding: 25px;
+}
+.jumbotron {
+    background-color:#f1f1f1;
+    margin-bottom: 0;
+    text-align:center;
+    padding: 40px 5px 25px 5px;
+}
+.jumbotron img{
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+}
+

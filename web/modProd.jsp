@@ -31,70 +31,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/default-element.css">
+        <link rel="stylesheet" type="text/css" href="css/immagini.css">
+        <link rel="stylesheet" type="text/css" href="css/form.css">
+        <link rel="stylesheet" type="text/css" href="css/loghi.css">
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <style>
-            .navbar {
-                margin-bottom: 50px;
-                border-radius: 0;
-            }
-
-            .navbar-inverse{
-                background-color: #ff6336;
-                border: 0px;
-
-            }
-
-            .container-img {
-                position: relative;
-                width: 150px; 
-                height: 150px; 
-                float: left; 
-                margin-left: 20px; 
-            }
-
-            .checkbox-img { 
-                position: absolute; 
-                top: 0px; 
-                right: 0px;
-                height: 20px;
-                width: 20px;
-            }
-
-            .fit-image{
-                width: 100%;
-                object-fit: cover;
-                height: 150px;
-                width:150px;
-            }
-            footer{
-                background-color: #A0A4E5;
-                color: black;
-                padding: 25px;
-            }
-
-            .form-container{
-                background-color: #B9E5FF;
-                text-align:left;
-                border: 2px solid #A0A4E5;
-                padding: 45px 5px 30px 5px;
-            }
-            .checkboxes-group{
-                font: 15px monospace;
-                padding: 10px 10px 0px 10px;
-                display: flex;
-                flex-wrap: wrap;
-            }
-            .groupped-ckbox{
-                flex: 0 0 30%; 
-                margin: 5px;
-            }
-            @media screen  and (max-width:525px){
-                .groupped-ckbox{ 
-                    flex: 1 0 48%;
-                    margin: 5px;
-                }}
-            </style>
+        
         </head>
         <body>
             <div class="container text-center">    
@@ -123,6 +67,16 @@
                             <input type="text" id="notes" name="notes" class="form-control" placeholder="Inserisce note" value="${product.notes}">
                         </div>
                         <div class="form-group">
+                            <label for="category">Category: </label>
+                            <select id="category" name="category" class="form-control" onchange="showIcons('logo', this.value)">
+                                <option value="" <c:if test="${empty product.productCategoryId}">selected</c:if> disabled>Select category...</option>
+                                <c:forEach items="${categories}" var="category">
+                                    <option value="${category.id}" <c:if test="${category.id==product.productCategoryId}">selected</c:if>>${category.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label for="logo">Aggiungi nuove immagini:</label>
                             <input type="file" id="photos" name="photos" class="form-control" placeholder="Images" multiple="multiple">
                         </div>
@@ -134,7 +88,7 @@
                                 <c:forEach items="${product.photoPath}" var="photo">
                                     <div class="container-img">
                                         <input type="checkbox" id="${photo}" name="removePhotos" value="${photo}" class="checkbox-img">
-                                        <img src="../images/products/${photo}" class="fit-image img-responsive" alt="Img Prod">
+                                        <img src="../images/products/${photo}" class="fit-image-small img-responsive" alt="Img Prod">
                                     </div>
 
 
