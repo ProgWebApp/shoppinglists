@@ -6,6 +6,7 @@
 package servlets;
 
 import db.daos.ShoppingListDAO;
+import db.entities.Product;
 import db.entities.ShoppingList;
 import db.entities.User;
 import db.exceptions.DAOException;
@@ -13,10 +14,10 @@ import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -26,7 +27,7 @@ import javax.servlet.http.Part;
 @MultipartConfig
 public class ShoppingListServlet extends HttpServlet {
 
-    private ShoppingListDAO shoppingListDao;
+    private ShoppingListDAO shoppingListDAO;
 
     @Override
     public void init() throws ServletException {
@@ -35,12 +36,92 @@ public class ShoppingListServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            shoppingListDao = daoFactory.getDAO(ShoppingListDAO.class);
+            shoppingListDAO = daoFactory.getDAO(ShoppingListDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for shopping-list storage system", ex);
         }
     }
 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        /* RECUPERO L'UTENTE */
+        User user = (User) request.getSession().getAttribute("user");
+        
+        /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
+        if (request.getParameter("shoppingListId")==null || request.getParameter("res")==null) {
+            response.setStatus(400);
+            return;
+        }
+        /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
+        Integer shoppingListId;
+        Integer res;
+        try {
+            shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
+            res = Integer.valueOf(request.getParameter("res"));
+            if (res > 2) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException ex) {
+            response.setStatus(400);
+            return;
+        }
+
+        /* RECUPERO IL PRODOTTO */
+        ShoppingList shoppingList = null;
+        try {
+            shoppingList = shoppingListDAO.getByPrimaryKey(shoppingListId);
+        } catch (DAOException ex) {
+            response.setStatus(500);
+            return;
+        }
+
+        /* CONTROLLO CHE L'UTENTE ABBIA I PERMESSI, ALTRIMENTI RESTITUISCO ERRORE */
+        if (shoppingList.getOwnerId()!=user.getId() && !user.isAdmin()) {
+            if (res == 0) {
+                response.setStatus(403);
+            } else {
+                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+            }
+            return;
+        }
+
+        /* RISPONDO */
+        List<Product> products;
+        try {
+            products = shoppingListDAO.getProducts(shoppingListId);
+        } catch (DAOException ex) {
+            response.setStatus(500);
+            return;
+        }
+        List<User> users;
+        try {
+            users = shoppingListDAO.getMembers(shoppingListId);
+        } catch (DAOException ex) {
+            System.out.println("fallito getMembers");
+            System.out.println(ex.getMessage());
+            response.setStatus(500);
+            return;
+        }
+        request.setAttribute("shoppingList", shoppingList);
+        request.setAttribute("products", products);
+        request.setAttribute("users", users);
+        switch (res) {
+            case 0:
+                PrintWriter out = response.getWriter();
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out.print(shoppingList.toString());
+                out.flush();
+                break;
+            case 1:
+                getServletContext().getRequestDispatcher("/restricted/shoppingList.jsp").forward(request, response);
+                break;
+            case 2:
+                getServletContext().getRequestDispatcher("/restricted/shoppingListForm.jsp").forward(request, response);
+                break;
+        }
+    }
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -52,18 +133,28 @@ public class ShoppingListServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        /* RECUPERO L'UTENTE */
         User user = (User) request.getSession().getAttribute("user");
-        ShoppingList shoppingList = new ShoppingList();
         Integer userId = user.getId();
+        
+        /* RECUPERO LA LISTA, SE ESISTE, OPPURE NE CREO UNO NUOVO */
+        ShoppingList shoppingList = new ShoppingList();
         Integer shoppingListId = null;
         if (request.getParameter("shoppingListId")!=null) {
-            shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
             try {
-                shoppingList = shoppingListDao.getByPrimaryKey(shoppingListId);
                 shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
+            } catch (NumberFormatException ex) {
+                throw new ServletException("This request require a parameter named shoppingListId whit an int value");
+            }
+            try {
+                shoppingList = shoppingListDAO.getByPrimaryKey(shoppingListId);
             } catch (DAOException ex) {
                 throw new ServletException("Impossible to get the shoppingList", ex);
+            }
+            /* SE LA LISTA ESISTE, CONTROLLO I PERMESSI DELL'UTENTE */
+            if (shoppingList.getOwnerId()!=user.getId() && !user.isAdmin()) {
+                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+                return;
             }
         }
         
@@ -108,7 +199,6 @@ public class ShoppingListServlet extends HttpServlet {
             shoppingList.setOwnerId(userId);
         }
         
-        
         /* LOGO */
         //carico il logo solo se è stato specificato
         if (imageFilePart.getSize() > 0) {
@@ -124,34 +214,62 @@ public class ShoppingListServlet extends HttpServlet {
         /* INSERT OR UPDATE */
         try {
             if (shoppingListId == null) {
-                shoppingListId = shoppingListDao.insert(shoppingList);
-                shoppingListDao.addMember(shoppingListId, userId, 2);
+                shoppingListId = shoppingListDAO.insert(shoppingList);
+                shoppingListDAO.addMember(shoppingListId, userId, 2);
                 if (!user.isAdmin()) {
                     //productDao.addLinkWithUser(productId, userId); //solo per prodotti privati
                 }
             } else {
-                shoppingListDao.update(shoppingList);
+                shoppingListDAO.update(shoppingList);
             }
         } catch (DAOException ex) {
             throw new ServletException("Impossible to insert or update the shoppingList", ex);
         }
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingLists.jsp"));
+        /* REDIRECT ALLA PAGINA DEL PRODOTTO */
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingList?res=1&shoppingListId="+shoppingListId));
     }
-
+    
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer shoppingListId = null;
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+        /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
+        if (request.getParameter("shoppingListId") != null ) {
+            response.setStatus(400);
+            return;
+        }
+        
+        /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
+        Integer shoppingListId;
         try {
             shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
-        } catch (RuntimeException ex) {
-            //TODO: log the exception
+        } catch (NumberFormatException ex) {
+            response.setStatus(400);
+            return;
         }
-        if (shoppingListId != null) {
-            try {
-                shoppingListDao.delete(shoppingListId);
-            } catch (DAOException ex) {
-                Logger.getLogger(ShoppingListServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        
+        /* RECUPERO IL PRODOTTO */
+        ShoppingList shoppingList;
+        try {
+            shoppingList = shoppingListDAO.getByPrimaryKey(shoppingListId);
+        } catch (DAOException ex) {
+            response.setStatus(500);
+            return;
+        }
+
+        /* CONTROLLO CHE L'UTENTE ABBIA I PERMESSI */
+        User user = (User) request.getSession().getAttribute("user");
+        if (shoppingList.getOwnerId()!=user.getId() && !user.isAdmin()) {
+            response.setStatus(403);
+            return;
+        }
+
+        /* RISPONDO */
+        try {
+            shoppingListDAO.delete(shoppingListId);
+            response.setStatus(204);
+        } catch (DAOException ex) {
+            response.setStatus(500);
         }
     }
+    
 }

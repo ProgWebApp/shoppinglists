@@ -99,6 +99,8 @@ public class ProductListServlet extends HttpServlet {
                 response.setStatus(500);
             }
         }
+        
+        getServletContext().getRequestDispatcher("/restricted/ShoppingListServlet?res=1&shoppingListId="+shoppingListId).forward(request, response);
     }
 
     @Override

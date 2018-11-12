@@ -90,10 +90,8 @@ public class ShareListsServlet extends HttpServlet {
                             shoppingListDAO.removeMember(shoppingListId, userId);
                             break;
                         case 1:
-                            System.out.println("aggiungo utente alla lista");
                             shoppingListDAO.addMember(shoppingListId, userId, permission);
                             productDAO.shareProductFromList(shoppingListId, userId);
-                            
                             break;
                         case 2:
                             shoppingListDAO.updateMember(shoppingListId, userId, permission);
@@ -102,12 +100,12 @@ public class ShareListsServlet extends HttpServlet {
                 }
             } catch (DAOException ex) {
                 Logger.getLogger(ShareListsServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+                System.out.println(ex.getMessage());
+            } 
         } else {
             request.getSession().setAttribute("message", 1);
-        }
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingLists.jsp"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingLists.jsp"));
+        }     
     }
 
     @Override

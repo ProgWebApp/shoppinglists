@@ -1,3 +1,13 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="db.entities.ShoppingList"%>
+<%@page import="db.entities.Product"%>
+<%@page import="db.entities.User"%>
+<%@page import="db.exceptions.DAOFactoryException"%>
+<%@page import="db.factories.DAOFactory"%>
+<%@page import="db.daos.ShoppingListDAO"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,91 +19,84 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js" crossorigin="anonymous"></script>
-
         <script>
-
-            $(function () {
-
-                function formatOption(option) {
-                    var res = $('<span class="optionClick" onClick="addprod()">' + option.text + '</span>');
-                    return res;
-                }
-                $("#autocomplete-2").select2({
-                    placeholder: "Aggiungi un prodotto",
-                    allowClear: true,
-                    ajax: {
-                        url: function (request) {
-                            return "ProductsSearchServlet?listCategoryId=11&query=" + request.term;
-                        },
-                        dataType: "json"
+        //FUNZIONE RICERCA E AGGIUNTA DEI PRODOTTI
+        $(function () {
+            function formatOption(option) {
+                var res = $('<span class="optionClick" onClick="addprod()">' + option.text + '</span>');
+                return res;
+            }
+            $("#autocomplete-2").select2({
+                placeholder: "Aggiungi un prodotto",
+                allowClear: true,
+                ajax: {
+                    url: function (request) {
+                        return "ProductsSearchServlet?listCategoryId=11&query=" + request.term;
                     },
-                    templateResult: formatOption
-                });
-                $("#autocomplete-2").val(null).trigger("change");
-                $('#autocomplete-2').on("select2:select", function () {
-
-
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState === 4 && this.status === 200) {
-                            $("#prodotti").append("<li class=\"list-group-item justify-content-between align-items-center\">" + $('#autocomplete-2').find(":selected").text()
-                                    + " <a class='pull-right' style='color:red' href='" + $('#autocomplete-2').find(":selected").val() + "' title='Elimina'>"
-                                    + "<span class=\"glyphicon glyphicon-remove\"></span></a></li>");
-                        } else if (this.readyState === 4 && this.status === 500) {
-                            alert("Impossibile aggiungere il prodotto");
-                        }
-                    };
-                    var url = "${pageContext.response.encodeURL("ProductListServlet")}";
-                    xhttp.open("GET", url + "?shoppingListId=${shoppingList.id}&productId=" + $('#autocomplete-3').find(":selected").val() + "&action=3", true);
-                    xhttp.send();
-                });
+                    dataType: "json"
+                },
+                templateResult: formatOption
             });
-        </script>
-        <script>
+            $("#autocomplete-2").val(null).trigger("change");
+            $('#autocomplete-2').on("select2:select", function () {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        $("#prodotti").append("<li class=\"list-group-item justify-content-between align-items-center\">" + $('#autocomplete-2').find(":selected").text()
+                                + " <a class='pull-right' style='color:red' href='ProductListServlet?shoppingListId=${shoppingList.id}&productId=" + $('#autocomplete-2').find(":selected").val() + "&action=0' title='Elimina'>"
+                                + "<span class=\"glyphicon glyphicon-remove\"></span></a></li>");
+                    } else if (this.readyState === 4 && this.status === 500) {
+                        alert("Impossibile aggiungere il prodotto");
+                    }
+                };
+                var url = "${pageContext.response.encodeURL("ProductListServlet")}";
+                xhttp.open("GET", url + "?shoppingListId=${shoppingList.id}&productId=" + $('#autocomplete-2').find(":selected").val() + "&action=3", true);
+                xhttp.send();
+            });
+        });
+        //FUNZIONE DI RICERCA E AGGIUNTA DEGLI UTENTI
+        $(function () {
 
-            $(function () {
-
-                function formatOption(option) {
-                    var res = $('<span class="optionClick" onClick="addprod()">' + option.text + '</span>');
-                    return res;
-                }
-                $("#autocomplete-3").select2({
-                    placeholder: "Cerca utente...",
-                    allowClear: true,
-                    ajax: {
-                        url: function (request) {
-                            return "UsersSearchServlet?query=" + request.term;
-                        },
-                        dataType: "json"
+            function formatOption(option) {
+                var res = $('<span class="optionClick" onClick="addprod()">' + option.text + '</span>');
+                return res;
+            }
+            $("#autocomplete-3").select2({
+                placeholder: "Cerca utente...",
+                allowClear: true,
+                ajax: {
+                    url: function (request) {
+                        return "UsersSearchServlet?query=" + request.term;
                     },
-                    templateResult: formatOption
-                });
-                $("#autocomplete-3").val(null).trigger("change");
-                $('#autocomplete-3').on("select2:select", function () {
+                    dataType: "json"
+                },
+                templateResult: formatOption
+            });
+            $("#autocomplete-3").val(null).trigger("change");
+            $('#autocomplete-3').on("select2:select", function () {
 
 
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState === 4 && this.status === 200) {
-                            $("#utenti").append("<li class=\"list-group-item justify-content-between align-items-center\">" + $('#autocomplete-3').find(":selected").text()
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        $("#utenti").append("<li class=\"list-group-item justify-content-between align-items-center\">" + $('#autocomplete-3').find(":selected").text()
                                 + " <a class=\"pull-right\" href=\"#\" title=\"Elimina\"><span class=\"glyphicon glyphicon-remove\" style=\"color:black;font-size:15px;margin-left:5px;\"></span></a>"
                                 + " <select class=\"pull-right\">"
                                 + "     <option value=\"visualizza\">Visualizza lista</option>"
                                 + "     <option value=\"Modifica\">Modifica lista</option>"
                                 + " </select>"
                                 + " </li>")
-                        } else if (this.readyState === 4 && this.status === 500) {
-                            alert("Impossibile aggiungere l'utente");
-                        }
-                    };
-                    var url = "${pageContext.response.encodeURL("ShareListsServlet")}";
-                    xhttp.open("GET", url + "?shoppingListId=${shoppingList.id}&userId=" + $('#autocomplete-2').find(":selected").val(), true);
-                    xhttp.send();
-                });
+                    } else if (this.readyState === 4 && this.status === 500) {
+                        alert("Impossibile aggiungere l'utente");
+                    }
+                };
+                var url = "${pageContext.response.encodeURL("ShareListsServlet")}";
+                xhttp.open("GET", url + "?action=1&shoppingListId=${shoppingList.id}&userId=" + $('#autocomplete-3').find(":selected").val(), true);
+                xhttp.send();
             });
+        });
         </script>
         <style>
-
             .jumbotron {
                 background-color:#ffffff;
                 margin-bottom: 0;
@@ -220,12 +223,11 @@
                         <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear">
                         </select>
                         <ul id="prodotti" class="list-group">
-                            <li class="list-group-item justify-content-between align-items-center"> Pasta 
-                                <a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
-                            </li>
-                            <li class="list-group-item justify-content-between align-items-center"> Sugo
-                                <a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
-                            </li>
+                            <c:forEach items="${products}" var="product">
+                                <li class="list-group-item justify-content-between align-items-center">${product.name} 
+                                    <a class="pull-right" style="color:red" href="ProductListServlet?shoppingListId=${shoppingList.id}&productId=${product.id}&action=0" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
+                                </li>
+                            </c:forEach>
                             <!--<input type="text" class="form-control" placeholder="Cerca prodotto da aggiungere...">-->
                         </ul>
                     </div>
@@ -252,12 +254,12 @@
                     <br>
                     <div class="row">
                         <label> Utenti che condividono la lista: </label>
-                        
+
                         <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
                         </select>
                         <ul id="utenti" class="list-group user-list-group">
                             <div class="input-group">
-                                
+
                                 <input type="text" class="form-control" placeholder="Cerca utente...">
                                 <div class="input-group-btn">
                                     <button class="btn btn-default" type="submit">
@@ -265,31 +267,21 @@
                                     </button>
                                 </div>
                             </div>
-                            <li class="list-group-item"> Mario Piero
-
-                                <a class="pull-right" href="#" title="Elimina"><span class="glyphicon glyphicon-remove" style="color:black;font-size:15px;margin-left:5px;"></span></a>
-                                <select class="pull-right">
-                                    <option value="visualizza">Visualizza lista</option>
-                                    <option value="Modifica">Modifica lista</option>
-                                </select>   
-                            </li>
-
-                            <li class="list-group-item justify-content-between align-items-center"> Luca Salvo 
-                                <a class="pull-right" href="#" title="Elimina"><span class="glyphicon glyphicon-remove" style="color:black;font-size:15px;margin-left:5px;"></span></a>
-                                <select class="pull-right">
-                                    <option value="visualizza">Visualizza lista</option>
-                                    <option value="Modifica">Modifica lista</option>
-                                </select>  
-                            </li>
-                            
+                            <c:forEach items="${users}" var="user">
+                                <li class="list-group-item justify-content-between align-items-center">${user.firstname} ${user.lastname}  
+                                    <a class="pull-right" href="#" title="Elimina"><span class="glyphicon glyphicon-remove" style="color:black;font-size:15px;margin-left:5px;"></span></a>
+                                    <select class="pull-right">
+                                        <option value="visualizza">Visualizza lista</option>
+                                        <option value="Modifica">Modifica lista</option>
+                                    </select>  
+                                </li>
+                            </c:forEach>
                         </ul>
                     </div>
 
                 </div>
 
             </div>
-
-
             <footer class="container-fluid text-center">
                 <p>&copy; 2018, ListeSpesa.it, All right reserved</p>
             </footer>
