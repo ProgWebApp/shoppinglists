@@ -1,3 +1,4 @@
+<%@page import="db.entities.User"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="db.entities.ShoppingList"%>
@@ -22,8 +23,9 @@
     }
 
 %>
-<%
-    List<ShoppingList> shoppingLists = shoppingListDao.getAll();
+<%  
+    User user = (User) request.getSession().getAttribute("user");
+    List<ShoppingList> shoppingLists = shoppingListDao.getByUserId(user.getId());
     pageContext.setAttribute("shoppingLists", shoppingLists);
 %>
 <!DOCTYPE html>
@@ -35,7 +37,7 @@
     <body>
         <h1>My Shopping Lists</h1>
         <c:forEach items="${shoppingLists}" var="shoppingList">
-            Nome: <a href="${pageContext.response.encodeURL("shoppingList.jsp?shoppingListId=".concat(shoppingList.id))}">${shoppingList.name}</a><br>
+            Nome: <a href="${pageContext.response.encodeURL("ShoppingListServlet?res=1&shoppingListId=".concat(shoppingList.id))}">${shoppingList.name}</a><br>
             Description: ${shoppingList.description}<br>
             <img height="50px" src="../images/shoppingList/${shoppingList.imagePath}" alt="Image">
             <br>

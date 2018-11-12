@@ -58,60 +58,73 @@ public class ShareListsServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        /* RECUPERO L'UTENTE */
         User userActive = (User) request.getSession().getAttribute("user");
         Integer userActiveId = userActive.getId();
+
+        /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI OBBLIGATORI*/
+        if (request.getParameter("userId") == null || request.getParameter("shoppingListId") == null || request.getParameter("action") == null) {
+            System.out.println("errore parametri");
+            response.setStatus(400);
+            return;
+        }
+
+        /* RESTITUISCO UN ERRORE SE I PARAMETRI NON SONO CONFORMI*/
         Integer userId = null;
         Integer shoppingListId = null;
         Integer action = null;
-        Integer permission = null;
-        if (request.getParameter("userId") != null && request.getParameter("shoppingListId") != null && request.getParameter("action") != null) {
+        try {
+            userId = Integer.valueOf(request.getParameter("userId"));
+            shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
+            action = Integer.valueOf(request.getParameter("action"));
+        } catch (NumberFormatException ex) {
+            System.out.println("fallita conversione");
+            response.setStatus(400);
+            return;
+        }
 
+        /* CONTROLLO L'ESISTENZA DI UN PARAMETRO DEI PERMESSI, ALTRIMENTI IMPOSTO IL DEFAULT */
+        Integer permission = null;
+        if (request.getParameter("permission") != null) {
             try {
-                userId = Integer.valueOf(request.getParameter("userId"));
-                shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
-                action = Integer.valueOf(request.getParameter("action"));
-            } catch (RuntimeException ex) {
-                //TODO: log the exception
+                permission = Integer.valueOf(request.getParameter("permission"));
+            } catch (NumberFormatException ex) {
+            System.out.println("fallita conversione");
+                response.setStatus(400);
+                return;
             }
-            if (request.getParameter("permission") != null) {
-                try {
-                    permission = Integer.valueOf(request.getParameter("permission"));
-                } catch (RuntimeException ex) {
-                    //TODO: log the exception
+        } else {
+            permission = 1; //imposto il valore minimo di permission
+        }
+
+        /* RISPONDO */
+        try {
+            if (shoppingListDAO.getPermission(shoppingListId, userActiveId) == 2) {
+                //se l'utente ha i permessi di modifica della lista
+                switch (action) {
+                    case 0:
+                        shoppingListDAO.removeMember(shoppingListId, userId);
+                        break;
+                    case 1:
+                        shoppingListDAO.addMember(shoppingListId, userId, permission);
+                        productDAO.shareProductFromList(shoppingListId, userId);
+                        break;
+                    case 2:
+                        shoppingListDAO.updateMember(shoppingListId, userId, permission);
+                        break;
                 }
             } else {
-                permission = 0; //imposto il valore minimo di permission
+                System.out.println("l'utente non ha i permessi");
+                response.setStatus(400);
+                return;
             }
-            try {
-                if (shoppingListDAO.getPermission(shoppingListId, userActiveId) == 2) {
-                    switch (action) {
-                        case 0:
-                            shoppingListDAO.removeMember(shoppingListId, userId);
-                            break;
-                        case 1:
-                            System.out.println("aggiungo utente alla lista");
-                            shoppingListDAO.addMember(shoppingListId, userId, permission);
-                            productDAO.shareProductFromList(shoppingListId, userId);
-                            
-                            break;
-                        case 2:
-                            shoppingListDAO.updateMember(shoppingListId, userId, permission);
-                            break;
-                    }
-                }
-            } catch (DAOException ex) {
-                Logger.getLogger(ShareListsServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        } else {
-            request.getSession().setAttribute("message", 1);
+        } catch (DAOException ex) {
+            Logger.getLogger(ShareListsServlet.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingLists.jsp"));
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response
-    ) {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     }
 }

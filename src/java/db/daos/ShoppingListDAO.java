@@ -13,17 +13,29 @@ import java.util.List;
 public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
 
     /**
-     * Returns the list of {@link ShoppingList shoppingList} with the
-     * {@code user} is the one passed as parameter.
+     * Returns the list of {@link ShoppingList shoppingList} shared with the
+     * passed user.
      *
      * @param userId the {@code id} of the {@code user} for which retrieve the
      * shoppingList list.
-     * @return the list of {@code shoppingList} with the user id equals to the
-     * one passed as parameter or an empty list if user id is not linked to any.
+     * @return the list of {@code shoppingList} shared the user passed as
+     * parameter or an empty list if user id is not linked to any.
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
     public List<ShoppingList> getByUserId(Integer userId) throws DAOException;
+
+    /**
+     * Returns a shoppingList if is visible by a user. A shoppingList is visible
+     * by user if someone shared the shoppingList with the user.
+     *
+     * @param shoppingListId the id of the shoppingList
+     * @param userId the id of the user
+     * @return the shoppingList with the passed id if this exists and is visible
+     * by the user, null otherwise
+     * @throws DAOException
+     */
+    public ShoppingList getIfVisible(Integer shoppingListId, Integer userId) throws DAOException;
 
     /**
      * Adds the passed {@code user} to the members of the passed
@@ -48,7 +60,8 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
     public void removeMember(Integer shoppingListId, Integer userId) throws DAOException;
 
     /**
-     * Update the the passed {@code user} in the passed {@code shoppingList} with the passed {@code permissions]
+     * Update the the passed {@code user} in the passed {@code shoppingList}
+     * with the passed {@code permissions]
      *
      * @param shoppingListId the id of the shoppingList
      * @param userId the id of user to update
@@ -56,7 +69,7 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
      * @throws DAOException if an error occurred during the persist action.
      */
     public void updateMember(Integer shoppingListId, Integer userId, Integer permissions) throws DAOException;
-    
+
     /**
      * Returns the list of all the {@code user} that are members of the passed
      * {@code shoppingList}
@@ -122,7 +135,7 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
      * @throws DAOException if an error occurred during the persist action.
      */
     public void updateProduct(Integer shoppingListId, Integer productId, int quantity, boolean necessary) throws DAOException;
-    
+
     /**
      * Returns the list of the products in the passed {@code shoppingList}
      *

@@ -134,6 +134,10 @@
         <servlet-name>ProductsSearchServlet</servlet-name>
         <servlet-class>servlets.ProductsSearchServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UsersSearchServlet</servlet-name>
+        <servlet-class>servlets.UsersSearchServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -197,7 +201,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductsSearchServlet</servlet-name>
-        <url-pattern>/ProductsSearchServlet</url-pattern>
+        <url-pattern>/restricted/ProductsSearchServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UsersSearchServlet</servlet-name>
+        <url-pattern>/restricted/UsersSearchServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

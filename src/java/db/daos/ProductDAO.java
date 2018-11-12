@@ -51,6 +51,21 @@ public interface ProductDAO extends DAO<Product, Integer> {
     public List<Product> getByShoppingListCategory(Integer shoppingListCategoryId, Integer userId) throws DAOException;
 
     /**
+     * Returns the list of {@link Product product} that are shared with the user
+     * passed as parameter and that contais {@code query} in the name field.
+     *
+     * @param query the letters that the name of the product must contains.
+     * @param userId the {@code id} of the {@code user} for which retrieve the
+     * product list.
+     * @return the list of {@link Product product} that are shared with the user
+     * passed as parameter and that contais {@code query} in the name field, or
+     * an empty list.
+     * @throws DAOException if an error occurred during the information
+     * retrieving.
+     */
+    public List<Product> searchByName(String query, Integer userId) throws DAOException;
+
+    /**
      * Returns the list of {@link Product product} that are compatible with the
      * shoppingListCategory passed as paramenter, that are shared with the user
      * passed as parameter and that contais {@code query} in the name field.
@@ -67,7 +82,19 @@ public interface ProductDAO extends DAO<Product, Integer> {
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
-    public List<Product> searchByName(String query, Integer shoppingListCategoryId, Integer userId) throws DAOException;
+    public List<Product> searchByNameAndCategory(String query, Integer shoppingListCategoryId, Integer userId) throws DAOException;
+    
+    /**
+     * Returns a product if is visible by a user. A product is visible by user
+     * if the product is public or if someone shared the product with the user.
+     *
+     * @param productId the id of the product
+     * @param userId the id of the user
+     * @return the product with the passed id if this exists and is visible by
+     * the user, null otherwise
+     * @throws DAOException
+     */
+    public Product getIfVisible(Integer productId, Integer userId) throws DAOException;
 
     /**
      * Links the passed {@code product} with the passed {@code user}.

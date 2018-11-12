@@ -7,6 +7,7 @@ package servlets;
 
 import com.google.gson.Gson;
 import db.daos.ProductDAO;
+import db.daos.ShoppingListDAO;
 import db.entities.Product;
 import db.entities.User;
 import db.exceptions.DAOException;
@@ -30,7 +31,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ProductsSearchServlet extends HttpServlet {
 
-    private ProductDAO productDao;
+    private ProductDAO productDAO;
+    private ShoppingListDAO shoppingListDAO;
 
     @Override
     public void init() throws ServletException {
@@ -39,7 +41,12 @@ public class ProductsSearchServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            productDao = daoFactory.getDAO(ProductDAO.class);
+            shoppingListDAO = daoFactory.getDAO(ShoppingListDAO.class);
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get dao factory for shoppingList storage system", ex);
+        }
+        try {
+            productDAO = daoFactory.getDAO(ProductDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for product storage system", ex);
         }
@@ -49,19 +56,49 @@ public class ProductsSearchServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String query = (String) request.getParameter("query");
         User user = (User) request.getSession().getAttribute("user");
-        
-        if (query != null && request.getParameter("listCategoryId")!=null ) {
-            try {
-                Integer shoppingListCategoryId = Integer.valueOf(request.getParameter("listCategoryId"));
+        /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
+
+        if (!query.isEmpty()) {
+            if (request.getParameter("shoppingListId") != null) {
+                /*RESTITUISCO I PRODOTTI POSSIBILI CHE NON SIANO GIà NELLA LISTA SPECIFICATA*/
                 try {
-                    List<Product> products = productDao.searchByName(query, shoppingListCategoryId, user.getId());
+                    Integer shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
+                    try {
+                        Integer shoppingListCategoryId = (shoppingListDAO.getByPrimaryKey(shoppingListId)).getListCategoryId();
+                        List<Product> productsByName = productDAO.searchByNameAndCategory(query, shoppingListCategoryId, user.getId());
+                        List<Product> productsOfList = shoppingListDAO.getProducts(shoppingListId);
+                        productsByName.removeAll(productsOfList);
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("{\"results\": [");
+                        for (int i = 0; i < productsByName.size(); i++) {
+                            if (i > 0) {
+                                sb.append(",");
+                            }
+                            sb.append(productsByName.get(i).toJson());
+                        }
+                        sb.append("]}");
+                        PrintWriter out = response.getWriter();
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        out.print(sb);
+                        out.flush();
+                    } catch (DAOException ex) {
+                        System.out.println("dao exception" + ex.getCause().getMessage());
+                    }
+                } catch (NumberFormatException ex) {
+                    System.out.println("number exception");
+                }
+            } else {
+                /* RESTITUISCO TUTTI I PRODOTTI POSSIBILI*/
+                try {
+                    List<Product> products = productDAO.searchByName(query, user.getId());
                     StringBuilder sb = new StringBuilder();
                     sb.append("{\"results\": [");
-                    for(int i=0; i<products.size(); i++){
-                        if(i>0){
+                    for (int i = 0; i < products.size(); i++) {
+                        if (i > 0) {
                             sb.append(",");
                         }
-                        sb.append(products.get(i).toJson());  
+                        sb.append(products.get(i).toJson());
                     }
                     sb.append("]}");
                     PrintWriter out = response.getWriter();
@@ -70,13 +107,11 @@ public class ProductsSearchServlet extends HttpServlet {
                     out.print(sb);
                     out.flush();
                 } catch (DAOException ex) {
-                    System.out.println("dao exception"+ex.getCause().getMessage());
+                    System.out.println("dao exception" + ex.getCause().getMessage());
                 }
-            } catch (NumberFormatException ex) {
-                System.out.println("number exception");
             }
-        }else{
-            System.out.println("else");
+        } else {
+            System.out.println("query vuota, non cerco nulla");
         }
     }
 }

@@ -159,10 +159,15 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists WHERE id = ?")) {
             stm.setInt(1, primaryKey);
             ResultSet rs = stm.executeQuery();
-
-            rs.next();
-            return setAllShoppingListFields(rs);
-
+            ShoppingList shoppingList;
+            if (!rs.isBeforeFirst()) {
+                shoppingList = null;
+            } else {
+                rs.next();
+                shoppingList = setAllShoppingListFields(rs);
+            }
+           
+            return shoppingList;
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the shoppingList for the passed primary key", ex);
         }
@@ -199,7 +204,9 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if (userId == null) {
             throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists, users_lists WHERE (id = list AND user_id = ?) ORDER BY name")) {
+                try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists LEFT JOIN users_lists "
+                + " ON lists.id = users_lists.list"
+                + " WHERE users_lists.user_id = ?")) {
 
             List<ShoppingList> shoppingLists = new ArrayList<>();
 
@@ -216,11 +223,36 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             throw new DAOException("Impossible to get the list of shoppingLists for the passed userId", ex);
         }
     }
+    
+    @Override
+    public ShoppingList getIfVisible(Integer shoppingListId, Integer userId) throws DAOException {
+        if (shoppingListId == null || userId == null) {
+            throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("shoppingListId or userId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists LEFT JOIN users_lists "
+                + " ON lists.id = users_lists.list"
+                + " WHERE lists.id = ?"
+                + " AND users_lists.user_id = ?")) {
+
+            stm.setInt(1, shoppingListId);
+            stm.setInt(2, userId);
+            
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                return setAllShoppingListFields(rs);
+            }else{
+                return null;
+            }
+            
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the shoppingList for the passed id and userId", ex);
+        }
+    }
 
     @Override
     public void addMember(Integer shoppingListId, Integer userId, Integer permissions) throws DAOException {
-        if ((shoppingListId == null) || (userId == null)) {
-            throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("shoppingListId or userId are null"));
+        if ((shoppingListId == null) || (userId == null) || (permissions == null)) {
+            throw new DAOException("shoppingListId, userId and permisions are mandatory fields", new NullPointerException("shoppingListId, userId or permissions are null"));
         }
         try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users_lists (user_id, list, permissions, notifications) VALUES (?, ?, ?, 0)")) {
 
@@ -251,9 +283,10 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             throw new DAOException("Impossible to delete the link between the passed shoppingList and the passed user", ex);
         }
     }
+
     @Override
     public void updateMember(Integer shoppingListId, Integer userId, Integer permissions) throws DAOException {
-        if ((shoppingListId == null) || (userId == null) || (permissions==null)) {
+        if ((shoppingListId == null) || (userId == null) || (permissions == null)) {
             throw new DAOException("shoppingListId, userId and permissions are mandatory fields", new NullPointerException("shoppingListId or userId are null"));
         }
         try (PreparedStatement stm = CON.prepareStatement("UPDATE users_lists SET permissions = ? WHERE (user_id = ? AND list = ?)")) {
@@ -265,26 +298,25 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             throw new DAOException("Impossible to update the permission of the passed user in the passed shoppingList", ex);
         }
     }
+
     @Override
     public List<User> getMembers(Integer shoppingListId) throws DAOException {
         if (shoppingListId == null) {
             throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users, users_lists WHERE (id = user_id AND list = ?) ORDER BY name")) {
-
-            List<User> users = new ArrayList<>();
-
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users, users_lists WHERE (id = user_id AND list = ?) ORDER BY firstname")) {
             stm.setInt(1, shoppingListId);
             ResultSet rs = stm.executeQuery();
-
+            List<User> users = new ArrayList<>();
+            User user = null;
             while (rs.next()) {
-                users.add(JDBCUserDAO.setAllUserFields(rs, null));
+                user = JDBCUserDAO.setAllUserFields(rs, null);
+                user.setPermissions(rs.getInt("permissions"));
+                users.add(user);
             }
-
             return users;
-
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of members for the passed shoppingListId", ex);
+            throw new DAOException("Impossible to get the list of members for the passed shoppingListId" + ex.getMessage(), ex);
         }
     }
 
@@ -293,7 +325,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if ((shoppingListId == null)) {
             throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE users_lists SET notifications = notification + 1 WHERE list = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE users_lists SET notifications = notifications + 1 WHERE list = ?")) {
             ps.setInt(1, shoppingListId);
             ps.executeUpdate();
         } catch (SQLException ex) {
@@ -320,7 +352,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if ((shoppingListId == null) || (productId == null)) {
             throw new DAOException("shoppingListId and productId are mandatory fields", new NullPointerException("shoppingListId or productId are null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO lists_products (list, productId, quantity, necessary) VALUES (?, ?, ?, ?)")) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO list_products (list, product, quantity, necessary) VALUES (?, ?, ?, ?)")) {
 
             ps.setInt(1, shoppingListId);
             ps.setInt(2, productId);
@@ -343,7 +375,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if ((shoppingListId == null) || (productId == null)) {
             throw new DAOException("shoppingListId and productId are mandatory fields", new NullPointerException("shoppingListId or productId are null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("DELETE FROM lists_products WHERE (list = ? AND product = ?)")) {
+        try (PreparedStatement stm = CON.prepareStatement("DELETE FROM list_products WHERE (list = ? AND product = ?)")) {
             stm.setInt(1, shoppingListId);
             stm.setInt(2, productId);
             stm.executeUpdate();
@@ -357,7 +389,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if ((shoppingListId == null) || (productId == null)) {
             throw new DAOException("shoppingListId and productId are mandatory fields", new NullPointerException("shoppingListId or productId are null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE lists_products SET quantity = ?, necessary = ? WHERE list = ? AND product = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE list_products SET quantity = ?, necessary = ? WHERE list = ? AND product = ?")) {
 
             ps.setInt(1, quantity);
             ps.setBoolean(2, necessary);
@@ -399,16 +431,15 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
         }
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products, list_products WHERE (id = product AND list = ?)")) {
-
             List<Product> products = new ArrayList<>();
-
+            Product product = null;
             stm.setInt(1, shoppingListId);
             ResultSet rs = stm.executeQuery();
-
             while (rs.next()) {
-                products.add(JDBCProductDAO.setAllProductFields(rs));
+                product = JDBCProductDAO.setAllProductFields(rs);
+                product.setNecessary(rs.getBoolean("necessary"));
+                products.add(product);
             }
-
             return products;
 
         } catch (SQLException ex) {
@@ -425,15 +456,21 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
      */
     @Override
     public Integer getPermission(Integer shoppingListId, Integer userId) throws DAOException {
+        Integer permission;
         if (shoppingListId == null || userId == null) {
-            throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
+            throw new DAOException("shoppingListId and userId are mandatory field", new NullPointerException("shoppingListId or userId is null"));
         }
         try (PreparedStatement stm = CON.prepareStatement("SELECT permissions FROM users_lists WHERE user_id=? AND list=?")) {
             stm.setInt(1, userId);
             stm.setInt(2, shoppingListId);
             ResultSet rs = stm.executeQuery();
-            rs.next();
-            return Integer.valueOf(rs.getInt("permissions"));
+            if (!rs.isBeforeFirst()) {
+                permission = 0;
+            } else {
+                rs.next();
+                permission = Integer.valueOf(rs.getInt("permissions"));
+            }
+            return permission;
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShoppingListDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

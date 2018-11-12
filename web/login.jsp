@@ -57,7 +57,7 @@
                     </form>
                     <c:remove var="message" scope="session" />
                 </div>
-                <h3><a style="color:black" href="mainpagenologged.html"><span class="glyphicon glyphicon-home"></span> Home</a></h3>
+                <h3><a style="color:black" href="index.html"><span class="glyphicon glyphicon-home"></span> Home</a></h3>
             </div>
 
         </div>
