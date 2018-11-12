@@ -1,0 +1,16 @@
+td {
+    width:100px;
+}
+@media screen and (min-width: 500px) {
+    td {
+        width:200px;
+    }}
+@media screen and (min-width: 700px) {
+    td {
+        width:350px;
+    }}
+@media screen and (min-width: 1200px) {
+    td {
+        width:500px;
+    }}
+

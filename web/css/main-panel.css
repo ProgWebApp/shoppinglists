@@ -1,0 +1,14 @@
+.panel > .panel-heading-custom {
+    background-color: #ffe0cc;
+    padding:10px;
+    color: black;
+}
+.panel > .panel-footer-custom {
+    background-color: #ffe0cc;
+    padding:10px;
+    color: black;
+}
+.panel-default-custom {
+    border-color: #ffe0cc;
+}
+

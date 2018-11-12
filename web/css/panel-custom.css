@@ -1,0 +1,23 @@
+.panel-heading-custom-list {
+    background-color: #B9E5FF;
+    padding:0px 0px 6px 7px;
+    color: black;
+    border: 2px solid #A0A4E5;
+}
+.panel-body-custom-list {
+    border:1px solid #A0A4E5;
+    margin-top:5px;
+    padding:3px;
+}
+.panel-heading-custom-prod {
+    background-color: #9AFF91;
+    padding:0px 0px 6px 7px;
+    color: black;
+    border: 2px solid #3FA52B;
+}
+.panel-body-custom-prod {
+    border:1px solid #3FA52B;
+    margin-top:5px;
+    padding:3px;
+}
+

@@ -5,41 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/default-element.css">
+    <link rel="stylesheet" type="text/css" href="css/form.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <style>
-
-        .navbar {
-            margin-bottom: 50px;
-            border-radius: 0;
-        }
-
-        .navbar-inverse{
-            background-color: #ff6336;
-            border: 0px;
-
-        }
-
-        footer{
-            background-color: #ff6336;
-            color: #FFFFFF;
-            padding: 25px;
-        }
-
-        .form-container{
-            background-color: #ffe0cc;
-            text-align:left;
-            border: 2px solid #ff6336;
-            padding: 45px 5px 30px 5px;
-        }
-
-        .acc-btn{
-            background-color: #ff6336;
-            color: #FFFFFF;
-            border: 0px;
-        }
-
-    </style>
     <body>
         <br>
         <div class="container text-center">    
@@ -91,7 +60,7 @@
                         <div class="checkbox">
                             <label><input type="checkbox" name="remember"> Ho letto e accetto i termini di utilizzo</label>
                         </div>
-                        
+
                         <button type="submit" class="btn btn-default acc-btn">Registrati</button>
                         <br><br>
                         <a style="color:grey" href="log.jsp"> Gi&#224; iscritto? Effettua il login </a>

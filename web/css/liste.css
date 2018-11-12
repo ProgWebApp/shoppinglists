@@ -1,0 +1,52 @@
+.list-group{
+    font-size:18px;
+}
+.list-button{
+    display:block;
+    background-color:#FFFFFF;
+    padding: 1px 3px 1px 4px;
+    border-radius: 3px 3px;
+    margin: 0px 4px 5px 4px;
+    border: 0px;
+}
+button.list-group-item-action-list{
+    background-color:#B9E5FF;
+    color:black;
+    margin: 6px 0px 6px 0px;
+    border:0px;
+}
+button.list-group-item-action-prod{
+    background-color:#9AFF91;
+    color:black;
+    margin: 6px 0px 6px 0px;
+    border:0px;
+}
+.list-group-item{
+    font-size:18px;
+    height: 70px;
+    line-height: 50px;
+}
+.user-list-group{
+    font-size:13px;
+}
+.user-list-button{
+    display:block;
+    background-color:#e6e6e6;
+    padding: 0px 2px 0px 2px;
+    border-radius: 2px 2px;
+    margin: 0px 2px 3px 2px;
+    border: 1px solid black;
+}
+button.user-list-group-item-action{
+    background-color:#ffe0cc;
+    color:black;
+    margin: 6px 0px 6px 0px;
+    border:0px;
+}
+div.pre-scrollable{
+    min-height:450px;
+    max-height:450px;
+}
+.dd-list{
+    padding:0px 15px 0px 15px;
+}

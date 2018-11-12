@@ -1,0 +1,46 @@
+.form-container{
+    background-color: #ffe0cc;
+    text-align:left;
+    border: 2px solid #ff6336;
+    padding: 45px 5px 30px 5px;
+}
+.acc-btn{
+    background-color: #ff6336;
+    color: #FFFFFF;
+    border: 0px;
+}
+.btn-custom{
+    font: 17px monospace;
+    background-color:#ff6336;
+    padding: 4px 7px 4px 7px;
+    border-radius: 5px 5px; 
+    color:white;
+    margin:8px 1px 8px 1px;
+}
+input:focus {
+    outline: none;
+}
+.checkboxes-group{
+    font: 15px monospace;
+    padding: 10px 10px 0px 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.groupped-ckbox{
+    flex: 0 0 30%; 
+    margin: 5px;
+}
+@media screen  and (max-width:525px){
+    .groupped-ckbox{ 
+        flex: 1 0 48%;
+        margin: 5px;
+    }
+}
+.checkbox-img { 
+    position: absolute; 
+    top: 0px; 
+    right: 0px;
+    height: 20px;
+    width: 20px;
+}
+
