@@ -97,22 +97,6 @@ public class ShoppingListServlet extends HttpServlet {
         }
 
         /* RISPONDO */
-        List<Product> products;
-        try {
-            products = shoppingListDAO.getProducts(shoppingListId);
-        } catch (DAOException ex) {
-            System.out.println("fallita la ricerca dei prodotti");
-            response.setStatus(500);
-            return;
-        }
-        List<User> users;
-        try {
-            users = shoppingListDAO.getMembers(shoppingListId);
-        } catch (DAOException ex) {
-            System.out.println("fallito getMembers");
-            response.setStatus(500);
-            return;
-        }
         request.setAttribute("shoppingList", shoppingList);
         switch (res) {
             case 0:
