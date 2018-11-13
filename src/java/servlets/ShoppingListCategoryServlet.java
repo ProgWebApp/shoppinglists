@@ -20,8 +20,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -79,9 +77,11 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         }
 
         /* RECUPERO LA CATEGORIA DI LISTA */
-        ShoppingListCategory shoppingListCategory = null;
+        ShoppingListCategory shoppingListCategory;
+        List<ProductCategory> productCategorySelected;
         try {
             shoppingListCategory = shoppingListCategoryDAO.getByPrimaryKey(shoppingListCategoryId);
+            productCategorySelected = shoppingListCategoryDAO.getProductCategories(shoppingListCategoryId);
         } catch (DAOException ex) {
             response.setStatus(500);
             return;
@@ -89,6 +89,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
 
         /* RISPONDO */
         request.setAttribute("shoppingListCategory", shoppingListCategory);
+        request.setAttribute("productCategorySelected", productCategorySelected);
         switch (res) {
             case 1:
                 getServletContext().getRequestDispatcher("/restricted/shoppingListCategory.jsp").forward(request, response);

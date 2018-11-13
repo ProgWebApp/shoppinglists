@@ -81,9 +81,6 @@
                                     </c:forEach>
                                 </c:if>
                             </div>
-                            <c:forEach items="${productCategorySelected}" var="productCategorySelected">
-                                ${productCategorySelected.name}
-                            </c:forEach>
                         </div>
                         <c:if test="${not empty shoppingListCategory.id}">
                             <input type="hidden" name="shoppingListCategoryId" value="${shoppingListCategory.id}">

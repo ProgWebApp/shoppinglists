@@ -1,0 +1,35 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Shopping List Category</title>
+        <script>
+            function deleteShoppingListCategory(id) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 204) {
+                        window.location.href = "${pageContext.response.encodeURL("shoppingListCategories.jsp")}";
+                    }else if (this.readyState === 4 && this.status === 400) {
+                        alert("Bad request!");
+                    }else if (this.readyState === 4 && this.status === 403) {
+                        alert("You are not allowed to delete the shopping list category!");
+                    }else if (this.readyState === 4 && this.status === 500) {
+                        alert("Impossible to delete the shopping list category!");
+                    }
+                };
+                var url = "${pageContext.response.encodeURL("ShoppingListCategoryServlet")}";
+                xhttp.open("DELETE", url + "?shoppingListCategoryId=" + id, true);
+                xhttp.send();
+            }
+        </script>
+    </head>
+    <body>
+        ${shoppingListCategory.id}<br>
+        ${shoppingListCategory.name}<br>
+        ${shoppingListCategory.description}<br>
+        <img height="50px" src="../images/shoppingListCategories/${shoppingListCategory.logoPath}"><br>
+        <a href="${pageContext.response.encodeURL("ShoppingListCategoryServlet?res=2&shoppingListCategoryId=".concat(shoppingListCategory.id))}">Modifica</a>
+        <span onclick="deleteShoppingListCategory(${shoppingListCategory.id})">Elimina</span><br>
+        <a href="${pageContext.response.encodeURL("shoppingListCategories.jsp")}">Shopping List Categories</a>
+    </body>
+</html>

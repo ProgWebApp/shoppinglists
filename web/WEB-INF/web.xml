@@ -30,18 +30,6 @@
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>filters.AuthenticationFilter</filter-class>
     </filter>
-    <filter>
-        <filter-name>ShoppingListCategoryFilter</filter-name>
-        <filter-class>filters.ShoppingListCategoryFilter</filter-class>
-    </filter>
-    <filter>
-        <filter-name>ShoppingListFilter</filter-name>
-        <filter-class>filters.ShoppingListFilter</filter-class>
-    </filter>
-    <filter>
-        <filter-name>ProductCategoryFilter</filter-name>
-        <filter-class>filters.ProductCategoryFilter</filter-class>
-    </filter>
     <!-- FILTER MAPPING -->
     <filter-mapping>
         <filter-name>ContextPathFilter</filter-name>
@@ -50,18 +38,6 @@
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/restricted/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>ProductCategoryFilter</filter-name>
-        <url-pattern>/restricted/productCategory.jsp</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>ShoppingListCategoryFilter</filter-name>
-        <url-pattern>/restricted/shoppingListCategory.jsp</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>ShoppingListFilter</filter-name>
-        <url-pattern>/restricted/shoppingList.jsp</url-pattern>
     </filter-mapping>
     <!-- LISTENER -->
     <listener>

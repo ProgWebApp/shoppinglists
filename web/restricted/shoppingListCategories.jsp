@@ -34,10 +34,11 @@
     <body>
         <h1>Shopping List Categories</h1>
         <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
-            Nome: <a href="${pageContext.response.encodeURL("shoppingListCategory.jsp?shoppingListCategoryId=".concat(shoppingListCategory.id))}">${shoppingListCategory.name}</a><br>
+            Nome: <a href="${pageContext.response.encodeURL("ShoppingListCategoryServlet?res=1&shoppingListCategoryId=".concat(shoppingListCategory.id))}">${shoppingListCategory.name}</a><br>
             Description: ${shoppingListCategory.description}<br>
             <img height="50px" src="../images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo">
             <br>
         </c:forEach>
+        <a href="${pageContext.response.encodeURL("shoppingListCategoryForm.jsp")}">Aggiungi categoria di lista della spesa</a>
     </body>
 </html>

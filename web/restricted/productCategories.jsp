@@ -33,12 +33,13 @@
         <title>Product Categories</title>
     </head>
     <body>
-        <h1>My Products</h1>
+        <h1>Product Categories</h1>
         <c:forEach items="${productCategories}" var="productCategory">
-            Nome: <a href="${pageContext.response.encodeURL("productCategory.jsp?productCategoryId=".concat(productCategory.id))}">${productCategory.name}</a><br>
+            Nome: <a href="${pageContext.response.encodeURL("ProductCategoryServlet?res=1&productCategoryId=".concat(productCategory.id))}">${productCategory.name}</a><br>
             Description: ${productCategory.description}<br>
             <img height="50px" src="../images/productCategories/${productCategory.logoPath}">
             <br>
         </c:forEach>
+        <a href="${pageContext.response.encodeURL("productCategoryForm.jsp")}">Aggiungi categoria di prodotto</a>
     </body>
 </html>

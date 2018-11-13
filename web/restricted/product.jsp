@@ -17,7 +17,7 @@
                         alert("Impossible to delete the product!");
                     }
                 };
-                var url = "${pageContext.response.encodeURL("product")}";
+                var url = "${pageContext.response.encodeURL("ProductServlet")}";
                 xhttp.open("DELETE", url + "?productId=" + id, true);
                 xhttp.send();
             }
