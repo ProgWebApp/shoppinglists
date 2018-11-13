@@ -200,12 +200,13 @@
         <url-pattern>/restricted/product</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ProductsSearchServlet</servlet-name>
-        <url-pattern>/restricted/ProductsSearchServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>UsersSearchServlet</servlet-name>
         <url-pattern>/restricted/UsersSearchServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductsSearchServlet</servlet-name>
+        <url-pattern>/restricted/ProductsSearchServlet</url-pattern>
+        <url-pattern>/ProductsSearchServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

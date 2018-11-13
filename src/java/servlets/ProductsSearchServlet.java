@@ -56,62 +56,55 @@ public class ProductsSearchServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String query = (String) request.getParameter("query");
         User user = (User) request.getSession().getAttribute("user");
+        List<Product> products;
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
 
         if (!query.isEmpty()) {
             if (request.getParameter("shoppingListId") != null) {
-                /*RESTITUISCO I PRODOTTI POSSIBILI CHE NON SIANO GIà NELLA LISTA SPECIFICATA*/
                 try {
                     Integer shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
                     try {
                         Integer shoppingListCategoryId = (shoppingListDAO.getByPrimaryKey(shoppingListId)).getListCategoryId();
-                        List<Product> productsByName = productDAO.searchByNameAndCategory(query, shoppingListCategoryId, user.getId());
-                        List<Product> productsOfList = shoppingListDAO.getProducts(shoppingListId);
-                        productsByName.removeAll(productsOfList);
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("{\"results\": [");
-                        for (int i = 0; i < productsByName.size(); i++) {
-                            if (i > 0) {
-                                sb.append(",");
-                            }
-                            sb.append(productsByName.get(i).toJson());
-                        }
-                        sb.append("]}");
-                        PrintWriter out = response.getWriter();
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
-                        out.print(sb);
-                        out.flush();
+                        products = productDAO.searchByNameAndCategory(query, shoppingListCategoryId, user.getId());
+                        List<Product> productsAlreadyIn = shoppingListDAO.getProducts(shoppingListId);
+                        products.removeAll(productsAlreadyIn);
                     } catch (DAOException ex) {
                         System.out.println("dao exception" + ex.getCause().getMessage());
+                        response.setStatus(500);
+                        return;
                     }
                 } catch (NumberFormatException ex) {
                     System.out.println("number exception");
+                    response.setStatus(400);
+                    return;
                 }
             } else {
-                /* RESTITUISCO TUTTI I PRODOTTI POSSIBILI*/
                 try {
-                    List<Product> products = productDAO.searchByName(query, user.getId());
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("{\"results\": [");
-                    for (int i = 0; i < products.size(); i++) {
-                        if (i > 0) {
-                            sb.append(",");
-                        }
-                        sb.append(products.get(i).toJson());
-                    }
-                    sb.append("]}");
-                    PrintWriter out = response.getWriter();
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    out.print(sb);
-                    out.flush();
+                    products = productDAO.searchByName(query, user.getId());
                 } catch (DAOException ex) {
                     System.out.println("dao exception" + ex.getCause().getMessage());
+                    response.setStatus(500);
+                    return;
                 }
             }
+            StringBuilder sb = new StringBuilder();
+            sb.append("{\"results\": [");
+            for (int i = 0; i < products.size(); i++) {
+                if (i > 0) {
+                    sb.append(",");
+                }
+                sb.append(products.get(i).toJson());
+            }
+            sb.append("]}");
+            PrintWriter out = response.getWriter();
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            out.print(sb);
+            out.flush();
         } else {
             System.out.println("query vuota, non cerco nulla");
+            response.setStatus(400);
+            return;
         }
     }
 }

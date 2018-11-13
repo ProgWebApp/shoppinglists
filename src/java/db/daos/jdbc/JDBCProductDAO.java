@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The JDBC implementation of the {@link ProductDAO} interface.
@@ -160,7 +162,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         }
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products WHERE id = ?")) {
             stm.setInt(1, primaryKey);
-            
+
             ResultSet rs = stm.executeQuery();
             rs.next();
             return setAllProductFields(rs);
@@ -265,22 +267,28 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             throw new DAOException("Impossible to get the list of products for the passed shoppingListCategoryId and userId", ex);
         }
     }
-    
-    
+
     @Override
     public List<Product> searchByName(String query, Integer userId) throws DAOException {
-        if (userId == null) {
-            throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
+        if (query == null) {
+            throw new DAOException("query is a mandatory field", new NullPointerException("query is null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products LEFT JOIN users_products "
-                + " ON products.id = users_products.product"
-                + " WHERE (products.reserved = false"
-                + " OR users_products.user_id = ?)"
-                + " AND LOWER(products.name) LIKE LOWER(?)")) {
-
-            stm.setInt(1, userId);
-            stm.setString(2, "%" + query + "%");
-            
+        PreparedStatement stm;
+        try {
+            if (userId == null) {
+                stm = CON.prepareStatement("SELECT * FROM products  "
+                        + " WHERE products.reserved = false"
+                        + " AND LOWER(products.name) LIKE LOWER(?)");
+                stm.setString(1, "%" + query + "%");
+            } else {
+                stm = CON.prepareStatement("SELECT * FROM products LEFT JOIN users_products "
+                        + " ON products.id = users_products.product"
+                        + " WHERE (products.reserved = false"
+                        + " OR users_products.user_id = ?)"
+                        + " AND LOWER(products.name) LIKE LOWER(?)");
+                stm.setInt(1, userId);
+                stm.setString(2, "%" + query + "%");
+            }
             List<Product> products = new ArrayList<>();
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -308,7 +316,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             stm.setInt(1, shoppingListCategoryId);
             stm.setInt(2, userId);
             stm.setString(3, "%" + query + "%");
-            
+
             List<Product> products = new ArrayList<>();
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -333,14 +341,14 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
 
             stm.setInt(1, productId);
             stm.setInt(2, userId);
-            
+
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return setAllProductFields(rs);
-            }else{
+            } else {
                 return null;
             }
-            
+
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the product for the passed id and userId", ex);
         }
@@ -425,9 +433,9 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
         product.setNotes(rs.getString("notes"));
         product.setLogoPath(rs.getString("logo"));
         String[] paths = rs.getString("photo").replace("[", "").replace("]", "").split(", ");
-        if(paths[0].equals("")){
+        if (paths[0].equals("")) {
             product.setPhotoPath(new HashSet<>());
-        }else{
+        } else {
             product.setPhotoPath(new HashSet<>(Arrays.asList(paths)));
         }
         product.setProductCategoryId(rs.getInt("product_category"));
@@ -462,7 +470,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
                 } catch (SQLException ex) {
                     if (!ex.getSQLState().equals("23505")) {
                         throw new DAOException("Impossible to link the product with the user", ex);
-                    }    
+                    }
                 }
             }
         } catch (SQLException ex) {

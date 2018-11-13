@@ -261,7 +261,7 @@
         <body>
             <div class="container-fluid">
                 <div class="jumbotron">
-                    <img src="../images/shoppingList/${shoppingList.imagePath}" height="100px" class="fit-image" alt="Immagine lista">
+                    <img src="../images/shoppingList/${shoppingList.imagePath}" class="fit-image" alt="Immagine lista">
                     <h2>${shoppingList.name}</h2>
                     <h4>Categoria: ${shoppingListCategory.name}</h4>
                     <h4>Descrizione: ${shoppingList.description}</h4>

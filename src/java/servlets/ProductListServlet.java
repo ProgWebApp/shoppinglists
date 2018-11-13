@@ -87,6 +87,7 @@ public class ProductListServlet extends HttpServlet {
                         if (permissions == 2) {
                             shoppingListDAO.removeProduct(shoppingListId, productId);
                         } else {
+                            System.out.println("L'utente non ha i permessi per eliminare il prodotto");
                             response.setStatus(403);
                             return;
                         }
