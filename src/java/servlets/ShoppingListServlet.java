@@ -206,7 +206,7 @@ public class ShoppingListServlet extends HttpServlet {
         if (shoppingListName.isEmpty() || shoppingListDescription.isEmpty() || emptyListCategory || emptyImage) {
             request.getSession().setAttribute("message", 1);
             request.getSession().setAttribute("shoppingList", shoppingList);
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingList.jsp"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingListForm.jsp"));
             return;
         }
 
@@ -240,7 +240,7 @@ public class ShoppingListServlet extends HttpServlet {
         }
 
         /* REDIRECT ALLA PAGINA DELLA LISTA */
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingListServlet?res=1&shoppingListId=" + shoppingListId));
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/ShoppingListServlet?res=1&shoppingListId=" + shoppingListId));
     }
 
     @Override

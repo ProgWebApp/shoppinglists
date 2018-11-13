@@ -68,7 +68,7 @@ public class ProductCategoryServlet extends HttpServlet {
         }
 
         /* RECUPERO LA CATEGORIA DI PRODOTTO */
-        ProductCategory productCategory = null;
+        ProductCategory productCategory;
         try {
             productCategory = productCategoryDao.getByPrimaryKey(productCategoryId);
         } catch (DAOException ex) {
@@ -85,8 +85,7 @@ public class ProductCategoryServlet extends HttpServlet {
             case 2:
                 if (!user.isAdmin()) {
                     response.setStatus(403);
-                    return;
-                }else{
+                } else {
                     getServletContext().getRequestDispatcher("/restricted/productCategoryForm.jsp").forward(request, response);
                 }
                 break;
@@ -98,6 +97,12 @@ public class ProductCategoryServlet extends HttpServlet {
         /* RECUPERO L'UTENTE */
         User user = (User) request.getSession().getAttribute("user");
         
+        /* CONTROLLO CHE L'UTENTE SIA ADMIN */
+        if (!user.isAdmin()) {
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+            return;
+        }
+
         /* RECUPERO LA CATEGORIA DI PRODOTTO, SE ESISTE, OPPURE NE CREO UNO NUOVA */
         ProductCategory productCategory = new ProductCategory();
         Integer productCategoryId = null;
@@ -112,11 +117,6 @@ public class ProductCategoryServlet extends HttpServlet {
                 productCategory = productCategoryDao.getByPrimaryKey(productCategoryId);
             } catch (DAOException ex) {
                 throw new ServletException("Impossible to get the productCateogry", ex);
-            }
-            /* SE LA CATEGORIA DI PRODOTTO ESISTE, CONTROLLO CHE L'UTENTE SIA ADMIN */
-            if (!user.isAdmin()) {
-                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
-                return;
             }
         }
 
@@ -199,9 +199,9 @@ public class ProductCategoryServlet extends HttpServlet {
         } catch (DAOException ex) {
             throw new ServletException("Impossible to insert or update the productCategory", ex);
         }
-        
+
         /* REDIRECT ALLA PAGINA DELLA CATEGORIA DI PRODOTTO */
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/productCategory?res=1&productCategoryId="+productCategoryId));
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/ProductCategoryServlet?res=1&productCategoryId=" + productCategoryId));
     }
 
     @Override

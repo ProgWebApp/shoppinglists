@@ -5,72 +5,13 @@
         <title>ListeSpesa</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <style>
-
-            .navbar {
-                margin-bottom: 50px;
-                border-radius: 0;
-            }
-            @media screen and (min-width: 1200px) {
-                .navbar {
-                    margin-bottom: 50px;
-                    border-radius: 0;
-                    padding-right: 0px;
-                    padding-left: 150px;
-                }}
-
-            .navbar-inverse{
-                background-color: #ff6336;
-                border: 0px;
-            }
-
-            .jumbotron {
-                margin-bottom: 0;
-            }
-
-
-
-            .panel > .panel-heading-custom {
-                background-color: #ffe0cc;
-                padding:10px;
-                color: black;
-            }
-            .panel > .panel-footer-custom {
-                background-color: #ffe0cc;
-                padding:10px;
-                color: black;
-            }
-            .panel-default-custom {
-                border-color: #ffe0cc;
-            }
-            .navbar-form{    	
-                border: 0px;
-            } 
-
-
-
-            .dropdown-menu{
-                padding-top:15px;
-            }
-
-            .fit-image{
-                width: 100%;
-                object-fit: cover;
-                height: 200px;
-                width:320px;
-            }
-
-            footer{
-                background-color: #ff6336;
-                color: #FFFFFF;
-                padding: 25px;
-            }
-
-
-        </style>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/default-element.css">
+        <link rel="stylesheet" type="text/css" href="css/main-panel.css">
+        <link rel="stylesheet" type="text/css" href="css/immagini.css">
     </head>
     <body>
 
@@ -87,8 +28,8 @@
                 <ul class="nav navbar-nav navbar-right">
                     <c:choose>
                         <c:when test="${not empty user}">
-                            <li><a href="User.jsp" style="color:white"><span class="glyphicon glyphicon-user"></span> PROFILO</a></li>
-                            <li><a href="Logout" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
+                            <li><a href="${pageContext.response.encodeURL("restricted/user.jsp")}" style="color:white"><span class="glyphicon glyphicon-user"></span> PROFILO</a></li>
+                            <li><a href="${pageContext.response.encodeURL("Logout")}" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
                         </c:when>
                         <c:when test="${empty user}">
                             <li><a href="login.jsp" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGIN</a></li>

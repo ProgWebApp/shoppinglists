@@ -88,7 +88,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         }
 
         /* RISPONDO */
-        request.setAttribute("productCategory", shoppingListCategory);
+        request.setAttribute("shoppingListCategory", shoppingListCategory);
         switch (res) {
             case 1:
                 getServletContext().getRequestDispatcher("/restricted/shoppingListCategory.jsp").forward(request, response);
@@ -96,8 +96,15 @@ public class ShoppingListCategoryServlet extends HttpServlet {
             case 2:
                 if (!user.isAdmin()) {
                     response.setStatus(403);
-                    return;
                 } else {
+                    List<ProductCategory> productCategories;
+                    try {
+                        productCategories = productCategoryDAO.getAll();
+                    } catch (DAOException ex) {
+                        response.setStatus(500);
+                        return;
+                    }
+                    request.setAttribute("productCategories", productCategories);
                     getServletContext().getRequestDispatcher("/restricted/shoppingListCategoryForm.jsp").forward(request, response);
                 }
                 break;
@@ -118,7 +125,13 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         /* RECUPERO L'UTENTE */
         User user = (User) request.getSession().getAttribute("user");
         Integer userId = user.getId();
-        
+
+        /* SE LA CATEGORIA DI LISTA ESISTE, CONTROLLO CHE L'UTENTE SIA ADMIN */
+        if (!user.isAdmin()) {
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+            return;
+        }
+
         /* RECUPERO LA CATEGORIA DI PRODOTTO, SE ESISTE, OPPURE NE CREO UNO NUOVA */
         ShoppingListCategory shoppingListCategory = new ShoppingListCategory();
         Integer shoppingListCategoryId = null;
@@ -134,11 +147,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
             } catch (DAOException ex) {
                 throw new ServletException("Impossible to get the shoppingListCateogry", ex);
             }
-            /* SE LA CATEGORIA DI LISTA ESISTE, CONTROLLO CHE L'UTENTE SIA ADMIN */
-            if (!user.isAdmin()) {
-                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
-                return;
-            }
+
         }
 
         /* ID */
@@ -214,9 +223,9 @@ public class ShoppingListCategoryServlet extends HttpServlet {
                 }
             }
         }
-        
+
         /* REDIRECT ALLA PAGINA DELLA CATEGORIA DI LISTA */
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingListCategories.jsp"));
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/ShoppingListCategoryServlet?res=1&shoppingListCategoryId=" + shoppingListCategoryId));
     }
 
     @Override

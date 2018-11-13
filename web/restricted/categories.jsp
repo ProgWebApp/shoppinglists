@@ -45,10 +45,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/default-element.css">
-        <link rel="stylesheet" type="text/css" href="css/liste.css">
-        <link rel="stylesheet" type="text/css" href="css/panel-custom.css">
-        <link rel="stylesheet" type="text/css" href="css/loghi.css">
+        <link rel="stylesheet" type="text/css" href="../css/default-element.css">
+        <link rel="stylesheet" type="text/css" href="../css/liste.css">
+        <link rel="stylesheet" type="text/css" href="../css/panel-custom.css">
+        <link rel="stylesheet" type="text/css" href="../css/loghi.css">
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -109,7 +109,7 @@
                                             <li>Descrizione: ${shoppingListCategory.description}
                                         </ul>
                                         <a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
-                                        <a class="pull-right" style="color:black;margin-right:5px;" href="${pageContext.response.encodeURL("shoppingListCategory.jsp?shoppingListCategoryId=".concat(shoppingListCategory.id))}" title="Modifica"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a class="pull-right" style="color:black;margin-right:5px;" href="${pageContext.response.encodeURL("ShoppingListCategoryServlet?res=2&shoppingListCategoryId=".concat(shoppingListCategory.id))}" title="Modifica"><span class="glyphicon glyphicon-pencil"></span></a>
                                     </li>
                                 </c:forEach>
                                 <button type="button" class="list-group-item list-group-item-action-list">Crea nuova categoria liste</button>
@@ -135,7 +135,7 @@
                                         <li>Descrizione: ${productCategory.description}
                                     </ul>
                                     <a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
-                                    <a class="pull-right" style="color:black;margin-right:5px;" href="${pageContext.response.encodeURL("Productcategory.jsp?productCategoryId=".concat(productCategory.id))}" title="Modifica"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a class="pull-right" style="color:black;margin-right:5px;" href="${pageContext.response.encodeURL("ProductCategoryServlet?res=2&productCategoryId=".concat(productCategory.id))}" title="Modifica"><span class="glyphicon glyphicon-pencil"></span></a>
                                 </li>
                             </c:forEach>
                             <button type="button" class="list-group-item list-group-item-action-prod">Crea nuova categoria prodotti</button>
