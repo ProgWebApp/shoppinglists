@@ -10,6 +10,11 @@
         padding-left: 150px;
     }
 }
+@media screen and (max-width: 767px) {
+    .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+        color: white;
+    }
+}
 .navbar-inverse{
     background-color: #ff6336;
     border: 0px;

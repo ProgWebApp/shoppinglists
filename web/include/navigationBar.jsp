@@ -54,7 +54,7 @@
                 </ul>
             </li>
         </ul>
-        <button type="button" class="navbar-toggle" data-toggle="collapse"></button>
+        
         <a class="navbar-brand" style="color:white" href="index.jsp"><span class="glyphicon glyphicon-home"></span> Home</a>
         <form class="navbar-form" role="search">
             <div class="input-group col-xs-5">
