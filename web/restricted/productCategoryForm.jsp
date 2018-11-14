@@ -9,7 +9,8 @@
         <link rel="stylesheet" type="text/css" href="../css/default-element.css">
         <link rel="stylesheet" type="text/css" href="../css/form.css">
         <link rel="stylesheet" type="text/css" href="../css/loghi.css">
-
+        <link rel="stylesheet" type="text/css" href="../css/immagini.css">
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -42,7 +43,7 @@
                         </div>
                         <div class="form-group">
                             <c:if test="${not empty productCategory.logoPath}">
-                                <img class="big-logo" src="../images/productCategories/${productCategory.logoPath}">
+                                <img class="logo" src="../images/productCategories/${productCategory.logoPath}">
                             </c:if>
                             <label for="logo">Carica un logo per la categoria prodotto:</label>
                             <input type="file" id="logo" name="logo" class="form-control">
@@ -56,9 +57,9 @@
                                 <label for="categorie">Seleziona le icone che vuoi rimuovere:</label>
                                 <div class="row">
                                     <c:forEach items="${productCategory.iconPath}" var="icon">
-                                        <div class="container-img">
+                                        <div class="container-logo">
                                             <input type="checkbox" id="${icon}" name="removeIcons" value="${icon}" class="checkbox-img">
-                                            <img src="../images/productCategories/icons/${icon}" class="fit-image-small img-responsive" alt="Icon">
+                                            <label for="${icon}"><img src="../images/productCategories/icons/${icon}" class="fit-logo img-responsive" alt="Icon"></label>
                                         </div>
                                     </c:forEach>
                                 </div>

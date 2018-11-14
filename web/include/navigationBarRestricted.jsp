@@ -41,7 +41,7 @@
                 </c:choose>
             <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="color:white" href="#"><span class="glyphicon glyphicon-menu-hamburger"></span>MEN&Ugrave;</a>
                 <ul class="dropdown-menu">
-                    <li><a href="${pageContext.response.encodeURL("shoppingLists.jsp")}">Le mie liste</a></li>
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingLists.jsp")}">Le mie liste</a></li>
                     <li><a href="${pageContext.response.encodeURL("shoppingListForm.jsp")}">Nuova lista</a></li>
                     <li><hr></li>
                     <li><a href="${pageContext.response.encodeURL("products.jsp")}">I miei prodotti</a></li>

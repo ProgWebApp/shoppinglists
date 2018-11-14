@@ -6,6 +6,14 @@
     float:left;
     margin-right:10px;
 }
+.logo{
+    width: 100%;
+    object-fit: cover;
+    height: 75px;
+    width: 75px;
+    float:left;
+    margin-right:10px;
+}
 .big-logo{
     width: 100%;
     object-fit: cover;
@@ -13,4 +21,17 @@
     width:100px;
     float:left;
     margin-right:10px;
+}
+.fit-logo{
+    width: 100%;
+    object-fit: cover;
+    height: 75px;
+    width: 75px;
+}
+.container-logo {
+    position: relative;
+    width: 75px; 
+    height: 75px; 
+    float: left; 
+    margin-left: 20px; 
 }
