@@ -174,6 +174,9 @@
             }
         </script>
         <style>
+            select {
+                width: 100% !important;
+            }
             .jumbotron {
                 background-color:#ffffff;
                 margin-bottom: 0;
@@ -317,7 +320,7 @@
                             <div class="form-control" id="messageBoard"></div>
                         </div>
                         <div class="input-group">
-                             <input id="newtext" class="form-control" type="text">
+                            <input id="newtext" class="form-control" type="text">
                             <div class="input-group-btn">
                                 <button class="btn btn-default" onclick="addMessage()">Invia</button>
                             </div>
@@ -326,10 +329,12 @@
                     </div>
                     <br>
                     <div class="row">
-                        <label> Utenti che condividono la lista: </label>
-                        <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
-                        </select>
+                        
                         <ul id="utenti" class="list-group user-list-group">
+                            <li class="list-group-item justify-content-between align-items-center">
+                            <label> Utenti che condividono la lista: </label>
+                            <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
+                            </select></li>
                             <c:forEach items="${users}" var="user">
                                 <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
                                     <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="deleteUser(${user.id})"></span>
