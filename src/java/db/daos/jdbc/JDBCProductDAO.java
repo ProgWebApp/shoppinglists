@@ -269,6 +269,35 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
     }
 
     @Override
+    public List<Product> getByProductCategory(Integer productCategoryId, Integer userId) throws DAOException {
+        if (productCategoryId == null || userId == null) {
+            throw new DAOException("productCategoryId and userId are mandatory fields", new NullPointerException("productCategoryId or userId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM products, users_products, PC_LC"
+                + "WHERE products.product_category = PC_LC.product_category"
+                + "AND PC_LC.list_category = ?"
+                + "AND (products.reserved = false"
+                + "OR (products.id = users_products.product"
+                + "AND users_product.user_id = ?))")) {
+
+            List<Product> products = new ArrayList<>();
+
+            stm.setInt(1, productCategoryId);
+            stm.setInt(2, userId);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                products.add(setAllProductFields(rs));
+            }
+
+            return products;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of products for the passed productCategoryId and userId", ex);
+        }
+    }
+
+    @Override
     public List<Product> searchByName(String query, Integer userId) throws DAOException {
         if (query == null) {
             throw new DAOException("query is a mandatory field", new NullPointerException("query is null"));

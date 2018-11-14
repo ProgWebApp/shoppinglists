@@ -49,6 +49,23 @@ public interface ProductDAO extends DAO<Product, Integer> {
      * retrieving.
      */
     public List<Product> getByShoppingListCategory(Integer shoppingListCategoryId, Integer userId) throws DAOException;
+    
+    /**
+     * Returns the list of {@link Product product} that are compatible with the
+     * shoppingListCategory passed as paramenter and that are shared with the
+     * user passed as parameter.
+     *
+     * @param productCategoryId the id of the {@code ShoppingListCategory}
+     * for which to retrive the compatible products.
+     * @param userId the {@code id} of the {@code user} for which retrieve the
+     * product list.
+     * @return the list of {@link Product product} that are compatible with the
+     * shoppingListCategory passed as paramenter and that are shared with the
+     * user passed as parameter, or an empty list.
+     * @throws DAOException if an error occurred during the information
+     * retrieving.
+     */
+    public List<Product> getByProductCategory(Integer productCategoryId, Integer userId) throws DAOException;
 
     /**
      * Returns the list of {@link Product product} that are shared with the user
