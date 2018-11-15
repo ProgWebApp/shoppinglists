@@ -5,8 +5,10 @@
  */
 package servlets;
 
+import db.daos.MessageDAO;
 import db.daos.ShoppingListCategoryDAO;
 import db.daos.ShoppingListDAO;
+import db.entities.Message;
 import db.entities.Product;
 import db.entities.ShoppingList;
 import db.entities.ShoppingListCategory;
@@ -18,11 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -35,6 +34,7 @@ public class ShoppingListServlet extends HttpServlet {
 
     private ShoppingListDAO shoppingListDAO;
     private ShoppingListCategoryDAO shoppingListCategoryDAO;
+    private MessageDAO messageDAO;
 
     @Override
     public void init() throws ServletException {
@@ -49,6 +49,11 @@ public class ShoppingListServlet extends HttpServlet {
         }
         try {
             shoppingListCategoryDAO = daoFactory.getDAO(ShoppingListCategoryDAO.class);
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get dao factory for shopping-list category storage system", ex);
+        }
+        try {
+            messageDAO = daoFactory.getDAO(MessageDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for shopping-list category storage system", ex);
         }
@@ -115,10 +120,12 @@ public class ShoppingListServlet extends HttpServlet {
                 List<Product> products;
                 List<User> users;
                 ShoppingListCategory category;
+                List<Message> messages;
                 try {
                     products = shoppingListDAO.getProducts(shoppingListId);
                     users = shoppingListDAO.getMembers(shoppingListId);
                     category = shoppingListCategoryDAO.getByPrimaryKey(shoppingList.getListCategoryId());
+                    messages = messageDAO.getByShoppingList(shoppingListId);
                 } catch (DAOException ex) {
                     response.setStatus(500);
                     return;
@@ -126,6 +133,8 @@ public class ShoppingListServlet extends HttpServlet {
                 request.setAttribute("products", products);
                 request.setAttribute("users", users);
                 request.setAttribute("shoppingListCategory", category);
+                request.setAttribute("messages", messages);
+                request.setAttribute("user", user);
                 getServletContext().getRequestDispatcher("/restricted/shoppingList.jsp").forward(request, response);
                 break;
             case 2:

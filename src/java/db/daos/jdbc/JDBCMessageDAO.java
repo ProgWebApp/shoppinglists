@@ -191,7 +191,7 @@ public class JDBCMessageDAO extends JDBCDAO<Message, Integer> implements Message
         if (shoppingListId == null) {
             throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM messages WHERE list = ?")) {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM messages WHERE list = ?  ORDER BY date")) {
 
             List<Message> messages = new ArrayList<>();
 

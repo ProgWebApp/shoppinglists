@@ -14,6 +14,9 @@
         <title>Lista Alimentari</title>
         <%@include file="../include/generalMeta.jsp" %>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="../css/form.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js" crossorigin="anonymous"></script>
 
         <script>
@@ -32,7 +35,8 @@
                         },
                         dataType: "json"
                     },
-                    templateResult: formatOption
+                    templateResult: formatOption,
+                    width: '100%'
                 });
                 $("#autocomplete-2").val(null).trigger("change");
                 $('#autocomplete-2').on("select2:select", function () {
@@ -53,7 +57,6 @@
             });
             /* FUNZIONE DI RICERCA E AGGIUNTA DEGLI UTENTI */
             $(function () {
-
                 function formatOption(option) {
                     var res = $('<span class="optionClick" onClick="addprod()">' + option.text + '</span>');
                     return res;
@@ -67,7 +70,8 @@
                         },
                         dataType: "json"
                     },
-                    templateResult: formatOption
+                    templateResult: formatOption,
+                    width: '100%'
                 });
                 $("#autocomplete-3").val(null).trigger("change");
                 $('#autocomplete-3').on("select2:select", function () {
@@ -148,15 +152,15 @@
             }
             /* AGGIUNTA MESSAGGIO */
             function addMessage() {
-                var text = document.getElementById("newtext").value;
-                console.log("inizio addMessage:" + text);
+                var input = document.getElementById("newtext");
+                text = input.value;
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
-                    console.log("controllo if");
                     if (this.readyState === 4 && this.status === 200) {
-                        console.log("messaggio aggiunto");
                         var element = document.getElementById("messageBoard");
-                        element.innerHTML += "<div>" + text + "</div>";
+                        element.innerHTML += "<div class='message message-right'>" + text + "</div>";
+                        input.value = '';
+                        element.scrollTop = element.scrollHeight - element.clientHeight;
                     } else if (this.readyState === 4 && this.status === 400) {
                         alert("Non hai il permesso per la modifica della lista");
                     } else if (this.readyState === 4 && this.status === 500) {
@@ -168,20 +172,22 @@
                 xhttp.open("GET", "MessagesServlet?shoppingListId=${shoppingList.id}&body=" + text, true);
                 xhttp.send();
             }
+            /* SCROLLA LA CHAT VERSO IL BASSO */
+            function scrollChat() {
+                var element = document.getElementById("messageBoard");
+                element.scrollTop = element.scrollHeight - element.clientHeight;
+            }
         </script>
     </head>
-    <body>
-
+    <body onload="scrollChat()">
         <div class="jumbotron">
             <img src="../images/shoppingList/${shoppingList.imagePath}" class="fit-image" alt="Immagine lista">
             <h2>${shoppingList.name}</h2>
             <h4>Categoria: ${shoppingListCategory.name}</h4>
             <h4>Descrizione: ${shoppingList.description}</h4>
         </div>
-
         <%@include file="../include/navigationBar.jsp"%>
         <div class="container-fluid">
-
             <div class="col-sm-1">
             </div>
             <div class="col-sm-5">
@@ -202,10 +208,13 @@
             </div>
             <div class="col-sm-4">
                 <div class="row">
-
                     <div>
                         <label for="comment">Chat:</label>
-                        <div class="form-control" id="messageBoard"></div>
+                        <div class="form-control chat" id="messageBoard">
+                            <c:forEach items="${messages}" var="message">
+                                <div class="message<c:if test="${message.senderId==user.id}"> message-right</c:if>">${message.body}</div>
+                            </c:forEach>
+                        </div>
                     </div>
                     <div class="input-group">
                         <input id="newtext" class="form-control" type="text">
@@ -213,31 +222,28 @@
                             <button class="btn btn-default" onclick="addMessage()">Invia</button>
                         </div>
                     </div>
-
                 </div>
-                <br>
-                <div class="row">
-
-                    <ul id="utenti" class="list-group user-list-group">
-                        <li class="list-group-item justify-content-between align-items-center">
-                            <label> Utenti che condividono la lista: </label>
-                            <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
-                            </select></li>
-                            <c:forEach items="${users}" var="user">
-                            <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
-                                <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="deleteUser(${user.id})"></span>
-                                <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
-                                    <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
-                                    <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
-                                    </select>  
-                                </li>
-                        </c:forEach>
-                    </ul>
-                </div>
-
             </div>
-
+            <br>
+            <div class="row">
+                <ul id="utenti" class="list-group user-list-group">
+                    <li class="list-group-item justify-content-between align-items-center">
+                        <label> Utenti che condividono la lista: </label>
+                        <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
+                        </select></li>
+                        <c:forEach items="${users}" var="user">
+                        <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
+                            <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="deleteUser(${user.id})"></span>
+                            <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
+                                <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
+                                <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
+                                </select>  
+                            </li>
+                    </c:forEach>
+                </ul>
+            </div>
         </div>
-        <%@include file="../include/footer.jsp" %>
-    </body>
+    </div>
+    <%@include file="../include/footer.jsp" %>
+</body>
 </html>

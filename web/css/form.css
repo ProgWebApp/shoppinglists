@@ -43,4 +43,22 @@ input:focus {
     height: 20px;
     width: 20px;
 }
+.chat{
+    height: 180px;
+    overflow-y: scroll;
+}
+.message{
+    max-width: 250px;
+    float: left;
+    clear: both;
+    background-color: lightskyblue;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+}
+.message-right{
+    background-color: lightgreen;
+    text-align: right;
+    float: right;
+}
 
