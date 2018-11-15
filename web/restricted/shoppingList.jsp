@@ -12,12 +12,8 @@
 <html>
     <head>
         <title>Lista Alimentari</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <%@include file="../include/generalMeta.jsp" %>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" crossorigin="anonymous">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js" crossorigin="anonymous"></script>
 
         <script>
@@ -160,7 +156,7 @@
                     if (this.readyState === 4 && this.status === 200) {
                         console.log("messaggio aggiunto");
                         var element = document.getElementById("messageBoard");
-                        element.innerHTML += "<div>"+text + "</div>";
+                        element.innerHTML += "<div>" + text + "</div>";
                     } else if (this.readyState === 4 && this.status === 400) {
                         alert("Non hai il permesso per la modifica della lista");
                     } else if (this.readyState === 4 && this.status === 500) {
@@ -173,186 +169,75 @@
                 xhttp.send();
             }
         </script>
-        <style>
-            select {
-                width: 100% !important;
-            }
-            .jumbotron {
-                background-color:#ffffff;
-                margin-bottom: 0;
-                text-align:center;
-                padding: 40px 5px 25px 5px;
-            }
+    </head>
+    <body>
 
-            footer{
-                background-color: #ff6336;
-                color: #FFFFFF;
-                padding: 25px;
-                margin-top: 30px;
-            }
+        <div class="jumbotron">
+            <img src="../images/shoppingList/${shoppingList.imagePath}" class="fit-image" alt="Immagine lista">
+            <h2>${shoppingList.name}</h2>
+            <h4>Categoria: ${shoppingListCategory.name}</h4>
+            <h4>Descrizione: ${shoppingList.description}</h4>
+        </div>
 
-            .list-button{
-                display:block;
-                background-color:#FFFFFF;
-                padding: 1px 3px 1px 4px;
-                border-radius: 3px 3px;
-                margin: 0px 4px 5px 4px;
-                border: 0px;
-            }
+        <%@include file="../include/navigationBar.jsp"%>
+        <div class="container-fluid">
 
-            button.list-group-item-action{
-                background-color:#ffe0cc;
-                color:black;
-                margin: 6px 0px 6px 0px;
-                border:0px;
-            }
-            .list-group{
-                font-size:18px;
-            }
-            .user-list-group{
-                font-size:13px;
-            }
-
-            .user-list-button{
-                display:block;
-                background-color:#e6e6e6;
-                padding: 0px 2px 0px 2px;
-                border-radius: 2px 2px;
-                margin: 0px 2px 3px 2px;
-                border: 1px solid black;
-            }
-
-            button.user-list-group-item-action{
-                background-color:#ffe0cc;
-                color:black;
-                margin: 6px 0px 6px 0px;
-                border:0px;
-            }
-
-            div.pre-scrollable{
-                min-height:450px;
-                max-height:450px;
-            }
-            .navbar {
-                margin-bottom: 50px;
-                border-radius: 0;
-            }
-            @media screen and (min-width: 1200px) {
-                .navbar {
-                    margin-bottom: 50px;
-                    border-radius: 0;
-                    padding-right: 0px;
-                    padding-left: 150px;
-                }
-
-                .navbar-inverse{
-                    background-color: #ff6336;
-                    border: 0px;
-                }
-                .dropdown-menu{
-                    padding-top:15px;
-                }
-                .fit-image{
-                    width: 100%;
-                    object-fit: cover;
-                    height: 250px;
-                    width:200px;
-                }
-
-            </style>
-        </head>
-        <body>
-            <div class="container-fluid">
-                <div class="jumbotron">
-                    <img src="../images/shoppingList/${shoppingList.imagePath}" class="fit-image" alt="Immagine lista">
-                    <h2>${shoppingList.name}</h2>
-                    <h4>Categoria: ${shoppingListCategory.name}</h4>
-                    <h4>Descrizione: ${shoppingList.description}</h4>
-                </div>
-                <nav class="navbar navbar-inverse">
-                    <div class="container-fluid">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="utente.html" style="color:white"><span class="glyphicon glyphicon-user"></span> PROFILO</a></li>
-                            <li><a href="mainpagenologged.html" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
-
-                            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="color:white" href="#"><span class="glyphicon glyphicon-menu-hamburger"></span>MEN&Ugrave;</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Le mie liste</a></li>
-                                    <li><a href="#">Nuova lista</a></li>
-                                    <li><hr></li>
-                                    <li><a href="#">I miei prodotti</a></li>
-                                    <li><a href="#">Aggiungi prodotto</a></li>
-                                    <li><hr></li>
-                                    <li><a href="#">Categorie lista</a></li>
-                                    <li><a href="#">Nuova categoria lista</a></li>
-                                    <li><a href="#">Categorie prodotto</a></li>
-                                    <li><a href="#">Nuova categoria prodotto</a></li>
-                                </ul>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-5">
+                <div class="pre-scrollable">
+                    <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear">
+                    </select>
+                    <ul id="prodotti" class="list-group">
+                        <c:forEach items="${products}" var="product">
+                            <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
+                                <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
                             </li>
-                        </ul>  
-                        <button type="button" class="navbar-toggle" data-toggle="collapse"></button>
-                        <a class="navbar-brand" style="color:white" href="mainpagelogged.html"><span class="glyphicon glyphicon-home"></span> Home</a>
-                    </div>
-                </nav>
-                <div class="col-sm-1">
+                        </c:forEach>
+                        <!--<input type="text" class="form-control" placeholder="Cerca prodotto da aggiungere...">-->
+                    </ul>
                 </div>
-                <div class="col-sm-5">
-                    <div class="pre-scrollable">
-                        <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear">
-                        </select>
-                        <ul id="prodotti" class="list-group">
-                            <c:forEach items="${products}" var="product">
-                                <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
-                                    <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
-                                </li>
-                            </c:forEach>
-                            <!--<input type="text" class="form-control" placeholder="Cerca prodotto da aggiungere...">-->
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-sm-1">
-                </div>
-                <div class="col-sm-4">
-                    <div class="row">
+            </div>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
 
-                        <div>
-                            <label for="comment">Chat:</label>
-                            <div class="form-control" id="messageBoard"></div>
-                        </div>
-                        <div class="input-group">
-                            <input id="newtext" class="form-control" type="text">
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" onclick="addMessage()">Invia</button>
-                            </div>
-                        </div>
-
+                    <div>
+                        <label for="comment">Chat:</label>
+                        <div class="form-control" id="messageBoard"></div>
                     </div>
-                    <br>
-                    <div class="row">
-                        
-                        <ul id="utenti" class="list-group user-list-group">
-                            <li class="list-group-item justify-content-between align-items-center">
+                    <div class="input-group">
+                        <input id="newtext" class="form-control" type="text">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" onclick="addMessage()">Invia</button>
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+                <div class="row">
+
+                    <ul id="utenti" class="list-group user-list-group">
+                        <li class="list-group-item justify-content-between align-items-center">
                             <label> Utenti che condividono la lista: </label>
                             <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
                             </select></li>
                             <c:forEach items="${users}" var="user">
-                                <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
-                                    <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="deleteUser(${user.id})"></span>
-                                    <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
-                                        <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
-                                        <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
-                                        </select>  
-                                    </li>
-                            </c:forEach>
-                        </ul>
-                    </div>
-
+                            <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
+                                <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="deleteUser(${user.id})"></span>
+                                <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
+                                    <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
+                                    <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
+                                    </select>  
+                                </li>
+                        </c:forEach>
+                    </ul>
                 </div>
 
             </div>
-            <footer class="container-fluid text-center">
-                <p>&copy; 2018, ListeSpesa.it, All right reserved</p>
-            </footer>
 
-        </body>
-    </html>
+        </div>
+        <%@include file="../include/footer.jsp" %>
+    </body>
+</html>

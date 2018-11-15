@@ -1,3 +1,30 @@
+<%@page import="db.entities.ProductCategory"%>
+<%@page import="db.daos.ProductCategoryDAO"%>
+<%@page import="java.util.List"%>
+<%@page import="db.exceptions.DAOFactoryException"%>
+<%@page import="db.factories.DAOFactory"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%! private ProductCategoryDAO productCategoryDao;
+
+    @Override
+    public void init() throws ServletException {
+        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+        if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+        }
+        try {
+            productCategoryDao = daoFactory.getDAO(ProductCategoryDAO.class);
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get dao factory for productcategory storage system", ex);
+        }
+    }
+
+%>
+<%
+    List<ProductCategory> productCategories = productCategoryDao.getAll();
+    pageContext.setAttribute("productCategories", productCategories);
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,67 +32,37 @@
         <%@include file="include/generalMeta.jsp" %>
     </head>
     <body>
-
-        <div class="jumbotron">
-            <div class="container text-center">
-                <h1>ListeSpesa</h1>      
-                <p>Crea le tue liste per portarle sempre con te</p>
+        <div id="containerPage">
+            <div id="header">
+                <div class="jumbotron">
+                    <div class="container text-center">
+                        <h1>ListeSpesa</h1>      
+                        <p>Crea le tue liste per portarle sempre con te</p>
+                    </div>
+                </div>
+                <%@include file="include/navigationBar.jsp"%>
             </div>
+            <div id="body">
+                <div class="container">    
+                    <c:forEach items="${productCategories}" var="productCategory">
+                        <div class="col-sm-4">
+                            <div class="panel panel-default-custom">
+                                <c:choose>
+                                    <c:when test="${not empty user}">
+                                        <div class="panel-heading-custom" onclick="window.location.href = '/shoppinglists/restricted/ProductCategoryServlet?res=1&productCategoryId=${productCategory.id}'">${productCategory.name}</div>
+                                    </c:when>
+                                    <c:when test="${empty user}">
+                                        <div class="panel-heading-custom" onclick="window.location.href = '/shoppinglists/ProductCategoryPublic?productCategoryId=${productCategory.id}'">${productCategory.name}</div>
+                                    </c:when>
+                                </c:choose>
+                                <div class="panel-body"><img src="../images/productCategories/${productCategory.logoPath}" class="fit-image img-responsive" alt="${productCategory.name}"></div>
+                                <div class="panel-footer-custom">Visualizza articoli di ${productCategory.name}</div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+            <%@include file="include/footer.jsp" %>
         </div>
-
-        <%@include file="include/navigationBar.jsp"%>
-
-        <div class="container">    
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="panel panel-default-custom">
-                        <div class="panel-heading-custom">FERRAMENTA</div>
-                        <div class="panel-body"><a href="#"><img src="ferra.jpg" class="fit-image img-responsive" alt="Ferramenta"></a></div>
-                        <div class="panel-footer-custom">Visualizza articoli di ferramenta</div>
-                    </div>
-                </div>
-                <div class="col-sm-4"> 
-                    <div class="panel panel-default-custom">
-                        <div class="panel-heading-custom">ALIMENTARI</div>
-                        <div class="panel-body"><a href="#"><img src="alimentare.jpg" class="fit-image img-responsive" alt="Image"></a> </div>
-                        <div class="panel-footer-custom">Visualizza articoli di alimentari</div>
-                    </div>
-                </div>
-                <div class="col-sm-4"> 
-                    <div class="panel panel-default-custom">
-                        <div class="panel-heading-custom">FARMACIA</div>
-                        <div class="panel-body"><img src="farmacia.jpg" class="fit-image img-responsive" alt="Image"></div>
-                        <div class="panel-footer-custom">Visualizza articoli di categoria</div>
-                    </div>
-                </div>
-            </div>
-        </div><br>
-
-        <div class="container">    
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="panel panel-default-custom">
-                        <div class="panel-heading-custom">CATEGORIA</div>
-                        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="fit-image img-responsive" alt="Image"></div>
-                        <div class="panel-footer-custom">Visualizza articoli di categoria</div>
-                    </div>
-                </div>
-                <div class="col-sm-4"> 
-                    <div class="panel panel-default-custom">
-                        <div class="panel-heading-custom">CATEGORIA</div>
-                        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="fit-image img-responsive" alt="Image"></div>
-                        <div class="panel-footer-custom">Visualizza articoli di categoria</div>
-                    </div>
-                </div>
-                <div class="col-sm-4"> 
-                    <div class="panel panel-default-custom">
-                        <div class="panel-heading-custom">CATEGORIA</div>
-                        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="fit-image img-responsive" alt="Image"></div>
-                        <div class="panel-footer-custom">Visualizza articoli di categoria</div>
-                    </div>
-                </div>
-            </div>
-        </div><br><br>
-        <%@include file="include/footer.jsp" %>
     </body>
 </html>

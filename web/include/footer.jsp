@@ -1,3 +1,3 @@
-<footer class="container-fluid text-center">
+<footer class="container-fluid text-center" id="footer">
     <p>&copy; 2018, ListeSpesa.it, All right reserved</p>  
 </footer>

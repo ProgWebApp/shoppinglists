@@ -3,6 +3,8 @@
 <html>
     <head>
         <title>Product</title>
+                <%@include file="../include/generalMeta.jsp" %>
+
         <script>
             function deleteProduct(id) {
                 var xhttp = new XMLHttpRequest();
@@ -23,7 +25,8 @@
             }
         </script>
     </head>
-    <body>
+    <body>       
+        <%@include file="../include/navigationBar.jsp" %>
         ${product.id}<br>
         ${product.name}<br>
         ${product.notes}<br>
@@ -35,5 +38,6 @@
         <a href="${pageContext.response.encodeURL("product?res=2&productId=".concat(product.id))}">Modifica</a>
         <span onclick="deleteProduct(${product.id})">Elimina</span><br>
         <a href="${pageContext.response.encodeURL("products.jsp")}">My products</a>
-    </body>
+            <%@include file="../include/footer.jsp" %>
+</body>
 </html>

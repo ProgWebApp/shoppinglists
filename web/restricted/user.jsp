@@ -3,16 +3,7 @@
 <html lang="it">
     <head>
         <title>Utente</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/default-element.css">
-        <link rel="stylesheet" type="text/css" href="css/form.css">
-        <link rel="stylesheet" type="text/css" href="css/table.css">
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <%@include file="../include/generalMeta.jsp" %>
         
     </head>
     <body>
@@ -22,10 +13,12 @@
                 <p>${user.firstName} ${user.lastName}</p>
                 <form action="${pageContext.response.encodeURL("UserServlet")}" method="POST" enctype="multipart/form-data">
                     <input type="file" name="avatar" id="avatar" >
-                    <button class="btn btn-custom" type="submit" >Salva</button>
+                    <input type="hidden" name="changeAvatar" value=1>
+                            <button class="btn btn-custom" type="submit" >Salva</button>
                 </form>
             </div>
         </div>
+        <%@include file="../include/navigationBar.jsp" %>
         <div class="row">
             <div class="col-sm-3">
             </div>
@@ -90,6 +83,8 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">
+                                            <input type="hidden" name="changeName" value="1">
+                            
                                             <button type="submit" class="btn btn-custom">Invia</button>
                                             <button type="button" class="btn btn-custom" data-dismiss="modal">Annulla</button>
                                         </td>
@@ -114,7 +109,6 @@
                                 </c:when>
                             </c:choose>
 
-                            <input type="hidden" name="changePassword" value=1>
                             <table class="table table-custom">
                                 <tbody>
                                     <tr>
@@ -140,6 +134,8 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">
+                                            <input type="hidden" name="changePassword" value=1>
+                            
                                             <button type="submit" class="btn btn-custom">Invia</button>
                                             <button type="button" class="btn btn-custom" data-dismiss="modal">Annulla</button>
                                         </td>
@@ -153,15 +149,10 @@
                             <input type="hidden" name="deleteUser" value="1">
                             <button class="btn btn-custom" type="submit">Elimina</button>
                         </form>
-                        <h3><a style="color:black" href="mainpagenologged.html"><span class="glyphicon glyphicon-home"></span> Home</a>
-                        </h3>
                     </div>
                 </div>
             </div>
-
         </div>
-        <footer class="container-fluid text-center">
-            <p>&copy; 2018, ListeSpesa.it, All right reserved</p>
-        </footer>
+         <%@include file="../include/footer.jsp" %>
     </body>
 </html>

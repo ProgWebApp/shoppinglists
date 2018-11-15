@@ -30,9 +30,18 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Shopping List Categories</title>
+        <%@include file="../include/generalMeta.jsp" %>
+
     </head>
     <body>
-        <h1>Shopping List Categories</h1>
+        <div class="jumbotron">
+            <div class="container text-center">
+                <h1>Categorie di liste della spesa</h1>      
+
+            </div>
+        </div>
+        <%@include file="../include/navigationBar.jsp"%>
+
         <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
             Nome: <a href="${pageContext.response.encodeURL("ShoppingListCategoryServlet?res=1&shoppingListCategoryId=".concat(shoppingListCategory.id))}">${shoppingListCategory.name}</a><br>
             Description: ${shoppingListCategory.description}<br>
@@ -40,5 +49,6 @@
             <br>
         </c:forEach>
         <a href="${pageContext.response.encodeURL("shoppingListCategoryForm.jsp")}">Aggiungi categoria di lista della spesa</a>
+        <%@include file="../include/footer.jsp" %>
     </body>
 </html>

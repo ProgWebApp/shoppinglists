@@ -3,17 +3,19 @@
 <html>
     <head>
         <title>Product Category</title>
+                <%@include file="../include/generalMeta.jsp" %>
+
         <script>
             function deleteProductCategory(id) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 204) {
                         window.location.href = "${pageContext.response.encodeURL("productCategories.jsp")}";
-                    }else if (this.readyState === 4 && this.status === 400) {
+                    } else if (this.readyState === 4 && this.status === 400) {
                         alert("Bad request!");
-                    }else if (this.readyState === 4 && this.status === 403) {
+                    } else if (this.readyState === 4 && this.status === 403) {
                         alert("You are not allowed to delete the productCategory!");
-                    }else if (this.readyState === 4 && this.status === 500) {
+                    } else if (this.readyState === 4 && this.status === 500) {
                         alert("Impossible to delete the productCategory!");
                     }
                 };
@@ -23,7 +25,8 @@
             }
         </script>
     </head>
-    <body>
+    <body>        
+        <%@include file="../include/navigationBar.jsp" %>
         ${productCategory.id}<br>
         ${productCategory.name}<br>
         ${productCategory.description}<br>
@@ -34,5 +37,6 @@
         <a href="${pageContext.response.encodeURL("ProductCategoryServlet?res=2&productCategoryId=".concat(productCategory.id))}">Modifica</a>
         <span onclick="deleteProductCategory(${productCategory.id})">Elimina</span><br>
         <a href="${pageContext.response.encodeURL("productCategories.jsp")}">Product Categories</a>
+        <%@include file="../include/footer.jsp" %>
     </body>
 </html>

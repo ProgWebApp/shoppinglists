@@ -38,9 +38,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>My products</title>
+        <%@include file="../include/generalMeta.jsp" %>
+
     </head>
     <body>
         <h1>My Products</h1>
+                <%@include file="../include/navigationBar.jsp" %>
+
         <c:forEach items="${products}" var="product">
             Nome: <a href="${pageContext.response.encodeURL("product?res=1&productId=".concat(product.id))}">${product.name}</a><br>
             Note: ${product.notes}<br>
@@ -52,5 +56,7 @@
         </c:forEach>
         <br>
         <a href="${pageContext.response.encodeURL("productForm.jsp")}">Aggiungi prodotto</a>
+                <%@include file="../include/footer.jsp" %>
+
     </body>
 </html>

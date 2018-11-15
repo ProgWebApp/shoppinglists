@@ -31,9 +31,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Product Categories</title>
+                <%@include file="../include/generalMeta.jsp" %>
+
     </head>
     <body>
         <h1>Product Categories</h1>
+        <%@include file="../include/navigationBar.jsp" %>
         <c:forEach items="${productCategories}" var="productCategory">
             Nome: <a href="${pageContext.response.encodeURL("ProductCategoryServlet?res=1&productCategoryId=".concat(productCategory.id))}">${productCategory.name}</a><br>
             Description: ${productCategory.description}<br>
@@ -41,5 +44,6 @@
             <br>
         </c:forEach>
         <a href="${pageContext.response.encodeURL("productCategoryForm.jsp")}">Aggiungi categoria di prodotto</a>
-    </body>
+            <%@include file="../include/footer.jsp" %>
+</body>
 </html>

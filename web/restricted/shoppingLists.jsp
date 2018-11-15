@@ -34,16 +34,7 @@
 <html>
     <head>
         <title>Liste</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/default-element.css">
-        <link rel="stylesheet" type="text/css" href="css/liste.css">
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+                <%@include file="../include/generalMeta.jsp" %>
         <style>
 
             button:focus{
@@ -58,43 +49,14 @@
     </head>
     <body>
 
-        <div class="container-fluid">
-            <div class="jumbotron">
-                <h2>Liste della spesa di ${user.firstName}</h2>
+
+        <div class="jumbotron">
+            <div class="container text-center">
+                <h1>Liste della spesa di ${user.firstName}</h1>      
             </div>
-
-            <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="utente.html" style="color:white"><span class="glyphicon glyphicon-user"></span> PROFILO</a></li>
-                        <li><a href="mainpagenologged.html" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
-
-                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="color:white" href="#"><span class="glyphicon glyphicon-menu-hamburger"></span>MEN&Ugrave;</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="disabled">Le mie liste</a></li>
-                                <li><a href="#" class="disabled">Nuova lista</a></li>
-                                <li><hr></li>
-                                <li><a href="#">I miei prodotti</a></li>
-                                <li><a href="#">Aggiungi prodotto</a></li>
-                                <li><hr></li>
-                                <li><a href="#">Categorie lista</a></li>
-                                <li><a href="#">Nuova categoria lista</a></li>
-                                <li><a href="#">Categorie prodotto</a></li>
-                                <li><a href="#">Nuova categoria prodotto</a></li>
-                            </ul>
-                        </li>
-                    </ul>  
-
-
-                    <button type="button" class="navbar-toggle" data-toggle="collapse"></button>
-                    <a class="navbar-brand" style="color:white" href="mainpagelogged.html"><span class="glyphicon glyphicon-home"></span> Home</a>
-
-
-
-                </div>
-            </nav>
-
+        </div>
+        <%@include file="../include/navigationBar.jsp"%>
+        <div class="container-fluid">
             <div class="col-sm-1">
             </div>
             <div class="col-sm-5">
@@ -114,7 +76,7 @@
                             <c:set var="i" value="${i + 1}"/>
                         </c:forEach>
                         <li>
-                            <button type="button" onclick="window.location.href='${pageContext.response.encodeURL("shoppingListForm.jsp")}'" class="list-group-item list-group-item-action">Aggiungi nuova lista </button>
+                            <button type="button" onclick="window.location.href = '${pageContext.response.encodeURL("shoppingListForm.jsp")}'" class="list-group-item list-group-item-action">Aggiungi nuova lista </button>
                         </li>
                     </ul>
                 </div>
@@ -138,9 +100,6 @@
             </div>
 
         </div>
-
-        <footer class="container-fluid text-center">
-            <p>&copy; 2018, ListeSpesa.it, All right reserved</p>
-        </footer>
+        <%@include file="../include/footer.jsp" %>
     </body>
 </html>

@@ -16,11 +16,19 @@
         <script src="./leaflet/leaflet.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <%@include file="include/generalMeta.jsp"%>
 
     </head>
     <body>
-        <h1>That's my map!</h1>
+        <div class="jumbotron">
+            <div class="container text-center">
+                <h1>Trova i negozi vicini a te</h1>      
+                <p>Trova i negozi più vicini dove poter completare la lista</p>
+            </div>
+        </div>
+        <%@include file="include/navigationBar.jsp"%>
         <div id="mapid" class="map"></div>
+        <%@include file="include/footer.jsp"%>
 
         <script>
             var lat, long;

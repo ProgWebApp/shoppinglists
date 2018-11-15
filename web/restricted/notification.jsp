@@ -11,8 +11,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+                <%@include file="../include/generalMeta.jsp" %>
+
     </head>
     <body>
+                <%@include file="../include/navigationBar.jsp" %>
+
         <div id="mynum"></div>
         <script>
             var lat, long;
@@ -71,5 +75,6 @@
                 xhttp.send("data=" + myquery);
             }
         </script>
-    </body>
+            <%@include file="../include/footer.jsp" %>
+</body>
 </html>

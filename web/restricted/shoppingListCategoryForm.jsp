@@ -28,19 +28,19 @@
 <html>
     <head>
         <title>Modifica categoria</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="../css/default-element.css">
-        <link rel="stylesheet" type="text/css" href="../css/form.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-            
+                <%@include file="../include/generalMeta.jsp" %>
+
     </head>
     <body>
-        <div class="container text-center">    
-            <h2>Area di creazione categoria Lista</h2><br>
+        <div class="jumbotron">
+            <div class="container text-center">
+                <h2>Area di creazione categoria Lista</h2><br>
             <h4>Crea una nuova tipologia di categoria per le liste</h4><br>
+            
+            </div>
+        </div>
+        <%@include file="../include/navigationBar.jsp"%>
+        <div class="container text-center">    
             <br>
             <div class="col-sm-2">
             </div>
@@ -90,9 +90,8 @@
                 </div>
             </div>
         </div>
-        <br>
-        <footer class="container-fluid text-center">
-            <p>&copy; 2018, ListeSpesa.it, All right reserved</p> 
-        </footer>
+        
+                <%@include file="../include/footer.jsp" %>
+
     </body>
 </html>

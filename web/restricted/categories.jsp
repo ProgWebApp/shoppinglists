@@ -56,39 +56,14 @@
     </head>
 
     <body>
-        <div class="container-fluid">
+        
             <div class="jumbotron">
                 <h2>Le mie categorie</h2>
                 <h4>Riepilogo delle categorie create</h4>
             </div>
-            <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="utente.html" style="color:white"><span class="glyphicon glyphicon-user"></span> PROFILO</a></li>
-                        <li><a href="mainpagenologged.html" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" style="color:white" href="#"><span class="glyphicon glyphicon-menu-hamburger"></span>MEN&Ugrave;</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Le mie liste</a></li>
-                                <li><a href="#">Nuova lista</a></li>
-                                <li>
-                                    <hr>
-                                </li>
-                                <li><a href="#">I miei prodotti</a></li>
-                                <li><a href="#">Aggiungi prodotto</a></li>
-                                <li>
-                                    <hr>
-                                </li>
-                                <li><a href="#">Categorie lista</a></li>
-                                <li><a href="#">Nuova categoria lista</a></li>
-                                <li><a href="#">Categorie prodotto</a></li>
-                                <li><a href="#">Nuova categoria prodotto</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <a class="navbar-brand" style="color:white" href="mainpagelogged.html"><span class="glyphicon glyphicon-home"></span> Home</a>
-                </div>
-            </nav>
+                    <%@include file="../include/navigationBar.jsp" %>
+
+            <div class="container-fluid">
             <div class="col-sm-1">
             </div>
             <div class="col-sm-5">
@@ -147,8 +122,7 @@
             <div class="col-sm-1">
             </div>
         </div>
-        <footer class="container-fluid text-center">
-            <p>&copy; 2018, ListeSpesa.it, All right reserved</p>
-        </footer>
+                <%@include file="../include/footer.jsp" %>
+
     </body>
 </html>

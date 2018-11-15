@@ -114,6 +114,18 @@
         <servlet-name>UsersSearchServlet</servlet-name>
         <servlet-class>servlets.UsersSearchServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductCategoryPublic</servlet-name>
+        <servlet-class>servlets.ProductCategoryPublic</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductsSearchPublic</servlet-name>
+        <servlet-class>servlets.ProductsSearchPublic</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductPublic</servlet-name>
+        <servlet-class>servlets.ProductPublic</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -172,10 +184,6 @@
         <url-pattern>/DownloadImages</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ProductServlet</servlet-name>
-        <url-pattern>/restricted/product</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>UsersSearchServlet</servlet-name>
         <url-pattern>/restricted/UsersSearchServlet</url-pattern>
     </servlet-mapping>
@@ -183,6 +191,22 @@
         <servlet-name>ProductsSearchServlet</servlet-name>
         <url-pattern>/restricted/ProductsSearchServlet</url-pattern>
         <url-pattern>/ProductsSearchServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductCategoryPublic</servlet-name>
+        <url-pattern>/ProductCategoryPublic</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductsSearchPublic</servlet-name>
+        <url-pattern>/ProductsSearchPublic</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductPublic</servlet-name>
+        <url-pattern>/ProductPublic</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductServlet</servlet-name>
+        <url-pattern>/restricted/ProductServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

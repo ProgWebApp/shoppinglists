@@ -5,12 +5,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="css/default-element.css">
-<link rel="stylesheet" type="text/css" href="css/form.css">
-<link rel="stylesheet" type="text/css" href="css/immagini.css">
-<link rel="stylesheet" type="text/css" href="css/liste.css">
-<link rel="stylesheet" type="text/css" href="css/loghi.css">
-<link rel="stylesheet" type="text/css" href="css/main-panel.css">
-<link rel="stylesheet" type="text/css" href="css/panel-custom.css">
-<link rel="stylesheet" type="text/css" href="css/table.css">
-<link rel="stylesheet" type="text/css" href="css/tabs-nav.css">
+<link rel="stylesheet" type="text/css" href="/shoppinglists/css/default-element.css">
+<link rel="stylesheet" type="text/css" href="/shoppinglists/css/form.css">
+<link rel="stylesheet" type="text/css" href="/shoppinglists/css/immagini.css">
+<link rel="stylesheet" type="text/css" href="/shoppinglists/css/liste.css">
+<link rel="stylesheet" type="text/css" href="/shoppinglists/css/loghi.css">
+<link rel="stylesheet" type="text/css" href="/shoppinglists/css/main-panel.css">
+<link rel="stylesheet" type="text/css" href="/shoppinglists/css/panel-custom.css">
+<link rel="stylesheet" type="text/css" href="/shoppinglists/css/table.css">
+<link rel="stylesheet" type="text/css" href="/shoppinglists/css/tabs-nav.css">
