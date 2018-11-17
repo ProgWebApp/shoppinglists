@@ -55,17 +55,17 @@
 </script>
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right list-inline">
             <c:choose>
                 <c:when test="${not empty user}">
-                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/user.jsp")}" style="color:white"><span class="glyphicon glyphicon-user"></span> PROFILO</a></li>
-                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/Logout")}" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/user.jsp")}" style="color:white"><span class="glyphicon glyphicon-user"></span><span class="hidden-sm hidden-xs">PROFILO</span></a></li>
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/Logout")}" style="color:white"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm hidden-xs">LOGOUT</span></a></li>
                     </c:when>
                     <c:when test="${empty user}">
-                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/login.jsp")}" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGIN</a></li>
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/login.jsp")}" style="color:white"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm hidden-xs">LOGIN</span></a></li>
                     </c:when>
                 </c:choose>
-            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="color:white" href="#"><span class="glyphicon glyphicon-menu-hamburger"></span>MEN&Ugrave;</a>
+                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="color:white" href="#"><span class="glyphicon glyphicon-menu-hamburger"></span><span class="hidden-sm hidden-xs">MEN&Ugrave;</span></a>
                 <ul class="dropdown-menu">
                     <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingLists.jsp")}">Le mie liste</a></li>
                     <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingListForm.jsp")}">Nuova lista</a></li>
@@ -81,7 +81,7 @@
             </li>
         </ul>
 
-        <a class="navbar-brand" style="color:white" href="/shoppinglists/index.jsp"><span class="glyphicon glyphicon-home"></span> Home</a>
+        <a class="navbar-brand" style="color:white" href="/shoppinglists/index.jsp"><span class="glyphicon glyphicon-home"></span><span class="hidden-sm hidden-xs"> Home</span></a>
         <form class="navbar-form" role="search">
             <div class="input-group col-xs-5">
                 <c:choose>
