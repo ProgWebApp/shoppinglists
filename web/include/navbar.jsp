@@ -26,7 +26,7 @@
             window.location.href = url;
         });
     });
-        /* FUNZIONE RICERCA PRODOTTI PUBBLICI PER L'UTENTE non LOGGATO */
+    /* FUNZIONE RICERCA PRODOTTI PUBBLICI PER L'UTENTE non LOGGATO */
     $(function () {
         function formatOption(option) {
             var res = $('<span class="optionClick">' + option.text + '</span>');
@@ -55,13 +55,13 @@
 </script>
 
 <nav class="navbar navbar-inverse ">
-     <div class="navbar-header pull-left">
+    <div class="navbar-header pull-left">
         <a class="navbar-brand" style="color:white" href="/shoppinglists/index.jsp"><span class="glyphicon glyphicon-home"></span> Home</a>
-     </div>
-        <div class="navbar-header pull-left">
-             <form class="navbar-form " role="search">
-      <div class="form-group">
-          <c:choose>
+    </div>
+    <div class="navbar-header pull-left">
+        <form class="navbar-form " role="search">
+            <div class="form-group">
+                <c:choose>
                     <c:when test="${empty user}">
                         <select id="searchPublicProducts" name="searchPublicProducts" class="form-control select2-allow-clear mr-sm-2">
                         </select>
@@ -71,13 +71,13 @@
                         </select>
                     </c:when>
                 </c:choose>
-    
-      </div>
-    </form>
-        </div>
-        <div class="navbar-header pull-right">
+
+            </div>
+        </form>
+    </div>
+    <div class="navbar-header pull-right">
         <ul class="nav navbar-nav">
-             <c:choose>
+            <c:choose>
                 <c:when test="${not empty user}">
                     <li style="display: inline-block !important;">
                         <a class="nav-link" href="${pageContext.response.encodeURL("/shoppinglists/restricted/user.jsp")}" style="color:white">
@@ -91,25 +91,26 @@
                     <li style="display: inline-block !important;"><a class="nav-link" href="${pageContext.response.encodeURL("/shoppinglists/login.jsp")}" style="color:white"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm hidden-xs">LOGIN</span></a></li>
                     </c:when>
                 </c:choose>
-                    <li class="dropdown" style="display: inline-block !important;">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color:white" href="#">
-                            <span class="glyphicon glyphicon-menu-hamburger"></span>
-                            <span class="hidden-sm hidden-xs">MEN&Ugrave;</span>
-                        </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingLists.jsp")}">Le mie liste</a>
-                    <a class="dropdown-item" href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingListForm.jsp")}">Nuova lista</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="${pageContext.response.encodeURL("/shoppinglists/restricted/products.jsp")}">I miei prodotti</a>
-                    <a class="dropdown-item" href="${pageContext.response.encodeURL("/shoppinglists/restricted/productsForm.jsp")}">Aggiungi prodotto</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingListCategories.jsp")}">Categorie lista</a>
-                    <a class="dropdown-item" href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingListCategoryForm.jsp")}">Nuova categoria lista</a>
-                    <a class="dropdown-item" href="${pageContext.response.encodeURL("/shoppinglists/restricted/productsCategories.jsp")}">Categorie prodotto</a>
-                    <a class="dropdown-item" href="${pageContext.response.encodeURL("/shoppinglists/restricted/productCategory.jsp")}">Nuova categoria prodotto</a>
-                </div>
+            <li class="dropdown" style="display: inline-block !important;">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color:white" href="#">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    <span class="hidden-sm hidden-xs">MEN&Ugrave;</span>
+                </a>
+            
+                <ul class="dropdown-menu dropdown-menu-right" style="right: 0px;">
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingLists.jsp")}">Le mie liste</a></li>
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingListForm.jsp")}">Nuova lista</a></li>
+                    <li><hr></li>
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/products.jsp")}">I miei prodotti</a></li>
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/productsForm.jsp")}">Aggiungi prodotto</a></li>
+                    <li><hr></li>
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingListCategories.jsp")}">Categorie lista</a></li>
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingListCategoryForm.jsp")}">Nuova categoria lista</a></li>
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/productsCategories.jsp")}">Categorie prodotto</a></li>
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/productCategory.jsp")}">Nuova categoria prodotto</a></li>
+                </ul>
+            </li>
             </li>
         </ul>
-        </div>
+    </div>
 </nav>
- 
