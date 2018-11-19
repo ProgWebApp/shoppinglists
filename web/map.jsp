@@ -17,7 +17,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <%@include file="include/generalMeta.jsp"%>
-
     </head>
     <body>
         <div class="jumbotron">
@@ -51,9 +50,9 @@
                     console.log("Geolocation is not supported by this browser.");
                 }
             }
+            
             function getShops() {
                 var xhttp = new XMLHttpRequest();
-
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         shopsJSON = JSON.parse(this.responseText);
@@ -65,11 +64,12 @@
                 };
                 xhttp.open("GET", "MapServlet", true);
                 xhttp.send("");
-
             }
+            
             function addShop(shop, i) {
                 shops += "node[\"shop\"=\"" + shop + "\"](" + (lat - 0.02) + "," + (long - 0.02) + "," + (lat + 0.02) + "," + (long + 0.02) + ");";
             }
+            
             function foo() {
                 var myquery = "[out:json][timeout:30];"
                         + "(" + shops + ");"
@@ -93,13 +93,13 @@
                         L.tileLayer('https://a.tile.openstreetmap.org/{z}/{x}/{y}.png ', {
                             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
                             maxZoom: 18,
-
                         }).addTo(mymap);
                     }
                 };
                 xhttp.open("POST", "http://www.overpass-api.de/api/interpreter", true);
                 xhttp.send("data=" + myquery);
             }
+            
             function myToGeoJson(mynode, i) {
                 if (i > 0) {
                     geojson += ',';

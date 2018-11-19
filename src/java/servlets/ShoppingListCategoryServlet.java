@@ -78,10 +78,10 @@ public class ShoppingListCategoryServlet extends HttpServlet {
 
         /* RECUPERO LA CATEGORIA DI LISTA */
         ShoppingListCategory shoppingListCategory;
-        List<ProductCategory> productCategorySelected;
+        List<ProductCategory> productCategoriesSelected;
         try {
             shoppingListCategory = shoppingListCategoryDAO.getByPrimaryKey(shoppingListCategoryId);
-            productCategorySelected = shoppingListCategoryDAO.getProductCategories(shoppingListCategoryId);
+            productCategoriesSelected = shoppingListCategoryDAO.getProductCategories(shoppingListCategoryId);
         } catch (DAOException ex) {
             response.setStatus(500);
             return;
@@ -89,10 +89,10 @@ public class ShoppingListCategoryServlet extends HttpServlet {
 
         /* RISPONDO */
         request.setAttribute("shoppingListCategory", shoppingListCategory);
-        request.setAttribute("productCategorySelected", productCategorySelected);
+        request.setAttribute("productCategoriesSelected", productCategoriesSelected);
         switch (res) {
             case 1:
-                getServletContext().getRequestDispatcher("/restricted/shoppingListCategory.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/shoppingListCategory.jsp").forward(request, response);
                 break;
             case 2:
                 if (!user.isAdmin()) {
@@ -166,8 +166,12 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         if (shoppingListCategoryId == null && logoFilePart.getSize() == 0) {
             emptyLogo = true;
         }
+        /* SHOP */
+        String shoppingListCategoryShop = request.getParameter("shop");
+        shoppingListCategory.setShop(shoppingListCategoryShop);
+        
         /* CONTROLLO CAMPI VUOTI */
-        if (shoppingListCategoryName.isEmpty() || shoppingListCategoryDescription.isEmpty() || emptyLogo) {
+        if (shoppingListCategoryName.isEmpty() || shoppingListCategoryDescription.isEmpty() || shoppingListCategoryShop.isEmpty() || emptyLogo) {
             request.getSession().setAttribute("message", 1);
             request.getSession().setAttribute("shoppingListCategory", shoppingListCategory);
             getServletContext().getRequestDispatcher("/restricted/shoppingListCategoryForm.jsp").forward(request, response);

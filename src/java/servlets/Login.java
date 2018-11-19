@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet that handles the login web page.
  */
-public class LoginServlet extends HttpServlet {
+public class Login extends HttpServlet {
 
     private UserDAO userDao;
 

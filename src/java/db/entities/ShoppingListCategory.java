@@ -8,6 +8,7 @@ public class ShoppingListCategory {
     private String name;
     private String description;
     private String logoPath;
+    private String shop;
 
     /**
      * The primary key of this shoppingList-category.
@@ -73,4 +74,19 @@ public class ShoppingListCategory {
         this.logoPath = logoPath;
     }
     
+    /**
+     * The shop of this shoppingList-category.
+     * @return the shop
+     */
+    public String getShop() {
+        return shop;
+    }
+
+    /**
+     * Sets the shop of this shoppingList-category.
+     * @param shop the shop to set
+     */
+    public void setShop(String shop) {
+        this.shop = shop;
+    }
 }

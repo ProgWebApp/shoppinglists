@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ProductPublic extends HttpServlet {
 
-    private ProductDAO productDao;
+    private ProductDAO productDAO;
     private ProductCategoryDAO productCategoryDAO;
 
     @Override
@@ -36,7 +36,7 @@ public class ProductPublic extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            productDao = daoFactory.getDAO(ProductDAO.class);
+            productDAO = daoFactory.getDAO(ProductDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for product storage system", ex);
         }
@@ -69,7 +69,7 @@ public class ProductPublic extends HttpServlet {
         /* RECUPERO IL PRODOTTO E RESTITUISCO ERRORE SE IL PRODOTTO NON ESISTE (O NON E VISIBILE) */
         Product product;
         try {
-            product = productDao.getByPrimaryKey(productId);
+            product = productDAO.getByPrimaryKey(productId);
         } catch (DAOException ex) {
             response.setStatus(500);
             return;
@@ -93,6 +93,6 @@ public class ProductPublic extends HttpServlet {
         request.setAttribute("product", product);
         request.setAttribute("modifiable", false);
         request.setAttribute("productCategory", category);
-        getServletContext().getRequestDispatcher("/restricted/product.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("product.jsp").forward(request, response);
     }
 }

@@ -8,6 +8,8 @@ package servlets;
 import db.daos.ShoppingListCategoryDAO;
 import db.entities.User;
 import db.exceptions.DAOException;
+import db.exceptions.DAOFactoryException;
+import db.factories.DAOFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.console;
@@ -26,7 +28,18 @@ import javax.servlet.http.HttpServletResponse;
 public class MapServlet extends HttpServlet {
 
     private ShoppingListCategoryDAO shoppingListCategoryDAO;
-
+    @Override
+    public void init() throws ServletException {
+        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+        if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+        }
+        try {
+            shoppingListCategoryDAO = daoFactory.getDAO(ShoppingListCategoryDAO.class);
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get dao factory for user storage system", ex);
+        }
+    }
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -37,16 +50,23 @@ public class MapServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String json = "{\"shops\":[\"deli\", \"florist\"]}";
+        /*String json = "{\"shops\":[\"deli\", \"florist\"]}";
         //String json = "{\"shops\":[]}";
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.print(json);
-        out.flush();
-        /*User user = (User) request.getSession().getAttribute("user");
+        out.flush();*/
+        User user = (User) request.getSession().getAttribute("user");
+        if(user==null || user.getId()==null){
+            response.setStatus(400);
+            return;
+        }
+        System.out.println("titto a posto");
         try {
-            List<String> shops = shoppingListCategoryDAO.getShopsByUser(user);
+            Integer userId = user.getId();
+            List<String> shops = shoppingListCategoryDAO.getShopsByUser(userId);
+            
             String json = "{\"shops\":[";
 
             for (int i = 0; i < shops.size(); i++) {
@@ -60,7 +80,8 @@ public class MapServlet extends HttpServlet {
             out.print(json);
             out.flush();
         } catch (DAOException ex) {
+            System.out.println("impossibile trovare i negozi");
             Logger.getLogger(MapServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
     }
 }

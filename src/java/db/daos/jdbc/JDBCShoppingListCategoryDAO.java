@@ -40,11 +40,12 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
         if (shoppingListCategory == null) {
             throw new DAOException("shoppingListCategory is not valid", new NullPointerException("shoppingListCategory is null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO list_categories (name, description, logo) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO list_categories (name, description, logo, shop) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, shoppingListCategory.getName());
             ps.setString(2, shoppingListCategory.getDescription());
             ps.setString(3, shoppingListCategory.getLogoPath());
+            ps.setString(4, shoppingListCategory.getShop());
 
             ps.executeUpdate();
 
@@ -80,12 +81,13 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
             throw new DAOException("shoppingListCategory is not valid", new NullPointerException("shoppingListCategory id is null"));
         }
 
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE list_categories SET name = ?, description = ?, logo = ? WHERE id = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE list_categories SET name = ?, description = ?, logo = ?, shop = ? WHERE id = ?")) {
 
             ps.setString(1, shoppingListCategory.getName());
             ps.setString(2, shoppingListCategory.getDescription());
             ps.setString(3, shoppingListCategory.getLogoPath());
-            ps.setInt(4, shoppingListCategory.getId());
+            ps.setString(4, shoppingListCategory.getShop());
+            ps.setInt(5, shoppingListCategory.getId());
 
             ps.executeUpdate();
 
@@ -160,10 +162,8 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM list_categories WHERE id = ?")) {
             stm.setInt(1, primaryKey);
             ResultSet rs = stm.executeQuery();
-
             rs.next();
             return setAllShoppingListCategoryFields(rs);
-
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the shoppingListCategory for the passed primary key", ex);
         }
@@ -181,16 +181,12 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
     @Override
     public List<ShoppingListCategory> getAll() throws DAOException {
         try (Statement stm = CON.createStatement()) {
-
             List<ShoppingListCategory> productCategories = new ArrayList<>();
             ResultSet rs = stm.executeQuery("SELECT * FROM list_categories ORDER BY name");
-
             while (rs.next()) {
                 productCategories.add(setAllShoppingListCategoryFields(rs));
             }
-
             return productCategories;
-
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of shoppingListCategory", ex);
         }
@@ -202,12 +198,9 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
             throw new DAOException("shoppingListCategoryId and productCategoryId are mandatory fields", new NullPointerException("shoppingListCategoryId or productCategoryId are null"));
         }
         try (PreparedStatement ps = CON.prepareStatement("INSERT INTO PC_LC (list_category, product_category) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS)) {
-
             ps.setInt(1, shoppingListCategoryId);
             ps.setInt(2, productCategoryId);
-
             ps.executeUpdate();
-
         } catch (SQLException ex) {
             if (ex.getSQLState().equals("23505")) {
                 throw new DAOException("Impossible to link the passed shoppingListCategory with the passed productCategory", new UniqueConstraintException("This link already exist in the system"));
@@ -239,17 +232,13 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
             List<ProductCategory> productCategories = new ArrayList<>();
             ps.setInt(1, shoppingListCategoryId);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 productCategories.add(JDBCProductCategoryDAO.setAllProductCategoryFields(rs));
             }
-
             return productCategories;
-
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of productCategory", ex);
         }
-        
     }
     
     /**
@@ -268,7 +257,7 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
         shoppingListCategory.setName(rs.getString("name"));
         shoppingListCategory.setDescription(rs.getString("description"));
         shoppingListCategory.setLogoPath(rs.getString("logo"));
-
+        shoppingListCategory.setShop(rs.getString("shop"));
         return shoppingListCategory;
     }
     
@@ -282,14 +271,14 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
      * retrieving.
      */
     @Override
-    public List<String> getShopsByUser(User user) throws DAOException {
-        if (user == null) {
+    public List<String> getShopsByUser(Integer userId) throws DAOException {
+        if (userId == null) {
             throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
         }
         try (PreparedStatement stm = CON.prepareStatement("SELECT list_categories.shop FROM list_categories, lists, list_products, users_lists"
-                    + "WHERE (list_categories.id=lists.list_category AND lists.id=list_products.list AND list_products.necessary=true AND users_lists.list=lists.id AND user_lists.user_id=?)")) {
+                    + " WHERE (list_categories.id=lists.list_category AND lists.id=list_products.list AND list_products.necessary=true AND users_lists.list=lists.id AND users_lists.user_id=?)")) {
             List<String> shops = new ArrayList<>();
-            stm.setInt(1, user.getId());
+            stm.setInt(1, userId);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
               shops.add(rs.getString("shop"));

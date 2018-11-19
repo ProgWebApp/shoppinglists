@@ -6,6 +6,8 @@
 package servlets;
 
 import db.daos.ProductCategoryDAO;
+import db.daos.ProductDAO;
+import db.entities.Product;
 import db.entities.ProductCategory;
 import db.entities.User;
 import db.exceptions.DAOException;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -27,7 +30,8 @@ import javax.servlet.http.Part;
 @MultipartConfig
 public class ProductCategoryServlet extends HttpServlet {
 
-    private ProductCategoryDAO productCategoryDao;
+    private ProductCategoryDAO productCategoryDAO;
+        private ProductDAO productDAO;
 
     @Override
     public void init() throws ServletException {
@@ -36,9 +40,14 @@ public class ProductCategoryServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            productCategoryDao = daoFactory.getDAO(ProductCategoryDAO.class);
+            productCategoryDAO = daoFactory.getDAO(ProductCategoryDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for productCategory storage system", ex);
+        }
+        try {
+            productDAO = daoFactory.getDAO(ProductDAO.class);
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get dao factory for product storage system", ex);
         }
     }
 
@@ -69,8 +78,10 @@ public class ProductCategoryServlet extends HttpServlet {
 
         /* RECUPERO LA CATEGORIA DI PRODOTTO */
         ProductCategory productCategory;
+        List<Product> products;
         try {
-            productCategory = productCategoryDao.getByPrimaryKey(productCategoryId);
+            productCategory = productCategoryDAO.getByPrimaryKey(productCategoryId);
+            products = productDAO.getByProductCategory(productCategoryId, user.getId());
         } catch (DAOException ex) {
             response.setStatus(500);
             return;
@@ -78,9 +89,10 @@ public class ProductCategoryServlet extends HttpServlet {
 
         /* RISPONDO */
         request.setAttribute("productCategory", productCategory);
+        request.setAttribute("products", products);
         switch (res) {
             case 1:
-                getServletContext().getRequestDispatcher("/restricted/productCategory.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/productCategory.jsp").forward(request, response);
                 break;
             case 2:
                 if (!user.isAdmin()) {
@@ -114,7 +126,7 @@ public class ProductCategoryServlet extends HttpServlet {
                 throw new ServletException("This request require a parameter named productCategoryId whit an int value");
             }
             try {
-                productCategory = productCategoryDao.getByPrimaryKey(productCategoryId);
+                productCategory = productCategoryDAO.getByPrimaryKey(productCategoryId);
             } catch (DAOException ex) {
                 throw new ServletException("Impossible to get the productCateogry", ex);
             }
@@ -192,9 +204,9 @@ public class ProductCategoryServlet extends HttpServlet {
         /* INSERT OR UPDATE */
         try {
             if (productCategoryId == null) {
-                productCategoryId = productCategoryDao.insert(productCategory);
+                productCategoryId = productCategoryDAO.insert(productCategory);
             } else {
-                productCategoryDao.update(productCategory);
+                productCategoryDAO.update(productCategory);
             }
         } catch (DAOException ex) {
             throw new ServletException("Impossible to insert or update the productCategory", ex);
@@ -231,7 +243,7 @@ public class ProductCategoryServlet extends HttpServlet {
 
         /* RISPONDO */
         try {
-            productCategoryDao.delete(productCategoryId);
+            productCategoryDAO.delete(productCategoryId);
             response.setStatus(204);
         } catch (DAOException ex) {
             response.setStatus(500);

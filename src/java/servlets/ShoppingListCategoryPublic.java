@@ -6,13 +6,15 @@
 package servlets;
 
 import db.daos.ProductCategoryDAO;
-import db.daos.ProductDAO;
-import db.entities.Product;
+import db.daos.ShoppingListCategoryDAO;
 import db.entities.ProductCategory;
+import db.entities.ShoppingListCategory;
+import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,11 +25,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author pberi
  */
-public class ProductCategoryPublic extends HttpServlet {
+public class ShoppingListCategoryPublic extends HttpServlet {
 
-    private ProductCategoryDAO productCategoryDao;
-    private ProductDAO productDAO;
- 
+    private ShoppingListCategoryDAO shoppingListCategoryDAO;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
@@ -35,14 +36,9 @@ public class ProductCategoryPublic extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            productCategoryDao = daoFactory.getDAO(ProductCategoryDAO.class);
+            shoppingListCategoryDAO = daoFactory.getDAO(ShoppingListCategoryDAO.class);
         } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for productCategory storage system", ex);
-        }
-        try {
-            productDAO = daoFactory.getDAO(ProductDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for product storage system", ex);
+            throw new ServletException("Impossible to get dao factory for shopping-list-Category storage system", ex);
         }
     }
 
@@ -50,35 +46,34 @@ public class ProductCategoryPublic extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
-        if (request.getParameter("productCategoryId") == null) {
+        if (request.getParameter("shoppingListCategoryId") == null) {
             response.setStatus(400);
             return;
         }
 
         /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
-        Integer productCategoryId;
+        Integer shoppingListCategoryId;
         try {
-            productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));
+            shoppingListCategoryId = Integer.valueOf(request.getParameter("shoppingListCategoryId"));
         } catch (NumberFormatException ex) {
             response.setStatus(400);
             return;
         }
 
-        /* RECUPERO LA CATEGORIA DI PRODOTTO */
-        ProductCategory productCategory;
-        List<Product> products;
+        /* RECUPERO LA CATEGORIA DI LISTA */
+        ShoppingListCategory shoppingListCategory;
+        List<ProductCategory> productCategoriesSelected;
         try {
-            productCategory = productCategoryDao.getByPrimaryKey(productCategoryId);
-            products = productDAO.getByProductCategory(productCategoryId, null);
+            shoppingListCategory = shoppingListCategoryDAO.getByPrimaryKey(shoppingListCategoryId);
+            productCategoriesSelected = shoppingListCategoryDAO.getProductCategories(shoppingListCategoryId);
         } catch (DAOException ex) {
             response.setStatus(500);
             return;
         }
 
         /* RISPONDO */
-        request.setAttribute("productCategory", productCategory);
-        request.setAttribute("products", products);
-        getServletContext().getRequestDispatcher("productCategory.jsp").forward(request, response);
-
+        request.setAttribute("shoppingListCategory", shoppingListCategory);
+        request.setAttribute("products", productCategoriesSelected);
+        getServletContext().getRequestDispatcher("/shoppingListCategory.jsp").forward(request, response);
     }
 }

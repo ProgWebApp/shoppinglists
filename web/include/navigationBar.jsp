@@ -26,7 +26,7 @@
             window.location.href = url;
         });
     });
-        /* FUNZIONE RICERCA PRODOTTI PUBBLICI PER L'UTENTE non LOGGATO */
+    /* FUNZIONE RICERCA PRODOTTI PUBBLICI PER L'UTENTE non LOGGATO */
     $(function () {
         function formatOption(option) {
             var res = $('<span class="optionClick">' + option.text + '</span>');
@@ -58,6 +58,37 @@
         <ul class="nav navbar-nav navbar-right list-inline">
             <c:choose>
                 <c:when test="${not empty user}">
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/user.jsp")}" style="color:white"><span class="glyphicon glyphicon-user"></span> PROFILO</a></li>
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/Logout")}" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
+                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="color:white" href="#"><span class="glyphicon glyphicon-menu-hamburger"></span>MEN&Ugrave;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingLists.jsp")}">Le mie liste</a></li>
+                            <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingListForm.jsp")}">Nuova lista</a></li>
+                            <li><hr></li>
+                            <li><a href="${pageContext.response.encodeURL("/shoppinglists/products.jsp")}">I miei prodotti</a></li>
+                            <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/productsForm.jsp")}">Aggiungi prodotto</a></li>
+                            <li><hr></li>
+                            <li><a href="${pageContext.response.encodeURL("/shoppinglists/shoppingListCategories.jsp")}">Categorie lista</a></li>
+                            <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingListCategoryForm.jsp")}">Nuova categoria lista</a></li>
+                            <li><a href="${pageContext.response.encodeURL("/shoppinglists/productCategories.jsp")}">Categorie prodotto</a></li>
+                            <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/productCategoryForm.jsp")}">Nuova categoria prodotto</a></li>
+                        </ul>
+                    </li>    
+                </c:when>
+                <c:when test="${empty user}">
+                    <li><a href="${pageContext.response.encodeURL("/shoppinglists/login.jsp")}" style="color:white"><span class="glyphicon glyphicon-log-out"></span> LOGIN</a></li>
+                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="color:white" href="#"><span class="glyphicon glyphicon-menu-hamburger"></span>MEN&Ugrave;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="${pageContext.response.encodeURL("/shoppinglists/ShoppingListPublic")}">La mia lista</a></li>
+                            <li><hr></li>
+                            <li><a href="${pageContext.response.encodeURL("/shoppinglists/products.jsp")}">I miei prodotti</a></li>
+                            <li><hr></li>
+                            <li><a href="${pageContext.response.encodeURL("/shoppinglists/shoppingListCategories.jsp")}">Categorie lista</a></li>
+                            <li><a href="${pageContext.response.encodeURL("/shoppinglists/productCategories.jsp")}">Categorie prodotto</a></li>
+                        </ul>
+                    </li>    
+                </c:when>
+            </c:choose>
                     <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/user.jsp")}" style="color:white"><span class="glyphicon glyphicon-user"></span><span class="hidden-sm hidden-xs">PROFILO</span></a></li>
                     <li><a href="${pageContext.response.encodeURL("/shoppinglists/Logout")}" style="color:white"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm hidden-xs">LOGOUT</span></a></li>
                     </c:when>
@@ -94,12 +125,6 @@
                         </select>
                     </c:when>
                 </c:choose>
-
-                
-                <!--<input type="text" class="form-control" placeholder="Cerca Prodotti..." id="cerca">
-                <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                </div>-->
             </div>
         </form>
 

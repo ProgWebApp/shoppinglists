@@ -28,15 +28,15 @@
 <html>
     <head>
         <title>Modifica categoria</title>
-                <%@include file="../include/generalMeta.jsp" %>
+        <%@include file="../include/generalMeta.jsp" %>
 
     </head>
     <body>
         <div class="jumbotron">
             <div class="container text-center">
                 <h2>Area di creazione categoria Lista</h2><br>
-            <h4>Crea una nuova tipologia di categoria per le liste</h4><br>
-            
+                <h4>Crea una nuova tipologia di categoria per le liste</h4><br>
+
             </div>
         </div>
         <%@include file="../include/navigationBar.jsp"%>
@@ -90,8 +90,6 @@
                 </div>
             </div>
         </div>
-        
-                <%@include file="../include/footer.jsp" %>
-
+        <%@include file="../include/footer.jsp" %>
     </body>
 </html>

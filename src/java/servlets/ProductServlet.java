@@ -26,7 +26,7 @@ import javax.servlet.http.Part;
 @MultipartConfig
 public class ProductServlet extends HttpServlet {
 
-    private ProductDAO productDao;
+    private ProductDAO productDAO;
     private ProductCategoryDAO productCategoryDAO;
 
     @Override
@@ -36,7 +36,7 @@ public class ProductServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            productDao = daoFactory.getDAO(ProductDAO.class);
+            productDAO = daoFactory.getDAO(ProductDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for product storage system", ex);
         }
@@ -75,7 +75,7 @@ public class ProductServlet extends HttpServlet {
         /* RECUPERO IL PRODOTTO E RESTITUISCO ERRORE SE IL PRODOTTO NON ESISTE (O NON E VISIBILE) */
         Product product;
         try {
-            product = productDao.getIfVisible(productId, user.getId());
+            product = productDAO.getIfVisible(productId, user.getId());
         } catch (DAOException ex) {
             response.setStatus(500);
             return;
@@ -113,7 +113,7 @@ public class ProductServlet extends HttpServlet {
                     return;
                 }
                 request.setAttribute("productCategory", category);
-                getServletContext().getRequestDispatcher("/restricted/product.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/product.jsp").forward(request, response);
                 break;
             case 2:
                 if (checkPermissions(user, product) == 0) {
@@ -141,7 +141,7 @@ public class ProductServlet extends HttpServlet {
                 throw new ServletException("This request require a parameter named productId whit an int value");
             }
             try {
-                product = productDao.getByPrimaryKey(productId);
+                product = productDAO.getByPrimaryKey(productId);
             } catch (DAOException ex) {
                 throw new ServletException("Impossible to get the product", ex);
             }
@@ -250,19 +250,19 @@ public class ProductServlet extends HttpServlet {
         /* INSERT OR UPDATE */
         try {
             if (productId == null) {
-                productId = productDao.insert(product);
+                productId = productDAO.insert(product);
                 if (!user.isAdmin()) {
-                    productDao.addLinkWithUser(productId, userId); //solo per prodotti privati
+                    productDAO.addLinkWithUser(productId, userId); //solo per prodotti privati
                 }
             } else {
-                productDao.update(product);
+                productDAO.update(product);
             }
         } catch (DAOException ex) {
             throw new ServletException("Impossible to insert or update the product", ex);
         }
 
         /* REDIRECT ALLA PAGINA DEL PRODOTTO */
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/product?res=1&productId=" + productId));
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/ProductServlet?res=1&productId=" + productId));
     }
 
     @Override
@@ -286,7 +286,7 @@ public class ProductServlet extends HttpServlet {
         /* RECUPERO IL PRODOTTO */
         Product product;
         try {
-            product = productDao.getByPrimaryKey(productId);
+            product = productDAO.getByPrimaryKey(productId);
         } catch (DAOException ex) {
             response.setStatus(500);
             return;
@@ -301,7 +301,7 @@ public class ProductServlet extends HttpServlet {
 
         /* RISPONDO */
         try {
-            productDao.delete(productId);
+            productDAO.delete(productId);
             response.setStatus(204);
         } catch (DAOException ex) {
             response.setStatus(500);

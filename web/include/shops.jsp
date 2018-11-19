@@ -1,0 +1,24 @@
+<select id="shop">
+    <option value="furniture">Arredamento</option>
+    <option value="coffee">Caffetteria</option>
+    <option value="chocolate">Cioccolateria</option>
+    <option value="computer">	Computer</option>
+    <option value="doityourself">Faidate</option>
+    <option value="chemist">Farmacia</option>
+    <option value="ice_cream">Gelateria</option>
+    <option value="garden_center">Giardinaggio</option>
+    <option value="toys">Giocattoli</option>
+    <option value="jawelry">Gioielleria</option>
+    <option value="kiosk">Giornalaio</option>
+    <option value="pet">Negozio di animali</option>
+    <option value="bicycle">Negozio di bici</option>
+    <option value="shoes">Negozio di scarpe</option>
+    <option value="clothes">Negozio di vestiti</option>
+    <option value="watches">Orologeria</option>
+    <option value="bakery">Panificio</option>
+    <option value="pastry">Pasticceria</option>
+    <option value="seafood">Pescheria</option>
+    <option value="perfumery">Profumeria</option>
+    <option value="supermarket">Supermercato</option>
+    <option value="bag">Valigeria</option>
+</select>

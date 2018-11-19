@@ -47,7 +47,7 @@
     <!-- SERVLET -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>servlets.LoginServlet</servlet-class>
+        <servlet-class>servlets.Login</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>MessagesServlet</servlet-name>
@@ -125,6 +125,10 @@
     <servlet>
         <servlet-name>ProductPublic</servlet-name>
         <servlet-class>servlets.ProductPublic</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShoppingListCategoryPublic</servlet-name>
+        <servlet-class>servlets.ShoppingListCategoryPublic</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -207,6 +211,10 @@
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/restricted/ProductServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShoppingListCategoryPublic</servlet-name>
+        <url-pattern>/ShoppingListCategoryPublic</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

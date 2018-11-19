@@ -48,10 +48,10 @@ public interface ShoppingListCategoryDAO extends DAO<ShoppingListCategory, Integ
      * Returns the list of all the valid shops where the user has to buy something
      * system.
      *
-     * @param user the user which we are checking
+     * @param userId the id of the user which we are checking
      * @return the list of all the shops where {@code user} has to buy something
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
-    public List<String> getShopsByUser(User user) throws DAOException;
+    public List<String> getShopsByUser(Integer userId) throws DAOException;
 }
