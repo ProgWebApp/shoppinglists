@@ -12,7 +12,7 @@
             allowClear: true,
             ajax: {
                 url: function (request) {
-                    return ${contextPath}"ProductsSearchServlet?query=" + request.term;
+                    return "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductsSearchServlet?query="))}" + request.term;
 
                 },
                 dataType: "json"
@@ -38,7 +38,7 @@
             allowClear: true,
             ajax: {
                 url: function (request) {
-                    return ${contextPath}"ProductsSearchPublic?query=" + request.term;
+                    return "${pageContext.response.encodeURL(contextPath.concat("ProductsSearchPublic?query="))}" + request.term;
 
                 },
                 dataType: "json"

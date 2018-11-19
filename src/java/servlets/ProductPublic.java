@@ -93,6 +93,6 @@ public class ProductPublic extends HttpServlet {
         request.setAttribute("product", product);
         request.setAttribute("modifiable", false);
         request.setAttribute("productCategory", category);
-        getServletContext().getRequestDispatcher("product.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/product.jsp").forward(request, response);
     }
 }
