@@ -3,14 +3,14 @@
 <html>
     <head>
         <title>Product</title>
-                <%@include file="../include/generalMeta.jsp" %>
+                <%@include file="include/generalMeta.jsp" %>
 
         <script>
             function deleteProduct(id) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 204) {
-                        window.location.href = "${pageContext.response.encodeURL("products.jsp")}";
+                        window.location.href = "${pageContext.response.encodeURL(contextPath.concat("restricted/products.jsp"))}";
                     }else if (this.readyState === 4 && this.status === 400) {
                         alert("Bad request!");
                     }else if (this.readyState === 4 && this.status === 403) {
@@ -19,25 +19,25 @@
                         alert("Impossible to delete the product!");
                     }
                 };
-                var url = "${pageContext.response.encodeURL("ProductServlet")}";
+                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet"))}";
                 xhttp.open("DELETE", url + "?productId=" + id, true);
                 xhttp.send();
             }
         </script>
     </head>
     <body>       
-        <%@include file="../include/navigationBar.jsp" %>
+        <%@include file="include/navigationBar.jsp" %>
         ${product.id}<br>
         ${product.name}<br>
         ${product.notes}<br>
         ${productCategory.name}<br>
-        <img height="50px" src="../images/productCategories/icons/${product.logoPath}"><br>
+        <img height="50px" src="${contextPath}images/productCategories/icons/${product.logoPath}"><br>
         <c:forEach items="${product.photoPath}" var="photo">
-            <img height="50px" src="../images/products/${photo}">
+            <img height="50px" src="${contextPath}images/products/${photo}">
         </c:forEach><br>
-        <a href="${pageContext.response.encodeURL("product?res=2&productId=".concat(product.id))}">Modifica</a>
+        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=2&productId=".concat(product.id)))}">Modifica</a>
         <span onclick="deleteProduct(${product.id})">Elimina</span><br>
-        <a href="${pageContext.response.encodeURL("products.jsp")}">My products</a>
-            <%@include file="../include/footer.jsp" %>
+        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/products.jsp"))}">My products</a>
+            <%@include file="include/footer.jsp" %>
 </body>
 </html>

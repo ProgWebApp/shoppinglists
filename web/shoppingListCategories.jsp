@@ -30,7 +30,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Shopping List Categories</title>
-        <%@include file="../include/generalMeta.jsp" %>
+        <%@include file="include/generalMeta.jsp" %>
 
     </head>
     <body>
@@ -40,15 +40,15 @@
 
             </div>
         </div>
-        <%@include file="../include/navigationBar.jsp"%>
+        <%@include file="include/navigationBar.jsp"%>
 
         <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
-            Nome: <a href="${pageContext.response.encodeURL("ShoppingListCategoryServlet?res=1&shoppingListCategoryId=".concat(shoppingListCategory.id))}">${shoppingListCategory.name}</a><br>
+            Nome: <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=1&shoppingListCategoryId=").concat(shoppingListCategory.id))}">${shoppingListCategory.name}</a><br>
             Description: ${shoppingListCategory.description}<br>
-            <img height="50px" src="../images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo">
+            <img height="50px" src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo">
             <br>
         </c:forEach>
-        <a href="${pageContext.response.encodeURL("shoppingListCategoryForm.jsp")}">Aggiungi categoria di lista della spesa</a>
-        <%@include file="../include/footer.jsp" %>
+        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategoryForm.jsp"))}">Aggiungi categoria di lista della spesa</a>
+        <%@include file="include/footer.jsp" %>
     </body>
 </html>

@@ -3,14 +3,14 @@
 <html>
     <head>
         <title>Shopping List Category</title>
-                <%@include file="../include/generalMeta.jsp" %>
+                <%@include file="include/generalMeta.jsp" %>
 
         <script>
             function deleteShoppingListCategory(id) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 204) {
-                        window.location.href = "${pageContext.response.encodeURL("shoppingListCategories.jsp")}";
+                        window.location.href = "${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategories.jsp"))}";
                     }else if (this.readyState === 4 && this.status === 400) {
                         alert("Bad request!");
                     }else if (this.readyState === 4 && this.status === 403) {
@@ -19,7 +19,7 @@
                         alert("Impossible to delete the shopping list category!");
                     }
                 };
-                var url = "${pageContext.response.encodeURL("ShoppingListCategoryServlet")}";
+                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet"))}";
                 xhttp.open("DELETE", url + "?shoppingListCategoryId=" + id, true);
                 xhttp.send();
             }
@@ -32,15 +32,15 @@
                 
             </div>
         </div>
-        <%@include file="../include/navigationBar.jsp"%>
+        <%@include file="include/navigationBar.jsp"%>
         ${shoppingListCategory.id}<br>
         ${shoppingListCategory.name}<br>
         ${shoppingListCategory.description}<br>
-        <img height="50px" src="../images/shoppingListCategories/${shoppingListCategory.logoPath}"><br>
-        <a href="${pageContext.response.encodeURL("ShoppingListCategoryServlet?res=2&shoppingListCategoryId=".concat(shoppingListCategory.id))}">Modifica</a>
+        <img height="50px" src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}"><br>
+        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}">Modifica</a>
         <span onclick="deleteShoppingListCategory(${shoppingListCategory.id})">Elimina</span><br>
-        <a href="${pageContext.response.encodeURL("shoppingListCategories.jsp")}">Shopping List Categories</a>
-                <%@include file="../include/footer.jsp" %>
+        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Shopping List Categories</a>
+                <%@include file="include/footer.jsp" %>
 
     </body>
 </html>

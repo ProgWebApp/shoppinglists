@@ -41,18 +41,7 @@
 <html>
     <head>
         <title>Le mie categorie</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="../css/default-element.css">
-        <link rel="stylesheet" type="text/css" href="../css/liste.css">
-        <link rel="stylesheet" type="text/css" href="../css/panel-custom.css">
-        <link rel="stylesheet" type="text/css" href="../css/loghi.css">
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        
+         <%@include file="../include/generalMeta.jsp"%>
     </head>
 
     <body>
@@ -77,14 +66,14 @@
                                 <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
                                     <li class="list-group-item justify-content-between align-items-center dropdown">
                                         <div class="dropdown pull-left" style="cursor: pointer;" data-toggle="dropdown">
-                                            <img src="../images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo" class="small-logo"> 
+                                            <img src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo" class="small-logo"> 
                                             ${shoppingListCategory.name}
                                         </div>
                                         <ul class="dropdown-menu dd-list">
                                             <li>Descrizione: ${shoppingListCategory.description}
                                         </ul>
                                         <a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
-                                        <a class="pull-right" style="color:black;margin-right:5px;" href="${pageContext.response.encodeURL("ShoppingListCategoryServlet?res=2&shoppingListCategoryId=".concat(shoppingListCategory.id))}" title="Modifica"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a class="pull-right" style="color:black;margin-right:5px;" href="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}" title="Modifica"><span class="glyphicon glyphicon-pencil"></span></a>
                                     </li>
                                 </c:forEach>
                                 <button type="button" class="list-group-item list-group-item-action-list">Crea nuova categoria liste</button>
@@ -103,14 +92,14 @@
                             <c:forEach items="${productCategories}" var="productCategory">
                                 <li class="list-group-item justify-content-between align-items-center dropdown">
                                     <div class="dropdown pull-left" style="cursor: pointer;" data-toggle="dropdown">
-                                        <img src="../images/productCategories/${productCategory.logoPath}" alt="Logo" class="small-logo"> 
+                                        <img src="${contextPath}images/productCategories/${productCategory.logoPath}" alt="Logo" class="small-logo"> 
                                         ${productCategory.name}
                                     </div>
                                     <ul class="dropdown-menu dd-list">
                                         <li>Descrizione: ${productCategory.description}
                                     </ul>
                                     <a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
-                                    <a class="pull-right" style="color:black;margin-right:5px;" href="${pageContext.response.encodeURL("ProductCategoryServlet?res=2&productCategoryId=".concat(productCategory.id))}" title="Modifica"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a class="pull-right" style="color:black;margin-right:5px;" href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}" title="Modifica"><span class="glyphicon glyphicon-pencil"></span></a>
                                 </li>
                             </c:forEach>
                             <button type="button" class="list-group-item list-group-item-action-prod">Crea nuova categoria prodotti</button>

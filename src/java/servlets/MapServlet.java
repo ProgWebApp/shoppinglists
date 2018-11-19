@@ -13,10 +13,12 @@ import db.factories.DAOFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.console;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MapServlet extends HttpServlet {
 
     private ShoppingListCategoryDAO shoppingListCategoryDAO;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
@@ -40,6 +43,7 @@ public class MapServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
     }
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -58,19 +62,38 @@ public class MapServlet extends HttpServlet {
         out.print(json);
         out.flush();*/
         User user = (User) request.getSession().getAttribute("user");
-        if(user==null || user.getId()==null){
+        String userId = null;
+        if (user == null) {
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("userId")) {
+                    userId = cookie.getValue();
+                }
+            }
+        }
+        if (user == null && userId == null) {
             response.setStatus(400);
             return;
         }
         System.out.println("titto a posto");
         try {
-            Integer userId = user.getId();
-            List<String> shops = shoppingListCategoryDAO.getShopsByUser(userId);
-            
+            List<String> shops = new ArrayList();
+            if (user != null) {
+                shops.addAll(shoppingListCategoryDAO.getShopsByUser(user.getId()));
+            }
+            if (userId != null) {
+                String shop = shoppingListCategoryDAO.getShopByCookie(userId);
+                if (shop != null) {
+                    shops.add(shop);
+                }
+            }
+
             String json = "{\"shops\":[";
 
             for (int i = 0; i < shops.size(); i++) {
-                if(i>0){ json+=", "; }
+                if (i > 0) {
+                    json += ", ";
+                }
                 json += "\"" + shops.get(i) + "\"";
             }
             json += "]}";

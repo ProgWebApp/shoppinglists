@@ -28,7 +28,7 @@
 <html>
     <head>
         <title>Modifica Liste</title>
-                <%@include file="../include/generalMeta.jsp" %>
+                <%@include file="include/generalMeta.jsp" %>
     </head>
     <body>
         <div class="jumbotron">
@@ -38,14 +38,21 @@
             
             </div>
         </div>
-        <%@include file="../include/navigationBar.jsp"%>
+        <%@include file="include/navigationBar.jsp"%>
         <div class="container text-center">    
             <br>
             <div class="col-sm-2">
             </div>
             <div class="col-sm-8">
                 <div class="form-container ">
-                    <form class="form-signin" action="${pageContext.response.encodeURL("/shoppinglists/ShoppingListPublic")}" method="POST" enctype="multipart/form-data">
+                    <c:choose>
+                        <c:when test="${empty user}">
+                            <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic"))}" method="POST" enctype="multipart/form-data">
+                        </c:when>
+                        <c:when test="${not empty user}">
+                            <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet"))}" method="POST" enctype="multipart/form-data">
+                        </c:when>
+                    </c:choose>
                         <c:choose>
                             <c:when test="${message==1}">
                                 Compila i campi mancanti!
@@ -74,7 +81,7 @@
                         </div>
                         <div class="form-group">
                             <c:if test="${not empty shoppingList.imagePath}">
-                                <img src="../images/shoppingList/<c:out value="${shoppingList.imagePath}"/>" class="big-logo">
+                                <img src="${contextPath}images/shoppingList/<c:out value="${shoppingList.imagePath}"/>" class="big-logo">
                             </c:if>
                             <label for="image">Aggiungi nuova immagine:</label>
                             <input type="file" id="logo" name="image" class="form-control">
@@ -85,6 +92,6 @@
                 </div>
             </div>
         </div>
-                <%@include file="../include/footer.jsp" %>
+                <%@include file="include/footer.jsp" %>
     </body>
 </html>

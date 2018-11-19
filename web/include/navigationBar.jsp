@@ -12,7 +12,7 @@
             allowClear: true,
             ajax: {
                 url: function (request) {
-                    return "ProductsSearchServlet?query=" + request.term;
+                    return ${contextPath}"ProductsSearchServlet?query=" + request.term;
 
                 },
                 dataType: "json"
@@ -21,7 +21,7 @@
         });
         $("#searchProducts").val(null).trigger("change");
         $('#searchProducts').on("select2:select", function () {
-            var url = "${pageContext.response.encodeURL("/shoppinglists/restricted/ProductServlet?res=1&productId=")}" + $('#searchProducts').find(":selected").val();
+            var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId="))}" + $('#searchProducts').find(":selected").val();
             console.log(url);
             window.location.href = url;
         });
@@ -38,7 +38,7 @@
             allowClear: true,
             ajax: {
                 url: function (request) {
-                    return "ProductsSearchPublic?query=" + request.term;
+                    return ${contextPath}"ProductsSearchPublic?query=" + request.term;
 
                 },
                 dataType: "json"
@@ -47,7 +47,7 @@
         });
         $("#searchPublicProducts").val(null).trigger("change");
         $('#searchPublicProducts').on("select2:select", function () {
-            var url = "${pageContext.response.encodeURL("ProductPublic?productId=")}" + $('#searchPublicProducts').find(":selected").val();
+            var url = "${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId="))}" + $('#searchPublicProducts').find(":selected").val();
             console.log(url);
             window.location.href = url;
         });
@@ -56,7 +56,7 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header pull-left">
-            <a class="navbar-brand" style="color:white" href="/shoppinglists/index.jsp"><span class="glyphicon glyphicon-home"></span><span class="hidden-sm hidden-xs"> Home</span></a>
+            <a class="navbar-brand" style="color:white" href="${pageContext.response.encodeURL(contextPath.concat("index.jsp"))}"><span class="glyphicon glyphicon-home"></span><span class="hidden-sm hidden-xs"> Home</span></a>
         </div>
         <div class="navbar-header pull-left">
             <form class="navbar-form" role="search">
@@ -79,13 +79,13 @@
                 <c:choose>
                     <c:when test="${not empty user}">
                         <li style="display: inline-block !important;">
-                            <a href="${pageContext.response.encodeURL("/shoppinglists/restricted/user.jsp")}" style="color:white">
+                            <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/user.jsp"))}" style="color:white">
                                 <span class="glyphicon glyphicon-user"></span>
                                 <span class="hidden-sm hidden-xs">PROFILO</span>
                             </a>
                         </li>
                         <li style="display: inline-block !important;">
-                            <a href="${pageContext.response.encodeURL("/shoppinglists/Logout")}" style="color:white">
+                            <a href="${pageContext.response.encodeURL(contextPath.concat("Logout"))}" style="color:white">
                                 <span class="glyphicon glyphicon-log-out"></span>
                                 <span class="hidden-sm hidden-xs">LOGOUT</span>
                             </a>
@@ -96,22 +96,22 @@
                                 <span class="hidden-sm hidden-xs">MEN&Ugrave;</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingLists.jsp")}">Le mie liste</a></li>
-                                <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingListForm.jsp")}">Nuova lista</a></li>
+                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingLists.jsp"))}">Le mie liste</a></li>
+                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListForm.jsp"))}">Nuova lista</a></li>
                                 <li><hr></li>
-                                <li><a href="${pageContext.response.encodeURL("/shoppinglists/products.jsp")}">I miei prodotti</a></li>
-                                <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/productsForm.jsp")}">Aggiungi prodotto</a></li>
+                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/products.jsp"))}">I miei prodotti</a></li>
+                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productsForm.jsp"))}">Aggiungi prodotto</a></li>
                                 <li><hr></li>
-                                <li><a href="${pageContext.response.encodeURL("/shoppinglists/shoppingListCategories.jsp")}">Categorie lista</a></li>
-                                <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingListCategoryForm.jsp")}">Nuova categoria lista</a></li>
-                                <li><a href="${pageContext.response.encodeURL("/shoppinglists/productCategories.jsp")}">Categorie prodotto</a></li>
-                                <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/productCategoryForm.jsp")}">Nuova categoria prodotto</a></li>
+                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Categorie lista</a></li>
+                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategoryForm.jsp"))}">Nuova categoria lista</a></li>
+                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Categorie prodotto</a></li>
+                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productCategoryForm.jsp"))}">Nuova categoria prodotto</a></li>
                             </ul>
                         </li>    
                     </c:when>
                     <c:when test="${empty user}">
                         <li style="display: inline-block !important;">
-                            <a href="${pageContext.response.encodeURL("/shoppinglists/login.jsp")}" style="color:white">
+                            <a href="${pageContext.response.encodeURL(contextPath.concat("login.jsp"))}" style="color:white">
                                 <span class="glyphicon glyphicon-log-out"></span>
                                 <span class="hidden-sm hidden-xs">LOGIN</span></a></li>
                         <li class="dropdown" style="display: inline-block !important;">
@@ -120,12 +120,7 @@
                                 <span class="hidden-sm hidden-xs">MEN&Ugrave;</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="${pageContext.response.encodeURL("/shoppinglists/ShoppingListPublic")}">La mia lista</a></li>
-                                <li><hr></li>
-                                <li><a href="${pageContext.response.encodeURL("/shoppinglists/products.jsp")}">I miei prodotti</a></li>
-                                <li><hr></li>
-                                <li><a href="${pageContext.response.encodeURL("/shoppinglists/shoppingListCategories.jsp")}">Categorie lista</a></li>
-                                <li><a href="${pageContext.response.encodeURL("/shoppinglists/productCategories.jsp")}">Categorie prodotto</a></li>
+                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic?res=1"))}">La mia lista</a></li>
                             </ul>
                         </li>    
                     </c:when>

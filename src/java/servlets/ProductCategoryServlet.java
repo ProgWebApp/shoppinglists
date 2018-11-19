@@ -150,8 +150,8 @@ public class ProductCategoryServlet extends HttpServlet {
 
         /* CONTROLLO CAMPI VUOTI */
         if (productCategoryName.isEmpty() || productCategoryDescription.isEmpty() || emptyLogo) {
-            request.getSession().setAttribute("message", 1);
-            request.getSession().setAttribute("productCategory", productCategory);
+            request.setAttribute("message", 1);
+            request.setAttribute("productCategory", productCategory);
             getServletContext().getRequestDispatcher("/restricted/productCategoryForm.jsp").forward(request, response);
             return;
         }

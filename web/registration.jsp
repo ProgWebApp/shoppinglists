@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-sm-8">
                         <div class="form-container ">
-                            <form class="form-signin" action="RegistrationServlet" method="POST" enctype="multipart/form-data">
+                            <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("RegistrationServlet"))}" method="POST" enctype="multipart/form-data">
                                 <c:choose>
                                     <c:when test="${message==1}">
                                         Compila i campi mancanti!

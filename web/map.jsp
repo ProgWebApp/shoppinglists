@@ -62,7 +62,7 @@
                         foo();
                     }
                 };
-                xhttp.open("GET", "MapServlet", true);
+                xhttp.open("GET", "${pageContext.response.encodeURL(contextPath.concat("MapServlet"))}", true);
                 xhttp.send("");
             }
             

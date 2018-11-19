@@ -78,7 +78,7 @@ public class ProductCategoryPublic extends HttpServlet {
         /* RISPONDO */
         request.setAttribute("productCategory", productCategory);
         request.setAttribute("products", products);
-        getServletContext().getRequestDispatcher("productCategory.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/productCategory.jsp").forward(request, response);
 
     }
 }

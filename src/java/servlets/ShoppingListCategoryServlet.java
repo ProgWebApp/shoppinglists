@@ -17,6 +17,7 @@ import db.factories.DAOFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -98,14 +99,6 @@ public class ShoppingListCategoryServlet extends HttpServlet {
                 if (!user.isAdmin()) {
                     response.setStatus(403);
                 } else {
-                    List<ProductCategory> productCategories;
-                    try {
-                        productCategories = productCategoryDAO.getAll();
-                    } catch (DAOException ex) {
-                        response.setStatus(500);
-                        return;
-                    }
-                    request.setAttribute("productCategories", productCategories);
                     getServletContext().getRequestDispatcher("/restricted/shoppingListCategoryForm.jsp").forward(request, response);
                 }
                 break;
@@ -161,19 +154,28 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         shoppingListCategory.setDescription(shoppingListCategoryDescription);
         /* LOGO */
         Part logoFilePart = request.getPart("logo");
-        Boolean emptyLogo = false;
+        Boolean emptyLogo = false, emptyPC = false;
         //il logo è obbligatorio solo per la creazione
         if (shoppingListCategoryId == null && logoFilePart.getSize() == 0) {
             emptyLogo = true;
         }
         /* SHOP */
-        String shoppingListCategoryShop = request.getParameter("shop");
-        shoppingListCategory.setShop(shoppingListCategoryShop);
+        //String shoppingListCategoryShop = request.getParameter("shop");
+        //shoppingListCategory.setShop(shoppingListCategoryShop);
+        
+        /* PRODUCT CATEGORY */
+        List<String> productCategoriesSelected = new ArrayList();
+        if(request.getParameterValues("productCategories") == null){
+            emptyPC = true;
+        }else{
+            productCategoriesSelected.addAll(Arrays.asList(request.getParameterValues("productCategories")));
+        }
         
         /* CONTROLLO CAMPI VUOTI */
-        if (shoppingListCategoryName.isEmpty() || shoppingListCategoryDescription.isEmpty() || shoppingListCategoryShop.isEmpty() || emptyLogo) {
-            request.getSession().setAttribute("message", 1);
-            request.getSession().setAttribute("shoppingListCategory", shoppingListCategory);
+        if (shoppingListCategoryName.isEmpty() || shoppingListCategoryDescription.isEmpty() || emptyLogo || emptyPC) { //|| shoppingListCategoryShop.isEmpty()
+            request.setAttribute("message", 1);
+            request.setAttribute("shoppingListCategory", shoppingListCategory);
+            request.setAttribute("pcss", productCategoriesSelected);
             getServletContext().getRequestDispatcher("/restricted/shoppingListCategoryForm.jsp").forward(request, response);
             return;
         }
@@ -202,7 +204,6 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         }
 
         /* PRODUCT CATEGORY */
-        List<String> productCategoriesSelected = Arrays.asList(request.getParameterValues("productCategories"));
         List<ProductCategory> productCategories = null;
         try {
             productCategories = productCategoryDAO.getAll();

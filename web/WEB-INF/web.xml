@@ -97,7 +97,6 @@
         <servlet-name>MapServlet</servlet-name>
         <servlet-class>servlets.MapServlet</servlet-class>
     </servlet>
-    <!-- SERVLET MAPPING -->
     <servlet>
         <servlet-name>IconsServlet</servlet-name>
         <servlet-class>servlets.IconsServlet</servlet-class>
@@ -134,6 +133,7 @@
         <servlet-name>ShoppingListPublic</servlet-name>
         <servlet-class>servlets.ShoppingListPublic</servlet-class>
     </servlet>
+    <!-- SERVLET MAPPING -->
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -182,7 +182,6 @@
         <servlet-name>MapServlet</servlet-name>
         <url-pattern>/MapServlet</url-pattern>
     </servlet-mapping>
-    <!-- CONFIGURAZIONI -->
     <servlet-mapping>
         <servlet-name>DownloadImages</servlet-name>
         <url-pattern>/DownloadImages</url-pattern>
@@ -219,9 +218,12 @@
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/ProductListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ShoppingListCategoryPublic</servlet-name>
         <url-pattern>/ShoppingListCategoryPublic</url-pattern>
     </servlet-mapping>
+    <!-- CONFIGURAZIONI -->
     <session-config>
         <session-timeout>
             30

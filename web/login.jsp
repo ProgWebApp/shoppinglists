@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-sm-8">
                         <div class="form-container ">
-                            <form action="LoginServlet" method="POST">
+                            <form action="${pageContext.response.encodeURL(contextPath.concat("LoginServlet"))}" method="POST">
                                 <c:choose>
                                     <c:when test="${message==1}">
                                         Email o password errati
@@ -51,7 +51,7 @@
                                 <button type="submit" class="btn btn-default acc-btn">Accedi</button>
                                 <br><br>
                                 <a style="color:grey" href="#"> Password dimenticata? </a> <br>
-                                <a style="color:grey" href="registration.jsp"> Non ancora iscritto? Registrati! </a>
+                                <a style="color:grey" href="${pageContext.response.encodeURL(contextPath.concat("registration.jsp"))}"> Non ancora iscritto? Registrati! </a>
                             </form>
                             <c:remove var="message" scope="session" />
                         </div>

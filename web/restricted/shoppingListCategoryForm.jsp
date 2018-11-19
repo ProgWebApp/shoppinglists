@@ -46,12 +46,13 @@
             </div>
             <div class="col-sm-8">
                 <div class="form-container ">
-                    <form class="form-signin" action="${pageContext.response.encodeURL("ShoppingListCategoryServlet")}" method="POST" enctype="multipart/form-data">
+                    <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet"))}" method="POST" enctype="multipart/form-data">
                         <c:choose>
                             <c:when test="${message==1}">
                                 Compila i campi mancanti!
                                 <c:if test="${empty shoppingListCategory.name}">Name</c:if>
                                 <c:if test="${empty shoppingListCategory.description}">Description</c:if>
+                                <c:if test="${empty pcss}">ProductCategories</c:if>
                             </c:when>
                         </c:choose>
                         <div class="form-group">
@@ -64,7 +65,7 @@
                         </div>
                         <div class="form-group">
                             <c:if test="${not empty shoppingListCategory.logoPath}">
-                                <img src="../images/shoppingListCategories/<c:out value="${shoppingListCategory.logoPath}"/>" alt="Logo" height="80" width="80">
+                                <img src="${contextPath}images/shoppingListCategories/<c:out value="${shoppingListCategory.logoPath}"/>" alt="Logo" height="80" width="80">
                             </c:if>
                             <label for="logo">Carica un logo per la categoria:</label>
                             <input type="file" id="logo" name="logo" class="form-control">
@@ -75,7 +76,7 @@
                                 <c:if test="${not empty productCategories}">
                                     <c:forEach items="${productCategories}" var="productCategory">
                                         <div class="groupped-ckbox">
-                                            <input type="checkbox" id="${productCategory.id}" name="productCategories" value="${productCategory.id}" <c:if test="${productCategorySelected.contains(productCategory)}">checked</c:if>>
+                                            <input type="checkbox" id="${productCategory.id}" name="productCategories" value="${productCategory.id}" <c:if test="${productCategoriesSelected.contains(productCategory)||pcss.contains(productCategory.id.toString())}">checked</c:if>>
                                             <label for="${productCategory.id}">${productCategory.name}</label>
                                         </div>
                                     </c:forEach>

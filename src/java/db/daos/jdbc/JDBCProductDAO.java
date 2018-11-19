@@ -281,11 +281,11 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
                         + " AND products.reserved = false");
                 stm.setInt(1, productCategoryId);
             } else {
-                stm = CON.prepareStatement("SELECT * FROM products, users_products"
+                stm = CON.prepareStatement("SELECT DISTINCT id, name, notes, logo, photo, owner, reserved, product_category FROM products, users_products"
                         + " WHERE products.product_category = ?"
                         + " AND (products.reserved = false"
                         + " OR (products.id = users_products.product"
-                        + " AND users_product.user_id = ?))");
+                        + " AND users_products.user_id = ?))");
                 stm.setInt(1, productCategoryId);
                 stm.setInt(2, userId);
             }

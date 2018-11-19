@@ -12,7 +12,7 @@
 <html>
     <head>
         <title>Lista Alimentari</title>
-        <%@include file="../include/generalMeta.jsp" %>
+        <%@include file="include/generalMeta.jsp" %>
         <script>
             /* FUNZIONE RICERCA E AGGIUNTA DEI PRODOTTI */
             $(function () {
@@ -25,7 +25,14 @@
                     allowClear: true,
                     ajax: {
                         url: function (request) {
-                            return "ProductsSearchServlet?shoppingListId=${shoppingList.id}&query=" + request.term;
+            <c:choose>
+                <c:when test="${empty user}">
+                            return "${pageContext.response.encodeURL(contextPath.concat("ProductsSearchPublic?shoppingListId=").concat(shoppingList.id).concat("&query="))}" + request.term;
+                </c:when>
+                <c:when test="${not empty user}">
+                            return "${pageContext.response.encodeURL(contextPath.concat("ProductsSearchServlet?shoppingListId=").concat(shoppingList.id).concat("&query="))}" + request.term;
+                </c:when>
+            </c:choose>
                         },
                         dataType: "json"
                     },
@@ -44,7 +51,7 @@
                             alert("Impossibile aggiungere il prodotto");
                         }
                     };
-                    var url = "${pageContext.response.encodeURL("ProductListServlet")}";
+                    var url = "${pageContext.response.encodeURL(contextPath.concat("ProductListServlet"))}";
                     xhttp.open("GET", url + "?shoppingListId=${shoppingList.id}&productId=" + $('#autocomplete-2').find(":selected").val() + "&action=3", true);
                     xhttp.send();
                 });
@@ -60,7 +67,7 @@
                     allowClear: true,
                     ajax: {
                         url: function (request) {
-                            return "UsersSearchServlet?query=" + request.term;
+                            return "${pageContext.response.encodeURL(contextPath.concat("restricted/UsersSearchServlet?query="))}" + request.term;
                         },
                         dataType: "json"
                     },
@@ -84,7 +91,7 @@
                             alert("Impossibile aggiungere l'utente");
                         }
                     };
-                    var url = "${pageContext.response.encodeURL("ShareListsServlet")}";
+                    var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShareListsServlet"))}";
                     xhttp.open("GET", url + "?action=1&shoppingListId=${shoppingList.id}&userId=" + $('#autocomplete-3').find(":selected").val(), true);
                     xhttp.send();
                 });
@@ -100,7 +107,7 @@
                         alert("Errore del server, impossibile modificare i permessi");
                     }
                 };
-                var url = "${pageContext.response.encodeURL("ShareListsServlet")}";
+                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShareListsServlet"))}";
                 if (userId !== '' && permission !== '') {
                     xhttp.open("GET", url + "?action=2&shoppingListId=${shoppingList.id}&userId=" + userId + "&permission=" + permission, true);
                     xhttp.send();
@@ -119,7 +126,7 @@
                         alert("Errore del server, impossibile modificare i prodotti");
                     }
                 };
-                var url = "${pageContext.response.encodeURL("ProductListServlet")}";
+                var url = "${pageContext.response.encodeURL(contextPath.concat("ProductListServlet"))}";
                 if (productId !== '') {
                     xhttp.open("GET", url + "?action=0&shoppingListId=${shoppingList.id}&productId=" + productId, true);
                     xhttp.send();
@@ -138,7 +145,7 @@
                         alert("Errore del server, impossibile rimuovere l'utente");
                     }
                 };
-                var url = "${pageContext.response.encodeURL("ShareListsServlet")}";
+                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShareListsServlet"))}";
                 if (userId !== '') {
                     xhttp.open("GET", url + "?action=0&shoppingListId=${shoppingList.id}&userId=" + userId, true);
                     xhttp.send();
@@ -161,7 +168,7 @@
                         alert("Errore del server, impossibile rimuovere l'utente");
                     }
                 };
-                var url = "${pageContext.response.encodeURL("MessagesServlet")}";
+                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/MessagesServlet"))}";
                 console.log(url);
                 xhttp.open("GET", "MessagesServlet?shoppingListId=${shoppingList.id}&body=" + text, true);
                 xhttp.send();
@@ -175,12 +182,12 @@
     </head>
     <body onload="scrollChat()">
         <div class="jumbotron">
-            <img src="../images/shoppingList/${shoppingList.imagePath}" class="fit-image" alt="Immagine lista">
+            <img src="${contextPath}images/shoppingList/${shoppingList.imagePath}" class="fit-image" alt="Immagine lista">
             <h2>${shoppingList.name}</h2>
             <h4>Categoria: ${shoppingListCategory.name}</h4>
             <h4>Descrizione: ${shoppingList.description}</h4>
         </div>
-        <%@include file="../include/navigationBar.jsp"%>
+        <%@include file="include/navigationBar.jsp"%>
         <div class="container-fluid">
             <div class="col-sm-1">
             </div>
@@ -238,6 +245,6 @@
                 </div>
             </div>
         </div>
-        <%@include file="../include/footer.jsp" %>
+        <%@include file="include/footer.jsp" %>
     </body>
 </html>

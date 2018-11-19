@@ -40,7 +40,7 @@
                         <p>Crea le tue liste per portarle sempre con te</p>
                     </div>
                 </div>
-                <%@include file="include/navbar.jsp"%>
+                <%@include file="include/navigationBar.jsp"%>
             </div>
             <div id="body">
                 <div class="container">    
@@ -49,13 +49,13 @@
                             <div class="panel panel-default-custom">
                                 <c:choose>
                                     <c:when test="${not empty user}">
-                                        <div class="panel-heading-custom" onclick="window.location.href = '/shoppinglists/restricted/ProductCategoryServlet?res=1&productCategoryId=${productCategory.id}'">${productCategory.name}</div>
+                                        <div class="panel-heading-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=1&productCategoryId=").concat(productCategory.id))}'">${productCategory.name}</div>
                                     </c:when>
                                     <c:when test="${empty user}">
-                                        <div class="panel-heading-custom" onclick="window.location.href = '/shoppinglists/ProductCategoryPublic?productCategoryId=${productCategory.id}'">${productCategory.name}</div>
+                                        <div class="panel-heading-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductCategoryPublic?productCategoryId=").concat(productCategory.id))}'">${productCategory.name}</div>
                                     </c:when>
                                 </c:choose>
-                                <div class="panel-body"><img src="../images/productCategories/${productCategory.logoPath}" class="fit-image img-responsive" alt="${productCategory.name}"></div>
+                                <div class="panel-body"><img src="${contextPath}/images/productCategories/${productCategory.logoPath}" class="fit-image img-responsive" alt="${productCategory.name}"></div>
                                 <div class="panel-footer-custom">Visualizza articoli di ${productCategory.name}</div>
                             </div>
                         </div>

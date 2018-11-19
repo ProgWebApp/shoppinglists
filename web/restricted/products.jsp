@@ -46,16 +46,16 @@
                 <%@include file="../include/navigationBar.jsp" %>
 
         <c:forEach items="${products}" var="product">
-            Nome: <a href="${pageContext.response.encodeURL("product?res=1&productId=".concat(product.id))}">${product.name}</a><br>
+            Nome: <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}">${product.name}</a><br>
             Note: ${product.notes}<br>
             <c:forEach items="${categories}" var="category">
                 <c:if test="${category.id==product.productCategoryId}">${category.name}</c:if>
             </c:forEach><br>
-            <img height="50px" src="../images/productCategories/icons/${product.logoPath}"><br>
+            <img height="50px" src="${contextPath}images/productCategories/icons/${product.logoPath}"><br>
             <br>
         </c:forEach>
         <br>
-        <a href="${pageContext.response.encodeURL("productForm.jsp")}">Aggiungi prodotto</a>
+        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}">Aggiungi prodotto</a>
                 <%@include file="../include/footer.jsp" %>
 
     </body>

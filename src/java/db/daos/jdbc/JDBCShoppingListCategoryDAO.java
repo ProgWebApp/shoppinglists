@@ -3,7 +3,6 @@ package db.daos.jdbc;
 import db.daos.ShoppingListCategoryDAO;
 import db.entities.ProductCategory;
 import db.entities.ShoppingListCategory;
-import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.UniqueConstraintException;
 import java.sql.Connection;
@@ -301,6 +300,26 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
                 System.out.println("Non sono stati trovati shops da cercare");
             }
             return shops;
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of shoppingListCategory", ex);
+        }
+    }
+
+    @Override
+    public String getShopByCookie(String userId) throws DAOException {
+        if (userId == null) {
+            throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT list_categories.shop FROM list_categories, lists, list_products"
+                    + " WHERE (list_categories.id=lists.list_category AND lists.id=list_products.list AND list_products.necessary=true AND lists.cookie=?)")) {
+
+            stm.setString(1, userId);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getString("shop");
+            }else{
+                return null;
+            }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of shoppingListCategory", ex);
         }

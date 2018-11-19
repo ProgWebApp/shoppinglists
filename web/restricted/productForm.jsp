@@ -42,13 +42,13 @@
                         response.icons.forEach(function (icon) {
                             var radio = '<input id="' + icon + '" type="radio" name="logo" value="' + icon + '">'
                                     + '<label for="' + icon + '">'
-                                    + '<img height="50px" src="../images/productCategories/icons/' + icon + '">'
+                                    + '<img height="50px" src="${contextPath}images/productCategories/icons/' + icon + '">'
                                     + '</label>';
                             div.innerHTML += radio;
                         });
                     }
                 };
-                var url = "${pageContext.response.encodeURL("IconsServlet")}";
+                var url = "${pageContext.response.encodeURL(contextPath.concat("IconsServlet"))}";
                 if (category !== '') {
                     xhttp.open("GET", url + "?category=" + category, true);
                     xhttp.send();
@@ -66,7 +66,7 @@
             </div>
             <div class="col-sm-8">
                 <div class="form-container ">
-                    <form class="form-signin" action="${pageContext.response.encodeURL("ProductServlet")}" method="POST" enctype="multipart/form-data">
+                    <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("ProductServlet"))}" method="POST" enctype="multipart/form-data">
                         <c:choose>
                             <c:when test="${message==1}">
                                 Compila i campi mancanti!
@@ -95,7 +95,7 @@
                         </div>
                         <div class="form-label-group">
                             <c:if test="${not empty product.logoPath}">
-                                <img height="50px" src="../images/productCategories/icons/${product.logoPath}">
+                                <img height="50px" src="${contextPath}images/productCategories/icons/${product.logoPath}">
                             </c:if>
                             <label for="logo">Seleziona un nuovo logo: </label>
                             <span id="logo">
@@ -111,7 +111,7 @@
                                 <c:forEach items="${product.photoPath}" var="photo">
                                     <div class="container-img">
                                         <input type="checkbox" id="${photo}" name="removePhotos" value="${photo}">
-                                        <label for="${photo}"><img height="50px" src="../images/products/${photo}"  class="fit-image-small img-responsive" alt="Img Prod"></label>
+                                        <label for="${photo}"><img height="50px" src="${contextPath}images/products/${photo}"  class="fit-image-small img-responsive" alt="Img Prod"></label>
                                     </div>
                                 </c:forEach>
 

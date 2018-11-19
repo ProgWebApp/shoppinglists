@@ -135,11 +135,11 @@ public class ShoppingListServlet extends HttpServlet {
                 request.setAttribute("shoppingListCategory", category);
                 request.setAttribute("messages", messages);
                 request.setAttribute("user", user);
-                getServletContext().getRequestDispatcher("/restricted/shoppingList.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/shoppingList.jsp").forward(request, response);
                 break;
             case 2:
                 if (checkPermissions(user, shoppingList) == 2) {
-                    getServletContext().getRequestDispatcher("/restricted/shoppingListForm.jsp").forward(request, response);
+                    getServletContext().getRequestDispatcher("/shoppingListForm.jsp").forward(request, response);
                 } else {
                     response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
                 }
@@ -215,7 +215,7 @@ public class ShoppingListServlet extends HttpServlet {
         if (shoppingListName.isEmpty() || shoppingListDescription.isEmpty() || emptyListCategory || emptyImage) {
             request.getSession().setAttribute("message", 1);
             request.getSession().setAttribute("shoppingList", shoppingList);
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingListForm.jsp"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "shoppingListForm.jsp"));
             return;
         }
 
@@ -254,9 +254,10 @@ public class ShoppingListServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        System.out.println("0");
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
-        if (request.getParameter("shoppingListId") != null) {
+        if (request.getParameter("shoppingListId") == null) {
+            System.out.println("1");
             response.setStatus(400);
             return;
         }
@@ -266,6 +267,7 @@ public class ShoppingListServlet extends HttpServlet {
         try {
             shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
         } catch (NumberFormatException ex) {
+            System.out.println("2");
             response.setStatus(400);
             return;
         }

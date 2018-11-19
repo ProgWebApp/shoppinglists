@@ -31,19 +31,19 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Product Categories</title>
-                <%@include file="../include/generalMeta.jsp" %>
+                <%@include file="include/generalMeta.jsp" %>
 
     </head>
     <body>
         <h1>Product Categories</h1>
-        <%@include file="../include/navigationBar.jsp" %>
+        <%@include file="include/navigationBar.jsp" %>
         <c:forEach items="${productCategories}" var="productCategory">
-            Nome: <a href="${pageContext.response.encodeURL("ProductCategoryServlet?res=1&productCategoryId=".concat(productCategory.id))}">${productCategory.name}</a><br>
+            Nome: <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=1&productCategoryId=").concat(productCategory.id))}">${productCategory.name}</a><br>
             Description: ${productCategory.description}<br>
-            <img height="50px" src="../images/productCategories/${productCategory.logoPath}">
+            <img height="50px" src="${contextPath}images/productCategories/${productCategory.logoPath}">
             <br>
         </c:forEach>
-        <a href="${pageContext.response.encodeURL("productCategoryForm.jsp")}">Aggiungi categoria di prodotto</a>
-            <%@include file="../include/footer.jsp" %>
+        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productCategoryForm.jsp"))}">Aggiungi categoria di prodotto</a>
+            <%@include file="include/footer.jsp" %>
 </body>
 </html>

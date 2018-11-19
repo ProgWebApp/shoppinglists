@@ -27,14 +27,29 @@
 %>
 <%
     User user = (User) request.getSession().getAttribute("user");
-    List<ShoppingList> shoppingLists = shoppingListDao.getByUserId(user.getId());
+    List<ShoppingList> shoppingLists = new ArrayList();
+    if (user != null) {
+        shoppingLists.addAll(shoppingListDao.getByUserId(user.getId()));
+    } else {
+        String userId = null;
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("userId")) {
+                userId = cookie.getValue();
+            }
+        }
+        ShoppingList shoppingList = shoppingListDao.getByCookie(userId);
+        if (shoppingList != null) {
+            shoppingLists.add(shoppingList);
+        }
+    }
     pageContext.setAttribute("shoppingLists", shoppingLists);
 %>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Liste</title>
-                <%@include file="../include/generalMeta.jsp" %>
+        <%@include file="../include/generalMeta.jsp" %>
         <style>
 
             button:focus{
@@ -46,6 +61,26 @@
                 cursor: default;
             }
         </style>
+        <script>
+            function deleteList(id) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 204) {
+                        var element = document.getElementById(id);
+                        element.parentNode.removeChild(element);
+                    }else if (this.readyState === 4 && this.status === 400) {
+                        alert("Bad request!");
+                    }else if (this.readyState === 4 && this.status === 403) {
+                        alert("You are not allowed to delete the list!");
+                    }else if (this.readyState === 4 && this.status === 500) {
+                        alert("Impossible to delete the list!");
+                    }
+                };
+                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet"))}";
+                xhttp.open("DELETE", url + "?shoppingListId=" + id, true);
+                xhttp.send();
+            }
+        </script>
     </head>
     <body>
 
@@ -64,19 +99,23 @@
                     <ul class="list-group">
                         <c:set var="i" value="0"/>    
                         <c:forEach items="${shoppingLists}" var="shoppingList">
-                            <li>
+                            <li id="${shoppingList.id}">
                                 <button type="button" class="list-group-item group-item-custom" data-toggle="collapse" data-target="#anteprima${i}">
-                                    <img src="../images/shoppingList/${shoppingList.imagePath}" alt="Logo" class="small-logo" height="40px" width="40px"> 
+                                    <img src="${contextPath}images/shoppingList/${shoppingList.imagePath}" alt="Logo" class="small-logo" height="40px" width="40px"> 
                                     ${shoppingList.name}
-                                    <a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
-                                    <a class="pull-right" style="color:black" href="${pageContext.response.encodeURL("ShoppingListServlet?res=1&shoppingListId=".concat(shoppingList.id))}" title="Modifica"><span class="glyphicon glyphicon-list-alt" style="margin:0px 10px 0px 0px"></span></a>
+                                    <a onclick="deleteList(${shoppingList.id})" class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
+                                        <c:choose>
+                                            <c:when test="${empty user}">
+                                            <a class="pull-right" style="color:black" href="${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic?res=1"))}" title="Modifica"><span class="glyphicon glyphicon-list-alt" style="margin:0px 10px 0px 0px"></span></a>                        </c:when>
+                                            <c:when test="${not empty user}">
+                                            <a class="pull-right" style="color:black" href="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}" title="Modifica"><span class="glyphicon glyphicon-list-alt" style="margin:0px 10px 0px 0px"></span></a>                        </c:when>
+                                        </c:choose>
                                 </button>
-
                             </li>
                             <c:set var="i" value="${i + 1}"/>
                         </c:forEach>
                         <li>
-                            <button type="button" onclick="window.location.href = '${pageContext.response.encodeURL("shoppingListForm.jsp")}'" class="list-group-item list-group-item-action">Aggiungi nuova lista </button>
+                            <button type="button" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}'" class="list-group-item list-group-item-action">Aggiungi nuova lista </button>
                         </li>
                     </ul>
                 </div>

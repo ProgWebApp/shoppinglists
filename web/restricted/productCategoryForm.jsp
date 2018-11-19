@@ -17,7 +17,7 @@
             </div>
             <div class="col-sm-8">
                 <div class="form-container ">
-                    <form class="form-signin" action="${pageContext.response.encodeURL("ProductCategoryServlet")}" method="POST" enctype="multipart/form-data">
+                    <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("ProductCategoryServlet"))}" method="POST" enctype="multipart/form-data">
                         <c:choose>
                             <c:when test="${message==1}">
                                 Compila i campi mancanti!
@@ -36,7 +36,7 @@
                         </div>
                         <div class="form-group">
                             <c:if test="${not empty productCategory.logoPath}">
-                                <img class="logo" src="../images/productCategories/${productCategory.logoPath}">
+                                <img class="logo" src="${contextPath}images/productCategories/${productCategory.logoPath}">
                             </c:if>
                             <label for="logo">Carica un logo per la categoria prodotto:</label>
                             <input type="file" id="logo" name="logo" class="form-control">
@@ -52,7 +52,7 @@
                                     <c:forEach items="${productCategory.iconPath}" var="icon">
                                         <div class="container-logo">
                                             <input type="checkbox" id="${icon}" name="removeIcons" value="${icon}" class="checkbox-img">
-                                            <label for="${icon}"><img src="../images/productCategories/icons/${icon}" class="fit-logo img-responsive" alt="Icon"></label>
+                                            <label for="${icon}"><img src="${contextPath}images/productCategories/icons/${icon}" class="fit-logo img-responsive" alt="Icon"></label>
                                         </div>
                                     </c:forEach>
                                 </div>

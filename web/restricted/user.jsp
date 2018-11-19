@@ -9,9 +9,9 @@
     <body>
         <div class="jumbotron">
             <div class="container">
-                <img src="../images/avatars/<c:out value="${user.avatarPath}"/>" alt="Avatar">
+                <img src="${contextPath}/images/avatars/<c:out value="${user.avatarPath}"/>" alt="Avatar">
                 <p>${user.firstName} ${user.lastName}</p>
-                <form action="${pageContext.response.encodeURL("UserServlet")}" method="POST" enctype="multipart/form-data">
+                <form action="${pageContext.response.encodeURL(contextPath.concat("restricted/UserServlet"))}" method="POST" enctype="multipart/form-data">
                     <input type="file" name="avatar" id="avatar" >
                     <input type="hidden" name="changeAvatar" value=1>
                             <button class="btn btn-custom" type="submit" >Salva</button>
@@ -49,7 +49,7 @@
                     <h3>Modifica i tuoi dati</h3>
                     <br>
                     <div class="container-fluid">
-                        <form action="${pageContext.response.encodeURL("UserServlet")}" method="POST">
+                        <form action="${pageContext.response.encodeURL(contextPath.concat("restricted/UserServlet"))}" method="POST">
                             <c:choose>
                                 <c:when test="${message==21}">
                                     Nome e cognome obbligatori
@@ -92,7 +92,7 @@
                                 </tbody>
                             </table>
                         </form>
-                        <form action="${pageContext.response.encodeURL("UserServlet")}" method="POST">
+                        <form action="${pageContext.response.encodeURL(contextPath.concat("restricted/UserServlet"))}" method="POST">
                             <c:choose>
                                 <c:when test="${message==31}">
                                     Completare tutti i campi
@@ -144,7 +144,7 @@
                                 </tbody>
                             </table>
                         </form>
-                        <form action="UserServlet" method="POST">
+                        <form action="" method="POST">
                             MODIFICARE CON RICHIESTA ASINC JAVASCRIPT
                             <input type="hidden" name="deleteUser" value="1">
                             <button class="btn btn-custom" type="submit">Elimina</button>

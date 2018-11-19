@@ -28,34 +28,37 @@ public interface ShoppingListCategoryDAO extends DAO<ShoppingListCategory, Integ
      * Removes the passed {@code pruductCategory} from the passed
      * {@code shoppingListCategory}.
      *
-     * @param shoppingListCategoryId the id of the shoppingListCategory from which
-     * to remove the productCategory.
+     * @param shoppingListCategoryId the id of the shoppingListCategory from
+     * which to remove the productCategory.
      * @param productCategoryId the id of the productCategory to remove from the
      * shoppingListCategory.
      * @throws DAOException if an error occurred during the persist action.
      */
     public void removeProductCategory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException;
-    
+
     /**
-     * Returns the list of pruductCategory linked with the {@code shoppingListCategory}.
+     * Returns the list of pruductCategory linked with the
+     * {@code shoppingListCategory}.
+     *
      * @param shoppingListCategoryId the id of the shoppingListCategory
-     * @return 
+     * @return
      * @throws DAOException if an error occurred during the persist action.
      */
     public List<ProductCategory> getProductCategories(Integer shoppingListCategoryId) throws DAOException;
-    
+
     /**
      * Checks if the shoppingListCategory is linked with the productCategory.
+     *
      * @param shoppingListCategoryId the id of the shoppingListCategory
      * @param productCategoryId the id of the productCategory
      * @return true if are linked, false otherwise
      * @throws DAOException if an error occurred during the persist action.
      */
     public boolean hasProductCategory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException;
-    
+
     /**
-     * Returns the list of all the valid shops where the user has to buy something
-     * system.
+     * Returns the list of all the valid shops where the user has to buy
+     * something system.
      *
      * @param userId the id of the user which we are checking
      * @return the list of all the shops where {@code user} has to buy something
@@ -63,4 +66,15 @@ public interface ShoppingListCategoryDAO extends DAO<ShoppingListCategory, Integ
      * retrieving.
      */
     public List<String> getShopsByUser(Integer userId) throws DAOException;
+
+    /**
+     * Returns the list of the shop where the non-logged user has to buy
+     * something.
+     *
+     * @param userId the id of the user which we are checking
+     * @return the list of all the shops where {@code user} has to buy something
+     * @throws DAOException if an error occurred during the information
+     * retrieving.
+     */
+    public String getShopByCookie(String userId) throws DAOException;
 }

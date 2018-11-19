@@ -92,7 +92,7 @@ public class ShoppingListPublic extends HttpServlet {
 
         /* SE L'UTENTE NON ESISTE O NON HA UNA LISTA, REINDIRIZZO L'UTENTE ALLA PAGINA DI CREAZIONE DELLA LISTA */
         if (userId == null || shoppingList == null) {
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingListForm.jsp"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "shoppingListForm.jsp"));
             return;
         }
 
@@ -111,10 +111,10 @@ public class ShoppingListPublic extends HttpServlet {
                 }
                 request.setAttribute("products", products);
                 request.setAttribute("shoppingListCategory", category);
-                getServletContext().getRequestDispatcher("/restricted/shoppingList.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/shoppingList.jsp").forward(request, response);
                 break;
             case 2:
-                getServletContext().getRequestDispatcher("/restricted/shoppingListForm.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/shoppingListForm.jsp").forward(request, response);
                 break;
         }
     }
@@ -182,7 +182,7 @@ public class ShoppingListPublic extends HttpServlet {
         if (shoppingListName.isEmpty() || shoppingListDescription.isEmpty() || emptyListCategory || emptyImage) {
             request.getSession().setAttribute("message", 1);
             request.getSession().setAttribute("shoppingList", shoppingList);
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/shoppingListForm.jsp"));
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "shoppingListForm.jsp"));
             return;
         }
 
