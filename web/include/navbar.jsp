@@ -85,7 +85,12 @@
                             <span class="hidden-sm hidden-xs">PROFILO</span>
                         </a>
                     </li>
-                    <li style="display: inline-block !important;"><a class="nav-link" href="${pageContext.response.encodeURL("/shoppinglists/Logout")}" style="color:white"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm hidden-xs">LOGOUT</span></a></li>
+                    <li style="display: inline-block !important;">
+                        <a class="nav-link" href="${pageContext.response.encodeURL("/shoppinglists/Logout")}" style="color:white">
+                            <span class="glyphicon glyphicon-log-out"></span>
+                            <span class="hidden-sm hidden-xs">LOGOUT</span>
+                        </a>
+                    </li>
                     </c:when>
                     <c:when test="${empty user}">
                     <li style="display: inline-block !important;"><a class="nav-link" href="${pageContext.response.encodeURL("/shoppinglists/login.jsp")}" style="color:white"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm hidden-xs">LOGIN</span></a></li>
@@ -96,7 +101,7 @@
                     <span class="glyphicon glyphicon-menu-hamburger"></span>
                     <span class="hidden-sm hidden-xs">MEN&Ugrave;</span>
                 </a>
-            
+
                 <ul class="dropdown-menu dropdown-menu-right" style="right: 0px;">
                     <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingLists.jsp")}">Le mie liste</a></li>
                     <li><a href="${pageContext.response.encodeURL("/shoppinglists/restricted/shoppingListForm.jsp")}">Nuova lista</a></li>
