@@ -3,8 +3,7 @@
 <html>
     <head>
         <title>Product Category</title>
-                <%@include file="include/generalMeta.jsp" %>
-
+        <%@include file="include/generalMeta.jsp" %>
         <script>
             function deleteProductCategory(id) {
                 var xhttp = new XMLHttpRequest();
@@ -25,21 +24,32 @@
             }
         </script>
     </head>
-    <body>        
-        <%@include file="include/navigationBar.jsp" %>
-        ${productCategory.id}<br>
-        ${productCategory.name}<br>
-        ${productCategory.description}<br>
-        <img height="50px" src="${contextPath}images/productCategories/${productCategory.logoPath}"><br>
-        <c:forEach items="${productCategory.iconPath}" var="icon">
-            <img height="50px" src="${contextPath}images/productCategories/icons/${icon}">
-        </c:forEach><br>
-        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}">Modifica</a>
-        <span onclick="deleteProductCategory(${productCategory.id})">Elimina</span><br>
-        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Product Categories</a>
-        <c:forEach items="${products}" var="product">
-            ${product.name}
-        </c:forEach><br>
-        <%@include file="include/footer.jsp" %>
+    <body>
+        <div id="containerPage">
+            <div id="header">
+                <div class="jumbotron">
+                    <div class="container text-center">
+                        <h1>Categoria di prodotto</h1>      
+                    </div>
+                </div>
+                <%@include file="include/navigationBar.jsp" %>
+            </div>
+            <div id="body">
+                ${productCategory.id}<br>
+                ${productCategory.name}<br>
+                ${productCategory.description}<br>
+                <img height="50px" src="${contextPath}images/productCategories/${productCategory.logoPath}"><br>
+                <c:forEach items="${productCategory.iconPath}" var="icon">
+                    <img height="50px" src="${contextPath}images/productCategories/icons/${icon}">
+                </c:forEach><br>
+                <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}">Modifica</a>
+                <span onclick="deleteProductCategory(${productCategory.id})">Elimina</span><br>
+                <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Product Categories</a>
+                <c:forEach items="${products}" var="product">
+                    ${product.name}
+                </c:forEach><br>
+            </div>
+            <%@include file="include/footer.jsp" %>
+        </div>
     </body>
 </html>

@@ -31,19 +31,29 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Product Categories</title>
-                <%@include file="include/generalMeta.jsp" %>
+        <%@include file="include/generalMeta.jsp" %>
 
     </head>
     <body>
-        <h1>Product Categories</h1>
-        <%@include file="include/navigationBar.jsp" %>
-        <c:forEach items="${productCategories}" var="productCategory">
-            Nome: <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=1&productCategoryId=").concat(productCategory.id))}">${productCategory.name}</a><br>
-            Description: ${productCategory.description}<br>
-            <img height="50px" src="${contextPath}images/productCategories/${productCategory.logoPath}">
-            <br>
-        </c:forEach>
-        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productCategoryForm.jsp"))}">Aggiungi categoria di prodotto</a>
+        <div id="containerPage">
+            <div id="header">
+                <div class="jumbotron">
+                    <div class="container text-center">
+                        <h1>Categorie di prodotti</h1>      
+                    </div>
+                </div>
+                <%@include file="include/navigationBar.jsp" %>
+            </div>
+            <div id="body">
+                <c:forEach items="${productCategories}" var="productCategory">
+                    Nome: <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=1&productCategoryId=").concat(productCategory.id))}">${productCategory.name}</a><br>
+                    Description: ${productCategory.description}<br>
+                    <img height="50px" src="${contextPath}images/productCategories/${productCategory.logoPath}">
+                    <br>
+                </c:forEach>
+                <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productCategoryForm.jsp"))}">Aggiungi categoria di prodotto</a>
+            </div>
             <%@include file="include/footer.jsp" %>
-</body>
+        </div>
+    </body>
 </html>

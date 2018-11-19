@@ -34,21 +34,26 @@
 
     </head>
     <body>
-        <div class="jumbotron">
-            <div class="container text-center">
-                <h1>Categorie di liste della spesa</h1>      
+        <div id="containerPage">
+            <div id="header">
+                <div class="jumbotron">
+                    <div class="container text-center">
+                        <h1>Categorie di liste della spesa</h1>      
 
+                    </div>
+                </div>
+                <%@include file="include/navigationBar.jsp"%>
             </div>
+            <div id="body">
+                <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
+                    Nome: <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=1&shoppingListCategoryId=").concat(shoppingListCategory.id))}">${shoppingListCategory.name}</a><br>
+                    Description: ${shoppingListCategory.description}<br>
+                    <img height="50px" src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo">
+                    <br>
+                </c:forEach>
+                <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategoryForm.jsp"))}">Aggiungi categoria di lista della spesa</a>
+            </div>
+            <%@include file="include/footer.jsp" %>
         </div>
-        <%@include file="include/navigationBar.jsp"%>
-
-        <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
-            Nome: <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=1&shoppingListCategoryId=").concat(shoppingListCategory.id))}">${shoppingListCategory.name}</a><br>
-            Description: ${shoppingListCategory.description}<br>
-            <img height="50px" src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo">
-            <br>
-        </c:forEach>
-        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategoryForm.jsp"))}">Aggiungi categoria di lista della spesa</a>
-        <%@include file="include/footer.jsp" %>
     </body>
 </html>

@@ -4,7 +4,6 @@
     <head>
         <title>Product</title>
                 <%@include file="include/generalMeta.jsp" %>
-
         <script>
             function deleteProduct(id) {
                 var xhttp = new XMLHttpRequest();
@@ -13,9 +12,9 @@
                         window.location.href = "${pageContext.response.encodeURL(contextPath.concat("restricted/products.jsp"))}";
                     }else if (this.readyState === 4 && this.status === 400) {
                         alert("Bad request!");
-                    }else if (this.readyState === 4 && this.status === 403) {
+                    } else if (this.readyState === 4 && this.status === 403) {
                         alert("You are not allowed to delete the product!");
-                    }else if (this.readyState === 4 && this.status === 500) {
+                    } else if (this.readyState === 4 && this.status === 500) {
                         alert("Impossible to delete the product!");
                     }
                 };
@@ -25,9 +24,18 @@
             }
         </script>
     </head>
-    <body>       
-        <%@include file="include/navigationBar.jsp" %>
-        ${product.id}<br>
+    <body>
+        <div id="containerPage">
+            <div id="header">
+                <div class="jumbotron">
+                    <div class="container text-center">
+                        <h1>Prodotto</h1>      
+                    </div>
+                </div>
+                <%@include file="include/navigationBar.jsp" %>
+            </div>
+            <div id="body">
+                ${product.id}<br>
         ${product.name}<br>
         ${product.notes}<br>
         ${productCategory.name}<br>
@@ -38,6 +46,8 @@
         <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=2&productId=".concat(product.id)))}">Modifica</a>
         <span onclick="deleteProduct(${product.id})">Elimina</span><br>
         <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/products.jsp"))}">My products</a>
+            </div>
             <%@include file="include/footer.jsp" %>
-</body>
+        </div>
+    </body>
 </html>

@@ -1,6 +1,6 @@
 
 .navbar {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     border-radius: 0;
     padding-right: 10px;
     height: 50px;
@@ -34,16 +34,13 @@ body {
    padding:0;
    height:100%;
 }
-#container {
+#containerPage{
    min-height:100%;
    position:relative;
 }
 #header {
-   
-   padding:10px;
 }
 #body {
-   padding:10px;
    padding-bottom:80px;   
 }
 #footer {

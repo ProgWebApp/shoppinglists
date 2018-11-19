@@ -32,7 +32,7 @@
          <%@include file="include/generalMeta.jsp"%>
     </head>
     <body>
-        <div id="container">
+        <div id="containerPage">
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">

@@ -74,7 +74,6 @@
             </div>
             <c:remove var="message" scope="session" />
             <c:remove var="newUser" scope="session" />
-
             <%@include file="include/footer.jsp" %>
         </div>
     </body>

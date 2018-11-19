@@ -13,9 +13,9 @@
                         window.location.href = "${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategories.jsp"))}";
                     }else if (this.readyState === 4 && this.status === 400) {
                         alert("Bad request!");
-                    }else if (this.readyState === 4 && this.status === 403) {
+                    } else if (this.readyState === 4 && this.status === 403) {
                         alert("You are not allowed to delete the shopping list category!");
-                    }else if (this.readyState === 4 && this.status === 500) {
+                    } else if (this.readyState === 4 && this.status === 500) {
                         alert("Impossible to delete the shopping list category!");
                     }
                 };
@@ -42,5 +42,21 @@
         <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Shopping List Categories</a>
                 <%@include file="include/footer.jsp" %>
 
+                    </div>
+                </div>
+                <%@include file="../include/navigationBar.jsp"%>
+            </div>
+            <div id="body">
+                ${shoppingListCategory.id}<br>
+                ${shoppingListCategory.name}<br>
+                ${shoppingListCategory.description}<br>
+                ${shoppingListCategory.shop}<br>
+                <img height="50px" src="../images/shoppingListCategories/${shoppingListCategory.logoPath}"><br>
+                <a href="${pageContext.response.encodeURL("ShoppingListCategoryServlet?res=2&shoppingListCategoryId=".concat(shoppingListCategory.id))}">Modifica</a>
+                <span onclick="deleteShoppingListCategory(${shoppingListCategory.id})">Elimina</span><br>
+                <a href="${pageContext.response.encodeURL("shoppingListCategories.jsp")}">Shopping List Categories</a>
+            </div>        
+            <%@include file="../include/footer.jsp" %>
+        </div>
     </body>
 </html>

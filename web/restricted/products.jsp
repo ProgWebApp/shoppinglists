@@ -42,21 +42,29 @@
 
     </head>
     <body>
-        <h1>My Products</h1>
+        <div id="containerPage">
+            <div id="header">
+                <div class="jumbotron">
+                    <div class="container text-center">
+                        <h1>I miei prodotti</h1>      
+                    </div>
+                </div>
                 <%@include file="../include/navigationBar.jsp" %>
-
-        <c:forEach items="${products}" var="product">
-            Nome: <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}">${product.name}</a><br>
-            Note: ${product.notes}<br>
-            <c:forEach items="${categories}" var="category">
-                <c:if test="${category.id==product.productCategoryId}">${category.name}</c:if>
-            </c:forEach><br>
-            <img height="50px" src="${contextPath}images/productCategories/icons/${product.logoPath}"><br>
-            <br>
-        </c:forEach>
-        <br>
-        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}">Aggiungi prodotto</a>
-                <%@include file="../include/footer.jsp" %>
-
+            </div>
+            <div id="body">
+                <c:forEach items="${products}" var="product">
+                    Nome: <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}">${product.name}</a><br>
+                    Note: ${product.notes}<br>
+                    <c:forEach items="${categories}" var="category">
+                        <c:if test="${category.id==product.productCategoryId}">${category.name}</c:if>
+                    </c:forEach><br>
+                    <img height="50px" src="${contextPath}images/productCategories/icons/${product.logoPath}"><br>
+                    <br>
+                </c:forEach>
+                <br>
+                <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}">Aggiungi prodotto</a>
+            </div>
+            <%@include file="../include/footer.jsp" %>
+        </div>
     </body>
 </html>
