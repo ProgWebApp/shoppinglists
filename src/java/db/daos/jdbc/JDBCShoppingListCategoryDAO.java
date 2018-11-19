@@ -16,7 +16,6 @@ import java.util.List;
 
 public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, Integer> implements ShoppingListCategoryDAO {
 
-    
     /**
      * The default constructor of the class.
      *
@@ -236,6 +235,21 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
                 productCategories.add(JDBCProductCategoryDAO.setAllProductCategoryFields(rs));
             }
             return productCategories;
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of productCategory", ex);
+        }
+    }
+
+    @Override
+    public boolean hasProductCategory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException {
+        if ((shoppingListCategoryId == null) || (productCategoryId == null)) {
+            throw new DAOException("shoppingListCategoryId and productCategoryId are mandatory fields", new NullPointerException("shoppingListCategoryId or productCategoryId are null"));
+        }
+        try (PreparedStatement ps = CON.prepareStatement("SELECT * FROM PC_LC WHERE list_category=? AND product_category=?")) {
+            ps.setInt(1, shoppingListCategoryId);
+            ps.setInt(2, productCategoryId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of productCategory", ex);
         }

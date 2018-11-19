@@ -13,12 +13,6 @@
     <head>
         <title>Lista Alimentari</title>
         <%@include file="../include/generalMeta.jsp" %>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" crossorigin="anonymous">
-        <link rel="stylesheet" href="../css/form.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js" crossorigin="anonymous"></script>
-
         <script>
             /* FUNZIONE RICERCA E AGGIUNTA DEI PRODOTTI */
             $(function () {
@@ -223,27 +217,27 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="row">
-                <ul id="utenti" class="list-group user-list-group">
-                    <li class="list-group-item justify-content-between align-items-center">
-                        <label> Utenti che condividono la lista: </label>
-                        <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
-                        </select></li>
+                <br>
+                <div class="row">
+                    <ul id="utenti" class="list-group user-list-group">
+                        <li class="list-group-item justify-content-between align-items-center">
+                            <label> Utenti che condividono la lista: </label>
+                            <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
+                            </select>
+                        </li>
                         <c:forEach items="${users}" var="user">
-                        <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
-                            <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="deleteUser(${user.id})"></span>
-                            <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
-                                <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
-                                <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
-                                </select>  
-                            </li>
-                    </c:forEach>
-                </ul>
+                            <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
+                                <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="deleteUser(${user.id})"></span>
+                                <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
+                                    <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
+                                    <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
+                                    </select>  
+                                </li>
+                        </c:forEach>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-    <%@include file="../include/footer.jsp" %>
-</body>
+        <%@include file="../include/footer.jsp" %>
+    </body>
 </html>

@@ -45,6 +45,15 @@ public interface ShoppingListCategoryDAO extends DAO<ShoppingListCategory, Integ
     public List<ProductCategory> getProductCategories(Integer shoppingListCategoryId) throws DAOException;
     
     /**
+     * Checks if the shoppingListCategory is linked with the productCategory.
+     * @param shoppingListCategoryId the id of the shoppingListCategory
+     * @param productCategoryId the id of the productCategory
+     * @return true if are linked, false otherwise
+     * @throws DAOException if an error occurred during the persist action.
+     */
+    public boolean hasProductCategory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException;
+    
+    /**
      * Returns the list of all the valid shops where the user has to buy something
      * system.
      *

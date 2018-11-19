@@ -6,15 +6,17 @@
 package servlets;
 
 import db.daos.ProductDAO;
+import db.daos.ShoppingListCategoryDAO;
 import db.daos.ShoppingListDAO;
+import db.entities.Product;
+import db.entities.ShoppingList;
 import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +29,7 @@ public class ProductListServlet extends HttpServlet {
 
     private ShoppingListDAO shoppingListDAO;
     private ProductDAO productDAO;
+    private ShoppingListCategoryDAO shoppingListCategoryDAO;
 
     @Override
     public void init() throws ServletException {
@@ -43,6 +46,11 @@ public class ProductListServlet extends HttpServlet {
             productDAO = daoFactory.getDAO(ProductDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for product storage system", ex);
+        }
+        try {
+            shoppingListCategoryDAO = daoFactory.getDAO(ShoppingListCategoryDAO.class);
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get dao factory for shoppingListCategory storage system", ex);
         }
     }
 
@@ -64,70 +72,130 @@ public class ProductListServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("doget");
+        /* RECUPER L'UTENTE LOGGATO, SE ESISTE */
         User user = (User) request.getSession().getAttribute("user");
-        Integer userId = user.getId();
+
+        /* SE NON ESISTE UN UTENTE LOGGATO, RECUPERO L'UTENTE ANONIMO, SE ESISTE */
+        String userId = null;
+        if (user == null) {
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("userId")) {
+                    userId = cookie.getValue();
+                }
+            }
+        }
+
+        /* SE NON ESISTE UTENTE LOGGATO NE UTENTE ANONIMO RESTITUISCO ERRORE */
+        if (user == null && userId == null) {
+            System.out.println("e1");
+            response.setStatus(403);
+            return;
+        }
+
+        ShoppingList shoppingList = null;
+        Product product = null;
         Integer shoppingListId = null;
-        Integer productId = null;
-        Integer action = null;
+        Integer productId;
+        Integer action;
         Integer quantity = 1;
-        Integer permissions;
-        if (request.getParameter("shoppingListId") != null && request.getParameter("productId") != null && request.getParameter("action") != null) {
+        Integer permissions = null;
+
+        /* SE UTENTE ANONIMO, RECUPERO LA SUA LISTA, SE ESITE */
+        if (userId != null) {
             try {
-                shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
+                shoppingList = shoppingListDAO.getByCookie(userId);
+                shoppingListId = shoppingList.getId();
+                if (shoppingListId == null) {
+                    System.out.println("e1");
+                    response.setStatus(403);
+                    return;
+                }
+            } catch (DAOException ex) {
+                System.out.println("e2");
+                response.setStatus(403);
+                return;
+            }
+        }
+
+        if ((userId != null || request.getParameter("shoppingListId") != null)
+                && request.getParameter("productId") != null && request.getParameter("action") != null) {
+            try {
+                if (user != null) {
+                    shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
+                }
                 productId = Integer.valueOf(request.getParameter("productId"));
                 action = Integer.valueOf(request.getParameter("action"));
             } catch (RuntimeException ex) {
+                System.out.println("e3");
                 response.setStatus(400);
                 return;
             }
             try {
-                permissions = shoppingListDAO.getPermission(shoppingListId, userId);
+                /* CONTROLLO CHE L'UTENTE ABBIA I PERMESSI SULLA LISTA E SUL PRODOTTO */
+                if (user != null && shoppingList == null) {
+                    shoppingList = shoppingListDAO.getIfVisible(shoppingListId, user.getId());
+                    product = productDAO.getIfVisible(productId, user.getId());
+                    permissions = shoppingListDAO.getPermission(shoppingListId, user.getId());
+                } else if (userId != null) {
+                    product = productDAO.getByPrimaryKey(productId);
+                    if (product.isReserved()) {
+                        product = null;
+                    }
+                }
+                System.out.println(shoppingList);
+                System.out.println(product);
+                if (shoppingList == null || product == null) {
+                    System.out.println("e4");
+                    response.setStatus(403);
+                    return;
+                }
                 switch (action) {
                     case 0:
-                        if (permissions == 2) {
+                        if ((user != null && permissions == 2) || userId != null) {
                             shoppingListDAO.removeProduct(shoppingListId, productId);
                         } else {
-                            System.out.println("L'utente non ha i permessi per eliminare il prodotto");
                             response.setStatus(403);
-                            return;
+                            System.out.println("e6");
                         }
                         break;
                     case 1:
-                        if (permissions == 1 || permissions == 2) {
+                        if ((user != null && (permissions == 1 || permissions == 2)) || userId != null) {
                             shoppingListDAO.updateProduct(shoppingListId, productId, quantity, false);
                         } else {
                             response.setStatus(403);
-                            return;
+                            System.out.println("e7");
                         }
                         break;
                     case 2:
-                        if (permissions == 1 || permissions == 2) {
+                        if ((user != null && (permissions == 1 || permissions == 2)) || userId != null) {
                             shoppingListDAO.updateProduct(shoppingListId, productId, quantity, true);
                         } else {
                             response.setStatus(403);
-                            return;
+                            System.out.println("e8");
                         }
                         break;
                     case 3:
-                        if (permissions == 2) {
+                        if (((user != null && permissions == 2) || userId != null) && shoppingListCategoryDAO.hasProductCategory(shoppingList.getListCategoryId(), product.getProductCategoryId())) {
                             shoppingListDAO.addProduct(shoppingListId, productId, quantity, true);
-                            if (productDAO.getByPrimaryKey(productId).isReserved()) {
+                            if (user != null && productDAO.getByPrimaryKey(productId).isReserved()) {
                                 productDAO.shareProductToList(productId, shoppingListId);
                             }
                         } else {
                             response.setStatus(403);
-                            return;
+                            System.out.println("e9");
                         }
                         break;
                 }
             } catch (DAOException ex) {
-                Logger.getLogger(ShoppingListServlet.class.getName()).log(Level.SEVERE, null, ex);
                 response.setStatus(500);
+                System.out.println("e10");
             }
+        } else {
+            response.setStatus(400);
+            System.out.println("e11");
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    }
 }

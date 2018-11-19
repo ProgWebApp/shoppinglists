@@ -24,6 +24,19 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
      * retrieving.
      */
     public List<ShoppingList> getByUserId(Integer userId) throws DAOException;
+    
+    /**
+     * Returns the {@link ShoppingList shoppingList} of the
+     * passed user, identified by his cookie.
+     *
+     * @param userId the {@code id} of the {@code user} for which retrieve the
+     * shoppingList list.
+     * @return the {@code shoppingList} of the user passed as
+     * parameter or null.
+     * @throws DAOException if an error occurred during the information
+     * retrieving.
+     */
+    public ShoppingList getByCookie(String userId) throws DAOException;
 
     /**
      * Returns a shoppingList if is visible by a user. A shoppingList is visible
@@ -111,7 +124,7 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
      * @throws DAOException if an error occurred during the persist action.
      */
     public void addProduct(Integer shoppingListId, Integer productId, int quantity, boolean necessary) throws DAOException;
-
+    
     /**
      * Removes the passed {@code pruduct} from the passed {@code shoppingList}.
      *

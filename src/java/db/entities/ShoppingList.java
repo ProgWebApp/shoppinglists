@@ -11,6 +11,7 @@ public class ShoppingList {
     private String imagePath;
     private Integer listCategoryId;
     private Integer ownerId;
+    private String cookie;
 
     /**
      * Returns the primary key of this shopping-list.
@@ -118,5 +119,19 @@ public class ShoppingList {
      */
     public void setOwnerId(Integer ownerId) {
         this.ownerId = ownerId;
+    }
+
+    /**
+     * @return the cookie
+     */
+    public String getCookie() {
+        return cookie;
+    }
+
+    /**
+     * @param cookie the cookie to set
+     */
+    public void setCookie(String cookie) {
+        this.cookie = cookie;
     }
 }

@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -43,13 +44,18 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if (shoppingList == null) {
             throw new DAOException("shoppingList is not valid", new NullPointerException("shoppingList is null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO lists (name, description, logo, list_category, owner) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO lists (name, description, logo, list_category, owner, cookie) VALUES (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, shoppingList.getName());
             ps.setString(2, shoppingList.getDescription());
             ps.setString(3, shoppingList.getImagePath());
             ps.setInt(4, shoppingList.getListCategoryId());
-            ps.setInt(5, shoppingList.getOwnerId());
+            if(shoppingList.getOwnerId() != null){
+                ps.setInt(5, shoppingList.getOwnerId());
+            }else{
+                ps.setNull(5, Types.INTEGER);
+            }
+            ps.setString(6, shoppingList.getCookie());
 
             ps.executeUpdate();
 
@@ -88,7 +94,11 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             ps.setString(2, shoppingList.getDescription());
             ps.setString(3, shoppingList.getImagePath());
             ps.setInt(4, shoppingList.getListCategoryId());
-            ps.setInt(5, shoppingList.getOwnerId());
+            if(shoppingList.getOwnerId() != null){
+                ps.setInt(5, shoppingList.getOwnerId());
+            }else{
+                ps.setNull(5, Types.INTEGER);
+            }
             ps.setInt(6, shoppingListId);
 
             ps.executeUpdate();
@@ -166,7 +176,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
                 rs.next();
                 shoppingList = setAllShoppingListFields(rs);
             }
-           
+
             return shoppingList;
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the shoppingList for the passed primary key", ex);
@@ -204,7 +214,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if (userId == null) {
             throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
         }
-                try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists LEFT JOIN users_lists "
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists LEFT JOIN users_lists "
                 + " ON lists.id = users_lists.list"
                 + " WHERE users_lists.user_id = ?")) {
 
@@ -223,7 +233,28 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             throw new DAOException("Impossible to get the list of shoppingLists for the passed userId", ex);
         }
     }
-    
+
+    @Override
+    public ShoppingList getByCookie(String userId) throws DAOException {
+        if (userId == null) {
+            throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists WHERE cookie = ?")) {
+            stm.setString(1, userId);
+            ResultSet rs = stm.executeQuery();
+            ShoppingList shoppingList;
+            if (!rs.isBeforeFirst()) {
+                shoppingList = null;
+            } else {
+                rs.next();
+                shoppingList = setAllShoppingListFields(rs);
+            }
+            return shoppingList;
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of shoppingLists for the passed userId", ex);
+        }
+    }
+
     @Override
     public ShoppingList getIfVisible(Integer shoppingListId, Integer userId) throws DAOException {
         if (shoppingListId == null || userId == null) {
@@ -236,14 +267,14 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
 
             stm.setInt(1, shoppingListId);
             stm.setInt(2, userId);
-            
+
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return setAllShoppingListFields(rs);
-            }else{
+            } else {
                 return null;
             }
-            
+
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the shoppingList for the passed id and userId", ex);
         }
@@ -421,7 +452,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         shoppingList.setImagePath(rs.getString("logo"));
         shoppingList.setListCategoryId(rs.getInt("list_category"));
         shoppingList.setOwnerId(rs.getInt("owner"));
-
+        shoppingList.setCookie(rs.getString("cookie"));
         return shoppingList;
     }
 

@@ -45,7 +45,7 @@
             </div>
             <div class="col-sm-8">
                 <div class="form-container ">
-                    <form class="form-signin" action="${pageContext.response.encodeURL("ShoppingListServlet")}" method="POST" enctype="multipart/form-data">
+                    <form class="form-signin" action="${pageContext.response.encodeURL("/shoppinglists/ShoppingListPublic")}" method="POST" enctype="multipart/form-data">
                         <c:choose>
                             <c:when test="${message==1}">
                                 Compila i campi mancanti!

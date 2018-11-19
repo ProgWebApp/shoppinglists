@@ -130,6 +130,10 @@
         <servlet-name>ShoppingListCategoryPublic</servlet-name>
         <servlet-class>servlets.ShoppingListCategoryPublic</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShoppingListPublic</servlet-name>
+        <servlet-class>servlets.ShoppingListPublic</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -165,10 +169,6 @@
     <servlet-mapping>
         <servlet-name>VerifyEmailServlet</servlet-name>
         <url-pattern>/VerifyEmailServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ProductListServlet</servlet-name>
-        <url-pattern>/restricted/ProductListServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShareListsServlet</servlet-name>
@@ -213,6 +213,12 @@
         <url-pattern>/restricted/ProductServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>ShoppingListPublic</servlet-name>
+        <url-pattern>/ShoppingListPublic</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductListServlet</servlet-name>
+        <url-pattern>/ProductListServlet</url-pattern>
         <servlet-name>ShoppingListCategoryPublic</servlet-name>
         <url-pattern>/ShoppingListCategoryPublic</url-pattern>
     </servlet-mapping>
