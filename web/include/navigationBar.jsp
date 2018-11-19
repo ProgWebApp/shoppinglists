@@ -17,7 +17,8 @@
                 },
                 dataType: "json"
             },
-            templateResult: formatOption
+            templateResult: formatOption,
+            width: '100%'
         });
         $("#searchProducts").val(null).trigger("change");
         $('#searchProducts').on("select2:select", function () {
@@ -43,7 +44,8 @@
                 },
                 dataType: "json"
             },
-            templateResult: formatOption
+            templateResult: formatOption,
+            width: '100%'
         });
         $("#searchPublicProducts").val(null).trigger("change");
         $('#searchPublicProducts').on("select2:select", function () {
@@ -51,8 +53,7 @@
             console.log(url);
             window.location.href = url;
         });
-    });
-</script>
+    });</script>
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header pull-left">

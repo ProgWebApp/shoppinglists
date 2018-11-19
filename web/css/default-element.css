@@ -1,14 +1,11 @@
 
 .navbar {
-    margin-bottom: 30px;
     border-radius: 0;
-    padding-right: 10px;
     height: 50px;
 }
 @media screen and (min-width: 1200px) {
     .navbar {
         border-radius: 0;
-        padding-left: 150px;
     }
 }
 @media screen and (max-width: 767px) {
