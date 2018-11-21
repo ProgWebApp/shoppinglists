@@ -66,7 +66,7 @@
 
                                 <button type="submit" class="btn btn-default acc-btn">Registrati</button>
                                 <br><br>
-                                <a style="color:grey" href="log.jsp"> Gi&#224; iscritto? Effettua il login </a>
+                                <a style="color:grey" href="${pageContext.response.encodeURL(contextPath.concat("login.jsp"))}"> Gi&#224; iscritto? Effettua il login </a>
                             </form>
                         </div>
                     </div>

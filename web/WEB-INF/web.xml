@@ -31,15 +31,23 @@
         <filter-class>filters.AuthenticationFilter</filter-class>
     </filter>
     <!-- FILTER MAPPING -->
+    <!-- LISTENER -->
+    <filter>
+        <filter-name>UserFilter</filter-name>
+        <filter-class>filters.UserFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>ContextPathFilter</filter-name>
         <url-pattern>*</url-pattern>
     </filter-mapping>
     <filter-mapping>
+        <filter-name>UserFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/restricted/*</url-pattern>
     </filter-mapping>
-    <!-- LISTENER -->
     <listener>
         <description>ServletContextListener</description>
         <listener-class>listeners.WebAppContextListener</listener-class>
@@ -163,10 +171,6 @@
         <url-pattern>/restricted/ProductCategoryServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Logout</servlet-name>
-        <url-pattern>/Logout</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>RegistrationServlet</servlet-name>
         <url-pattern>/RegistrationServlet</url-pattern>
     </servlet-mapping>
@@ -231,6 +235,10 @@
     <servlet-mapping>
         <servlet-name>NotificationsServlet</servlet-name>
         <url-pattern>/NotificationsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/restricted/Logout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

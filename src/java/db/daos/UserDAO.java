@@ -2,6 +2,7 @@ package db.daos;
 
 import db.entities.User;
 import db.exceptions.DAOException;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public interface UserDAO extends DAO<User, Integer> {
      * retrieving.
      */
     public User getByEmailAndPassword(String email, String password) throws DAOException;
-    
+
     /**
      * Returns the {@link User user} with the given {@code check} code.
      *
@@ -32,6 +33,28 @@ public interface UserDAO extends DAO<User, Integer> {
      * retrieving.
      */
     public User getByCheckCode(String checkCode) throws DAOException;
+
+    /**
+     * Returns the {@link User user} with the given token.
+     *
+     * @param token the token of the user
+     * @return the {@link User user} with the given token.
+     * @throws DAOException if an error occurred during the information
+     * retrieving.
+     */
+    public User getByToken(String token) throws DAOException;
+
+    /**
+     * Add a token with the passed expiration date to the user identified by the
+     * passed user Id.
+     *
+     * @param userId the id of the user
+     * @param token the new token
+     * @param expirationDate the expiration date of the token
+     * @throws DAOException if an error occurred during the information
+     * retrieving.
+     */
+    public void setToken(Integer userId, String token, Date expirationDate) throws DAOException;
 
     /**
      * Returns the list of {@link User user} that that contais {@code query} in

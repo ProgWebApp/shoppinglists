@@ -215,9 +215,12 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if (userId == null) {
             throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists LEFT JOIN users_lists "
+        try (PreparedStatement stm = CON.prepareStatement("SELECT lists.id AS id, lists.name AS name, lists.description, "
+                + " lists.logo AS logo, lists.list_category AS list_category, lists.owner AS owner, lists.cookie AS cookie,"
+                + " notifications, list_categories.logo AS category_logo, list_categories.id FROM list_categories, lists LEFT JOIN users_lists "
                 + " ON lists.id = users_lists.list"
-                + " WHERE users_lists.user_id = ?")) {
+                + " WHERE users_lists.user_id = ?"
+                + " AND lists.list_category=list_categories.id")) {
 
             List<ShoppingList> shoppingLists = new ArrayList<>();
 
@@ -225,7 +228,10 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
-                shoppingLists.add(setAllShoppingListFields(rs));
+                ShoppingList shoppingList = setAllShoppingListFields(rs);
+                shoppingList.setListCategoryIcon(rs.getString("category_logo"));
+                shoppingList.setNotifications(rs.getInt("notifications"));
+                shoppingLists.add(shoppingList);
             }
 
             return shoppingLists;

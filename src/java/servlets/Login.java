@@ -1,13 +1,16 @@
 package servlets;
 
-
 import db.daos.UserDAO;
 import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.UUID;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,23 +47,32 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        
 
         try {
-            User user = null;
-            user = userDao.getByEmailAndPassword(email, password);
-            
+            User user = userDao.getByEmailAndPassword(email, password);
+
             if (user == null) {
                 request.getSession().setAttribute("message", 1);
                 response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.jsp"));
-            } else if(!user.getCheck().equals("0")) {
+            } else if (!user.getCheck().equals("0")) {
                 request.getSession().setAttribute("message", 2);
                 response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.jsp"));
-            }else{
+            } else {
+                if(request.getParameter("rememberMe")!= null && request.getParameter("rememberMe").equals("true")){
+                    String token = UUID.randomUUID().toString();
+                    LocalDate date = LocalDate.now().plusMonths(1);
+                    Date expiration = java.sql.Date.valueOf(date);
+                    userDao.setToken(user.getId(), token, expiration);
+                    Cookie cookie = new Cookie("token", token);
+                    cookie.setMaxAge(2678400);
+                    response.addCookie(cookie);
+                }
                 request.getSession().setAttribute("user", user);
                 response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "index.jsp"));
             }
         } catch (DAOException ex) {
-            throw new ServletException("Impossible to retrieve the user");
+            throw new ServletException("Impossible to retrieve the user", ex);
         }
     }
 }

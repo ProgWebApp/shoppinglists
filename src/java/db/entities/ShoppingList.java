@@ -10,8 +10,10 @@ public class ShoppingList {
     private String description;
     private String imagePath;
     private Integer listCategoryId;
+    private String listCategoryIcon;
     private Integer ownerId;
     private String cookie;
+    private Integer notifications;
 
     /**
      * Returns the primary key of this shopping-list.
@@ -133,5 +135,33 @@ public class ShoppingList {
      */
     public void setCookie(String cookie) {
         this.cookie = cookie;
+    }
+
+    /**
+     * @return the listCategoryIcon
+     */
+    public String getListCategoryIcon() {
+        return listCategoryIcon;
+    }
+
+    /**
+     * @param listCategoryIcon the listCategoryIcon to set
+     */
+    public void setListCategoryIcon(String listCategoryIcon) {
+        this.listCategoryIcon = listCategoryIcon;
+    }
+
+    /**
+     * @return the notifications
+     */
+    public Integer getNotifications() {
+        return notifications;
+    }
+
+    /**
+     * @param notifications the notifications to set
+     */
+    public void setNotifications(Integer notifications) {
+        this.notifications = notifications;
     }
 }

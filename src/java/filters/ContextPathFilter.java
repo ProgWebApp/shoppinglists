@@ -24,14 +24,15 @@ public class ContextPathFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        if (request instanceof HttpServletRequest) {
+            HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        String contextPath = httpRequest.getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
+            String contextPath = httpRequest.getServletContext().getContextPath();
+            if (!contextPath.endsWith("/")) {
+                contextPath += "/";
+            }
+            request.setAttribute("contextPath", contextPath);
         }
-        request.setAttribute("contextPath", contextPath);
-
         chain.doFilter(request, response);
     }
 

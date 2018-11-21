@@ -5,10 +5,13 @@ import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.UniqueConstraintException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +51,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             ps.setBoolean(7, user.isAdmin());
             
             ps.executeUpdate();
-
+            
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 user.setId(rs.getInt(1));
@@ -74,14 +77,14 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         if (user == null) {
             throw new DAOException("user is not valid", new NullPointerException("User is null"));
         }
-
+        
         Integer userId = user.getId();
         if (userId == null) {
             throw new DAOException("user is not valid", new NullPointerException("User id is null"));
         }
-
+        
         try (PreparedStatement ps = CON.prepareStatement("UPDATE users SET firstname = ?, lastname = ?, email = ?, password = ?, avatar = ?, admin = ?, code = ? WHERE id = ?")) {
-
+            
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getEmail());
@@ -90,9 +93,9 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             ps.setBoolean(6, user.isAdmin());
             ps.setString(7, user.getCheck());
             ps.setInt(8, user.getId());
-
+            
             ps.executeUpdate();
-
+            
         } catch (SQLException ex) {
             if (ex.getSQLState().equals("23505")) {
                 throw new DAOException("Impossible to update the user", new UniqueConstraintException("A user with this email already exists in the system"));
@@ -160,11 +163,11 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE id = ?");
                 PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user_id = ?")) {
             stm.setInt(1, primaryKey);
-
+            
             ResultSet rs = stm.executeQuery();
             rs.next();
             return setAllUserFields(rs, countStatement);
-
+            
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the user for the passed primary key", ex);
         }
@@ -182,21 +185,21 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
     public List<User> getAll() throws DAOException {
         try (Statement stm = CON.createStatement();
                 PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user_id = ?")) {
-
+            
             List<User> users = new ArrayList<>();
             ResultSet rs = stm.executeQuery("SELECT * FROM users ORDER BY lastname");
-
+            
             while (rs.next()) {
                 users.add(setAllUserFields(rs, countStatement));
             }
-
+            
             return users;
-
+            
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of users", ex);
         }
     }
-
+    
     @Override
     public User getByEmailAndPassword(String email, String password) throws DAOException {
         if (email == null) {
@@ -205,59 +208,59 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         if (password == null) {
             throw new DAOException("Password is a mandatory fields", new NullPointerException("password is null"));
         }
-
+        
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
                 PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user_id = ?")) {
             stm.setString(1, email);
             stm.setString(2, password);
-
+            
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return setAllUserFields(rs, countStatement);
-            }else{
+            } else {
                 return null;
             }
-
+            
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the user", ex);
         }
     }
-
+    
     @Override
     public User getByCheckCode(String checkCode) throws DAOException {
         if (checkCode == null) {
             throw new DAOException("checkCode is a mandatory fields", new NullPointerException("checkCode is null"));
         }
-
+        
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE code = ?")) {
             stm.setString(1, checkCode);
-
+            
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return setAllUserFields(rs, null);
-            }else{
+            } else {
                 return null;
             }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the user", ex);
         }
     }
-
+    
     @Override
     public List<User> searchByName(String query) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE (LOWER(firstname) LIKE LOWER(?) OR LOWER(lastname) LIKE LOWER(?))")) {
-
+            
             List<User> users = new ArrayList<>();
             stm.setString(1, "%" + query + "%");
             stm.setString(2, "%" + query + "%");
             ResultSet rs = stm.executeQuery();
-
+            
             while (rs.next()) {
                 users.add(setAllUserFields(rs, null));
             }
-
+            
             return users;
-
+            
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of users for the passed query", ex);
         }
@@ -285,14 +288,64 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         user.setAvatarPath(rs.getString("avatar"));
         user.setAdmin(rs.getBoolean("admin"));
         user.setCheck(rs.getString("code"));
-
+        
         if (countStatement != null) {
             countStatement.setInt(1, user.getId());
             ResultSet counter = countStatement.executeQuery();
             counter.next();
             user.setShoppingListsCount(counter.getInt(1));
         }
-
+        
         return user;
+    }
+    
+    @Override
+    public User getByToken(String token) throws DAOException {
+        if (token == null) {
+            throw new DAOException("token is a mandatory fields", new NullPointerException("token is null"));
+        }
+        
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE token_code = ? AND expiration>NOW()")) {
+            stm.setString(1, token);
+            
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return setAllUserFields(rs, null);
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the user", ex);
+        }
+    }
+    
+    @Override
+    public void setToken(Integer userId, String token, Date expirationDate) throws DAOException {
+        if (userId == null) {
+            throw new DAOException("userId is not valid", new NullPointerException("userId is null"));
+        }
+        
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE users SET token_code = ?, expiration = ? WHERE id = ?")) {
+            
+            if(token != null){
+                ps.setString(1, token);
+            }else{
+                ps.setNull(1, Types.VARCHAR);
+            }
+            if (expirationDate != null) {
+                ps.setDate(2, expirationDate);
+            } else {
+                ps.setNull(2, Types.DATE);
+            }
+            ps.setInt(3, userId);
+            
+            ps.executeUpdate();
+            
+        } catch (SQLException ex) {
+            if (ex.getSQLState().equals("23505")) {
+                throw new DAOException("Impossible to update the user", new UniqueConstraintException("A user with this email already exists in the system"));
+            }
+            throw new DAOException("Impossible to update the user", ex);
+        }
     }
 }

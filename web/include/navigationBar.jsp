@@ -86,7 +86,7 @@
                             </a>
                         </li>
                         <li style="display: inline-block !important;">
-                            <a href="${pageContext.response.encodeURL(contextPath.concat("Logout"))}" style="color:white">
+                            <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/Logout"))}" style="color:white">
                                 <span class="glyphicon glyphicon-log-out"></span>
                                 <span class="hidden-sm hidden-xs">LOGOUT</span>
                             </a>

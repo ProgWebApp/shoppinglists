@@ -105,8 +105,8 @@
                                 <c:forEach items="${shoppingLists}" var="shoppingList">
                                     <li id="${shoppingList.id}">
                                         <button type="button" class="list-group-item group-item-custom" data-toggle="collapse" data-target="#anteprima${i}">
-                                            <img src="${contextPath}images/shoppingList/${shoppingList.imagePath}" alt="Logo" class="small-logo" height="40px" width="40px"> 
-                                            ${shoppingList.name}
+                                            <img src="${contextPath}images/shoppingListCategories/${shoppingList.listCategoryIcon}" alt="Logo" class="small-logo" height="40px" width="40px"> 
+                                            ${shoppingList.name}${shoppingList.notifications}
                                             <a onclick="deleteList(${shoppingList.id})" class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
                                                 <c:choose>
                                                     <c:when test="${empty user}">
