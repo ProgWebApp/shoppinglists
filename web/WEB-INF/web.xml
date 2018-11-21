@@ -146,6 +146,10 @@
         <servlet-name>NotificationsServlet</servlet-name>
         <servlet-class>servlets.NotificationsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <servlet-class>servlets.ResetPasswordServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -239,6 +243,8 @@
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/restricted/Logout</url-pattern>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <url-pattern>/ResetPasswordServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

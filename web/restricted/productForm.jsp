@@ -28,7 +28,6 @@
 <html>
     <head>
         <title>Modifica prodotto</title>
-        <meta charset="utf-8">
         <%@include file="../include/generalMeta.jsp" %>
         <script>
             function showIcons(logo, category) {
@@ -67,65 +66,70 @@
                 <%@include file="../include/navigationBar.jsp" %>
             </div>
             <div id="body">
-                <div class="col-sm-8">
-                    <div class="form-container ">
-                        <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet"))}" method="POST" enctype="multipart/form-data">
-                            <c:choose>
-                                <c:when test="${message==1}">
-                                    Compila i campi mancanti!
-                                    <c:if test="${empty product.name}">Name</c:if>
-                                    <c:if test="${empty product.notes}">Notes</c:if>
-                                    <c:if test="${empty product.productCategoryId}">Category</c:if>
-                                    <c:if test="${empty product.logoPath}">Logo</c:if>
-                                </c:when>
-                            </c:choose>
-                            <div class="form-group">
-                                <label for="nome">Nome prodotto:</label>
-                                <input type="text" id="name" name="name" class="form-control" placeholder="Inserisci nome prodotto" value="${product.name}" autofocus>
-                            </div>
-                            <div class="form-group">
-                                <label for="Cognome">Note:</label>
-                                <input type="text" id="notes" name="notes" class="form-control" placeholder="Inserisce note" value="${product.notes}">
-                            </div>
-                            <div class="form-group">
-                                <label for="category">Category: </label>
-                                <select id="category" name="category" class="form-control" onchange="showIcons('logo', this.value)">
-                                    <option value="" <c:if test="${empty product.productCategoryId}">selected</c:if> disabled>Select category...</option>
-                                    <c:forEach items="${categories}" var="category">
-                                        <option value="${category.id}" <c:if test="${category.id==product.productCategoryId}">selected</c:if>>${category.name}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="form-label-group">
-                                <c:if test="${not empty product.logoPath}">
-                                    <img height="50px" src="${contextPath}images/productCategories/icons/${product.logoPath}">
+                <div class="container text-center">
+                    <div class="col-sm-2">
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="form-container">
+                            <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("ProductServlet"))}" method="POST" enctype="multipart/form-data">
+                                <c:choose>
+                                    <c:when test="${message==1}">
+                                        Compila i campi mancanti!
+                                        <c:if test="${empty product.name}">Name</c:if>
+                                        <c:if test="${empty product.notes}">Notes</c:if>
+                                        <c:if test="${empty product.productCategoryId}">Category</c:if>
+                                        <c:if test="${empty product.logoPath}">Logo</c:if>
+                                    </c:when>
+                                </c:choose>
+                                <div class="form-group">
+                                    <label for="nome">Nome prodotto:</label>
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="Inserisci nome prodotto" value="${product.name}" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Cognome">Note:</label>
+                                    <input type="text" id="notes" name="notes" class="form-control" placeholder="Inserisce note" value="${product.notes}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Category: </label>
+                                    <select id="category" name="category" class="form-control" onchange="showIcons('logo', this.value)">
+                                        <option value="" <c:if test="${empty product.productCategoryId}">selected</c:if> disabled>Select category...</option>
+                                        <c:forEach items="${categories}" var="category">
+                                            <option value="${category.id}" <c:if test="${category.id==product.productCategoryId}">selected</c:if>>${category.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="form-label-group">
+                                    <c:if test="${not empty product.logoPath}">
+                                        <img height="50px" src="${contextPath}images/productCategories/icons/${product.logoPath}">
+                                    </c:if>
+                                    <label for="logo">Seleziona un nuovo logo: </label>
+                                    <span id="logo">
+                                    </span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="logo">Aggiungi nuove immagini:</label>
+                                    <input type="file" id="photos" name="photos" class="form-control" placeholder="Images" multiple="multiple">
+                                </div>
+                                <div>
+                                    <c:if test="${not empty product.photoPath}">
+                                        Remove images:
+                                        <c:forEach items="${product.photoPath}" var="photo">
+                                            <div class="container-img">
+                                                <input type="checkbox" id="${photo}" name="removePhotos" value="${photo}">
+                                                <label for="${photo}"><img height="50px" src="${contextPath}images/products/${photo}"  class="fit-image-small img-responsive" alt="Img Prod"></label>
+                                            </div>
+                                        </c:forEach>
+                                    </c:if>
+                                </div>
+                                <c:if test="${not empty product.id}">
+                                    <input type="hidden" name="productId" value="${product.id}">
                                 </c:if>
-                                <label for="logo">Seleziona un nuovo logo: </label>
-                                <span id="logo">
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label for="logo">Aggiungi nuove immagini:</label>
-                                <input type="file" id="photos" name="photos" class="form-control" placeholder="Images" multiple="multiple">
-                            </div>
-                            <div>
-                                <c:if test="${not empty product.photoPath}">
-                                    Remove images:
-                                    <c:forEach items="${product.photoPath}" var="photo">
-                                        <div class="container-img">
-                                            <input type="checkbox" id="${photo}" name="removePhotos" value="${photo}">
-                                            <label for="${photo}"><img height="50px" src="${contextPath}images/products/${photo}"  class="fit-image-small img-responsive" alt="Img Prod"></label>
-                                        </div>
-                                    </c:forEach>
-                                </c:if>
-                            </div>
-                            <c:if test="${not empty product.id}"><input type="hidden" name="productId" value="${product.id}"></c:if>
                                 <button type="submit" class="btn btn-default acc-btn">Invia</button>
                             </form>
                         </div>
                     </div>
                 </div>
-            <%@include file="../include/footer.jsp" %>
-        </div>
+                <%@include file="../include/footer.jsp" %>
+            </div>
     </body>
 </html>

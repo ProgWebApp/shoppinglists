@@ -44,7 +44,8 @@ public class RegistrationServlet extends HttpServlet {
         String userFirstName = request.getParameter("firstName");
         String userLastName = request.getParameter("lastName");
         String userEmail = request.getParameter("email");
-        String userPassword = request.getParameter("password");
+        String userPassword1 = request.getParameter("password1");
+        String userPassword2 = request.getParameter("password2");
         String avatarsFolder = getServletContext().getInitParameter("avatarsFolder");
         if (avatarsFolder == null) {
             throw new ServletException("Avatars folder not configured");
@@ -52,23 +53,33 @@ public class RegistrationServlet extends HttpServlet {
         avatarsFolder = getServletContext().getRealPath(avatarsFolder);
         Part filePart = request.getPart("avatar");
         String fileName = UUID.randomUUID().toString() + Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); //MSIE  fix.
-
         User user = new User();
         user.setFirstName(userFirstName);
         user.setLastName(userLastName);
         user.setEmail(userEmail);
-        user.setPassword(userPassword);
+        user.setPassword(userPassword1);
         user.setAvatarPath(fileName);
         String check = UUID.randomUUID().toString();
         user.setCheck(check);
-
-        if (userFirstName.isEmpty() || userLastName.isEmpty() || userEmail.isEmpty() || userPassword.isEmpty() || filePart.getSize() == 0) {
+        if (userFirstName.isEmpty() || userLastName.isEmpty() || userEmail.isEmpty() || userPassword1.isEmpty() || userPassword2.isEmpty() || filePart.getSize() == 0) {
             user.setAvatarPath("");
+            user.setPassword(null);
             request.getSession().setAttribute("message", 1);
             request.getSession().setAttribute("newUser", user);
             response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "registration.jsp"));
             return;
         }
+        if(!userPassword1.equals(userPassword2)){
+            user.setAvatarPath("");
+            user.setPassword(null);
+            request.getSession().setAttribute("message", 3);
+            request.getSession().setAttribute("newUser", user);
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "registration.jsp"));
+            return;
+        }
+        
+
+        
 
         try (InputStream fileContent = filePart.getInputStream()) {
             File directory = new File(avatarsFolder);

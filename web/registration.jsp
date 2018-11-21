@@ -16,7 +16,7 @@
                 </div>
                 <%@include file="include/navigationBar.jsp" %>
             </div>
-            <div class="body">
+            <div id="body">
                 <div class="container text-center"> 
                     <div class="col-sm-2">
                     </div>
@@ -35,6 +35,9 @@
                                     <c:when test="${message==2}">
                                         Email già registrata
                                     </c:when>
+                                    <c:when test="${message==3}">
+                                        Le password non corrispondono
+                                    </c:when>
                                 </c:choose>
                                 <div class="form-group">
                                     <label for="nome">Nome:</label>
@@ -50,11 +53,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="pwd">Password:</label>
-                                    <input type="password" id="password" name="password" class="form-control" placeholder="Inserisci password">
+                                    <input type="password" id="password1" name="password1" class="form-control" placeholder="Inserisci password">
                                 </div>
                                 <div class="form-group">
                                     <label for="pwd">Ripeti password:</label>
-                                    <input type="password" id="rep_password" name="rep_password" class="form-control" placeholder="Reinserisci password">
+                                    <input type="password" id="password2" name="password2" class="form-control" placeholder="Reinserisci password">
                                 </div>
                                 <div class="form-group">
                                     <label for="avatar">Carica un'immagine da usare come avatar</label>

@@ -29,7 +29,6 @@
     <head>
         <title>Modifica categoria</title>
         <%@include file="../include/generalMeta.jsp" %>
-
     </head>
     <body>
         <div id="containerPage">
@@ -44,7 +43,6 @@
             </div>
             <div id="body">
                 <div class="container text-center">    
-                    <br>
                     <div class="col-sm-2">
                     </div>
                     <div class="col-sm-8">

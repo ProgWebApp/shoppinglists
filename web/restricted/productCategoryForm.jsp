@@ -19,9 +19,11 @@
                 <%@include file="../include/navigationBar.jsp" %>
             </div>
             <div id="body">
+                <div class="container text-center">
+                    <div class="col-sm-2"></div>
                 <div class="col-sm-8">
                     <div class="form-container ">
-                        <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("ProductCategoryServlet"))}" method="POST" enctype="multipart/form-data">
+                        <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet"))}" method="POST" enctype="multipart/form-data">
                             <c:choose>
                                 <c:when test="${message==1}">
                                     Compila i campi mancanti!

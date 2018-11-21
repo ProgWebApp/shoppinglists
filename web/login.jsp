@@ -50,7 +50,7 @@
                                 </div>      
                                 <button type="submit" class="btn btn-default acc-btn">Accedi</button>
                                 <br><br>
-                                <a style="color:grey" href="#"> Password dimenticata? </a> <br>
+                                <a style="color:grey" href="${pageContext.response.encodeURL(contextPath.concat("retrievePassword.jsp"))}"> Password dimenticata? </a> <br>
                                 <a style="color:grey" href="${pageContext.response.encodeURL(contextPath.concat("registration.jsp"))}"> Non ancora iscritto? Registrati! </a>
                             </form>
                             <c:remove var="message" scope="session" />

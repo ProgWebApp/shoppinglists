@@ -25,6 +25,16 @@ public interface UserDAO extends DAO<User, Integer> {
     public User getByEmailAndPassword(String email, String password) throws DAOException;
 
     /**
+     * Returns the {@link User user} with the given {@code email} if exists
+     *
+     * @param email the email of the user to get.
+     * @return the {@link User user} with the given {@code username}.
+     * @throws DAOException if an error occurred during the information
+     * retrieving.
+     */
+    public User getByEmail(String email) throws DAOException;
+    
+    /**
      * Returns the {@link User user} with the given {@code check} code.
      *
      * @param checkCode the check code
