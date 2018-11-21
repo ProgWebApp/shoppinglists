@@ -181,70 +181,76 @@
         </script>
     </head>
     <body onload="scrollChat()">
-        <div class="jumbotron">
-            <img src="${contextPath}images/shoppingList/${shoppingList.imagePath}" class="fit-image" alt="Immagine lista">
-            <h2>${shoppingList.name}</h2>
-            <h4>Categoria: ${shoppingListCategory.name}</h4>
-            <h4>Descrizione: ${shoppingList.description}</h4>
-        </div>
-        <%@include file="include/navigationBar.jsp"%>
-        <div class="container-fluid">
-            <div class="col-sm-1">
-            </div>
-            <div class="col-sm-5">
-                <div class="pre-scrollable">
-                    <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear">
-                    </select>
-                    <ul id="prodotti" class="list-group">
-                        <c:forEach items="${products}" var="product">
-                            <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
-                                <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
-                            </li>
-                        </c:forEach>
-                        <!--<input type="text" class="form-control" placeholder="Cerca prodotto da aggiungere...">-->
-                    </ul>
+        <div id="containerPage">
+            <div id=""header">
+                 <div class="jumbotron">
+                    <img src="${contextPath}images/shoppingList/${shoppingList.imagePath}" class="fit-image" alt="Immagine lista">
+                    <h2>${shoppingList.name}</h2>
+                    <h4>Categoria: ${shoppingListCategory.name}</h4>
+                    <h4>Descrizione: ${shoppingList.description}</h4>
                 </div>
+                <%@include file="include/navigationBar.jsp"%>
             </div>
-            <div class="col-sm-1">
-            </div>
-            <div class="col-sm-4">
-                <div class="row">
-                    <div>
-                        <label for="comment">Chat:</label>
-                        <div class="form-control chat" id="messageBoard">
-                            <c:forEach items="${messages}" var="message">
-                                <div class="message<c:if test="${message.senderId==user.id}"> message-right</c:if>">${message.body}</div>
-                            </c:forEach>
-                        </div>
+            <div id="body">
+                <div class="container-fluid">
+                    <div class="col-sm-1">
                     </div>
-                    <div class="input-group">
-                        <input id="newtext" class="form-control" type="text">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" onclick="addMessage()">Invia</button>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <ul id="utenti" class="list-group user-list-group">
-                        <li class="list-group-item justify-content-between align-items-center">
-                            <label> Utenti che condividono la lista: </label>
-                            <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
+                    <div class="col-sm-5">
+                        <div class="pre-scrollable">
+                            <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear">
                             </select>
-                        </li>
-                        <c:forEach items="${users}" var="user">
-                            <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
-                                <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="deleteUser(${user.id})"></span>
-                                <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
-                                    <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
-                                    <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
-                                    </select>  
+                            <ul id="prodotti" class="list-group">
+                                <c:forEach items="${products}" var="product">
+                                    <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
+                                        <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
+                                    </li>
+                                </c:forEach>
+                                <!--<input type="text" class="form-control" placeholder="Cerca prodotto da aggiungere...">-->
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div>
+                                <label for="comment">Chat:</label>
+                                <div class="form-control chat" id="messageBoard">
+                                    <c:forEach items="${messages}" var="message">
+                                        <div class="message<c:if test="${message.senderId==user.id}"> message-right</c:if>">${message.body}</div>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <input id="newtext" class="form-control" type="text">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" onclick="addMessage()">Invia</button>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <ul id="utenti" class="list-group user-list-group">
+                                <li class="list-group-item justify-content-between align-items-center">
+                                    <label> Utenti che condividono la lista: </label>
+                                    <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
+                                    </select>
                                 </li>
-                        </c:forEach>
-                    </ul>
+                                <c:forEach items="${users}" var="user">
+                                    <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
+                                        <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="deleteUser(${user.id})"></span>
+                                        <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
+                                            <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
+                                            <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
+                                            </select>  
+                                        </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <%@include file="include/footer.jsp" %>
         </div>
-        <%@include file="include/footer.jsp" %>
     </body>
 </html>
