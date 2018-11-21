@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="./leaflet/leaflet.css" />
         <script src="./leaflet/leaflet.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Negozi vicini</title>
         <%@include file="include/generalMeta.jsp"%>
     </head>
     <body>
@@ -53,7 +53,7 @@
                             color: '#ff6336',
                             fillColor: '#ff6336',
                             fillOpacity: 0.3,
-                            radius: 8000
+                            radius: 1000
                         }).addTo(mymap);
                         getShops();
                     });
@@ -77,7 +77,7 @@
             }
 
             function addShop(shop, i) {
-                shops += "node[\"shop\"=\"" + shop + "\"](around:8000, " + lat + ", " + long + ");";
+                shops += "node[\"shop\"=\"" + shop + "\"](around:1000, " + lat + ", " + long + ");";
 
             }
 

@@ -130,4 +130,4 @@
         </div>
     </div>
 </nav>
-<script> getLocation();</script>
+<script> <c:if test="${not empty user}"> getNotifications(); </c:if> getLocation();</script>

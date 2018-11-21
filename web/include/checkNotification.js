@@ -3,6 +3,17 @@
     var json;
     var shopsJSON;
     var shops;
+    function getNotifications(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log("Hai "+this.responseText+" notifiche");
+            }
+        };
+        xhttp.open("GET", "NotificationsServlet", true);
+        xhttp.send("");
+    }
+    
     function getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -31,7 +42,7 @@
     }
 
     function addShop(shop, i) {
-        shops += "node[\"shop\"=\"" + shop + "\"](around:8000, " + lat + ", " + long + ");";
+        shops += "node[\"shop\"=\"" + shop + "\"](around:1000, " + lat + ", " + long + ");";
     }
 
     function searchShopAround() {
@@ -42,7 +53,7 @@
         xhttp.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
                 json = JSON.parse(this.responseText);
-                console.log("ci sono "+json.elements.length+" messaggi");
+                console.log("ci sono "+json.elements.length+" negozi vicini");
             }
         };
         xhttp.open("POST", "http://www.overpass-api.de/api/interpreter", true);

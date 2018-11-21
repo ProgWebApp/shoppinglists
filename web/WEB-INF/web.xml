@@ -134,6 +134,10 @@
         <servlet-class>servlets.ShoppingListPublic</servlet-class>
     </servlet>
     <!-- SERVLET MAPPING -->
+    <servlet>
+        <servlet-name>NotificationsServlet</servlet-name>
+        <servlet-class>servlets.NotificationsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -224,6 +228,10 @@
         <url-pattern>/ShoppingListCategoryPublic</url-pattern>
     </servlet-mapping>
     <!-- CONFIGURAZIONI -->
+    <servlet-mapping>
+        <servlet-name>NotificationsServlet</servlet-name>
+        <url-pattern>/NotificationsServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

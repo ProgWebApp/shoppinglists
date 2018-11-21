@@ -112,6 +112,15 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
      * @throws DAOException if an error occurred during the persist action.
      */
     public void removeNotifications(Integer shoppingListId, Integer userId) throws DAOException;
+    
+    /**
+     * Get the number of notifications for the passed {@code user}
+     *
+     * @param userId the id of user to search the notifications.
+     * @return the number of notifications for the passer userId
+     * @throws DAOException if an error occurred during the persist action.
+     */
+    public Integer getNotificationsByUser(Integer userId) throws DAOException;
 
     /**
      * Adds the passed {@code pruduct} to the passed {@code shoppingList}.

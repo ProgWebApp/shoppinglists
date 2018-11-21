@@ -75,7 +75,6 @@ public class MapServlet extends HttpServlet {
             response.setStatus(400);
             return;
         }
-        System.out.println("titto a posto");
         try {
             List<String> shops = new ArrayList();
             if (user != null) {

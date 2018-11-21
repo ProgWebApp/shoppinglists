@@ -1,6 +1,7 @@
 package db.daos.jdbc;
 
 import db.daos.ShoppingListDAO;
+import db.entities.Message;
 import db.entities.Product;
 import db.entities.ShoppingList;
 import db.entities.User;
@@ -377,7 +378,26 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             throw new DAOException("Impossible to update the link between the passed shoppingList and the passed user", ex);
         }
     }
+    
+     @Override
+    public Integer getNotificationsByUser(Integer userId) throws DAOException {
+        if (userId == null) {
+            throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user_id = ? ")) {
 
+            stm.setInt(1, userId);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }else{
+                return null;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the number of messages for the passed userId", ex);
+        }
+    }
+    
     @Override
     public void addProduct(Integer shoppingListId, Integer productId, int quantity, boolean necessary) throws DAOException {
         if ((shoppingListId == null) || (productId == null)) {
