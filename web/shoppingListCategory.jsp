@@ -39,23 +39,7 @@
         <img height="50px" src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}"><br>
         <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}">Modifica</a>
         <span onclick="deleteShoppingListCategory(${shoppingListCategory.id})">Elimina</span><br>
-        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Shopping List Categories</a>
-                <%@include file="include/footer.jsp" %>
-
-                    </div>
-                </div>
-                <%@include file="../include/navigationBar.jsp"%>
-            </div>
-            <div id="body">
-                ${shoppingListCategory.id}<br>
-                ${shoppingListCategory.name}<br>
-                ${shoppingListCategory.description}<br>
-                ${shoppingListCategory.shop}<br>
-                <img height="50px" src="../images/shoppingListCategories/${shoppingListCategory.logoPath}"><br>
-                <a href="${pageContext.response.encodeURL("ShoppingListCategoryServlet?res=2&shoppingListCategoryId=".concat(shoppingListCategory.id))}">Modifica</a>
-                <span onclick="deleteShoppingListCategory(${shoppingListCategory.id})">Elimina</span><br>
-                <a href="${pageContext.response.encodeURL("shoppingListCategories.jsp")}">Shopping List Categories</a>
-            </div>        
+        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Shopping List Categories</a>   
             <%@include file="../include/footer.jsp" %>
         </div>
     </body>

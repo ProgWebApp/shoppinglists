@@ -73,9 +73,11 @@ public class ShoppingListPublic extends HttpServlet {
         /* RECUPERO L'UTENTE, SE ESISTE */
         String userId = null;
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("userId")) {
-                userId = cookie.getValue();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("userId")) {
+                    userId = cookie.getValue();
+                }
             }
         }
 
@@ -124,9 +126,11 @@ public class ShoppingListPublic extends HttpServlet {
         /* RECUPERO L'UTENTE, SE ESISTE */
         String userId = null;
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("userId")) {
-                userId = cookie.getValue();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("userId")) {
+                    userId = cookie.getValue();
+                }
             }
         }
 
@@ -145,11 +149,11 @@ public class ShoppingListPublic extends HttpServlet {
             cookie.setMaxAge(2678400);
             response.addCookie(cookie);
         }
-        
-        if(shoppingList == null){
+
+        if (shoppingList == null) {
             shoppingList = new ShoppingList();
         }
-        
+
         /* COOKIE */
         shoppingList.setCookie(userId);
 
@@ -180,9 +184,9 @@ public class ShoppingListPublic extends HttpServlet {
         }
         /* CONTROLLO CAMPI VUOTI */
         if (shoppingListName.isEmpty() || shoppingListDescription.isEmpty() || emptyListCategory || emptyImage) {
-            request.getSession().setAttribute("message", 1);
-            request.getSession().setAttribute("shoppingList", shoppingList);
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "shoppingListForm.jsp"));
+            request.setAttribute("message", 1);
+            request.setAttribute("shoppingList", shoppingList);
+            getServletContext().getRequestDispatcher("/shoppingListForm.jsp").forward(request, response);
             return;
         }
 
@@ -197,7 +201,7 @@ public class ShoppingListPublic extends HttpServlet {
             imageFilePart.write(imagesFolder + File.separator + imageFileName);
             shoppingList.setImagePath(imageFileName);
         }
-        
+
         /* OWNER */
         shoppingList.setOwnerId(null);
 

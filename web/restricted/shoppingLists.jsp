@@ -33,9 +33,11 @@
     } else {
         String userId = null;
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("userId")) {
-                userId = cookie.getValue();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("userId")) {
+                    userId = cookie.getValue();
+                }
             }
         }
         ShoppingList shoppingList = shoppingListDao.getByCookie(userId);

@@ -162,7 +162,7 @@ public class ShoppingListServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
         Integer userId = user.getId();
 
-        /* RECUPERO LA LISTA, SE ESISTE, OPPURE NE CREO UNA NUOVO */
+        /* RECUPERO LA LISTA, SE ESISTE, OPPURE NE CREO UNA NUOVA */
         ShoppingList shoppingList = new ShoppingList();
         Integer shoppingListId = null;
         if (request.getParameter("shoppingListId") != null) {
@@ -213,9 +213,9 @@ public class ShoppingListServlet extends HttpServlet {
         }
         /* CONTROLLO CAMPI VUOTI */
         if (shoppingListName.isEmpty() || shoppingListDescription.isEmpty() || emptyListCategory || emptyImage) {
-            request.getSession().setAttribute("message", 1);
-            request.getSession().setAttribute("shoppingList", shoppingList);
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "shoppingListForm.jsp"));
+            request.setAttribute("message", 1);
+            request.setAttribute("shoppingList", shoppingList);
+            getServletContext().getRequestDispatcher("/shoppingListForm.jsp").forward(request, response);
             return;
         }
 

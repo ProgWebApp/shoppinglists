@@ -231,8 +231,8 @@
                         <br>
                         <div class="row">
                             <ul id="utenti" class="list-group user-list-group">
+                                <li class="list-group-item justify-content-between align-items-center"><label> Utenti che condividono la lista: </label></li>
                                 <li class="list-group-item justify-content-between align-items-center">
-                                    <label> Utenti che condividono la lista: </label>
                                     <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
                                     </select>
                                 </li>

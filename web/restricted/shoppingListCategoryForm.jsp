@@ -88,7 +88,6 @@
                                 </div>
                                 <c:if test="${not empty shoppingListCategory.id}">
                                     <input type="hidden" name="shoppingListCategoryId" value="${shoppingListCategory.id}">
-                                    >>>>>>> fc6b075 include e scaletta intestazione in tutte le pagine
                                 </c:if>
                                 <button type="submit" class="btn btn-default acc-btn">Invia</button>
                             </form>
