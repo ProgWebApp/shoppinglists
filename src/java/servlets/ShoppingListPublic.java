@@ -147,6 +147,8 @@ public class ShoppingListPublic extends HttpServlet {
             userId = UUID.randomUUID().toString();
             Cookie cookie = new Cookie("userId", userId);
             cookie.setMaxAge(2678400);
+            cookie.setDomain(request.getServerName());
+            cookie.setPath("/");
             response.addCookie(cookie);
         }
 

@@ -39,6 +39,11 @@ public class Logout extends HttpServlet {
         if (session != null) {
             User user = (User) session.getAttribute("user");
             if (user != null) {
+                Cookie cookie = new Cookie("token", "");
+                cookie.setMaxAge(0);
+                cookie.setDomain(request.getServerName());
+                cookie.setPath("/");
+                response.addCookie(cookie);
                 try {
                     userDao.setToken(user.getId(), null, null);
                 } catch (DAOException ex) {

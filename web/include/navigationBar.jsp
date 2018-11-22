@@ -54,80 +54,83 @@
             window.location.href = url;
         });
     });</script>
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header pull-left">
-            <a class="navbar-brand" style="color:white" href="${pageContext.response.encodeURL(contextPath.concat("index.jsp"))}"><span class="glyphicon glyphicon-home"></span><span class="hidden-sm hidden-xs"> Home</span></a>
+<div class="mynav">
+    <div class="mynav-left">
+        <div class="mynav-item">
+            <a href="${pageContext.response.encodeURL(contextPath.concat("index.jsp"))}"><span class="glyphicon glyphicon-home"></span><span class="hide-elem"> Home</span></a>
         </div>
-        <div class="navbar-header pull-left">
-            <form class="navbar-form" role="search">
-                <div class="input-group col-xs-5">
-                    <c:choose>
-                        <c:when test="${empty user}">
-                            <select id="searchPublicProducts" name="searchPublicProducts" class="form-control select2-allow-clear">
-                            </select>
-                        </c:when>
-                        <c:when test="${not empty user}">
-                            <select id="searchProducts" name="searchProducts" class="form-control select2-allow-clear">
-                            </select>
-                        </c:when>
-                    </c:choose>
-                </div>
-            </form>
-        </div>
-        <div class="navbar-header pull-right">
-            <ul class="nav navbar-nav navbar-right list-inline">
-                <c:choose>
-                    <c:when test="${not empty user}">
-                        <li style="display: inline-block !important;">
-                            <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/user.jsp"))}" style="color:white">
-                                <span class="glyphicon glyphicon-user"></span>
-                                <span class="hidden-sm hidden-xs">PROFILO</span>
-                            </a>
-                        </li>
-                        <li style="display: inline-block !important;">
-                            <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/Logout"))}" style="color:white">
-                                <span class="glyphicon glyphicon-log-out"></span>
-                                <span class="hidden-sm hidden-xs">LOGOUT</span>
-                            </a>
-                        </li>
-                        <li class="dropdown" style="display: inline-block !important;">
-                            <a class="dropdown-toggle" data-toggle="dropdown" style="color:white" href="#">
-                                <span class="glyphicon glyphicon-menu-hamburger"></span>
-                                <span class="hidden-sm hidden-xs">MEN&Ugrave;</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingLists.jsp"))}">Le mie liste</a></li>
-                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}">Nuova lista</a></li>
-                                <li><hr></li>
-                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/products.jsp"))}">I miei prodotti</a></li>
-                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}">Aggiungi prodotto</a></li>
-                                <li><hr></li>
-                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Categorie lista</a></li>
-                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategoryForm.jsp"))}">Nuova categoria lista</a></li>
-                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Categorie prodotto</a></li>
-                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productCategoryForm.jsp"))}">Nuova categoria prodotto</a></li>
-                            </ul>
-                        </li>    
-                    </c:when>
-                    <c:when test="${empty user}">
-                        <li style="display: inline-block !important;">
-                            <a href="${pageContext.response.encodeURL(contextPath.concat("login.jsp"))}" style="color:white">
-                                <span class="glyphicon glyphicon-log-out"></span>
-                                <span class="hidden-sm hidden-xs">LOGIN</span></a></li>
-                        <li class="dropdown" style="display: inline-block !important;">
-                            <a class="dropdown-toggle" data-toggle="dropdown" style="color:white" href="#">
-                                <span class="glyphicon glyphicon-menu-hamburger"></span>
-                                <span class="hidden-sm hidden-xs">MEN&Ugrave;</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic?res=1"))}">La mia lista</a></li>
-                            </ul>
-                        </li>    
-                    </c:when>
-                </c:choose>
-            </ul>
+        <div class="search">
+            <c:choose>
+                <c:when test="${empty user}">
+                    <select id="searchPublicProducts" name="searchPublicProducts" class="form-control select2-allow-clear">
+                    </select>
+                </c:when>
+                <c:when test="${not empty user}">
+                    <select id="searchProducts" name="searchProducts" class="form-control select2-allow-clear">
+                    </select>
+                </c:when>
+            </c:choose>
         </div>
     </div>
-</nav>
+    <div class="mynav-right">
+        <c:choose>
+            <c:when test="${not empty user}">
+                <div class="mynav-item hide-elem">
+                    <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/user.jsp"))}" style="color:white">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span>Profilo</span>
+                    </a>
+                </div>
+                <div class="mynav-item hide-elem">
+                    <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/Logout"))}" style="color:white">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        <span>Logout</span>
+                    </a>
+                </div>
+                <div class="mynav-item dropdown" >
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                        <span class="hide-elem">Men&ugrave;</span>
+                    </a>
+                    <ul class="dropdown-menu  dropdown-menu-right">
+                        <li class="hide-elem-men"><a href="${pageContext.response.encodeURL(contextPath.concat("index.jsp"))}">Home</a></li>
+                        <li class="hide-elem-men"><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/user.jsp"))}">Profilo</a></li>
+                        <li class="hide-elem-men"><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/Logout"))}">Logout</a></li>
+                        <li class="hide-elem-men"><hr></li>
+                        <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingLists.jsp"))}">Le mie liste</a></li>
+                        <li><a href="${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}">Nuova lista</a></li>
+                        <li><hr></li>
+                        <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/products.jsp"))}">I miei prodotti</a></li>
+                        <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}">Aggiungi prodotto</a></li>
+                        <li><hr></li>
+                        <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Categorie lista</a></li>
+                        <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategoryForm.jsp"))}">Nuova categoria lista</a></li>
+                        <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Categorie prodotto</a></li>
+                        <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productCategoryForm.jsp"))}">Nuova categoria prodotto</a></li>
+                    </ul>
+                </div>
+            </c:when>
+            <c:when test="${empty user}">
+                <div class="mynav-item hide-elem">
+                    <a href="${pageContext.response.encodeURL(contextPath.concat("login.jsp"))}" style="color:white">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        <span>Login</span>
+                    </a>
+                </div>
+                <div class="mynav-item dropdown" >
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                        <span class="hide-elem">Men&ugrave;</span>
+                    </a>
+                    <ul class="dropdown-menu  dropdown-menu-right">
+                        <li class="hide-elem-men"><a href="${pageContext.response.encodeURL(contextPath.concat("index.jsp"))}">Home</a></li>
+                        <li class="hide-elem-men"><a href="${pageContext.response.encodeURL(contextPath.concat("Login"))}">Login</a></li>
+                        <li class="hide-elem-men"><hr></li>
+                        <li><a href="${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic?res=1"))}">La mia lista</a></li>
+                    </ul>
+                </div>
+            </c:when>
+        </c:choose>
+    </div>
+</div>
 <script> <c:if test="${not empty user}"> getNotifications(); </c:if> getLocation();</script>

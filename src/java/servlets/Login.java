@@ -47,7 +47,6 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        
 
         try {
             User user = userDao.getByEmailAndPassword(email, password);
@@ -59,15 +58,23 @@ public class Login extends HttpServlet {
                 request.getSession().setAttribute("message", 2);
                 response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.jsp"));
             } else {
-                if(request.getParameter("rememberMe")!= null && request.getParameter("rememberMe").equals("true")){
+                if (request.getParameter("rememberMe") != null && request.getParameter("rememberMe").equals("true")) {
                     String token = UUID.randomUUID().toString();
                     LocalDate date = LocalDate.now().plusMonths(1);
                     Date expiration = java.sql.Date.valueOf(date);
                     userDao.setToken(user.getId(), token, expiration);
                     Cookie cookie = new Cookie("token", token);
                     cookie.setMaxAge(2678400);
+                    cookie.setDomain(request.getServerName());
+                    cookie.setPath("/");
                     response.addCookie(cookie);
                 }
+                /* Elimina il cookie dell'utente anonimo quando ci si logga 
+                Cookie cookie = new Cookie("userId", "");
+                cookie.setMaxAge(0);
+                cookie.setDomain(request.getServerName());
+                cookie.setPath("/");
+                response.addCookie(cookie); */
                 request.getSession().setAttribute("user", user);
                 response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "index.jsp"));
             }

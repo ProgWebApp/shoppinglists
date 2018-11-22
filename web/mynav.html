@@ -7,81 +7,79 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <style>
+.mynav{
+    width: 100%;
+    height: 60px;
+    background-color: #FF6336;
+    color: white;
+    margin-bottom: 10px;
+    padding: 10px 10px 0px 10px;
+    font-size: 20px;
+    float: left;
+}
+.mynav-left{
+    float: left;
+    width: 50%;
+}
+.mynav-right{
+    float: right;
+}
 
-            .mynav{
-                width:100%;
-                height:60px;
-                background-color:black;
-                color:white;
-                margin-bottom:10px;
-                padding:10px 10px 0px 10px;
-                font-size: 20px;
-                float:left;
-            }
-            .mynav-left{
-                float:left;
-                width:100%;
-            }
-            .mynav-right{
-                float:right;
-            }
+.mynav-item{
+    padding: 7px;
+}
 
-            .mynav-item{
-                padding:7px;
-            }
+.mynav-item  { 
+    position: relative; 
+    float: left;
+}
 
-            .mynav, .mynav-item  { 
-                position: relative; 
-                float: left;
-            }
+.mynav-item > a:link, a:visited, a:hover, a:active {
+    color: white;
+    text-decoration: none;
+}
+.search{
+    width: calc(100% - 100px);
+    max-width: 400px;
+    float: left;
+}
 
-            .mynav , .mynav-item > a:link {
-                color: white;
-                text-decoration: none;
-            }
+@media only screen and (max-width:767px){
+    .hide-elem{
+        display: none !important;
+    }
+    .search{
+        width: 100%;
+        max-width: 400px;
+    }
+    .mynav-left{
+        float:left;
+        width:70%;
+    }
+}
 
-            .mynav , .mynav-item > a:visited {
-                color: white;
-                text-decoration: none;
-            }
+@media only screen and (min-width:768px){
+    li.hide-elem-men{
+        display: none !important;
+    }
+}
 
 
-            .mynav , .mynav-item > a:hover {
-                color: white;
-                text-decoration: none;
-            }
+.dropdown-menu{
+    top:120%;
+    padding-top:15px;
+}
+        </style>
+    </head>
+    <body>
 
-            .mynav , .mynav-item > a:active {
-                color: white;
-                text-decoration: none;
-            }
-
-            .mynav , .mynav-item, ul.dropdown-menu{
-                top:120%;
-                box-shadow:none;
-            }
-
-            @media only screen and (max-width:767px){
-                .hide-elem{
-                    display:none !important;
-                    visibility:hidden !important;
-                }}
-
-            @media only screen and (min-width:767px){
-                li.hide-elem-men{
-                    display:none !important;
-                    visibility:hidden !important;
-                }}
-            </style>
-        </head>
-        <body>
-
-            <div class="mynav">
-            <div class="col-sm-5">    
-                <div class="mynav-left">
-                    <div class="mynav-item hide-elem">
-                        <a  href="#"><span class="glyphicon glyphicon-home"></span> Home</a>
-                    </div>
+        <div class="mynav">
+            <div class="mynav-left">
+                <div class="mynav-item hide-elem">
+                    <a  href="#"><span class="glyphicon glyphicon-home"></span> Home</a>
+                </div>
+                <div class="search">
+                    <select style="width: 100%"><option>ciao</option></select>
                 </div>
                 <c:choose>
                     <c:when test="${empty user}">
@@ -106,7 +104,7 @@
                 <div class="mynav-item dropdown" >
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="glyphicon glyphicon-menu-hamburger"></span>
-                        <span>Men&ugrave;</span>
+                        <span class="hide-elem">Men&ugrave;</span>
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-right">
@@ -127,11 +125,6 @@
                     </ul>
                 </div>
             </div>
-
         </div>
-
-        Contenuto della pagina
-
-
     </body>
 </html>

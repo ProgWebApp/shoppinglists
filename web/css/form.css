@@ -1,13 +1,18 @@
 .form-container{
     background-color: #ffe0cc;
-    text-align:left;
+    text-align: left;
     border: 2px solid #ff6336;
-    padding: 45px 5px 30px 5px;
+    border-radius: 5px;
+    padding: 20px;
 }
 .acc-btn{
     background-color: #ff6336;
-    color: #FFFFFF;
+    color: white;
     border: 0px;
+}
+.btn-default:hover{
+    background-color: #ff6336;
+    color: white;
 }
 .btn-custom{
     font: 17px monospace;

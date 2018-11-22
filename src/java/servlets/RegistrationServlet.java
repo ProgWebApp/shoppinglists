@@ -1,7 +1,9 @@
 package servlets;
 
 import Email.Email;
+import db.daos.ShoppingListDAO;
 import db.daos.UserDAO;
+import db.entities.ShoppingList;
 import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
@@ -16,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +27,8 @@ import javax.servlet.http.Part;
 @MultipartConfig
 public class RegistrationServlet extends HttpServlet {
 
-    private UserDAO userDao;
+    private UserDAO userDAO;
+    private ShoppingListDAO shoppingListDAO;
 
     @Override
     public void init() throws ServletException {
@@ -33,9 +37,14 @@ public class RegistrationServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            userDao = daoFactory.getDAO(UserDAO.class);
+            userDAO = daoFactory.getDAO(UserDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);
+        }
+        try {
+            shoppingListDAO = daoFactory.getDAO(ShoppingListDAO.class);
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get dao factory for shoppingList storage system", ex);
         }
     }
 
@@ -93,8 +102,31 @@ public class RegistrationServlet extends HttpServlet {
         }
 
         try {
-            userDao.insert(user);
-            
+            Integer userId = userDAO.insert(user);
+
+            /* Se l'utente prima di registrarsi aveva creato una lista ne diventa proprietario */
+            ShoppingList shoppingList = null;
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("userId")) {
+                        shoppingList = shoppingListDAO.getByCookie(cookie.getValue());
+                    }
+                }
+            }
+            if (shoppingList != null) {
+                shoppingList.setOwnerId(userId);
+                shoppingListDAO.update(shoppingList);
+                shoppingListDAO.addMember(shoppingList.getId(), userId, 2);
+            }
+            /* Elimina il cookie dell'utente anonimo quando ci si logga */
+            Cookie cookie = new Cookie("userId", "");
+            cookie.setMaxAge(0);
+            cookie.setDomain(request.getServerName());
+            cookie.setPath("/");
+            response.addCookie(cookie);
+
+            /* Invio mail di iscrizione all'utente */
             String hostName = request.getServerName() + ":" + request.getServerPort();
             String testo = "Grazie per esserti iscritto al sito, per completare la registrazione clicca sul seguente link:\n"
                     + "http://" + hostName + request.getAttribute("contextPath") + "VerifyEmailServlet?check=" + check + "\n"
