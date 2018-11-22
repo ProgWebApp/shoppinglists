@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+
+            .mynav{
+                width:100%;
+                height:60px;
+                background-color:black;
+                color:white;
+                margin-bottom:10px;
+                padding:10px 10px 0px 10px;
+                font-size: 20px;
+                float:left;
+            }
+            .mynav-left{
+                float:left;
+                width:100%;
+            }
+            .mynav-right{
+                float:right;
+            }
+
+            .mynav-item{
+                padding:7px;
+            }
+
+            .mynav, .mynav-item  { 
+                position: relative; 
+                float: left;
+            }
+
+            .mynav , .mynav-item > a:link {
+                color: white;
+                text-decoration: none;
+            }
+
+            .mynav , .mynav-item > a:visited {
+                color: white;
+                text-decoration: none;
+            }
+
+
+            .mynav , .mynav-item > a:hover {
+                color: white;
+                text-decoration: none;
+            }
+
+            .mynav , .mynav-item > a:active {
+                color: white;
+                text-decoration: none;
+            }
+
+            .mynav , .mynav-item, ul.dropdown-menu{
+                top:120%;
+                box-shadow:none;
+            }
+
+            @media only screen and (max-width:767px){
+                .hide-elem{
+                    display:none !important;
+                    visibility:hidden !important;
+                }}
+
+            @media only screen and (min-width:767px){
+                li.hide-elem-men{
+                    display:none !important;
+                    visibility:hidden !important;
+                }}
+            </style>
+        </head>
+        <body>
+
+            <div class="mynav">
+            <div class="col-sm-5">    
+                <div class="mynav-left">
+                    <div class="mynav-item hide-elem">
+                        <a  href="#"><span class="glyphicon glyphicon-home"></span> Home</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mynav-right">
+                <div class="mynav-item hide-elem">
+                    <a  href="#"><span class="glyphicon glyphicon-user"></span> Profilo</a>
+                </div>
+                <div class="mynav-item hide-elem">
+                    <a  href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                </div>
+
+                <div class="mynav-item dropdown" >
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                        <span>Men&ugrave;</span>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li class="hide-elem-men"><a href="#">Home</a></li>
+                        <li class="hide-elem-men"><a href="#">Profilo</a></li>
+                        <li class="hide-elem-men"><a href="#">Logout</a></li>
+                        <li class="hide-elem-men"><hr></li>
+                        <li><a href="#">Le mie liste</a></li>
+                        <li><a href="#">Nuova lista</a></li>
+                        <li><hr></li>
+                        <li><a href="#">I miei prodotti</a></li>
+                        <li><a href="#">Aggiungi prodotto</a></li>
+                        <li><hr></li>
+                        <li><a href="#">Categorie lista</a></li>
+                        <li><a href="#">Nuova categoria lista</a></li>
+                        <li><a href="#">Categorie prodotto</a></li>
+                        <li><a href="#">Nuova categoria prodotto</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        Contenuto della pagina
+
+
+    </body>
+</html>
