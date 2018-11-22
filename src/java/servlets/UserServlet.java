@@ -18,13 +18,14 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import static org.apache.tomcat.jdbc.naming.GenericNamingResourcesFactory.capitalize;
 
 @MultipartConfig
 public class UserServlet extends HttpServlet {
 
-    private UserDAO userDao;
+    private UserDAO userDAO;
 
     @Override
     public void init() throws ServletException {
@@ -33,7 +34,7 @@ public class UserServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            userDao = daoFactory.getDAO(UserDAO.class);
+            userDAO = daoFactory.getDAO(UserDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
@@ -67,6 +68,11 @@ public class UserServlet extends HttpServlet {
                     }
                 }
                 activeUser.setAvatarPath(filename);
+                try {
+                    userDAO.update(activeUser);
+                } catch (DAOException ex) {
+                    request.getSession().setAttribute("message", 11);
+                }
             } else if (request.getParameter("changeName") != null && Integer.parseInt(request.getParameter("changeName")) == 1) {
                 String userFirstName = capitalize(request.getParameter("firstName"));
                 String userLastName = capitalize(request.getParameter("lastName"));
@@ -75,42 +81,34 @@ public class UserServlet extends HttpServlet {
                 } else {
                     activeUser.setFirstName(userFirstName);
                     activeUser.setLastName(userLastName);
-                    request.getSession().setAttribute("message", 22);
+                    try {
+                        userDAO.update(activeUser);
+                    } catch (DAOException ex) {
+                        request.getSession().setAttribute("message", 22);
+                    }
+                    request.getSession().setAttribute("message", 23);
                 }
             } else if (request.getParameter("changePassword") != null && Integer.parseInt(request.getParameter("changePassword")) == 1) {
                 String realOldPassword = activeUser.getPassword();
                 System.out.println("vecchia password: " + realOldPassword);
                 String oldPassword = request.getParameter("oldPassword");
-                String newPassword = request.getParameter("newPassword");
+                String newPassword1 = request.getParameter("newPassword1");
                 String newPassword2 = request.getParameter("newPassword2");
-                if (oldPassword == null || newPassword == null || newPassword2 == null) {
+                if (oldPassword.isEmpty() || newPassword1.isEmpty() || newPassword2.isEmpty()) {
                     request.getSession().setAttribute("message", 31);
                 } else {
                     if (!oldPassword.equals(realOldPassword)) {
                         request.getSession().setAttribute("message", 32);
-                    } else if (!newPassword.equals(newPassword2)) {
+                    } else if (!newPassword1.equals(newPassword2)) {
                         request.getSession().setAttribute("message", 33);
                     } else {
                         activeUser.setPassword(newPassword2);
-                        request.getSession().setAttribute("message", 34);
-                    }
-                }
-            } else if (request.getParameter("deleteUser") != null && Integer.parseInt(request.getParameter("deleteUser")) == 1) {
-                if (request.getParameter("idUser") == null) {
-                    try {
-                        userDao.delete(((User) request.getSession().getAttribute("user")).getId());
-                        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "Logout"));
-                        return;
-                    } catch (DAOException ex) {
-                        Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    if (activeUser.isAdmin()) {
                         try {
-                            userDao.delete(Integer.parseInt(request.getParameter("idUser")));
+                            userDAO.update(activeUser);
                         } catch (DAOException ex) {
-                            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                            request.getSession().setAttribute("message", 34);
                         }
+                        request.getSession().setAttribute("message", 35);
                     }
                 }
             }
@@ -121,22 +119,24 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer userId = null;
+        
+    }
 
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         User activeUser = (User) request.getSession().getAttribute("user");
-        Integer activeUserId = activeUser.getId();
 
+        /* RISPONDO */
+        HttpSession session = request.getSession(false);
         try {
-            userId = Integer.valueOf(request.getParameter("userId"));
-        } catch (RuntimeException ex) {
-            System.out.println(ex);
+            userDAO.delete(activeUser.getId());
+            session.invalidate();
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "index.jsp"));
+        } catch (DAOException ex) {
+            response.setStatus(500);
         }
-        if (userId != null && ((activeUser.isAdmin()) || activeUserId.equals(userId))) {
-            try {
-                userDao.delete(userId);
-            } catch (DAOException ex) {
-                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        return;
     }
 }

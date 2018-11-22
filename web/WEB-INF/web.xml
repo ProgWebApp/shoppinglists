@@ -235,7 +235,7 @@
         <servlet-name>ShoppingListCategoryPublic</servlet-name>
         <url-pattern>/ShoppingListCategoryPublic</url-pattern>
     </servlet-mapping>
-    <!-- CONFIGURAZIONI -->
+    
     <servlet-mapping>
         <servlet-name>NotificationsServlet</servlet-name>
         <url-pattern>/NotificationsServlet</url-pattern>
@@ -243,9 +243,12 @@
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/restricted/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ResetPasswordServlet</servlet-name>
         <url-pattern>/ResetPasswordServlet</url-pattern>
     </servlet-mapping>
+    <!-- CONFIGURAZIONI -->
     <session-config>
         <session-timeout>
             30

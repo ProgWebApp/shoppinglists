@@ -4,6 +4,23 @@
     <head>
         <title>Utente</title>
         <%@include file="../include/generalMeta.jsp" %>
+        <script>
+            function deleteUser() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 204) {
+                        window.location.href = "${pageContext.response.encodeURL(contextPath.concat("index.jsp"))}";
+                    } else if (this.readyState === 4 && this.status === 400) {
+                        alert("Bad request!");
+                    } else if (this.readyState === 4 && this.status === 500) {
+                        alert("Impossible to delete the user!");
+                    }
+                };
+                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/UserServlet"))}";
+                xhttp.open("DELETE", url, true);
+                xhttp.send();
+            }
+        </script>
     </head>
     <body>
         <div id="containerPage">
@@ -13,6 +30,11 @@
                         <img src="${contextPath}/images/avatars/<c:out value="${user.avatarPath}"/>" alt="Avatar">
                         <p>${user.firstName} ${user.lastName}</p>
                         <form action="${pageContext.response.encodeURL(contextPath.concat("restricted/UserServlet"))}" method="POST" enctype="multipart/form-data">
+                            <c:choose>
+                                <c:when test="${message==11}">
+                                    Impossibile aggiornare il campo
+                                </c:when>
+                            </c:choose>
                             <input type="file" name="avatar" id="avatar" >
                             <input type="hidden" name="changeAvatar" value=1>
                             <button class="btn btn-custom" type="submit" >Salva</button>
@@ -58,6 +80,9 @@
                                             Nome e cognome obbligatori
                                         </c:when>
                                         <c:when test="${message==22}">
+                                            Impossibile aggiornare i dati
+                                        </c:when>
+                                        <c:when test="${message==23}">
                                             Utente aggiornato
                                         </c:when>
                                     </c:choose>
@@ -102,12 +127,14 @@
                                         </c:when>
                                         <c:when test="${message==32}">
                                             La vecchia password non corrisponde
-
                                         </c:when>
                                         <c:when test="${message==33}">
                                             Le nuove password non corrispondono
                                         </c:when>
                                         <c:when test="${message==34}">
+                                            Impossibile aggiornare la password
+                                        </c:when>
+                                        <c:when test="${message==35}">
                                             Password aggiornata
                                         </c:when>
                                     </c:choose>
@@ -120,10 +147,18 @@
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <td>Vecchia Password</td>
+                                                <td>
+                                                    <div class="input-group ">
+                                                        <input type="password" name="oldPassword" id="oldPassword" placeholder="Vecchia password">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td>Nuova Password</td>
                                                 <td>
                                                     <div class="input-group ">
-                                                        <input type="password" name="newPassword" id="newpassword" placeholder="Nuova password">
+                                                        <input type="password" name="newPassword1" id="newPassword1" placeholder="Nuova password">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -131,14 +166,13 @@
                                                 <td>Conferma Password</td>
                                                 <td>
                                                     <div class="input-group ">
-                                                        <input type="password" name="newPassword2" id="newpassword2" placeholder="Ripeti password">
+                                                        <input type="password" name="newPassword2" id="newPassword2" placeholder="Ripeti password">
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2">
                                                     <input type="hidden" name="changePassword" value=1>
-
                                                     <button type="submit" class="btn btn-custom">Invia</button>
                                                     <button type="button" class="btn btn-custom" data-dismiss="modal">Annulla</button>
                                                 </td>
@@ -147,11 +181,7 @@
                                         </tbody>
                                     </table>
                                 </form>
-                                <form action="" method="POST">
-                                    MODIFICARE CON RICHIESTA ASINC JAVASCRIPT
-                                    <input type="hidden" name="deleteUser" value="1">
-                                    <button class="btn btn-custom" type="submit">Elimina</button>
-                                </form>
+                                <button class="btn btn-custom" type="button" onclick="deleteUser()">Elimina</button>
                             </div>
                         </div>
                     </div>

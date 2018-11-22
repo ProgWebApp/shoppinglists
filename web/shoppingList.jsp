@@ -211,87 +211,69 @@
                                     <!--<input type="text" class="form-control" placeholder="Cerca prodotto da aggiungere...">-->
                                 </ul>
                             </div>
-                    </c:when>
-                    <c:when test="${not empty user}">
-                        <div class="col-sm-1">
-                        </div>
-                        <div class="col-sm-5 pre-scrollable">
-                            <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear">
-                            </select>
-                            <ul id="prodotti" class="list-group">
-                                <c:forEach items="${products}" var="product">
-                                    <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
-                                        <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
-                                    </li>
-                                </c:forEach>
-                                <!--<input type="text" class="form-control" placeholder="Cerca prodotto da aggiungere...">-->
-                            </ul>
-                        </div>
-                        <div class="col-sm-1">
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="row">
-                                <div>
-                                    <label for="comment">Chat:</label>
-                                    <div class="form-control chat" id="messageBoard">
-                                        <c:forEach items="${messages}" var="message">
-                                            <div class="message<c:if test="${message.senderId==user.id}"> message-right</c:if>">${message.body}</div>
-                                        </c:forEach>
-                                    </div>
-                                </div>
-                                <div class="input-group">
-                                    <input id="newtext" class="form-control" type="text">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-default" onclick="addMessage()">Invia</button>
-                                    </div>
-                                </div>
+                        </c:when>
+                        <c:when test="${not empty user}">
+                            <div class="col-sm-1">
                             </div>
-                            <br>
-                            <div class="row">
-                                <ul id="utenti" class="list-group user-list-group">
-                                    <li class="list-group-item justify-content-between align-items-center">
-                                        <label> Utenti che condividono la lista: </label>
-                                        <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
-                                        </select>
-                                    </li>
-                                    <c:forEach items="${users}" var="user">
-                                        <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
-                                            <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="deleteUser(${user.id})"></span>
-                                            <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
-                                                <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
-                                                <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
-                                                </select>  
-                                            </li>
+                            <div class="col-sm-5 pre-scrollable">
+                                <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear">
+                                </select>
+                                <ul id="prodotti" class="list-group">
+                                    <c:forEach items="${products}" var="product">
+                                        <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
+                                            <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
+                                        </li>
                                     </c:forEach>
+                                    <!--<input type="text" class="form-control" placeholder="Cerca prodotto da aggiungere...">-->
                                 </ul>
                             </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <ul id="utenti" class="list-group user-list-group">
-                                <li class="list-group-item justify-content-between align-items-center"><label> Utenti che condividono la lista: </label></li>
-                                <li class="list-group-item justify-content-between align-items-center">
-                                    <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
-                                    </select>
-                                </li>
-                                <c:forEach items="${users}" var="user">
-                                    <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
-                                        <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="deleteUser(${user.id})"></span>
-                                        <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
-                                            <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
-                                            <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
-                                            </select>  
+                            <div class="col-sm-1">
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div>
+                                        <label for="comment">Chat:</label>
+                                        <div class="form-control chat" id="messageBoard">
+                                            <c:forEach items="${messages}" var="message">
+                                                <div class="message<c:if test="${message.senderId==user.id}"> message-right</c:if>">${message.body}</div>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <input id="newtext" class="form-control" type="text">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default" onclick="addMessage()">Invia</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <ul id="utenti" class="list-group user-list-group">
+                                        <li class="list-group-item justify-content-between align-items-center">
+                                            <label> Utenti che condividono la lista: </label>
                                         </li>
-                                </c:forEach>
-                            </ul>
-                        </div>
-                    </div>
+                                        <li class="list-group-item justify-content-between align-items-center">
+                                            <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
+                                            </select>
+                                        </li>
+                                        <c:forEach items="${users}" var="user">
+                                            <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  
+                                                <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="deleteUser(${user.id})"></span>
+                                                <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
+                                                    <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
+                                                    <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
+                                                    </select>  
+                                                </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </c:when>
+                    </c:choose>
                 </div>
-                    </c:when>
-                </c:choose>
             </div>
+            <%@include file="include/footer.jsp" %>
         </div>
-        <%@include file="include/footer.jsp" %>
-    </div>
-</body>
+    </body>
 </html>
