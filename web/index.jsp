@@ -29,7 +29,7 @@
 <html>
     <head>
         <title>ListeSpesa</title>
-         <%@include file="include/generalMeta.jsp"%>
+        <%@include file="include/generalMeta.jsp"%>
     </head>
     <body>
         <div id="containerPage">
@@ -42,25 +42,23 @@
                 </div>
                 <%@include file="include/navigationBar.jsp"%>
             </div>
-            <div id="body">
-                <div class="container">    
-                    <c:forEach items="${productCategories}" var="productCategory">
-                        <div class="col-sm-4">
-                            <div class="panel panel-default-custom">
-                                <c:choose>
-                                    <c:when test="${not empty user}">
-                                        <div class="panel-heading-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=1&productCategoryId=").concat(productCategory.id))}'">${productCategory.name}</div>
-                                    </c:when>
-                                    <c:when test="${empty user}">
-                                        <div class="panel-heading-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductCategoryPublic?productCategoryId=").concat(productCategory.id))}'">${productCategory.name}</div>
-                                    </c:when>
-                                </c:choose>
-                                <div class="panel-body"><img src="${contextPath}/images/productCategories/${productCategory.logoPath}" class="fit-image img-responsive" alt="${productCategory.name}"></div>
-                                <div class="panel-footer-custom">Visualizza articoli di ${productCategory.name}</div>
-                            </div>
+            <div id="body" class="myContainer row">    
+                <c:forEach items="${productCategories}" var="productCategory">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="panel panel-default-custom">
+                            <c:choose>
+                                <c:when test="${not empty user}">
+                                    <div class="panel-heading-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=1&productCategoryId=").concat(productCategory.id))}'">${productCategory.name}</div>
+                                </c:when>
+                                <c:when test="${empty user}">
+                                    <div class="panel-heading-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductCategoryPublic?productCategoryId=").concat(productCategory.id))}'">${productCategory.name}</div>
+                                </c:when>
+                            </c:choose>
+                            <img src="${contextPath}/images/productCategories/${productCategory.logoPath}" class="fit-image img-responsive" alt="${productCategory.name}">
+                            <div class="panel-footer-custom">Visualizza articoli di ${productCategory.name}</div>
                         </div>
-                    </c:forEach>
-                </div>
+                    </div>
+                </c:forEach>
             </div>
             <%@include file="include/footer.jsp" %>
         </div>

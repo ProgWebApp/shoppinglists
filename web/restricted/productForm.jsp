@@ -46,7 +46,7 @@
                         });
                     }
                 };
-                var url = "${pageContext.response.encodeURL(contextPath.concat("IconsServlet"))}";
+                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/IconsServlet"))}";
                 if (category !== '') {
                     xhttp.open("GET", url + "?category=" + category, true);
                     xhttp.send();

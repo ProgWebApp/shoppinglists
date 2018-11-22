@@ -4,9 +4,7 @@
     height: 50px;
 }
 @media screen and (min-width: 1200px) {
-    .navbar {
-        border-radius: 0;
-    }
+    
 }
 @media screen and (max-width: 767px) {
     .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
@@ -30,6 +28,7 @@ body {
    margin:0;
    padding:0;
    height:100%;
+   background-image: url("../images/background/legno.jpg");
 }
 #containerPage{
    min-height:100%;
@@ -38,7 +37,8 @@ body {
 #header {
 }
 #body {
-   padding-bottom:70px;   
+   padding-bottom:70px;
+   background-color: #ffffff94;
 }
 #footer {
    position:absolute;
@@ -49,12 +49,18 @@ body {
    color: #FFFFFF;
 }
 
+.myContainer{
+    padding: 15px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
 .jumbotron {
-    background-color:#f1f1f1;
+    background: none;
     margin-bottom: 0px;
     text-align:center;
     padding: 0px;
     height: 150px;
+    color: white;
 }
 .jumbotron img{
     display:block;

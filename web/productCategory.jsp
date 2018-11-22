@@ -27,7 +27,7 @@
     <body>
         <div id="containerPage">
             <div id="header">
-                <div class="jumbotron" style="background-image: url('https://www.liberoquotidiano.it/resizer/610/-1/true/1540320662458.jpg--carne__lo_studio_scientifico_che_ribalta_tutto__perche_fa_bene_alla_salute.jpg?1540320831000')">
+                <div class="jumbotron myBackground" >
                     <div class="container text-center">
                         <h1>${productCategory.name}</h1>      
                     </div>
@@ -45,21 +45,21 @@
                 <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}">Modifica</a>
                 <span onclick="deleteProductCategory(${productCategory.id})">Elimina</span><br>
                 <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Product Categories</a>
-                <div class="container">    
+                <div class="myContainer row">    
                     <c:forEach items="${products}" var="product">
-                        <div class="col-sm-2">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                             <div class="panel panel-default-custom">
-                                <div class="panel-heading-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">${product.name}</div>
-                                
-                                <!--<c:choose>
+                                <c:choose>
                                     <c:when test="${product.isReserved()}">
                                         <div class="panel-heading-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">${product.name}</div>
                                     </c:when>
                                     <c:when test="${not product.isReserved()}">
                                         <div class="panel-heading-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">${product.name}</div>
                                     </c:when>
-                                </c:choose>-->
-                                <div class="panel-body"><img src="${contextPath}/images/productCategories/${productCategory.logoPath}" class="fit-image img-responsive" alt="${product.name}"></div>
+                                </c:choose>
+                                <c:forEach items="${product.photoPath}" var="photo" end="0">
+                                    <img class="item fit-image img-responsive" src="${contextPath}images/products/${photo}"  alt="${product.name}">
+                                </c:forEach>
                                 <div class="panel-footer-custom"></div>
                             </div>
                         </div>

@@ -1,14 +1,14 @@
 .panel > .panel-heading-custom {
-    background-color: #ffe0cc;
+    background-color: #ff9d5e;
     padding:10px;
     color: black;
 }
 .panel > .panel-footer-custom {
-    background-color: #ffe0cc;
+    background-color: #ff9d5e;
     padding:10px;
     color: black;
 }
 .panel-default-custom {
-    border-color: #ffe0cc;
+    border-color: #ff9d5e;
 }
 
