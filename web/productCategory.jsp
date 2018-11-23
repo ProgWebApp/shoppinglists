@@ -35,17 +35,30 @@
                 <%@include file="include/navigationBar.jsp" %>
             </div>
             <div id="body">
-                ${productCategory.id}<br>
-                ${productCategory.name}<br>
-                ${productCategory.description}<br>
-                <img height="50px" src="${contextPath}images/productCategories/${productCategory.logoPath}"><br>
-                <c:forEach items="${productCategory.iconPath}" var="icon">
-                    <img height="50px" src="${contextPath}images/productCategories/icons/${icon}">
-                </c:forEach><br>
-                <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}">Modifica</a>
-                <span onclick="deleteProductCategory(${productCategory.id})">Elimina</span><br>
                 <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Product Categories</a>
+
+
+
                 <div class="myContainer row">    
+                    <div class="col-12">
+                        <div class="panel panel-default-custom">
+                            <div class="panel-heading-custom">
+                                <img height="50px" src="${contextPath}images/productCategories/${productCategory.logoPath}"><br>
+                                ${productCategory.name}
+                            </div>
+                            <div>
+                                ${productCategory.description}
+                                <c:forEach items="${productCategory.iconPath}" var="icon">
+                                    <img height="50px" src="${contextPath}images/productCategories/icons/${icon}">
+                                </c:forEach>
+                            </div>
+                            <br>
+                            <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}">Modifica</a>
+                            <span onclick="deleteProductCategory(${productCategory.id})">Elimina</span><br>
+                            <div class="panel-footer-custom"></div>
+
+                        </div>
+                    </div>
                     <c:forEach items="${products}" var="product">
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                             <div class="panel panel-default-custom">

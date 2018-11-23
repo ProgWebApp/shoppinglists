@@ -93,7 +93,6 @@
                         <span class="hide-elem">Men&ugrave;</span>
                     </a>
                     <ul class="dropdown-menu  dropdown-menu-right">
-                        <li class="hide-elem-men"><a href="${pageContext.response.encodeURL(contextPath.concat("index.jsp"))}">Home</a></li>
                         <li class="hide-elem-men"><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/user.jsp"))}">Profilo</a></li>
                         <li class="hide-elem-men"><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/Logout"))}">Logout</a></li>
                         <li class="hide-elem-men"><hr></li>
@@ -123,8 +122,7 @@
                         <span class="hide-elem">Men&ugrave;</span>
                     </a>
                     <ul class="dropdown-menu  dropdown-menu-right">
-                        <li class="hide-elem-men"><a href="${pageContext.response.encodeURL(contextPath.concat("index.jsp"))}">Home</a></li>
-                        <li class="hide-elem-men"><a href="${pageContext.response.encodeURL(contextPath.concat("Login"))}">Login</a></li>
+                        <li class="hide-elem-men"><a href="${pageContext.response.encodeURL(contextPath.concat("login.jsp"))}">Login</a></li>
                         <li class="hide-elem-men"><hr></li>
                         <li><a href="${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic?res=1"))}">La mia lista</a></li>
                     </ul>
