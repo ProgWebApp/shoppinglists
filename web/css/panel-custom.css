@@ -5,9 +5,8 @@
     border: 2px solid #A0A4E5;
 }
 .panel-body-custom-list {
-    border:1px solid #A0A4E5;
+    border:0px;
     margin-top:5px;
-    padding:3px;
 }
 .panel-heading-custom-prod {
     background-color: #9AFF91;
@@ -16,8 +15,7 @@
     border: 2px solid #3FA52B;
 }
 .panel-body-custom-prod {
-    border:1px solid #3FA52B;
+    border:0px;
     margin-top:5px;
-    padding:3px;
 }
 

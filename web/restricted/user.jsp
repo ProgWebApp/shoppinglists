@@ -44,7 +44,7 @@
                 <%@include file="../include/navigationBar.jsp" %>
             </div>
             <div id="body">
-                <div class="row">
+                <div class="container-fluid">
                     <div class="col-sm-3">
                     </div>
 
