@@ -98,14 +98,15 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-                                <div class="form-label-group">
+                                <div class="form-group">
                                     <c:if test="${not empty product.logoPath}">
-                                        <img height="50px" src="${contextPath}images/productCategories/icons/${product.logoPath}">
+                                        <img class="small-logo" src="${contextPath}images/productCategories/icons/${product.logoPath}">
                                     </c:if>
                                     <label for="logo">Seleziona un nuovo logo: </label>
                                     <span id="logo">
                                     </span>
                                 </div>
+                                        <br>
                                 <div class="form-group">
                                     <label for="logo">Aggiungi nuove immagini:</label>
                                     <input type="file" id="photos" name="photos" class="form-control" placeholder="Images" multiple="multiple">

@@ -47,7 +47,6 @@
                 <div class="container-fluid">
                     <div class="col-sm-3">
                     </div>
-
                     <div class="container-fluid text-center col-sm-6">
                         <h3>Informazioni personali</h3>
                         <br>
