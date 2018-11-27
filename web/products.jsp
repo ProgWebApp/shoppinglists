@@ -25,15 +25,15 @@
 <%
     User user = (User) request.getSession().getAttribute("user");
     Integer order;
-    if(request.getParameter("order")!=null){
+    if (request.getParameter("order") != null) {
         order = Integer.valueOf(request.getParameter("order"));
-    }else{
+    } else {
         order = 1;
     }
     String query = request.getParameter("query");
     List<Product> products;
     if (user == null) {
-        if (query==null || query.isEmpty()) {
+        if (query == null || query.isEmpty()) {
             products = productDAO.getPublic(order);
         } else {
             products = productDAO.searchByName(query, null, order);
@@ -77,27 +77,18 @@
                         <option value="2" <c:if test="${order==2}">selected</c:if>>Nome prodotto ZA</option> 
                         <option value="3" <c:if test="${order==3}">selected</c:if>>Nome categoria AZ</option>
                         <option value="4" <c:if test="${order==4}">selected</c:if>>Nome categoria ZA</option>     
-                    </select>
-                    <input type="hidden" name="query" value="${query}">
+                        </select>
+                        <input type="hidden" name="query" value="${query}">
                     <input type="submit">
                 </form>
-                <div class="myContainer row">
+                <div class="row">
                     <c:forEach items="${products}" var="product">
                         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
                             <c:choose>
-                                <c:when test="${product.isReserved()}">
+                                <c:when test="${not empty user}">
                                     <div class="panel panel-default-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">
-            <div id="body" class="myContainer row">
-                <c:forEach items="${products}" var="product">
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                        <c:choose>
-                            <c:when test="${not empty user}">
-                                <div class="panel panel-default-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">
-                                </c:when>
-                                <c:when test="${empty user}">
-                                    <div class="panel panel-default-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
                                     </c:when>
-                                    <c:when test="${not product.isReserved()}">
+                                    <c:when test="${empty user}">
                                         <div class="panel panel-default-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
                                         </c:when>
                                     </c:choose>
@@ -112,11 +103,11 @@
                                 </div>
                             </div>
                         </c:forEach>
-                        <br>
-                        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}">Aggiungi prodotto</a>
                     </div>
+                    <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}">Aggiungi prodotto</a>
                 </div>
-                <%@include file="include/footer.jsp" %>
             </div>
+            <%@include file="include/footer.jsp" %>
+        </div>
     </body>
 </html>
