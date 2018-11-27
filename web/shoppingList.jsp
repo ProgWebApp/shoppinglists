@@ -232,7 +232,6 @@
                                             <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
                                         </li>
                                     </c:forEach>
-                                    <!--<input type="text" class="form-control" placeholder="Cerca prodotto da aggiungere...">-->
                                 </ul>
                             </div>
                         </c:when>
@@ -248,7 +247,6 @@
                                             <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
                                         </li>
                                     </c:forEach>
-                                    <!--<input type="text" class="form-control" placeholder="Cerca prodotto da aggiungere...">-->
                                 </ul>
                             </div>
                             <div class="col-sm-1">
@@ -290,7 +288,6 @@
                                         </c:forEach>
                                     </ul>
                                 </div>
-
                             </div>
                         </c:when>
                     </c:choose>

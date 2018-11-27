@@ -12,6 +12,15 @@ import java.util.List;
 public interface UserDAO extends DAO<User, Integer> {
 
     /**
+     * Update the password of the passed user.
+     *
+     * @param user the user to update
+     * @throws DAOException if an error occurred during the information
+     * retrieving.
+     */
+    public void updatePassword(User user) throws DAOException;
+    
+    /**
      * Returns the {@link User user} with the given {@code email} and
      * {@code password}.
      *

@@ -96,12 +96,13 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
 
     /**
      * Updates all the links between the passed {@code shoppingList} and all the
-     * users adding a notification.
+     * users, exept for the passed one, adding a notification.
      *
      * @param shoppingListId the id of the shoppingList to update in the link.
+     * @param userId the id of the user for which not to add the notification
      * @throws DAOException if an error occurred during the persist action.
      */
-    public void addNotifications(Integer shoppingListId) throws DAOException;
+    public void addNotifications(Integer shoppingListId, Integer userId) throws DAOException;
 
     /**
      * Updates the link between the passed {@code shoppingList} and the passed

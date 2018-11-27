@@ -70,9 +70,9 @@ public class ShareListsServlet extends HttpServlet {
         }
 
         /* RESTITUISCO UN ERRORE SE I PARAMETRI NON SONO CONFORMI*/
-        Integer userId = null;
-        Integer shoppingListId = null;
-        Integer action = null;
+        Integer userId;
+        Integer shoppingListId;
+        Integer action;
         try {
             userId = Integer.valueOf(request.getParameter("userId"));
             shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
@@ -84,7 +84,7 @@ public class ShareListsServlet extends HttpServlet {
         }
 
         /* CONTROLLO L'ESISTENZA DI UN PARAMETRO DEI PERMESSI, ALTRIMENTI IMPOSTO IL DEFAULT */
-        Integer permission = null;
+        Integer permission;
         if (request.getParameter("permission") != null) {
             try {
                 permission = Integer.valueOf(request.getParameter("permission"));
@@ -115,12 +115,10 @@ public class ShareListsServlet extends HttpServlet {
                 }
             } else {
                 System.out.println("l'utente non ha i permessi");
-                response.setStatus(400);
-                return;
+                response.setStatus(403);
             }
         } catch (DAOException ex) {
-            Logger.getLogger(ShareListsServlet.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println(ex.getMessage());
+            response.setStatus(500);
         }
     }
 

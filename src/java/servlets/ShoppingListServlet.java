@@ -126,6 +126,7 @@ public class ShoppingListServlet extends HttpServlet {
                     users = shoppingListDAO.getMembers(shoppingListId);
                     category = shoppingListCategoryDAO.getByPrimaryKey(shoppingList.getListCategoryId());
                     messages = messageDAO.getByShoppingList(shoppingListId);
+                    shoppingListDAO.removeNotifications(shoppingListId, user.getId());
                 } catch (DAOException ex) {
                     response.setStatus(500);
                     return;
@@ -228,8 +229,7 @@ public class ShoppingListServlet extends HttpServlet {
         //carico il logo solo se è stato specificato
         if (imageFilePart.getSize() > 0) {
             String imageFileName = UUID.randomUUID().toString() + Paths.get(imageFilePart.getSubmittedFileName()).getFileName().toString(); //MSIE  fix.
-            String imagesFolder = "images/shoppingList";
-            imagesFolder = getServletContext().getRealPath(imagesFolder);
+            String imagesFolder = getServletContext().getRealPath("images/shoppingList");
             File imageDirectory = new File(imagesFolder);
             imageDirectory.mkdirs();
             imageFilePart.write(imagesFolder + File.separator + imageFileName);

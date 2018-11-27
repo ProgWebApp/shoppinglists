@@ -359,12 +359,13 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
     }
 
     @Override
-    public void addNotifications(Integer shoppingListId) throws DAOException {
-        if ((shoppingListId == null)) {
-            throw new DAOException("shoppingListId is a mandatory field", new NullPointerException("shoppingListId is null"));
+    public void addNotifications(Integer shoppingListId, Integer userId) throws DAOException {
+        if ((shoppingListId == null) || (userId == null)) {
+            throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("shoppingListId or userId are null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE users_lists SET notifications = notifications + 1 WHERE list = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE users_lists SET notifications = notifications + 1 WHERE list = ? AND user_id != ?")) {
             ps.setInt(1, shoppingListId);
+            ps.setInt(2, userId);
             ps.executeUpdate();
         } catch (SQLException ex) {
             throw new DAOException("Impossible to update the link between the passed shoppingList and the passed user", ex);
@@ -390,7 +391,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         if (userId == null) {
             throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
         }
-        try (PreparedStatement stm = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user_id = ? ")) {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT SUM(notifications) FROM users_lists WHERE user_id = ? ")) {
 
             stm.setInt(1, userId);
             ResultSet rs = stm.executeQuery();

@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +40,11 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         if (user == null) {
             throw new DAOException("user is not valid", new NullPointerException("user is null"));
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users (firstname, lastname, email, password, avatar, code, admin) VALUES (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users (firstname, lastname, email, password, avatar, code, admin) VALUES (?,?,?,ENCODE(DIGEST(?,'sha256'),'hex'),?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getEmail());
-            ps.setString(4, user.getPassword());
+            ps.setString(4, "SHA256(" + user.getPassword() + ")");
             ps.setString(5, user.getAvatarPath());
             ps.setString(6, user.getCheck());
             ps.setBoolean(7, user.isAdmin());
@@ -67,7 +66,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
 
     /**
      * Persists the alredy existing {@code User} passed as parameter to the
-     * storage system.
+     * storage system. IT DOES NOT UPDATE THE PASSWORD FIELD!
      *
      * @param user the {@code user} to persist.
      * @throws DAOException if an error occurred during the persist action.
@@ -83,16 +82,15 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             throw new DAOException("user is not valid", new NullPointerException("User id is null"));
         }
         
-        try (PreparedStatement ps = CON.prepareStatement("UPDATE users SET firstname = ?, lastname = ?, email = ?, password = ?, avatar = ?, admin = ?, code = ? WHERE id = ?")) {
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE users SET firstname = ?, lastname = ?, email = ?, avatar = ?, admin = ?, code = ? WHERE id = ?")) {
             
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getEmail());
-            ps.setString(4, user.getPassword());
-            ps.setString(5, user.getAvatarPath());
-            ps.setBoolean(6, user.isAdmin());
-            ps.setString(7, user.getCheck());
-            ps.setInt(8, user.getId());
+            ps.setString(4, user.getAvatarPath());
+            ps.setBoolean(5, user.isAdmin());
+            ps.setString(6, user.getCheck());
+            ps.setInt(7, user.getId());
             
             ps.executeUpdate();
             
@@ -100,6 +98,29 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             if (ex.getSQLState().equals("23505")) {
                 throw new DAOException("Impossible to update the user", new UniqueConstraintException("A user with this email already exists in the system"));
             }
+            throw new DAOException("Impossible to update the user", ex);
+        }
+    }
+
+    @Override
+    public void updatePassword(User user) throws DAOException {
+        if (user == null) {
+            throw new DAOException("user is not valid", new NullPointerException("User is null"));
+        }
+        
+        Integer userId = user.getId();
+        if (userId == null) {
+            throw new DAOException("user is not valid", new NullPointerException("User id is null"));
+        }
+        
+        try (PreparedStatement ps = CON.prepareStatement("UPDATE users SET password = ENCODE(DIGEST(?,'sha256'),'hex') WHERE id = ?")) {
+            
+            ps.setString(1, user.getPassword());
+            ps.setInt(2, user.getId());
+            
+            ps.executeUpdate();
+            
+        } catch (SQLException ex) {
             throw new DAOException("Impossible to update the user", ex);
         }
     }
@@ -209,7 +230,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             throw new DAOException("Password is a mandatory fields", new NullPointerException("password is null"));
         }
         
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ENCODE(DIGEST(?,'sha256'),'hex')");
                 PreparedStatement countStatement = CON.prepareStatement("SELECT COUNT(*) FROM users_lists WHERE user_id = ?")) {
             stm.setString(1, email);
             stm.setString(2, password);

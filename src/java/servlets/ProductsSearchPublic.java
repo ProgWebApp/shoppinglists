@@ -19,10 +19,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author pberi
- */
 public class ProductsSearchPublic extends HttpServlet {
 
     private ProductDAO productDAO;
@@ -98,7 +94,6 @@ public class ProductsSearchPublic extends HttpServlet {
         } else {
             System.out.println("query vuota, non cerco nulla");
             response.setStatus(400);
-            return;
         }
     }
 }

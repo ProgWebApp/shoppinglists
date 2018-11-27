@@ -26,6 +26,9 @@
                                     <c:when test="${message==1}">
                                         Le password non corrispondono
                                     </c:when>
+                                    <c:when test="${message==2}">
+                                        La nuova password deve contenere un numero, un carattere maiuscolo e un carattere speciale tra @#$% e deve avere lunghezza min 6 e max 20
+                                    </c:when>
                                 </c:choose>
                                 <div class="form-group">
                                     <label for="password1">Password:</label>

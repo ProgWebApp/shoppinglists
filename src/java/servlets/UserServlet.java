@@ -11,8 +11,7 @@ import java.io.InputStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -42,41 +41,30 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User activeUser = null;
-        activeUser = (User) request.getSession().getAttribute("user");
-        if (activeUser != null) {
-            if (request.getParameter("changeAvatar") != null && Integer.parseInt(request.getParameter("changeAvatar")) == 1) {
-                String avatarsFolder = getServletContext().getInitParameter("avatarsFolder");
-                if (avatarsFolder == null) {
-                    throw new ServletException("Avatars folder not configured");
-                }
-                avatarsFolder = getServletContext().getRealPath(avatarsFolder);
-                Part filePart = request.getPart("avatar");
-                String filename = null;
-                if ((filePart != null) && (filePart.getSize() > 0)) {
-                    filename = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();//MSIE  fix.
-                    try (InputStream fileContent = filePart.getInputStream()) {
-                        File directory = new File(avatarsFolder);
-                        directory.mkdirs();
-                        File file = new File(avatarsFolder, filename);
-                        Files.copy(fileContent, file.toPath());
-                    } catch (FileAlreadyExistsException ex) {
-                        getServletContext().log("File \"" + filename + "\" already exists on the server");
-                    } catch (RuntimeException ex) {
-                        //TODO: handle the exception
-                        getServletContext().log("impossible to upload the file", ex);
-                    }
-                }
-                activeUser.setAvatarPath(filename);
-                try {
+        User activeUser = (User) request.getSession().getAttribute("user");
+        if (request.getParameter("changeAvatar") != null && Integer.parseInt(request.getParameter("changeAvatar")) == 1) {
+            String avatarsFolder = getServletContext().getRealPath("images/avatars");
+            Part filePart = request.getPart("avatar");
+            if ((filePart != null) && (filePart.getSize() > 0)) {
+                String filename = UUID.randomUUID().toString() + Paths.get(filePart.getSubmittedFileName()).getFileName().toString();//MSIE  fix.
+                try (InputStream fileContent = filePart.getInputStream()) {
+                    File directory = new File(avatarsFolder);
+                    directory.mkdirs();
+                    File file = new File(avatarsFolder, filename);
+                    Files.copy(fileContent, file.toPath());
+                    activeUser.setAvatarPath(filename);
                     userDAO.update(activeUser);
-                } catch (DAOException ex) {
+                } catch (FileAlreadyExistsException | RuntimeException | DAOException ex) {
                     request.getSession().setAttribute("message", 11);
                 }
-            } else if (request.getParameter("changeName") != null && Integer.parseInt(request.getParameter("changeName")) == 1) {
+            }
+        } else if (request.getParameter("changeName") != null && Integer.parseInt(request.getParameter("changeName")) == 1) {
+            if (request.getParameter("firstName") == null || request.getParameter("lastName") == null) {
+                request.getSession().setAttribute("message", 21);
+            } else {
                 String userFirstName = capitalize(request.getParameter("firstName"));
                 String userLastName = capitalize(request.getParameter("lastName"));
-                if (userFirstName == null || userLastName == null) {
+                if (userFirstName.isEmpty() || userLastName.isEmpty()) {
                     request.getSession().setAttribute("message", 21);
                 } else {
                     activeUser.setFirstName(userFirstName);
@@ -88,43 +76,39 @@ public class UserServlet extends HttpServlet {
                     }
                     request.getSession().setAttribute("message", 23);
                 }
-            } else if (request.getParameter("changePassword") != null && Integer.parseInt(request.getParameter("changePassword")) == 1) {
-                String realOldPassword = activeUser.getPassword();
-                System.out.println("vecchia password: " + realOldPassword);
+            }
+        } else if (request.getParameter("changePassword") != null && Integer.parseInt(request.getParameter("changePassword")) == 1) {
+            try {
                 String oldPassword = request.getParameter("oldPassword");
                 String newPassword1 = request.getParameter("newPassword1");
                 String newPassword2 = request.getParameter("newPassword2");
                 if (oldPassword.isEmpty() || newPassword1.isEmpty() || newPassword2.isEmpty()) {
                     request.getSession().setAttribute("message", 31);
+                } else if (userDAO.getByEmailAndPassword(activeUser.getEmail(), oldPassword) == null) {
+                    request.getSession().setAttribute("message", 32);
+                } else if(!newPassword1.matches("((?=.*\\d)(?=.*[A-Z])(?=.*[@#$%]).{6,20})")){
+                    request.getSession().setAttribute("message", 36);
+                } else if (!newPassword1.equals(newPassword2)) {
+                    request.getSession().setAttribute("message", 33);
                 } else {
-                    if (!oldPassword.equals(realOldPassword)) {
-                        request.getSession().setAttribute("message", 32);
-                    } else if (!newPassword1.equals(newPassword2)) {
-                        request.getSession().setAttribute("message", 33);
-                    } else {
-                        activeUser.setPassword(newPassword2);
-                        try {
-                            userDAO.update(activeUser);
-                        } catch (DAOException ex) {
-                            request.getSession().setAttribute("message", 34);
-                        }
-                        request.getSession().setAttribute("message", 35);
-                    }
+                    activeUser.setPassword(newPassword2);
+                    userDAO.updatePassword(activeUser);
+                    request.getSession().setAttribute("message", 35);
                 }
+            } catch (DAOException ex) {
+                request.getSession().setAttribute("message", 34);
             }
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/user.jsp"));
-            return;
         }
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/user.jsp"));
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
+
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         User activeUser = (User) request.getSession().getAttribute("user");
 
@@ -137,6 +121,5 @@ public class UserServlet extends HttpServlet {
         } catch (DAOException ex) {
             response.setStatus(500);
         }
-        return;
     }
 }

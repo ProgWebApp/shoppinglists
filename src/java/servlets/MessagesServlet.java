@@ -3,17 +3,11 @@ package servlets;
 import db.daos.MessageDAO;
 import db.daos.ShoppingListDAO;
 import db.entities.Message;
-import db.entities.ShoppingList;
 import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +20,6 @@ public class MessagesServlet extends HttpServlet {
 
     private MessageDAO messageDAO;
     private ShoppingListDAO shoppingListDAO;
-    private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     @Override
     public void init() throws ServletException {
@@ -46,14 +39,6 @@ public class MessagesServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         /* RECUPERO L'UTENTE */
@@ -66,7 +51,7 @@ public class MessagesServlet extends HttpServlet {
             return;
         }
         Integer shoppingListId;
-        Integer permissions=null;
+        Integer permissions;
         try {
             shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
         } catch (NumberFormatException ex) {
@@ -76,25 +61,24 @@ public class MessagesServlet extends HttpServlet {
         try {
             permissions = shoppingListDAO.getPermission(shoppingListId, userId);
         } catch (DAOException ex) {
-            //Logger.getLogger(MessagesServlet.class.getName()).log(Level.SEVERE, null, ex);
+            response.setStatus(500);
+            return;
         }
         
         if(permissions!=1 && permissions!=2){
             response.setStatus(403);
             return;
         }
-        String body = request.getParameter("body");
         Message message = new Message();
-        message.setBody(body);
-        
+        message.setBody(request.getParameter("body"));
         message.setSenderId(userId);
         message.setShoppingListId(shoppingListId);
 
         try {
             messageDAO.insert(message);
-            shoppingListDAO.addNotifications(shoppingListId);
+            shoppingListDAO.addNotifications(shoppingListId, userId);
         } catch (DAOException ex) {
-            //request.getServletContext().log("Impossible to send the message", ex);
+            response.setStatus(500);
         }
     }
 }

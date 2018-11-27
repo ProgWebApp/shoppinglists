@@ -35,14 +35,13 @@ public class VerifyEmailServlet extends HttpServlet {
             User user = userDao.getByCheckCode(check);
             if (user == null) {
                 request.getSession().setAttribute("message", 1);
-                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.jsp"));
             } else {
                 user.setCheck("0");
                 userDao.update(user);
-                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.jsp"));
             }
         } catch (DAOException ex) {
             request.getServletContext().log("Impossible to retrieve the user", ex);
         }
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.jsp"));
     }
 }

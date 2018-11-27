@@ -136,6 +136,9 @@
                                         <c:when test="${message==35}">
                                             Password aggiornata
                                         </c:when>
+                                        <c:when test="${message==36}">
+                                            La nuova password deve contenere un numero, un carattere maiuscolo e un carattere speciale tra @#$% e deve avere lunghezza min 6 e max 20
+                                        </c:when>
                                     </c:choose>
 
                                     <table class="table table-custom">
@@ -186,6 +189,7 @@
                     </div>
                 </div>
             </div>
+            <c:remove var="message" scope="session" />
             <%@include file="../include/footer.jsp" %>
         </div>
     </body>

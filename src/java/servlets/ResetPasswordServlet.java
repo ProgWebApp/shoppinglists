@@ -10,10 +10,8 @@ import db.daos.UserDAO;
 import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
-import db.exceptions.UniqueConstraintException;
 import db.factories.DAOFactory;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,8 +47,8 @@ public class ResetPasswordServlet extends HttpServlet {
             response.setStatus(400);
             return;
         }
-        Integer res = null;
-        User user = null;
+        Integer res;
+        User user;
         try {
             res = Integer.valueOf(request.getParameter("res"));
         } catch (NumberFormatException ex) {
@@ -60,7 +58,6 @@ public class ResetPasswordServlet extends HttpServlet {
         switch (res) {
             case 1:
                 String email = request.getParameter("email");
-                user = null;
                 if (email.isEmpty()) {
                     request.getSession().setAttribute("message", 1);
                     response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "retrievePassword.jsp"));
@@ -72,6 +69,7 @@ public class ResetPasswordServlet extends HttpServlet {
                     user.setCheck(check);
                     user.setPassword(null);
                     userDAO.update(user);
+                    userDAO.updatePassword(user);
 
                     String hostName = request.getServerName() + ":" + request.getServerPort();
                     String testo = "Per completare la procedura di ripristino della password clicca sul seguente link:\n"
@@ -79,7 +77,6 @@ public class ResetPasswordServlet extends HttpServlet {
                             + "Nel caso il link non dovesse funzionare copialo nella barra del browser e premi invio.\n"
                             + "Questa è una mail generata automaticamente, si prega di non ispondere a questo messaggio.";
                     Email.send(email, "Reimpostazione password shopping-list", testo);
-
                 } catch (DAOException ex) {
                     request.getServletContext().log("Impossible to retrieve the user", ex);
                     request.getSession().setAttribute("message", 1);
@@ -98,19 +95,22 @@ public class ResetPasswordServlet extends HttpServlet {
                     return;
                 }
                 if (password1.isEmpty() || password2.isEmpty() || !password1.equals(password2)) {
-                    System.out.println("ow1: " + password1);
-                    System.out.println("ow2: " + password2);
-
                     request.getSession().setAttribute("message", 1);
                     request.getSession().setAttribute("check", check);
                     response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "resetPassword.jsp"));
                     return;
                 }
+                if (!password1.matches("((?=.*\\d)(?=.*[A-Z])(?=.*[@#$%]).{6,20})")) {
+                    request.getSession().setAttribute("message", 2);
+                    response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "resetPassword.jsp"));
+                    return;
+                }
                 try {
                     user = userDAO.getByCheckCode(check);
-                    user.setPassword(password2);
                     user.setCheck("0");
+                    user.setPassword(password2);
                     userDAO.update(user);
+                    userDAO.updatePassword(user);
                 } catch (DAOException ex) {
                     Logger.getLogger(ResetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -131,7 +131,6 @@ public class ResetPasswordServlet extends HttpServlet {
                     return;
                 }
             } catch (DAOException ex) {
-                Logger.getLogger(ResetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         request.getSession().setAttribute("message", 3);

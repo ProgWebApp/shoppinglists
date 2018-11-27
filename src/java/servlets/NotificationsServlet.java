@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import db.daos.ShoppingListDAO;
@@ -12,17 +7,11 @@ import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author pberi
- */
 public class NotificationsServlet extends HttpServlet {
 
     private ShoppingListDAO shoppingListDAO;
@@ -40,33 +29,18 @@ public class NotificationsServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User user = (User) request.getSession().getAttribute("user");
-        Integer notifications = null;
 
-        if (user == null) {
-            response.setStatus(400);
-            return;
-        }
         try {
-
-            notifications = shoppingListDAO.getNotificationsByUser(user.getId());
+            Integer notifications = shoppingListDAO.getNotificationsByUser(user.getId());
+            PrintWriter out = response.getWriter();
+            out.print(notifications);
+            out.flush();
         } catch (DAOException ex) {
-            System.out.println("Impossibile calcolare le notifiche");
-            Logger.getLogger(NotificationsServlet.class.getName()).log(Level.SEVERE, null, ex);
+            response.setStatus(500);
         }
-        PrintWriter out = response.getWriter();
-        out.print(notifications);
-        out.flush();
     }
 }

@@ -78,6 +78,11 @@ public class RegistrationServlet extends HttpServlet {
             response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "registration.jsp"));
             return;
         }
+        if(!userPassword1.matches("((?=.*\\d)(?=.*[A-Z])(?=.*[@#$%]).{6,20})")){
+            request.getSession().setAttribute("message", 4);
+            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "registration.jsp"));
+            return;
+        }
         if(!userPassword1.equals(userPassword2)){
             user.setAvatarPath("");
             user.setPassword(null);
@@ -86,10 +91,6 @@ public class RegistrationServlet extends HttpServlet {
             response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "registration.jsp"));
             return;
         }
-        
-
-        
-
         try (InputStream fileContent = filePart.getInputStream()) {
             File directory = new File(avatarsFolder);
             directory.mkdirs();

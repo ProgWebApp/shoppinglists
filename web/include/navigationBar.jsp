@@ -1,6 +1,65 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script src="${contextPath}jquery-ui-1.12.1/jquery-ui.js"></script>
 <script>
+    /* RECUPERA IL NUMERO DI NOTIFICHE DI MESSAGGI */
+    function getNotifications() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log("Hai " + this.responseText + " notifiche");
+            }
+        };
+        xhttp.open("GET", "${pageContext.response.encodeURL(contextPath.concat("restricted/NotificationsServlet"))}", true);
+        xhttp.send("");
+    }
+
+    /* RECUPERA IL NUMERO DI NEGOZI VICINI */
+    var lat, long;
+    var json;
+    var shopsJSON;
+    var shops;
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                lat = position.coords.latitude;
+                long = position.coords.longitude;
+                getShopNames();
+            });
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+            return 0;
+        }
+    }
+    function getShopNames() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                shopsJSON = JSON.parse(this.responseText);
+                shops = "";
+                shopsJSON.shops.forEach(function (shop) {
+                    shops += "node[\"shop\"=\"" + shop + "\"](around:1000, " + lat + ", " + long + ");";
+                });
+                searchShopAround();
+            }
+        };
+        xhttp.open("GET", "${pageContext.response.encodeURL(contextPath.concat("MapServlet"))}", true);
+        xhttp.send("");
+    }
+    function searchShopAround() {
+        var myquery = "[out:json][timeout:30];"
+                + "(" + shops + ");"
+                + "out body center qt 100;";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                json = JSON.parse(this.responseText);
+                console.log("ci sono " + json.elements.length + " negozi vicini");
+            }
+        };
+        xhttp.open("POST", "http://www.overpass-api.de/api/interpreter", true);
+        xhttp.send("data=" + myquery);
+    }
+
     /* FUNZIONE RICERCA PRODOTTI PUBBLICI E PRIVATI PER L'UTENTE LOGGATO */
     $(function () {
         $("#searchProducts").autocomplete({
@@ -159,4 +218,9 @@
         </c:choose>
     </div>
 </div>
-<script> <c:if test="${not empty user}"> getNotifications(); </c:if> getLocation();</script>
+<script>
+    <c:if test="${not empty user}">
+    getNotifications();
+    </c:if>
+    getLocation();
+</script>
