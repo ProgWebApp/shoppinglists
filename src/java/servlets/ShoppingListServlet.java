@@ -103,12 +103,59 @@ public class ShoppingListServlet extends HttpServlet {
 
         /* RISPONDO */
         request.setAttribute("shoppingList", shoppingList);
+        List<Product> products;
+        ShoppingListCategory category;
+
         switch (res) {
             case 0:
+                if (checkPermissions(user, shoppingList) == 2) {
+                    request.setAttribute("modifiable", true);
+                } else {
+                    request.setAttribute("modifiable", false);
+                }
+                try {
+                    products = shoppingListDAO.getProducts(shoppingListId);
+                    category = shoppingListCategoryDAO.getByPrimaryKey(shoppingList.getListCategoryId());
+                } catch (DAOException ex) {
+                    response.setStatus(500);
+                    return;
+                }
+                StringBuilder sb = new StringBuilder();
+                sb.append("{\"shoppingList\":{"
+                        + "\"id\": \""+shoppingList.getId()+"\", "
+                        + "\"name\": \""+shoppingList.getName()+"\", "
+                        + "\"description\": \""+shoppingList.getDescription()+"\", "
+                        + "\"imagePath\": \""+shoppingList.getImagePath()+"\", "
+                        + "\"listCategoryId\": \""+shoppingList.getListCategoryId()+"\", "
+                        + "\"listCategoryIcon\": \""+shoppingList.getListCategoryIcon()+"\", "
+                        + "\"ownerId\": \""+shoppingList.getOwnerId()+"\", "
+                        + "\"cookie\": \""+shoppingList.getCookie()+"\", "
+                        + "\"notifications\": \""+shoppingList.getNotifications()+"\" "
+                        + "}, ");
+                sb.append("\"products\": [");
+                for (int i = 0; i < products.size(); i++) {
+                    if (i > 0) {
+                        sb.append(", ");
+                    }
+                    sb.append("{"
+                            + "\"id\": \""+products.get(i).getId()+"\", "
+                            + "\"name\": \""+products.get(i).getName()+"\", "
+                            + "\"notes\": \""+products.get(i).getNotes()+"\", "
+                            + "\"logoPath\": \""+products.get(i).getLogoPath()+"\", "
+                            + "\"photoPath\": \""+products.get(i).getPhotoPath()+"\", "
+                            + "\"productCategoryId\": \""+products.get(i).getProductCategoryId()+"\", "
+                            + "\"ownerId\": \""+products.get(i).getOwnerId()+"\", "
+                            + "\"reserved\": \""+products.get(i).isReserved()+"\", "
+                            + "\"necessary\": \""+products.get(i).getNecessary()+"\""
+                            + "}");
+                }
+                sb.append("]");
+                sb.append("}");
+                System.out.println(sb);
                 PrintWriter out = response.getWriter();
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
-                out.print(shoppingList.toString());
+                out.print(sb);
                 out.flush();
                 break;
             case 1:
@@ -117,9 +164,8 @@ public class ShoppingListServlet extends HttpServlet {
                 } else {
                     request.setAttribute("modifiable", false);
                 }
-                List<Product> products;
+
                 List<User> users;
-                ShoppingListCategory category;
                 List<Message> messages;
                 try {
                     products = shoppingListDAO.getProducts(shoppingListId);

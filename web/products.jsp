@@ -35,7 +35,7 @@
             products = productDAO.searchByName(query, null);
         }
     } else {
-        if (query.isEmpty()) {
+        if (query==null || query.isEmpty()) {
             if(user.isAdmin()){
                 products = productDAO.getPublic();
             }else{
