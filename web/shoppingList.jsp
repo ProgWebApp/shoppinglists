@@ -13,170 +13,194 @@
     <head>
         <title>Lista Alimentari</title>
         <%@include file="include/generalMeta.jsp" %>
+        <script src="${contextPath}jquery-ui-1.12.1/jquery-ui.js"></script>
+
         <script>
             /* FUNZIONE RICERCA E AGGIUNTA DEI PRODOTTI */
+
             $(function () {
-                function formatOption(option) {
-                    var res = $('<span class="optionClick" onClick="addprod()">' + option.text + '</span>');
-                    return res;
-                }
-                $("#autocomplete-2").select2({
-                    placeholder: "Aggiungi un prodotto",
-                    allowClear: true,
-                    ajax: {
-                        url: function (request) {
+            $("#searchAddProducts").autocomplete({
+            source: function (request, response) {
+            $.ajax({
             <c:choose>
-                <c:when test="${empty user}">
-                            return "${pageContext.response.encodeURL(contextPath.concat("ProductsSearchPublic?shoppingListId=").concat(shoppingList.id).concat("&query="))}" + request.term;
-                </c:when>
                 <c:when test="${not empty user}">
-                            return "${pageContext.response.encodeURL(contextPath.concat("ProductsSearchServlet?shoppingListId=").concat(shoppingList.id).concat("&query="))}" + request.term;
+            url: "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductsSearchServlet"))}",
+                </c:when>
+                <c:when test="${empty user}">
+            url: "${pageContext.response.encodeURL(contextPath.concat("ProductsSearchPublic"))}",
                 </c:when>
             </c:choose>
-                        },
-                        dataType: "json"
+            dataType: "json",
+                    data: {
+                    shoppingListId: ${shoppingList.id},
+                            query: request.term
                     },
-                    templateResult: formatOption,
-                    width: '100%'
-                });
-                $("#autocomplete-2").val(null).trigger("change");
-                $('#autocomplete-2').on("select2:select", function () {
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState === 4 && this.status === 200) {
-                            $("#prodotti").append("<li id=" + $('#autocomplete-2').find(":selected").val() + " class=\"list-group-item justify-content-between align-items-center\">" + $('#autocomplete-2').find(":selected").text()
-                                    + " <span class='pull-right glyphicon glyphicon-remove' style='color:red' onclick='deleteProduct(" + $('#autocomplete-2').find(":selected").val() + ")' title='Elimina'>"
+                    success: function (data) {
+                    response(data);
+                    },
+                    error(xhr, status, error) {
+            console.log("error: " + error);
+            }
+            });
+            },
+                    response: function (event, ui) {
+                    ui.content.push({label: "Aggiungi prodotto", value: 0});
+                    },
+                    select: function (event, ui) {
+                    $("#searchAddProducts").val("");
+                    $.ajax({
+                    url: "${pageContext.response.encodeURL(contextPath.concat("ProductListServlet"))}",
+                            dataType: "json",
+                            data: {
+                            shoppingListId: ${shoppingList.id},
+                                    productId: ui.item.value,
+                                    action: 3,
+                            },
+                            success: function (data) {
+                            $("#prodotti").append("<li id=" + ui.item.value + " class=\"list-group-item justify-content-between align-items-center\">" + ui.item.label
+                                    + " <span class='pull-right glyphicon glyphicon-remove' style='color:red' onclick='deleteProduct(" + ui.item.value + ")' title='Elimina'>"
                                     + "</span></li>");
-                        } else if (this.readyState === 4 && this.status === 500) {
-                            alert("Impossibile aggiungere il prodotto");
-                        }
-                    };
-                    var url = "${pageContext.response.encodeURL(contextPath.concat("ProductListServlet"))}";
-                    xhttp.open("GET", url + "?shoppingListId=${shoppingList.id}&productId=" + $('#autocomplete-2').find(":selected").val() + "&action=3", true);
-                    xhttp.send();
-                });
+                            },
+                            error(xhr, status, error) {
+                        alert("L'utente non ha i permessi per la modifica della lista");
+                    }
+                    });
+                    },
+                    focus: function (event, ui) {
+                    $("#searchAddProducts").val(ui.item.label);
+                    return false;
+                    }
+            });
             });
             /* FUNZIONE DI RICERCA E AGGIUNTA DEGLI UTENTI */
             $(function () {
-                function formatOption(option) {
-                    var res = $('<span class="optionClick" onClick="addprod()">' + option.text + '</span>');
-                    return res;
-                }
-                $("#autocomplete-3").select2({
-                    placeholder: "Cerca utente...",
-                    allowClear: true,
-                    ajax: {
-                        url: function (request) {
-                            return "${pageContext.response.encodeURL(contextPath.concat("restricted/UsersSearchServlet?query="))}" + request.term;
-                        },
-                        dataType: "json"
+            $("#searchUsers").autocomplete({
+            source: function (request, response) {
+            $.ajax({
+            url: "${pageContext.response.encodeURL(contextPath.concat("restricted/UsersSearchServlet"))}",
+                    dataType: "json",
+                    data: {
+                    query: request.term
                     },
-                    templateResult: formatOption,
-                    width: '100%'
-                });
-                $("#autocomplete-3").val(null).trigger("change");
-                $('#autocomplete-3').on("select2:select", function () {
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-
-                        if (this.readyState === 4 && this.status === 200) {
-                            $("#utenti").append("<li id=\"" + $('#autocomplete-3').find(":selected").val() + "\"class=\"list-group-item justify-content-between align-items-center\">" + $('#autocomplete-3').find(":selected").text()
-                                    + " <span class=\"pull-right glyphicon glyphicon-remove\" title=\"Elimina\" style=\"color:black;font-size:15px;margin-left:5px;\" onclick=\"deleteUser(" + $('#autocomplete-3').find(":selected").val() + ")\"></span>"
-                                    + " <select class=\"pull-right\" onchange=\"changePermissions(" + $('#autocomplete-3').find(":selected").text() + ", this.value)\">"
-                                    + "     <option value=1>Visualizza lista</option>"
-                                    + "     <option value=2>Modifica lista</option>"
-                                    + " </select>"
-                                    + " </li>")
-                        } else if (this.readyState === 4 && this.status === 500) {
-                            alert("Impossibile aggiungere l'utente");
-                        }
-                    };
-                    var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShareListsServlet"))}";
-                    xhttp.open("GET", url + "?action=1&shoppingListId=${shoppingList.id}&userId=" + $('#autocomplete-3').find(":selected").val(), true);
-                    xhttp.send();
-                });
+                    success: function (data) {
+                    response(data);
+                    },
+                    error(xhr, status, error) {
+                        alert("L'utente non ha i permessi per la modifica della lista");
+            }
+            });
+            },
+            select: function (event, ui) {
+            $("#searchUsers").val("");
+            $.ajax({
+            url: "${pageContext.response.encodeURL(contextPath.concat("restricted/ShareListsServlet"))}",
+                    dataType: "json",
+                    data: {
+                    shoppingListId: ${shoppingList.id},
+                            userId: ui.item.value,
+                            action: 1,
+                    },
+                    success: function (data) {
+                    $("#utenti").append("<li id=\"" + ui.item.value + "\"class=\"list-group-item justify-content-between align-items-center\">" + ui.item.label
+                            + " <span class=\"pull-right glyphicon glyphicon-remove\" title=\"Elimina\" style=\"color:black;font-size:15px;margin-left:5px;\" onclick=\"deleteUser(" + ui.item.value + ")\"></span>"
+                            + " <select class=\"pull-right\" onchange=\"changePermissions(" + ui.iteml.label + ", this.value)\">"
+                            + "     <option value=1>Visualizza lista</option>"
+                            + "     <option value=2>Modifica lista</option>"
+                            + " </select>"
+                            + " </li>");
+                    },
+                    error(xhr, status, error){
+                        alert("L'utente non ha i permessi per la modifica della lista");
+                    }
+            });
+            },
+            focus: function (event, ui) {
+                $("#searchUsers").val(ui.item.label);
+                return false;
+            }
+            });
             });
             /* MODIFICA ASINCRONA DEI PERMESSI DEGLI UTENTI */
             function changePermissions(userId, permission) {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState === 4 && this.status === 200) {
-                    } else if (this.readyState === 4 && this.status === 400) {
-                        alert("Non hai il permesso per la modifica della lista");
-                    } else if (this.readyState === 4 && this.status === 500) {
-                        alert("Errore del server, impossibile modificare i permessi");
-                    }
-                };
-                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShareListsServlet"))}";
-                if (userId !== '' && permission !== '') {
-                    xhttp.open("GET", url + "?action=2&shoppingListId=${shoppingList.id}&userId=" + userId + "&permission=" + permission, true);
-                    xhttp.send();
-                }
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+            } else if (this.readyState === 4 && this.status === 400) {
+            alert("Non hai il permesso per la modifica della lista");
+            } else if (this.readyState === 4 && this.status === 500) {
+            alert("Errore del server, impossibile modificare i permessi");
+            }
+            };
+            var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShareListsServlet"))}";
+            if (userId !== '' && permission !== '') {
+            xhttp.open("GET", url + "?action=2&shoppingListId=${shoppingList.id}&userId=" + userId + "&permission=" + permission, true);
+            xhttp.send();
+            }
             }
             /* RIMUOVI UN PRODOTTO DALLA LISTA */
             function deleteProduct(productId) {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState === 4 && this.status === 200) {
-                        var element = document.getElementById(productId);
-                        element.parentNode.removeChild(element);
-                    } else if (this.readyState === 4 && this.status === 400) {
-                        alert("Non hai il permesso per la modifica della lista");
-                    } else if (this.readyState === 4 && this.status === 500) {
-                        alert("Errore del server, impossibile modificare i prodotti");
-                    }
-                };
-                var url = "${pageContext.response.encodeURL(contextPath.concat("ProductListServlet"))}";
-                if (productId !== '') {
-                    xhttp.open("GET", url + "?action=0&shoppingListId=${shoppingList.id}&productId=" + productId, true);
-                    xhttp.send();
-                }
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+            var element = document.getElementById(productId);
+            element.parentNode.removeChild(element);
+            } else if (this.readyState === 4 && this.status === 400) {
+            alert("Non hai il permesso per la modifica della lista");
+            } else if (this.readyState === 4 && this.status === 500) {
+            alert("Errore del server, impossibile modificare i prodotti");
+            }
+            };
+            var url = "${pageContext.response.encodeURL(contextPath.concat("ProductListServlet"))}";
+            if (productId !== '') {
+            xhttp.open("GET", url + "?action=0&shoppingListId=${shoppingList.id}&productId=" + productId, true);
+            xhttp.send();
+            }
             }
             /* ANNULLA CONDIVISIONE CON UN UTENTE */
             function deleteUser(userId) {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState === 4 && this.status === 200) {
-                        var element = document.getElementById(userId);
-                        element.parentNode.removeChild(element);
-                    } else if (this.readyState === 4 && this.status === 400) {
-                        alert("Non hai il permesso per la modifica della lista");
-                    } else if (this.readyState === 4 && this.status === 500) {
-                        alert("Errore del server, impossibile rimuovere l'utente");
-                    }
-                };
-                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShareListsServlet"))}";
-                if (userId !== '') {
-                    xhttp.open("GET", url + "?action=0&shoppingListId=${shoppingList.id}&userId=" + userId, true);
-                    xhttp.send();
-                }
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+            var element = document.getElementById(userId);
+            element.parentNode.removeChild(element);
+            } else if (this.readyState === 4 && this.status === 400) {
+            alert("Non hai il permesso per la modifica della lista");
+            } else if (this.readyState === 4 && this.status === 500) {
+            alert("Errore del server, impossibile rimuovere l'utente");
+            }
+            };
+            var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShareListsServlet"))}";
+            if (userId !== '') {
+            xhttp.open("GET", url + "?action=0&shoppingListId=${shoppingList.id}&userId=" + userId, true);
+            xhttp.send();
+            }
             }
             /* AGGIUNTA MESSAGGIO */
             function addMessage() {
-                var input = document.getElementById("newtext");
-                text = input.value;
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState === 4 && this.status === 200) {
-                        var element = document.getElementById("messageBoard");
-                        element.innerHTML += "<div class='message message-right'>" + text + "</div>";
-                        input.value = '';
-                        element.scrollTop = element.scrollHeight - element.clientHeight;
-                    } else if (this.readyState === 4 && this.status === 400) {
-                        alert("Non hai il permesso per la modifica della lista");
-                    } else if (this.readyState === 4 && this.status === 500) {
-                        alert("Errore del server, impossibile rimuovere l'utente");
-                    }
-                };
-                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/MessagesServlet"))}";
-                console.log(url);
-                xhttp.open("GET", "MessagesServlet?shoppingListId=${shoppingList.id}&body=" + text, true);
-                xhttp.send();
+            var input = document.getElementById("newtext");
+            text = input.value;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+            var element = document.getElementById("messageBoard");
+            element.innerHTML += "<div class='message message-right'>" + text + "</div>";
+            input.value = '';
+            element.scrollTop = element.scrollHeight - element.clientHeight;
+            } else if (this.readyState === 4 && this.status === 400) {
+            alert("Non hai il permesso per la modifica della lista");
+            } else if (this.readyState === 4 && this.status === 500) {
+            alert("Errore del server, impossibile rimuovere l'utente");
+            }
+            };
+            var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/MessagesServlet"))}";
+            console.log(url);
+            xhttp.open("GET", "MessagesServlet?shoppingListId=${shoppingList.id}&body=" + text, true);
+            xhttp.send();
             }
             /* SCROLLA LA CHAT VERSO IL BASSO */
             function scrollChat() {
-                var element = document.getElementById("messageBoard");
-                element.scrollTop = element.scrollHeight - element.clientHeight;
+            var element = document.getElementById("messageBoard");
+            element.scrollTop = element.scrollHeight - element.clientHeight;
             }
         </script>
     </head>
@@ -200,8 +224,8 @@
                             <div class="col-sm-3">
                             </div>
                             <div class="col-sm-5 pre-scrollable">
-                                <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear">
-                                </select>
+                                <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control">
+
                                 <ul id="prodotti" class="list-group">
                                     <c:forEach items="${products}" var="product">
                                         <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
@@ -216,8 +240,8 @@
                             <div class="col-sm-1">
                             </div>
                             <div class="col-sm-5 pre-scrollable">
-                                <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear">
-                                </select>
+                                <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control">
+
                                 <ul id="prodotti" class="list-group">
                                     <c:forEach items="${products}" var="product">
                                         <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
@@ -253,8 +277,7 @@
                                             <label> Utenti che condividono la lista: </label>
                                         </li>
                                         <li class="list-group-item justify-content-between align-items-center">
-                                            <select id="autocomplete-3" name="autocomplete-3" class="form-control select2-allow-clear">
-                                            </select>
+                                            <input type="text" id="searchUsers" name="searchUsers" class="form-control">
                                         </li>
                                         <c:forEach items="${users}" var="user">
                                             <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}  

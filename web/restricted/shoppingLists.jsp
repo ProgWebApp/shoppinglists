@@ -110,9 +110,15 @@
                                             <a onclick="deleteList(${shoppingList.id})" class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
                                                 <c:choose>
                                                     <c:when test="${empty user}">
-                                                    <a class="pull-right" style="color:black" href="${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic?res=1"))}" title="Modifica"><span class="glyphicon glyphicon-list-alt" style="margin:0px 10px 0px 0px"></span></a>                        </c:when>
+                                                    <a class="pull-right" style="color:black" href="${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic?res=1"))}" title="Modifica">
+                                                        <span class="glyphicon glyphicon-list-alt" style="margin:0px 10px 0px 0px"></span>
+                                                    </a>
+                                                </c:when>
                                                     <c:when test="${not empty user}">
-                                                    <a class="pull-right" style="color:black" href="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}" title="Modifica"><span class="glyphicon glyphicon-list-alt" style="margin:0px 10px 0px 0px"></span></a>                        </c:when>
+                                                    <a class="pull-right" style="color:black" href="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}" title="Modifica">
+                                                        <span class="glyphicon glyphicon-list-alt" style="margin:0px 10px 0px 0px"></span>
+                                                    </a>
+                                                    </c:when>
                                                 </c:choose>
                                         </button>
                                     </li>

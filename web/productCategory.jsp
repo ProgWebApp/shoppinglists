@@ -36,21 +36,15 @@
             </div>
             <div id="body">
                 <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Product Categories</a>
-
-
-
                 <div class="myContainer row">    
                     <div class="col-12">
                         <div class="panel panel-default-custom">
                             <div class="panel-heading-custom">
-                                <img height="50px" src="${contextPath}images/productCategories/${productCategory.logoPath}"><br>
+                                <img src="${contextPath}images/productCategories/${productCategory.logoPath}" alt="Logo" class="small-logo" height="40px" width="40px"> 
                                 ${productCategory.name}
                             </div>
                             <div>
                                 ${productCategory.description}
-                                <c:forEach items="${productCategory.iconPath}" var="icon">
-                                    <img height="50px" src="${contextPath}images/productCategories/icons/${icon}">
-                                </c:forEach>
                             </div>
                             <br>
                             <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}">Modifica</a>
@@ -61,25 +55,28 @@
                     </div>
                     <c:forEach items="${products}" var="product">
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                            <div class="panel panel-default-custom">
-                                <c:choose>
-                                    <c:when test="${product.isReserved()}">
-                                        <div class="panel-heading-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">${product.name}</div>
+                            <c:choose>
+                                <c:when test="${product.isReserved()}">
+                                    <div class="panel panel-default-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">
                                     </c:when>
                                     <c:when test="${not product.isReserved()}">
-                                        <div class="panel-heading-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">${product.name}</div>
-                                    </c:when>
-                                </c:choose>
-                                <c:forEach items="${product.photoPath}" var="photo" end="0">
-                                    <img class="item fit-image img-responsive" src="${contextPath}images/products/${photo}"  alt="${product.name}">
-                                </c:forEach>
-                                <div class="panel-footer-custom"></div>
+                                        <div class="panel panel-default-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
+                                        </c:when>
+                                    </c:choose>
+                                    <div class="panel-heading-custom" >
+                                        <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="small-logo" height="40px" width="40px"> 
+                                        ${product.name}
+                                    </div>
+                                    <c:forEach items="${product.photoPath}" var="photo" end="0">
+                                        <img class="item fit-image img-responsive" src="${contextPath}images/products/${photo}"  alt="${product.name}">
+                                    </c:forEach>
+                                    <div class="panel-footer-custom"></div>
+                                </div>
                             </div>
-                        </div>
-                    </c:forEach>
+                        </c:forEach>
+                    </div>
                 </div>
+                <%@include file="include/footer.jsp" %>
             </div>
-            <%@include file="include/footer.jsp" %>
-        </div>
     </body>
 </html>

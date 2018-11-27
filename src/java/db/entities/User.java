@@ -199,7 +199,7 @@ public class User implements Serializable{
     }
     
     public String toJson() {
-        String json = "{\"id\": "+id+", \"text\": \""+firstName+" "+lastName+"\"}";
+        String json = "{\"label\": \""+firstName+" "+lastName+"\", \"value\": "+id+"}";
         return json;
     }
 }

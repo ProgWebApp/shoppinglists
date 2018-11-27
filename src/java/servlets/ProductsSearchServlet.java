@@ -54,12 +54,14 @@ public class ProductsSearchServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String query = (String) request.getParameter("query");
         User user = (User) request.getSession().getAttribute("user");
         List<Product> products;
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
 
         if (!query.isEmpty()) {
+            System.out.println("query: " + query);
             if (request.getParameter("shoppingListId") != null) {
                 try {
                     Integer shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
@@ -88,14 +90,14 @@ public class ProductsSearchServlet extends HttpServlet {
                 }
             }
             StringBuilder sb = new StringBuilder();
-            sb.append("{\"results\": [");
+            sb.append("[");
             for (int i = 0; i < products.size(); i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
                 sb.append(products.get(i).toJson());
             }
-            sb.append("]}");
+            sb.append("]");
             PrintWriter out = response.getWriter();
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

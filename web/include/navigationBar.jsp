@@ -1,59 +1,89 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script src="${contextPath}jquery-ui-1.12.1/jquery-ui.js"></script>
 <script>
     /* FUNZIONE RICERCA PRODOTTI PUBBLICI E PRIVATI PER L'UTENTE LOGGATO */
     $(function () {
-        function formatOption(option) {
-            var res = $('<span class="optionClick">' + option.text + '</span>');
-            console.log(option.text);
-            return res;
-        }
-        $("#searchProducts").select2({
-            placeholder: "Cerca prodotti...",
-            allowClear: true,
-            ajax: {
-                url: function (request) {
-                    return "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductsSearchServlet?query="))}" + request.term;
-
-                },
-                dataType: "json"
+        $("#searchProducts").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductsSearchServlet"))}",
+                    dataType: "json",
+                    data: {
+                        query: request.term
+                    },
+                    success: function (data) {
+                        response(data);
+                    },
+                    error(xhr, status, error) {
+                        console.log("error: " + error);
+                    }
+                });
             },
-            templateResult: formatOption,
-            width: '100%'
+            response: function (event, ui) {
+                ui.content.push({label: "Aggiungi prodotto", value: 0});
+            },
+            select: function (event, ui) {
+                $("#searchProducts").val(ui.item.label);
+                if (ui.item.value == 0) {
+                    var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}";
+                    window.location.href = url;
+                } else {
+                    var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId="))}" + ui.item.value;
+                    window.location.href = url;
+                }
+            },
+            focus: function (event, ui) {
+                $("#searchProducts").val(ui.item.label);
+                return false;
+            }
         });
-        $("#searchProducts").val(null).trigger("change");
-        $('#searchProducts').on("select2:select", function () {
-            var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId="))}" + $('#searchProducts').find(":selected").val();
-            console.log(url);
-            window.location.href = url;
+        $("#searchProducts").keypress(function (e) {
+            console.log("Valore: " + $("#searchProducts").val());
+            if (e.which == 13 && $("#searchProducts").val() != null) {
+                var url = "${pageContext.response.encodeURL(contextPath.concat("products.jsp?query="))}" + $("#searchProducts").val();
+                window.location.href = url;
+            }
         });
     });
     /* FUNZIONE RICERCA PRODOTTI PUBBLICI PER L'UTENTE non LOGGATO */
     $(function () {
-        function formatOption(option) {
-            var res = $('<span class="optionClick">' + option.text + '</span>');
-            console.log(option.text);
-            return res;
-        }
-        $("#searchPublicProducts").select2({
-            placeholder: "Cerca prodotti...",
-            allowClear: true,
-            ajax: {
-                url: function (request) {
-                    return "${pageContext.response.encodeURL(contextPath.concat("ProductsSearchPublic?query="))}" + request.term;
-
-                },
-                dataType: "json"
+        $("#searchPublicProducts").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "${pageContext.response.encodeURL(contextPath.concat("ProductsSearchPublic"))}",
+                    dataType: "json",
+                    data: {
+                        query: request.term
+                    },
+                    success: function (data) {
+                        response(data);
+                    },
+                    error(xhr, status, error) {
+                        console.log("error: " + error);
+                    }
+                });
             },
-            templateResult: formatOption,
-            width: '100%'
+            select: function (event, ui) {
+                $("#searchPublicProducts").val(ui.item.label);
+                if (ui.item != null) {
+                    var url = "${pageContext.response.encodeURL(contextPath.concat("ProductPublic?res=1&productId="))}" + ui.item.value;
+                    window.location.href = url;
+                }
+            },
+            focus: function (event, ui) {
+                $("#searchPublicProducts").val(ui.item.label);
+                return false;
+            }
         });
-        $("#searchPublicProducts").val(null).trigger("change");
-        $('#searchPublicProducts').on("select2:select", function () {
-            var url = "${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId="))}" + $('#searchPublicProducts').find(":selected").val();
-            console.log(url);
-            window.location.href = url;
+        $("#searchPublicProducts").keypress(function (e) {
+            console.log("Valore: " + $("#searchPublicProducts").val());
+            if (e.which == 13 && $("#searchPublicProducts").val() != null) {
+                var url = "${pageContext.response.encodeURL(contextPath.concat("products.jsp?query="))}" + $("#searchPublicProducts").val();
+                window.location.href = url;
+            }
         });
-    });</script>
+    });
+</script>
 <div class="mynav">
     <div class="mynav-left">
         <div class="mynav-item">
@@ -62,12 +92,10 @@
         <div class="search">
             <c:choose>
                 <c:when test="${empty user}">
-                    <select id="searchPublicProducts" name="searchPublicProducts" class="form-control select2-allow-clear">
-                    </select>
+                    <input type="text" name="searchPublicProducts" id="searchPublicProducts" style="color: black" placeholder="Cerca prodotti...">
                 </c:when>
                 <c:when test="${not empty user}">
-                    <select id="searchProducts" name="searchProducts" class="form-control select2-allow-clear">
-                    </select>
+                    <input type="text" name="searchProducts" id="searchProducts" style="color: black" placeholder="Cerca prodotti...">
                 </c:when>
             </c:choose>
         </div>
@@ -99,7 +127,7 @@
                         <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingLists.jsp"))}">Le mie liste</a></li>
                         <li><a href="${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}">Nuova lista</a></li>
                         <li><hr></li>
-                        <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/products.jsp"))}">I miei prodotti</a></li>
+                        <li><a href="${pageContext.response.encodeURL(contextPath.concat("products.jsp"))}">I miei prodotti</a></li>
                         <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}">Aggiungi prodotto</a></li>
                         <li><hr></li>
                         <li><a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Categorie lista</a></li>

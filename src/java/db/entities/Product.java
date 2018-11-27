@@ -176,7 +176,7 @@ public class Product {
     }
     
     public String toJson(){
-        String json = "{\"id\": "+id+", \"text\": \""+name+"\"}";
+        String json = "{\"label\": \""+name+"\", \"value\": "+id+"}";
         return json;
     }
     

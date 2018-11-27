@@ -81,14 +81,15 @@ public class ProductsSearchPublic extends HttpServlet {
                 }
             }
             StringBuilder sb = new StringBuilder();
-            sb.append("{\"results\": [");
+            sb.append("[");
             for (int i = 0; i < products.size(); i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
                 sb.append(products.get(i).toJson());
             }
-            sb.append("]}");
+            sb.append("]");
+            System.out.println("json:" + sb);
             PrintWriter out = response.getWriter();
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
