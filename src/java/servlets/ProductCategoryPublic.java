@@ -27,7 +27,7 @@ public class ProductCategoryPublic extends HttpServlet {
 
     private ProductCategoryDAO productCategoryDao;
     private ProductDAO productDAO;
- 
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
@@ -57,9 +57,14 @@ public class ProductCategoryPublic extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
         Integer productCategoryId;
+        Integer order = 1;
         try {
+            if (request.getParameter("order") != null) {
+                order = Integer.valueOf(request.getParameter("order"));
+            }
             productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));
         } catch (NumberFormatException ex) {
+            System.out.println("Fallita conversione dei parametri");
             response.setStatus(400);
             return;
         }
@@ -69,7 +74,7 @@ public class ProductCategoryPublic extends HttpServlet {
         List<Product> products;
         try {
             productCategory = productCategoryDao.getByPrimaryKey(productCategoryId);
-            products = productDAO.getByProductCategory(productCategoryId, null);
+            products = productDAO.getByProductCategory(productCategoryId, null, order);
         } catch (DAOException ex) {
             response.setStatus(500);
             return;
@@ -78,6 +83,8 @@ public class ProductCategoryPublic extends HttpServlet {
         /* RISPONDO */
         request.setAttribute("productCategory", productCategory);
         request.setAttribute("products", products);
+        request.setAttribute("order", order);
+
         getServletContext().getRequestDispatcher("/productCategory.jsp").forward(request, response);
 
     }

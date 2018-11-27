@@ -76,7 +76,12 @@ public class Login extends HttpServlet {
                 cookie.setPath("/");
                 response.addCookie(cookie); */
                 request.getSession().setAttribute("user", user);
-                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "index.jsp"));
+                String destination = (String) request.getSession().getAttribute("destination");
+                if (destination != null) {
+                    response.sendRedirect(response.encodeRedirectURL(destination));
+                } else {
+                    response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "index.jsp"));
+                }
             }
         } catch (DAOException ex) {
             throw new ServletException("Impossible to retrieve the user", ex);

@@ -55,11 +55,7 @@ public class RegistrationServlet extends HttpServlet {
         String userEmail = request.getParameter("email");
         String userPassword1 = request.getParameter("password1");
         String userPassword2 = request.getParameter("password2");
-        String avatarsFolder = getServletContext().getInitParameter("avatarsFolder");
-        if (avatarsFolder == null) {
-            throw new ServletException("Avatars folder not configured");
-        }
-        avatarsFolder = getServletContext().getRealPath(avatarsFolder);
+        String avatarsFolder = getServletContext().getRealPath("/images/avatars");
         Part filePart = request.getPart("avatar");
         String fileName = UUID.randomUUID().toString() + Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); //MSIE  fix.
         User user = new User();

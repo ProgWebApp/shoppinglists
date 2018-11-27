@@ -170,6 +170,59 @@
                     xhttp.send();
                 }
             }
+            /* SETTA UN PRODOTTO COME SETTATO/NON SETTATO */
+            function checkProduct(productId) {
+                $.ajax({
+                    url: "${pageContext.response.encodeURL(contextPath.concat("ProductListServlet"))}",
+                    data: {
+                        shoppingListId: ${shoppingList.id},
+                        productId: productId,
+                        action: function(){
+                            if($("#checkbox_"+productId).is(":checked")){
+                                return 1;
+                            }else{
+                                return 2;
+                            }
+                        }
+                    },
+                    success: function (data) {
+                        if($("#checkbox_"+productId).is(":checked")){
+                            $("#"+productId).css({"text-decoration": "line-through"});
+                        }else{
+                            $("#"+productId).css({"text-decoration": "none"});
+                        }
+                        return false;
+                    },
+                    error(xhr, status, error) {
+                        console.log(error);
+                        alert("L'utente non ha i permessi per la modifica della lista");
+                        if($("#checkbox_"+productId).is(":checked")){
+                            $("#checkbox_"+productId).prop('checked', false);
+                        }else{
+                            $("#checkbox_"+productId).prop('checked', false);
+                        }
+                    }
+                });
+            }
+            /* RIMUOVI UN PRODOTTO DALLA LISTA */
+            function deleteProduct(productId) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        var element = document.getElementById(productId);
+                        element.parentNode.removeChild(element);
+                    } else if (this.readyState === 4 && this.status === 400) {
+                        alert("Non hai il permesso per la modifica della lista");
+                    } else if (this.readyState === 4 && this.status === 500) {
+                        alert("Errore del server, impossibile modificare i prodotti");
+                    }
+                };
+                var url = "${pageContext.response.encodeURL(contextPath.concat("ProductListServlet"))}";
+                if (productId !== '') {
+                    xhttp.open("GET", url + "?action=0&shoppingListId=${shoppingList.id}&productId=" + productId, true);
+                    xhttp.send();
+                }
+            }
 
             /* AGGIUNTA MESSAGGIO */
             function addMessage() {
@@ -193,7 +246,6 @@
                 xhttp.open("GET", "MessagesServlet?shoppingListId=${shoppingList.id}&body=" + text, true);
                 xhttp.send();
             }
-
             /* SCROLLA LA CHAT VERSO IL BASSO */
             function scrollChat() {
                 var element = document.getElementById("messageBoard");
@@ -241,7 +293,9 @@
                                 </c:if>
                                 <ul id="prodotti" class="list-group">
                                     <c:forEach items="${products}" var="product">
-                                        <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
+                                        <li id="${product.id}" class="list-group-item justify-content-between align-items-center">
+                                            <input type="checkbox" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
+                                            ${product.name}
                                             <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
                                         </li>
                                     </c:forEach>

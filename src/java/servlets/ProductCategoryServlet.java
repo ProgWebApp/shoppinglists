@@ -65,9 +65,13 @@ public class ProductCategoryServlet extends HttpServlet {
         /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
         Integer productCategoryId;
         Integer res;
+        Integer order = 1;
         try {
             productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));
             res = Integer.valueOf(request.getParameter("res"));
+            if(request.getParameter("order") != null){
+                order = Integer.valueOf(request.getParameter("order"));
+            }
             if (res > 2) {
                 throw new NumberFormatException();
             }
@@ -81,8 +85,9 @@ public class ProductCategoryServlet extends HttpServlet {
         List<Product> products;
         try {
             productCategory = productCategoryDAO.getByPrimaryKey(productCategoryId);
-            products = productDAO.getByProductCategory(productCategoryId, user.getId());
+            products = productDAO.getByProductCategory(productCategoryId, user.getId(), order);
         } catch (DAOException ex) {
+            System.out.println("Impossibile restituire la categoria di prodotto e/o i prodotti");
             response.setStatus(500);
             return;
         }
@@ -90,6 +95,7 @@ public class ProductCategoryServlet extends HttpServlet {
         /* RISPONDO */
         request.setAttribute("productCategory", productCategory);
         request.setAttribute("products", products);
+        request.setAttribute("order", order);
         switch (res) {
             case 1:
                 getServletContext().getRequestDispatcher("/productCategory.jsp").forward(request, response);
@@ -160,11 +166,7 @@ public class ProductCategoryServlet extends HttpServlet {
         //carico il logo solo se è stato specificato
         if (logoFilePart.getSize() > 0) {
             String logoFileName = UUID.randomUUID().toString() + Paths.get(logoFilePart.getSubmittedFileName()).getFileName().toString(); //MSIE  fix.
-            String logosFolder = getServletContext().getInitParameter("logosFolder");
-            if (logosFolder == null) {
-                throw new ServletException("Logos folder not configured");
-            }
-            logosFolder = getServletContext().getRealPath(logosFolder);
+            String logosFolder = getServletContext().getRealPath("/images/productCategories");
             File logoDirectory = new File(logosFolder);
             logoDirectory.mkdirs();
             logoFilePart.write(logosFolder + File.separator + logoFileName);
@@ -172,11 +174,7 @@ public class ProductCategoryServlet extends HttpServlet {
         }
 
         /* ICONS */
-        String iconsFolder = getServletContext().getInitParameter("iconsFolder");
-        if (iconsFolder == null) {
-            throw new ServletException("Icons folder not configured");
-        }
-        iconsFolder = getServletContext().getRealPath(iconsFolder);
+        String iconsFolder = getServletContext().getRealPath("/images/productCategories/icons");
         HashSet<String> iconPaths;
         if (productCategoryId == null) {
             iconPaths = new HashSet<>();

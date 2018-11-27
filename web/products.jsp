@@ -24,28 +24,34 @@
 %>
 <%
     User user = (User) request.getSession().getAttribute("user");
+    Integer order;
+    if(request.getParameter("order")!=null){
+        order = Integer.valueOf(request.getParameter("order"));
+    }else{
+        order = 1;
+    }
     String query = request.getParameter("query");
-    System.out.println("query: "+query);
     List<Product> products;
-    System.out.println("user: "+user);
     if (user == null) {
-        if (query.isEmpty()) {
-            products = productDAO.getPublic();
+        if (query==null || query.isEmpty()) {
+            products = productDAO.getPublic(order);
         } else {
-            products = productDAO.searchByName(query, null);
+            products = productDAO.searchByName(query, null, order);
         }
     } else {
-        if (query==null || query.isEmpty()) {
-            if(user.isAdmin()){
-                products = productDAO.getPublic();
-            }else{
-                products = productDAO.getByUser(user.getId());
+        if (query == null || query.isEmpty()) {
+            if (user.isAdmin()) {
+                products = productDAO.getPublic(order);
+            } else {
+                products = productDAO.getByUser(user.getId(), order);
             }
         } else {
-            products = productDAO.searchByName(query, user.getId());
+            products = productDAO.searchByName(query, user.getId(), order);
         }
     }
-    request.setAttribute("products", products);
+    pageContext.setAttribute("products", products);
+    pageContext.setAttribute("query", query);
+    pageContext.setAttribute("order", order);
 %>
 <!DOCTYPE html>
 <html>
@@ -53,7 +59,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>My products</title>
         <%@include file="include/generalMeta.jsp" %>
-
     </head>
     <body>
         <div id="containerPage">
@@ -65,6 +70,23 @@
                 </div>
                 <%@include file="include/navigationBar.jsp" %>
             </div>
+            <div id="body" >
+                <form action="products.jsp" method="GET">
+                    <select name="order">
+                        <option value="1" <c:if test="${order==1}">selected</c:if>>Nome prodotto AZ</option> 
+                        <option value="2" <c:if test="${order==2}">selected</c:if>>Nome prodotto ZA</option> 
+                        <option value="3" <c:if test="${order==3}">selected</c:if>>Nome categoria AZ</option>
+                        <option value="4" <c:if test="${order==4}">selected</c:if>>Nome categoria ZA</option>     
+                    </select>
+                    <input type="hidden" name="query" value="${query}">
+                    <input type="submit">
+                </form>
+                <div class="myContainer row">
+                    <c:forEach items="${products}" var="product">
+                        <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                            <c:choose>
+                                <c:when test="${product.isReserved()}">
+                                    <div class="panel panel-default-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">
             <div id="body" class="myContainer row">
                 <c:forEach items="${products}" var="product">
                     <div class="col-12 col-sm-6 col-md-4 col-lg-3">
@@ -75,20 +97,24 @@
                                 <c:when test="${empty user}">
                                     <div class="panel panel-default-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
                                     </c:when>
-                                </c:choose>
-                                <div class="panel-heading-custom" >
-                                    <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="small-logo" height="40px" width="40px"> 
-                                    ${product.name}
+                                    <c:when test="${not product.isReserved()}">
+                                        <div class="panel panel-default-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
+                                        </c:when>
+                                    </c:choose>
+                                    <div class="panel-heading-custom" >
+                                        <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="small-logo" height="40px" width="40px"> 
+                                        ${product.name}
+                                    </div>
+                                    <c:forEach items="${product.photoPath}" var="photo" end="0">
+                                        <img class="item fit-image img-responsive" src="${contextPath}images/products/${photo}"  alt="${product.name}">
+                                    </c:forEach>
+                                    <div class="panel-footer-custom"></div>
                                 </div>
-                                <c:forEach items="${product.photoPath}" var="photo" end="0">
-                                    <img class="item fit-image img-responsive" src="${contextPath}images/products/${photo}"  alt="${product.name}">
-                                </c:forEach>
-                                <div class="panel-footer-custom"></div>
                             </div>
-                        </div>
-                    </c:forEach>
-                    <br>
-                    <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}">Aggiungi prodotto</a>
+                        </c:forEach>
+                        <br>
+                        <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}">Aggiungi prodotto</a>
+                    </div>
                 </div>
                 <%@include file="include/footer.jsp" %>
             </div>

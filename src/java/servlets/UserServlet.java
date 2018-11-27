@@ -43,7 +43,7 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User activeUser = (User) request.getSession().getAttribute("user");
         if (request.getParameter("changeAvatar") != null && Integer.parseInt(request.getParameter("changeAvatar")) == 1) {
-            String avatarsFolder = getServletContext().getRealPath("images/avatars");
+            String avatarsFolder = getServletContext().getRealPath("/images/avatars");
             Part filePart = request.getPart("avatar");
             if ((filePart != null) && (filePart.getSize() > 0)) {
                 String filename = UUID.randomUUID().toString() + Paths.get(filePart.getSubmittedFileName()).getFileName().toString();//MSIE  fix.

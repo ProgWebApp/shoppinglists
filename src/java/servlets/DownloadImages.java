@@ -24,7 +24,7 @@ public class DownloadImages extends HttpServlet {
         response.setHeader("Content-Disposition", "attachment; filename=\"images.zip\"");
         ServletOutputStream sos = response.getOutputStream();
         ZipOutputStream zos = new ZipOutputStream(sos);
-        String path = getServletContext().getRealPath("images");
+        String path = getServletContext().getRealPath("/images");
         try {
             addDirToZipArchive(zos, new File(path), null);
         } catch (Exception ex) {

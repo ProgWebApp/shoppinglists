@@ -72,7 +72,6 @@ public class ProductListServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("doget");
         /* RECUPER L'UTENTE LOGGATO, SE ESISTE */
         User user = (User) request.getSession().getAttribute("user");
 
@@ -91,7 +90,6 @@ public class ProductListServlet extends HttpServlet {
 
         /* SE NON ESISTE UTENTE LOGGATO NE UTENTE ANONIMO RESTITUISCO ERRORE */
         if (user == null && userId == null) {
-            System.out.println("e1");
             response.setStatus(403);
             return;
         }
@@ -110,12 +108,10 @@ public class ProductListServlet extends HttpServlet {
                 shoppingList = shoppingListDAO.getByCookie(userId);
                 shoppingListId = shoppingList.getId();
                 if (shoppingListId == null) {
-                    System.out.println("e1");
                     response.setStatus(403);
                     return;
                 }
             } catch (DAOException ex) {
-                System.out.println("e2");
                 response.setStatus(403);
                 return;
             }
@@ -149,7 +145,6 @@ public class ProductListServlet extends HttpServlet {
                 System.out.println(shoppingList);
                 System.out.println(product);
                 if (shoppingList == null || product == null) {
-                    System.out.println("e4");
                     response.setStatus(403);
                     return;
                 }
@@ -159,7 +154,6 @@ public class ProductListServlet extends HttpServlet {
                             shoppingListDAO.removeProduct(shoppingListId, productId);
                         } else {
                             response.setStatus(403);
-                            System.out.println("e6");
                         }
                         break;
                     case 1:
@@ -167,7 +161,6 @@ public class ProductListServlet extends HttpServlet {
                             shoppingListDAO.updateProduct(shoppingListId, productId, quantity, false);
                         } else {
                             response.setStatus(403);
-                            System.out.println("e7");
                         }
                         break;
                     case 2:
@@ -175,7 +168,6 @@ public class ProductListServlet extends HttpServlet {
                             shoppingListDAO.updateProduct(shoppingListId, productId, quantity, true);
                         } else {
                             response.setStatus(403);
-                            System.out.println("e8");
                         }
                         break;
                     case 3:
@@ -186,17 +178,14 @@ public class ProductListServlet extends HttpServlet {
                             }
                         } else {
                             response.setStatus(403);
-                            System.out.println("e9");
                         }
                         break;
                 }
             } catch (DAOException ex) {
                 response.setStatus(500);
-                System.out.println("e10");
             }
         } else {
             response.setStatus(400);
-            System.out.println("e11");
         }
     }
 

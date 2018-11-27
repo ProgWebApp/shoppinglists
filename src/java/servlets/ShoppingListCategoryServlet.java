@@ -184,8 +184,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         //carico il logo solo se è stato specificato
         if (logoFilePart.getSize() > 0) {
             String logoFileName = UUID.randomUUID().toString() + Paths.get(logoFilePart.getSubmittedFileName()).getFileName().toString(); //MSIE  fix.
-            String logosFolder = "images/shoppingListCategories";
-            logosFolder = getServletContext().getRealPath(logosFolder);
+            String logosFolder = getServletContext().getRealPath("/images/shoppingListCategories");
             File logoDirectory = new File(logosFolder);
             logoDirectory.mkdirs();
             logoFilePart.write(logosFolder + File.separator + logoFileName);

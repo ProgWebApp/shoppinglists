@@ -66,7 +66,7 @@ public class ProductsSearchServlet extends HttpServlet {
                     Integer shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
                     try {
                         Integer shoppingListCategoryId = (shoppingListDAO.getByPrimaryKey(shoppingListId)).getListCategoryId();
-                        products = productDAO.searchByNameAndCategory(query, shoppingListCategoryId, user.getId());
+                        products = productDAO.searchByNameAndCategory(query, shoppingListCategoryId, user.getId(), null);
                         List<Product> productsAlreadyIn = shoppingListDAO.getProducts(shoppingListId);
                         products.removeAll(productsAlreadyIn);
                     } catch (DAOException ex) {
@@ -81,7 +81,7 @@ public class ProductsSearchServlet extends HttpServlet {
                 }
             } else {
                 try {
-                    products = productDAO.searchByName(query, user.getId());
+                    products = productDAO.searchByName(query, user.getId(), null);
                 } catch (DAOException ex) {
                     System.out.println("dao exception" + ex.getCause().getMessage());
                     response.setStatus(500);

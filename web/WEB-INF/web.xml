@@ -5,22 +5,6 @@
         <param-name>dburl</param-name>
         <param-value>jdbc:postgresql://aa38g7gb5o7fwo.cap31ujhgu5y.us-east-2.rds.amazonaws.com:5432/mydb?user=ProgWeb&amp;password=Operativi1</param-value>
     </context-param>
-    <context-param>
-        <param-name>avatarsFolder</param-name>
-        <param-value>images/avatars</param-value>
-    </context-param>
-    <context-param>
-        <param-name>productsFolder</param-name>
-        <param-value>images/products</param-value>
-    </context-param>
-    <context-param>
-        <param-name>iconsFolder</param-name>
-        <param-value>images/productCategories/icons</param-value>
-    </context-param>
-    <context-param>
-        <param-name>logosFolder</param-name>
-        <param-value>images/productCategories</param-value>
-    </context-param>
     <!-- FILTRI -->
     <filter>
         <filter-name>ContextPathFilter</filter-name>

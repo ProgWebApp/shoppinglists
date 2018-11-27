@@ -228,11 +228,7 @@ public class ProductServlet extends HttpServlet {
         }
 
         /* PHOTO */
-        String productsFolder = getServletContext().getInitParameter("productsFolder");
-        if (productsFolder == null) {
-            throw new ServletException("Products folder not configured");
-        }
-        productsFolder = getServletContext().getRealPath("/"+ productsFolder);
+        String productsFolder = getServletContext().getRealPath("/images/products");
 
         HashSet<String> photoPaths;
         if (productId == null) {

@@ -152,7 +152,6 @@
                 </div>
             </div>
             <div class="col-sm-5">
-                Clicca su una lista per vedere l'anteprima dei prodotti contenuti...
                 <div id="anteprima" class="list-group" >
                 </div>
             </div>

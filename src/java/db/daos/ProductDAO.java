@@ -15,10 +15,11 @@ public interface ProductDAO extends DAO<Product, Integer> {
      *
      * @return the list of {@link Product product} that are public, or an empty
      * list.
+     * @param order order to display results
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
-    public List<Product> getPublic() throws DAOException;
+    public List<Product> getPublic(Integer order) throws DAOException;
 
     /**
      * Returns the list of the {@link Product product} that are owned by the
@@ -26,12 +27,13 @@ public interface ProductDAO extends DAO<Product, Integer> {
      *
      * @param userId the {@code id} of the {@code user} for which retrieve the
      * product list.
+     * @param order order to display results
      * @return the list of {@link Product product} that are owned by the user
      * passed as parameter, or an empty list.
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
-    public List<Product> getByUser(Integer userId) throws DAOException;
+    public List<Product> getByUser(Integer userId, Integer order) throws DAOException;
 
     /**
      * Returns the list of {@link Product product} that are compatible with the
@@ -42,13 +44,14 @@ public interface ProductDAO extends DAO<Product, Integer> {
      * for which to retrive the compatible products.
      * @param userId the {@code id} of the {@code user} for which retrieve the
      * product list.
+     * @param order order to display results
      * @return the list of {@link Product product} that are compatible with the
      * shoppingListCategory passed as paramenter and that are shared with the
      * user passed as parameter, or an empty list.
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
-    public List<Product> getByShoppingListCategory(Integer shoppingListCategoryId, Integer userId) throws DAOException;
+    public List<Product> getByShoppingListCategory(Integer shoppingListCategoryId, Integer userId, Integer order) throws DAOException;
     
     /**
      * Returns the list of {@link Product product} that are compatible with the
@@ -59,13 +62,14 @@ public interface ProductDAO extends DAO<Product, Integer> {
      * for which to retrive the compatible products.
      * @param userId the {@code id} of the {@code user} for which retrieve the
      * product list.
+     * @param order order to display results
      * @return the list of {@link Product product} that are compatible with the
      * shoppingListCategory passed as paramenter and that are shared with the
      * user passed as parameter, or an empty list.
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
-    public List<Product> getByProductCategory(Integer productCategoryId, Integer userId) throws DAOException;
+    public List<Product> getByProductCategory(Integer productCategoryId, Integer userId, Integer order) throws DAOException;
 
     /**
      * Returns the list of {@link Product product} that are shared with the user
@@ -74,13 +78,14 @@ public interface ProductDAO extends DAO<Product, Integer> {
      * @param query the letters that the name of the product must contains.
      * @param userId the {@code id} of the {@code user} for which retrieve the
      * product list.
+     * @param order order to display results
      * @return the list of {@link Product product} that are shared with the user
      * passed as parameter and that contais {@code query} in the name field, or
      * an empty list.
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
-    public List<Product> searchByName(String query, Integer userId) throws DAOException;
+    public List<Product> searchByName(String query, Integer userId, Integer order) throws DAOException;
 
     /**
      * Returns the list of {@link Product product} that are compatible with the
@@ -92,6 +97,7 @@ public interface ProductDAO extends DAO<Product, Integer> {
      * for which to retrive the compatible products.
      * @param userId the {@code id} of the {@code user} for which retrieve the
      * product list.
+     * @param order order to display results
      * @return the list of {@link Product product} that are compatible with the
      * shoppingListCategory passed as paramenter, that are shared with the user
      * passed as parameter and that contais {@code query} in the name field, or
@@ -99,7 +105,7 @@ public interface ProductDAO extends DAO<Product, Integer> {
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
-    public List<Product> searchByNameAndCategory(String query, Integer shoppingListCategoryId, Integer userId) throws DAOException;
+    public List<Product> searchByNameAndCategory(String query, Integer shoppingListCategoryId, Integer userId, Integer order) throws DAOException;
     
     /**
      * Returns a product if is visible by a user. A product is visible by user
