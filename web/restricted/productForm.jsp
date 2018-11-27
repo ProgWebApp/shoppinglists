@@ -83,7 +83,7 @@
                                 </c:choose>
                                 <div class="form-group">
                                     <label for="nome">Nome prodotto:</label>
-                                    <input type="text" id="name" name="name" class="form-control" placeholder="Inserisci nome prodotto" value="${product.name}" autofocus>
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="Inserisci nome prodotto" value="${product.name}${param.name}" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <label for="Cognome">Note:</label>

@@ -70,23 +70,27 @@ public class RegistrationServlet extends HttpServlet {
         user.setAvatarPath(fileName);
         String check = UUID.randomUUID().toString();
         user.setCheck(check);
-        if (userFirstName.isEmpty() || userLastName.isEmpty() || userEmail.isEmpty() || userPassword1.isEmpty() || userPassword2.isEmpty() || filePart.getSize() == 0) {
+        Boolean password = false;
+        if (!userPassword1.isEmpty() && !userPassword2.isEmpty() && !userPassword1.matches("((?=.*\\d)(?=.*[A-Z])(?=.*[@#$%]).{6,20})")) {
+            request.getSession().setAttribute("password", 0);
+            password = true;
+        }
+        if (!userPassword1.isEmpty() && !userPassword2.isEmpty() && !userPassword1.equals(userPassword2)) {
+            request.getSession().setAttribute("password", 1);
+            password = true;
+        }
+        Boolean privacy = true;
+        if (request.getParameterValues("privacy") != null && request.getParameterValues("privacy")[0].equals("1")) {
+            request.getSession().setAttribute("privacy", 1);
+            privacy = false;
+        }
+        if (userFirstName.isEmpty() || userLastName.isEmpty() || userEmail.isEmpty() || userPassword1.isEmpty() || userPassword2.isEmpty()
+                || user.getPassword().equals("0") || user.getPassword().equals("1") || filePart.getSize() == 0 || privacy || password) {
             user.setAvatarPath("");
-            user.setPassword(null);
+            if(userPassword1.isEmpty() || userPassword2.isEmpty() || password){
+                user.setPassword(null);
+            }
             request.getSession().setAttribute("message", 1);
-            request.getSession().setAttribute("newUser", user);
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "registration.jsp"));
-            return;
-        }
-        if(!userPassword1.matches("((?=.*\\d)(?=.*[A-Z])(?=.*[@#$%]).{6,20})")){
-            request.getSession().setAttribute("message", 4);
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "registration.jsp"));
-            return;
-        }
-        if(!userPassword1.equals(userPassword2)){
-            user.setAvatarPath("");
-            user.setPassword(null);
-            request.getSession().setAttribute("message", 3);
             request.getSession().setAttribute("newUser", user);
             response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "registration.jsp"));
             return;

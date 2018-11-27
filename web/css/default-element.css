@@ -105,8 +105,13 @@ a:hover{
     width: calc(100% - 100px);
     max-width: 400px;
     float: left;
-    padding-top: 5px;
+    padding-top: 3px;
     padding-left: 10px;
+}
+.search > input {
+    width: 100%;
+    height: 30px;
+    color: black;
 }
 .dropdown-menu{
     top:120%;

@@ -79,20 +79,19 @@
                 });
             },
             response: function (event, ui) {
-                ui.content.push({label: "Aggiungi prodotto", value: 0});
+                ui.content.push({label: "Aggiungi \""+$("#searchProducts").val()+"\" ai miei prodotti", value: 0});
             },
             select: function (event, ui) {
-                $("#searchProducts").val(ui.item.label);
                 if (ui.item.value == 0) {
-                    var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}";
+                    var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp?name="))}" + $("#searchProducts").val();
                     window.location.href = url;
                 } else {
                     var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId="))}" + ui.item.value;
                     window.location.href = url;
                 }
+                return false;
             },
             focus: function (event, ui) {
-                $("#searchProducts").val(ui.item.label);
                 return false;
             }
         });
@@ -123,14 +122,13 @@
                 });
             },
             select: function (event, ui) {
-                $("#searchPublicProducts").val(ui.item.label);
                 if (ui.item != null) {
                     var url = "${pageContext.response.encodeURL(contextPath.concat("ProductPublic?res=1&productId="))}" + ui.item.value;
                     window.location.href = url;
                 }
+                return false;
             },
             focus: function (event, ui) {
-                $("#searchPublicProducts").val(ui.item.label);
                 return false;
             }
         });
@@ -151,10 +149,10 @@
         <div class="search">
             <c:choose>
                 <c:when test="${empty user}">
-                    <input type="text" name="searchPublicProducts" id="searchPublicProducts" style="color: black" placeholder="Cerca prodotti...">
+                    <input type="text" name="searchPublicProducts" id="searchPublicProducts" placeholder="Cerca prodotti...">
                 </c:when>
                 <c:when test="${not empty user}">
-                    <input type="text" name="searchProducts" id="searchProducts" style="color: black" placeholder="Cerca prodotti...">
+                    <input type="text" name="searchProducts" id="searchProducts" placeholder="Cerca prodotti...">
                 </c:when>
             </c:choose>
         </div>

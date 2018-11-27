@@ -62,7 +62,7 @@
                                     + "</span></li>");
                             },
                             error(xhr, status, error) {
-                        alert("L'utente non ha i permessi per la modifica della lista");
+                    alert("L'utente non ha i permessi per la modifica della lista");
                     }
                     });
                     },
@@ -86,38 +86,38 @@
                     response(data);
                     },
                     error(xhr, status, error) {
-                        alert("L'utente non ha i permessi per la modifica della lista");
+            alert("L'utente non ha i permessi per la modifica della lista");
             }
             });
             },
-            select: function (event, ui) {
-            $("#searchUsers").val("");
-            $.ajax({
-            url: "${pageContext.response.encodeURL(contextPath.concat("restricted/ShareListsServlet"))}",
-                    dataType: "json",
-                    data: {
-                    shoppingListId: ${shoppingList.id},
-                            userId: ui.item.value,
-                            action: 1,
-                    },
-                    success: function (data) {
-                    $("#utenti").append("<li id=\"" + ui.item.value + "\"class=\"list-group-item justify-content-between align-items-center\">" + ui.item.label
-                            + " <span class=\"pull-right glyphicon glyphicon-remove\" title=\"Elimina\" style=\"color:black;font-size:15px;margin-left:5px;\" onclick=\"deleteUser(" + ui.item.value + ")\"></span>"
-                            + " <select class=\"pull-right\" onchange=\"changePermissions(" + ui.iteml.label + ", this.value)\">"
-                            + "     <option value=1>Visualizza lista</option>"
-                            + "     <option value=2>Modifica lista</option>"
-                            + " </select>"
-                            + " </li>");
-                    },
-                    error(xhr, status, error){
-                        alert("L'utente non ha i permessi per la modifica della lista");
+                    select: function (event, ui) {
+                    $("#searchUsers").val("");
+                    $.ajax({
+                    url: "${pageContext.response.encodeURL(contextPath.concat("restricted/ShareListsServlet"))}",
+                            dataType: "json",
+                            data: {
+                            shoppingListId: ${shoppingList.id},
+                                    userId: ui.item.value,
+                                    action: 1,
+                            },
+                            success: function (data) {
+                            $("#utenti").append("<li id=\"" + ui.item.value + "\"class=\"list-group-item justify-content-between align-items-center\">" + ui.item.label
+                                    + " <span class=\"pull-right glyphicon glyphicon-remove\" title=\"Elimina\" style=\"color:black;font-size:15px;margin-left:5px;\" onclick=\"deleteUser(" + ui.item.value + ")\"></span>"
+                                    + " <select class=\"pull-right\" onchange=\"changePermissions(" + ui.iteml.label + ", this.value)\">"
+                                    + "     <option value=1>Visualizza lista</option>"
+                                    + "     <option value=2>Modifica lista</option>"
+                                    + " </select>"
+                                    + " </li>");
+                            },
+                            error(xhr, status, error){
+                    alert("L'utente non ha i permessi per la modifica della lista");
                     }
-            });
-            },
-            focus: function (event, ui) {
-                $("#searchUsers").val(ui.item.label);
-                return false;
-            }
+                    });
+                    },
+                    focus: function (event, ui) {
+                    $("#searchUsers").val(ui.item.label);
+                    return false;
+                    }
             });
             });
             /* MODIFICA ASINCRONA DEI PERMESSI DEGLI UTENTI */
