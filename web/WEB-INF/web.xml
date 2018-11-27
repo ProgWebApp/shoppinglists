@@ -150,6 +150,10 @@
         <servlet-name>ResetPasswordServlet</servlet-name>
         <servlet-class>servlets.ResetPasswordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShoppingListsServlet</servlet-name>
+        <servlet-class>servlets.ShoppingListsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -247,6 +251,10 @@
     <servlet-mapping>
         <servlet-name>NotificationsServlet</servlet-name>
         <url-pattern>/restricted/NotificationsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShoppingListsServlet</servlet-name>
+        <url-pattern>/restricted/ShoppingListsServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

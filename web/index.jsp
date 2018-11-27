@@ -54,7 +54,7 @@
                                     <div class="panel-heading-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductCategoryPublic?productCategoryId=").concat(productCategory.id))}'">${productCategory.name}</div>
                                 </c:when>
                             </c:choose>
-                            <img src="${contextPath}/images/productCategories/${productCategory.logoPath}" class="fit-image img-responsive" alt="${productCategory.name}">
+                            <img src="${contextPath}images/productCategories/${productCategory.logoPath}" class="fit-image img-responsive" alt="${productCategory.name}">
                             <div class="panel-footer-custom">Visualizza articoli di ${productCategory.name}</div>
                         </div>
                     </div>

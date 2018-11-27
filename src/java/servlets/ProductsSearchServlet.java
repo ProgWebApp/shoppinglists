@@ -55,13 +55,12 @@ public class ProductsSearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String query = (String) request.getParameter("query");
+        String query = request.getParameter("query");
         User user = (User) request.getSession().getAttribute("user");
         List<Product> products;
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
 
         if (!query.isEmpty()) {
-            System.out.println("query: " + query);
             if (request.getParameter("shoppingListId") != null) {
                 try {
                     Integer shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));

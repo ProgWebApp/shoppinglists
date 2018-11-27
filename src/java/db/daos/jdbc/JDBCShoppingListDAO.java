@@ -51,9 +51,9 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             ps.setString(2, shoppingList.getDescription());
             ps.setString(3, shoppingList.getImagePath());
             ps.setInt(4, shoppingList.getListCategoryId());
-            if(shoppingList.getOwnerId() != null){
+            if (shoppingList.getOwnerId() != null) {
                 ps.setInt(5, shoppingList.getOwnerId());
-            }else{
+            } else {
                 ps.setNull(5, Types.INTEGER);
             }
             ps.setString(6, shoppingList.getCookie());
@@ -95,9 +95,9 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             ps.setString(2, shoppingList.getDescription());
             ps.setString(3, shoppingList.getImagePath());
             ps.setInt(4, shoppingList.getListCategoryId());
-            if(shoppingList.getOwnerId() != null){
+            if (shoppingList.getOwnerId() != null) {
                 ps.setInt(5, shoppingList.getOwnerId());
-            }else{
+            } else {
                 ps.setNull(5, Types.INTEGER);
             }
             ps.setInt(6, shoppingListId);
@@ -225,6 +225,42 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             List<ShoppingList> shoppingLists = new ArrayList<>();
 
             stm.setInt(1, userId);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                ShoppingList shoppingList = setAllShoppingListFields(rs);
+                shoppingList.setListCategoryIcon(rs.getString("category_logo"));
+                shoppingList.setNotifications(rs.getInt("notifications"));
+                shoppingLists.add(shoppingList);
+            }
+
+            return shoppingLists;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of shoppingLists for the passed userId", ex);
+        }
+    }
+
+    @Override
+    public List<ShoppingList> getListsByProductCategory(Integer productCategoryId, Integer userId) throws DAOException {
+        if (productCategoryId == null || userId == null) {
+            throw new DAOException("productCategoryId and userId are mandatory fields", new NullPointerException("productCategoryId or userId is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("SELECT lists.id AS id, lists.name AS name, lists.description, "
+                + " lists.logo AS logo, lists.list_category AS list_category, lists.owner AS owner, lists.cookie AS cookie, permissions,"
+                + " notifications, list_categories.logo AS category_logo, list_categories.id, PC_LC.list_category, PC_LC.product_category"
+                + " FROM PC_LC, list_categories, lists LEFT JOIN users_lists "
+                + " ON lists.id = users_lists.list"
+                + " WHERE users_lists.user_id = ?"
+                + " AND permissions = 2"
+                + " AND lists.list_category = list_categories.id"
+                + " AND PC_LC.list_category = lists.list_category"
+                + " AND PC_LC.product_category = ?")) {
+
+            List<ShoppingList> shoppingLists = new ArrayList<>();
+
+            stm.setInt(1, userId);
+            stm.setInt(2, productCategoryId);
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
@@ -385,8 +421,8 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             throw new DAOException("Impossible to update the link between the passed shoppingList and the passed user", ex);
         }
     }
-    
-     @Override
+
+    @Override
     public Integer getNotificationsByUser(Integer userId) throws DAOException {
         if (userId == null) {
             throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
@@ -397,14 +433,14 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
-            }else{
+            } else {
                 return null;
             }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the number of messages for the passed userId", ex);
         }
     }
-    
+
     @Override
     public void addProduct(Integer shoppingListId, Integer productId, int quantity, boolean necessary) throws DAOException {
         if ((shoppingListId == null) || (productId == null)) {
@@ -422,9 +458,9 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
         } catch (SQLException ex) {
             if (ex.getSQLState().equals("23505")) {
                 updateProduct(shoppingListId, productId, quantity, necessary);
-                throw new DAOException("Impossible to link the passed shoppingList with the passed product", new UniqueConstraintException("This link already exist in the system"));
+            } else {
+                throw new DAOException("Impossible to link the passed shoppingList with the passed product", ex);
             }
-            throw new DAOException("Impossible to link the passed shoppingList with the passed product", ex);
         }
     }
 

@@ -159,12 +159,6 @@ public class ShoppingListServlet extends HttpServlet {
                 out.flush();
                 break;
             case 1:
-                if (checkPermissions(user, shoppingList) == 2) {
-                    request.setAttribute("modifiable", true);
-                } else {
-                    request.setAttribute("modifiable", false);
-                }
-
                 List<User> users;
                 List<Message> messages;
                 try {
@@ -177,6 +171,7 @@ public class ShoppingListServlet extends HttpServlet {
                     response.setStatus(500);
                     return;
                 }
+                request.setAttribute("permissions", checkPermissions(user, shoppingList));
                 request.setAttribute("products", products);
                 request.setAttribute("users", users);
                 request.setAttribute("shoppingListCategory", category);

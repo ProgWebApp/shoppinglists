@@ -397,8 +397,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             throw new DAOException("Impossible to get the product for the passed id and userId", ex);
         }
     }
-    
-    
+
     @Override
     public void addLinkWithUser(Integer productId, Integer userId) throws DAOException {
         if ((productId == null) || (userId == null)) {
@@ -431,19 +430,15 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
 
             ResultSet rs = ps1.executeQuery();
             while (rs.next()) {
-                try {
-                    ps2.setInt(1, rs.getInt("user_id"));
-                    ps2.setInt(2, productId);
-                    ps2.executeUpdate();
-                } catch (SQLException ex) {
-                    if (!ex.getSQLState().equals("23505")) {
-                        throw new DAOException("Impossible to link the passed product with the passed user", ex);
-                    }
-                }
-            }
 
+                ps2.setInt(1, rs.getInt("user_id"));
+                ps2.setInt(2, productId);
+                ps2.executeUpdate();
+            }
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users for the passed shoppingList", ex);
+            if (!ex.getSQLState().equals("23505")) {
+                throw new DAOException("Impossible to get the list of users for the passed shoppingList", ex);
+            }
         }
     }
 

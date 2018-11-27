@@ -7,15 +7,17 @@ package servlets;
 
 import db.daos.ProductCategoryDAO;
 import db.daos.ProductDAO;
+import db.daos.ShoppingListCategoryDAO;
+import db.daos.ShoppingListDAO;
 import db.entities.Product;
 import db.entities.ProductCategory;
-import db.entities.User;
+import db.entities.ShoppingList;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ProductPublic extends HttpServlet {
 
     private ProductDAO productDAO;
+    private ShoppingListDAO shoppingListDAO;
+    private ShoppingListCategoryDAO shoppingListCategoryDAO;
     private ProductCategoryDAO productCategoryDAO;
 
     @Override
@@ -39,6 +43,16 @@ public class ProductPublic extends HttpServlet {
             productDAO = daoFactory.getDAO(ProductDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for product storage system", ex);
+        }
+        try {
+            shoppingListDAO = daoFactory.getDAO(ShoppingListDAO.class);
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get dao factory for shoppingList storage system", ex);
+        }
+        try {
+            shoppingListCategoryDAO = daoFactory.getDAO(ShoppingListCategoryDAO.class);
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get dao factory for shoppingListCategory storage system", ex);
         }
         try {
             productCategoryDAO = daoFactory.getDAO(ProductCategoryDAO.class);
@@ -58,7 +72,6 @@ public class ProductPublic extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
         Integer productId;
-
         try {
             productId = Integer.valueOf(request.getParameter("productId"));
         } catch (NumberFormatException ex) {
@@ -66,7 +79,7 @@ public class ProductPublic extends HttpServlet {
             return;
         }
 
-        /* RECUPERO IL PRODOTTO E RESTITUISCO ERRORE SE IL PRODOTTO NON ESISTE (O NON E VISIBILE) */
+        /* RECUPERO IL PRODOTTO E RESTITUISCO ERRORE SE IL PRODOTTO NON ESISTE (O NON E' PUBBLICO) */
         Product product;
         try {
             product = productDAO.getByPrimaryKey(productId);
@@ -82,10 +95,37 @@ public class ProductPublic extends HttpServlet {
             response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
             return;
         }
+
+        /* RECUPERO L'UTENTE NON LOGGATO, SE ESISTE */
+        String userId = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("userId")) {
+                    userId = cookie.getValue();
+                }
+            }
+        }
+
+        /* SE L'UTENTE ESISTE RECUPERO LA SUA LISTA*/
+        ShoppingList shoppingList = null;
+        if (userId != null) {
+            try {
+                shoppingList = shoppingListDAO.getByCookie(userId);
+            } catch (DAOException ex) {
+                response.setStatus(500);
+                return;
+            }
+        }
+
         /* RISPONDO */
         ProductCategory category;
         try {
             category = productCategoryDAO.getByPrimaryKey(product.getProductCategoryId());
+            /* SE L'UTENTE HA UNA LISTA, CONTROLLO SE IL PRODOTTO PUO' ESSERE INSERITO */
+            if (shoppingList != null && shoppingListCategoryDAO.hasProductCategory(shoppingList.getListCategoryId(), product.getProductCategoryId())) {
+                request.setAttribute("myList", shoppingList.getId());
+            }
         } catch (DAOException ex) {
             response.setStatus(500);
             return;

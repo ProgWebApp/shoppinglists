@@ -138,7 +138,6 @@ public class RegistrationServlet extends HttpServlet {
                     + "Nel caso il link non dovesse funzionare copialo nella barra del browser e premi invio.\n"
                     + "Questa è una mail generata automaticamente, si prega di non ispondere a questo messaggio.";
             Email.send(userEmail, "Registrazione shopping-list", testo);
-
         } catch (DAOException ex) {
             if (ex.getCause() instanceof UniqueConstraintException) {
                 user.setEmail("");

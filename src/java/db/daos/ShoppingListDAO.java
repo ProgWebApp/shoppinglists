@@ -13,6 +13,17 @@ import java.util.List;
 public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
 
     /**
+     * Returns the list of shoppingLists owned or shared with the passed user that can
+     * contain the passed product category.
+     *
+     * @param productCategoryId the id of the productCategory
+     * @param userId the id of the user
+     * @return
+     * @throws DAOException if an error occurred during the persist action.
+     */
+    public List<ShoppingList> getListsByProductCategory(Integer productCategoryId, Integer userId) throws DAOException;
+
+    /**
      * Returns the list of {@link ShoppingList shoppingList} shared with the
      * passed user.
      *
@@ -24,15 +35,14 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
      * retrieving.
      */
     public List<ShoppingList> getByUserId(Integer userId) throws DAOException;
-    
+
     /**
-     * Returns the {@link ShoppingList shoppingList} of the
-     * passed user, identified by his cookie.
+     * Returns the {@link ShoppingList shoppingList} of the passed user,
+     * identified by his cookie.
      *
      * @param userId the {@code id} of the {@code user} for which retrieve the
      * shoppingList list.
-     * @return the {@code shoppingList} of the user passed as
-     * parameter or null.
+     * @return the {@code shoppingList} of the user passed as parameter or null.
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
@@ -113,7 +123,7 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
      * @throws DAOException if an error occurred during the persist action.
      */
     public void removeNotifications(Integer shoppingListId, Integer userId) throws DAOException;
-    
+
     /**
      * Get the number of notifications for the passed {@code user}
      *
@@ -134,7 +144,7 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
      * @throws DAOException if an error occurred during the persist action.
      */
     public void addProduct(Integer shoppingListId, Integer productId, int quantity, boolean necessary) throws DAOException;
-    
+
     /**
      * Removes the passed {@code pruduct} from the passed {@code shoppingList}.
      *

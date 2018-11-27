@@ -5,7 +5,6 @@
  */
 package servlets;
 
-import db.daos.MessageDAO;
 import db.daos.ShoppingListCategoryDAO;
 import db.daos.ShoppingListDAO;
 import db.entities.Product;

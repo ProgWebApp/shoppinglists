@@ -60,11 +60,9 @@ public class ShareListsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         /* RECUPERO L'UTENTE */
         User userActive = (User) request.getSession().getAttribute("user");
-        Integer userActiveId = userActive.getId();
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI OBBLIGATORI*/
         if (request.getParameter("userId") == null || request.getParameter("shoppingListId") == null || request.getParameter("action") == null) {
-            System.out.println("errore parametri");
             response.setStatus(400);
             return;
         }
@@ -78,43 +76,41 @@ public class ShareListsServlet extends HttpServlet {
             shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
             action = Integer.valueOf(request.getParameter("action"));
         } catch (NumberFormatException ex) {
-            System.out.println("fallita conversione");
             response.setStatus(400);
             return;
         }
 
         /* CONTROLLO L'ESISTENZA DI UN PARAMETRO DEI PERMESSI, ALTRIMENTI IMPOSTO IL DEFAULT */
-        Integer permission;
-        if (request.getParameter("permission") != null) {
+        Integer permissions;
+        if (request.getParameter("permissions") != null) {
             try {
-                permission = Integer.valueOf(request.getParameter("permission"));
+                permissions = Integer.valueOf(request.getParameter("permissions"));
             } catch (NumberFormatException ex) {
             System.out.println("fallita conversione");
                 response.setStatus(400);
                 return;
             }
         } else {
-            permission = 1; //imposto il valore minimo di permission
+            permissions = 1; //imposto il valore minimo di permissions
         }
 
         /* RISPONDO */
         try {
-            if (shoppingListDAO.getPermission(shoppingListId, userActiveId) == 2) {
+            if (shoppingListDAO.getPermission(shoppingListId, userActive.getId()) == 2) {
                 //se l'utente ha i permessi di modifica della lista
                 switch (action) {
                     case 0:
                         shoppingListDAO.removeMember(shoppingListId, userId);
                         break;
                     case 1:
-                        shoppingListDAO.addMember(shoppingListId, userId, permission);
+                        shoppingListDAO.addMember(shoppingListId, userId, permissions);
                         productDAO.shareProductFromList(shoppingListId, userId);
                         break;
                     case 2:
-                        shoppingListDAO.updateMember(shoppingListId, userId, permission);
+                        shoppingListDAO.updateMember(shoppingListId, userId, permissions);
                         break;
                 }
             } else {
-                System.out.println("l'utente non ha i permessi");
                 response.setStatus(403);
             }
         } catch (DAOException ex) {

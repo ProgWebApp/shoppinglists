@@ -2,8 +2,10 @@ package servlets;
 
 import db.daos.ProductCategoryDAO;
 import db.daos.ProductDAO;
+import db.daos.ShoppingListDAO;
 import db.entities.Product;
 import db.entities.ProductCategory;
+import db.entities.ShoppingList;
 import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
@@ -27,6 +29,7 @@ import javax.servlet.http.Part;
 public class ProductServlet extends HttpServlet {
 
     private ProductDAO productDAO;
+    private ShoppingListDAO shoppingListDAO;
     private ProductCategoryDAO productCategoryDAO;
 
     @Override
@@ -44,6 +47,11 @@ public class ProductServlet extends HttpServlet {
             productCategoryDAO = daoFactory.getDAO(ProductCategoryDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get product category dao", ex);
+        }
+        try {
+            shoppingListDAO = daoFactory.getDAO(ShoppingListDAO.class);
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get shoppingList dao", ex);
         }
     }
 
@@ -106,13 +114,16 @@ public class ProductServlet extends HttpServlet {
                     request.setAttribute("modifiable", false);
                 }
                 ProductCategory category;
+                List<ShoppingList> shoppingLists;
                 try {
                     category = productCategoryDAO.getByPrimaryKey(product.getProductCategoryId());
+                    shoppingLists = shoppingListDAO.getListsByProductCategory(product.getProductCategoryId(), user.getId());
                 } catch (DAOException ex) {
                     response.setStatus(500);
                     return;
                 }
                 request.setAttribute("productCategory", category);
+                request.setAttribute("shoppingLists", shoppingLists);
                 getServletContext().getRequestDispatcher("/product.jsp").forward(request, response);
                 break;
             case 2:
@@ -221,7 +232,7 @@ public class ProductServlet extends HttpServlet {
         if (productsFolder == null) {
             throw new ServletException("Products folder not configured");
         }
-        productsFolder = getServletContext().getRealPath(productsFolder);
+        productsFolder = getServletContext().getRealPath("/"+ productsFolder);
 
         HashSet<String> photoPaths;
         if (productId == null) {

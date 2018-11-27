@@ -56,10 +56,10 @@
                     <c:forEach items="${products}" var="product">
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                             <c:choose>
-                                <c:when test="${product.isReserved()}">
+                                <c:when test="${not empty user}">
                                     <div class="panel panel-default-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">
                                     </c:when>
-                                    <c:when test="${not product.isReserved()}">
+                                    <c:when test="${empty user}">
                                         <div class="panel panel-default-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
                                         </c:when>
                                     </c:choose>

@@ -60,12 +60,14 @@
         xhttp.send("data=" + myquery);
     }
 
-    /* FUNZIONE RICERCA PRODOTTI PUBBLICI E PRIVATI PER L'UTENTE LOGGATO */
+    /* FUNZIONE RICERCA PRODOTTI */
     $(function () {
         $("#searchProducts").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductsSearchServlet"))}",
+                    url:
+    <c:if test="${not empty user}">"${pageContext.response.encodeURL(contextPath.concat("restricted/ProductsSearchServlet"))}"</c:if>
+    <c:if test="${empty user}">"${pageContext.response.encodeURL(contextPath.concat("ProductsSearchPublic"))}"</c:if>,
                     dataType: "json",
                     data: {
                         query: request.term
@@ -73,69 +75,39 @@
                     success: function (data) {
                         response(data);
                     },
-                    error(xhr, status, error) {
-                        console.log("error: " + error);
+                    error(e) {
+                        console.log("Error: " + e);
                     }
                 });
             },
             response: function (event, ui) {
-                ui.content.push({label: "Aggiungi \""+$("#searchProducts").val()+"\" ai miei prodotti", value: 0});
+    <c:if test="${not empty user}">
+                ui.content.push({label: "Aggiungi \"" + $("#searchProducts").val() + "\" ai miei prodotti", value: 0});
+    </c:if>
             },
             select: function (event, ui) {
-                if (ui.item.value == 0) {
+                if (ui.item.value === 0) {
                     var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp?name="))}" + $("#searchProducts").val();
                     window.location.href = url;
                 } else {
+    <c:if test="${not empty user}">
                     var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId="))}" + ui.item.value;
+    </c:if>
+    <c:if test="${empty user}">
+                    var url = "${pageContext.response.encodeURL(contextPath.concat("ProductPublic?res=1&productId="))}" + ui.item.value;
+    </c:if>
                     window.location.href = url;
                 }
                 return false;
             },
-            focus: function (event, ui) {
+            focus: function () {
                 return false;
             }
         });
         $("#searchProducts").keypress(function (e) {
-            console.log("Valore: " + $("#searchProducts").val());
-            if (e.which == 13 && $("#searchProducts").val() != null) {
+            console.log("Valore: " + $("#searchProducts").text);
+            if (e.which === 13 && $("#searchProducts").val() !== "") {
                 var url = "${pageContext.response.encodeURL(contextPath.concat("products.jsp?query="))}" + $("#searchProducts").val();
-                window.location.href = url;
-            }
-        });
-    });
-    /* FUNZIONE RICERCA PRODOTTI PUBBLICI PER L'UTENTE non LOGGATO */
-    $(function () {
-        $("#searchPublicProducts").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: "${pageContext.response.encodeURL(contextPath.concat("ProductsSearchPublic"))}",
-                    dataType: "json",
-                    data: {
-                        query: request.term
-                    },
-                    success: function (data) {
-                        response(data);
-                    },
-                    error(xhr, status, error) {
-                        console.log("error: " + error);
-                    }
-                });
-            },
-            select: function (event, ui) {
-                if (ui.item != null) {
-                    var url = "${pageContext.response.encodeURL(contextPath.concat("ProductPublic?res=1&productId="))}" + ui.item.value;
-                    window.location.href = url;
-                }
-                return false;
-            },
-            focus: function (event, ui) {
-                return false;
-            }
-        });
-        $("#searchPublicProducts").keypress(function (e) {
-            console.log("Valore: " + $("#searchPublicProducts").val());
-            if (e.which == 13 && $("#searchPublicProducts").val() != null) {
-                var url = "${pageContext.response.encodeURL(contextPath.concat("products.jsp?query="))}" + $("#searchPublicProducts").val();
                 window.location.href = url;
             }
         });
@@ -147,14 +119,7 @@
             <a href="${pageContext.response.encodeURL(contextPath.concat("index.jsp"))}"><span class="glyphicon glyphicon-home"></span><span class="hide-elem"> Home</span></a>
         </div>
         <div class="search">
-            <c:choose>
-                <c:when test="${empty user}">
-                    <input type="text" name="searchPublicProducts" id="searchPublicProducts" placeholder="Cerca prodotti...">
-                </c:when>
-                <c:when test="${not empty user}">
-                    <input type="text" name="searchProducts" id="searchProducts" placeholder="Cerca prodotti...">
-                </c:when>
-            </c:choose>
+            <input type="text" name="searchProducts" id="searchProducts" placeholder="Cerca prodotti...">
         </div>
     </div>
     <div class="mynav-right">
