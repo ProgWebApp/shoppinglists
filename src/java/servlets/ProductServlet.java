@@ -249,7 +249,7 @@ public class ProductServlet extends HttpServlet {
         if (remove != null) {
             for (String photo : remove) {
                 photoPaths.remove(photo);
-                Files.delete(Paths.get(productsFolder + File.separator + photo));
+                //Files.delete(Paths.get(productsFolder + File.separator + photo));
             }
         }
         product.setPhotoPath(photoPaths);

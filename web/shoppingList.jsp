@@ -177,29 +177,29 @@
                     data: {
                         shoppingListId: ${shoppingList.id},
                         productId: productId,
-                        action: function(){
-                            if($("#checkbox_"+productId).is(":checked")){
+                        action: function () {
+                            if ($("#checkbox_" + productId).is(":checked")) {
                                 return 1;
-                            }else{
+                            } else {
                                 return 2;
                             }
                         }
                     },
                     success: function (data) {
-                        if($("#checkbox_"+productId).is(":checked")){
-                            $("#"+productId).css({"text-decoration": "line-through"});
-                        }else{
-                            $("#"+productId).css({"text-decoration": "none"});
+                        if ($("#checkbox_" + productId).is(":checked")) {
+                            $("#" + productId).css({"text-decoration": "line-through"});
+                        } else {
+                            $("#" + productId).css({"text-decoration": "none"});
                         }
                         return false;
                     },
                     error(xhr, status, error) {
                         console.log(error);
                         alert("L'utente non ha i permessi per la modifica della lista");
-                        if($("#checkbox_"+productId).is(":checked")){
-                            $("#checkbox_"+productId).prop('checked', false);
-                        }else{
-                            $("#checkbox_"+productId).prop('checked', false);
+                        if ($("#checkbox_" + productId).is(":checked")) {
+                            $("#checkbox_" + productId).prop('checked', false);
+                        } else {
+                            $("#checkbox_" + productId).prop('checked', false);
                         }
                     }
                 });
@@ -257,12 +257,8 @@
             <div id="containerPage">
                 <div id="header">
                     <div class="jumbotron" style="background-image: url('${contextPath}images/shoppingList/${shoppingList.imagePath}');">
-
-
-                    <h2>${shoppingList.name}</h2>
-                    <h4>Categoria: ${shoppingListCategory.name}</h4>
-                    <h4>Descrizione: ${shoppingList.description}</h4>
-
+                    <h1>${shoppingList.name}</h1>
+                    <p>Categoria: ${shoppingListCategory.name}</p>
                 </div>
                 <%@include file="include/navigationBar.jsp"%>
             </div>
@@ -273,8 +269,8 @@
                             <div class="col-sm-3">
                             </div>
                             <div class="col-sm-5 pre-scrollable">
+                                <h4>${shoppingList.description}</h4>
                                 <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control">
-
                                 <ul id="prodotti" class="list-group">
                                     <c:forEach items="${products}" var="product">
                                         <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
@@ -288,6 +284,7 @@
                             <div class="col-sm-1">
                             </div>
                             <div class="col-sm-5 pre-scrollable">
+                                <h4>${shoppingList.description}</h4>
                                 <c:if test="${permissions==2}">
                                     <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control">
                                 </c:if>

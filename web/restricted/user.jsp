@@ -27,8 +27,16 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container">
-                        <img src="${contextPath}/images/avatars/<c:out value="${user.avatarPath}"/>" alt="Avatar">
-                        <p>${user.firstName} ${user.lastName}</p>
+                        <h1>${user.firstName} ${user.lastName}</h1>
+                        
+                    </div>
+                </div>
+                <%@include file="../include/navigationBar.jsp" %>
+            </div>
+            <div id="body">
+                <div class="container-fluid">
+                    <div class="col-sm-3">
+                        <img class="container-img" src="${contextPath}/images/avatars/<c:out value="${user.avatarPath}"/>" alt="Avatar">
                         <form action="${pageContext.response.encodeURL(contextPath.concat("restricted/UserServlet"))}" method="POST" enctype="multipart/form-data">
                             <c:choose>
                                 <c:when test="${message==11}">
@@ -39,13 +47,6 @@
                             <input type="hidden" name="changeAvatar" value=1>
                             <button class="btn btn-custom" type="submit" >Salva</button>
                         </form>
-                    </div>
-                </div>
-                <%@include file="../include/navigationBar.jsp" %>
-            </div>
-            <div id="body">
-                <div class="container-fluid">
-                    <div class="col-sm-3">
                     </div>
                     <div class="container-fluid text-center col-sm-6">
                         <h3>Informazioni personali</h3>

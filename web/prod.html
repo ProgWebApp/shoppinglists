@@ -228,23 +228,23 @@
                 </div>
                 <div class="col-sm-8">
                     <div style="height: 100px;">
-                        <div style="background-color:lightgoldenrodyellow; height: 100px; width: 100px; float:left;">
-                            Logo
+                        <div style="height: 100px; width: 100px; float:left;">
+                            <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="logo">
                         </div>
                         <div>
-                            <h1>Pasta</h1>
+                            <h1>${product.name} - ${productCategory.name}</h1>
                         </div>
                     </div>
                     <div>
                         <h3>Descrizione</h3>
-                        <p>Pasta di grano duro. Va buttata nell'acqua quando questa bolle (preferibilmente senza confezione). Mangiare leggermente al dente per un'esperienza sensoriale migliore. Da gustare in compagnia o anche da soli. Si puo' condire con un po' di tutto basta che sia na roba buona altrimenti rovini una buona pasta.</p>
+                        <p>${product.notes}</p>
                         <br>
                         <hr>
                     </div>
                     <div>
                         <label>Scegli a quale lista vuoi aggiungere:</label>
                         <select>
-                            <option disabled selected value style="display:none;"> --nessuna lista--</option>
+                            <option disabled selected hidden> --nessuna lista--</option>
                             <option class="item">Lista alimentari</option>
                             <option class="item">Lista ferramenta</option>
                         </select>
@@ -259,6 +259,7 @@
                         <br>
                         <hr>
                     </div>
+                    
                     <a href="#">I miei prodotti</a>
                     <br>
                     <br>

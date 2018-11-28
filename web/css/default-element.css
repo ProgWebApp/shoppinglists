@@ -85,11 +85,10 @@ a:hover{
     float: right;
 }
 .mynav-item{
-    padding: 7px;
-}
-.mynav-item  { 
-    position: relative; 
+    padding: 7px; 
     float: left;
+    line-height: 26px;
+    height: 38px;
 }
 .mynav-item > a:link {
     color: white;
@@ -111,24 +110,32 @@ a:hover{
     width: calc(100% - 100px);
     max-width: 400px;
     float: left;
-    padding-top: 3px;
-    padding-left: 10px;
 }
 .search > input {
     width: 100%;
-    height: 30px;
+    height: 26px;
     color: black;
+    border: none;
+    padding-left: 3px;
 }
 .dropdown-menu{
     top:120%;
-    padding-top:15px;
+}
+.dropdown-menu hr{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.navIcon{
+    height: 26px;
+    width: 26px;
+    border-image-width: 0px;
 }
 @media only screen and (max-width:767px){
     .hide-elem{
         display: none !important;
     }
     .search{
-        width: calc(100% - 35px);
+        width: calc(100% - 40px);
         max-width: 400px;
     }
     .mynav-left{
