@@ -50,6 +50,7 @@ button.user-list-group-item-action{
 div.pre-scrollable{
     max-height:300px;
     margin-bottom:20px;
+    overflow-y: auto;
 }
 @media only screen and (min-width:768px){
 div.pre-scrollable{

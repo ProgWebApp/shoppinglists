@@ -9,6 +9,7 @@ public class Message {
     private String date;
     private String body;
     private Integer senderId;
+    private String senderName;
     private Integer shoppingListId;
 
     /**
@@ -82,7 +83,23 @@ public class Message {
     public void setSenderId(Integer senderId) {
         this.senderId = senderId;
     }
+    /**
+     * Return the senderName of the message.
+     *
+     * @return the senderName
+     */
+    public String getSenderName() {
+        return senderName;
+    }
 
+    /**
+     * Sets the senderName of the message.
+     *
+     * @param senderName the senderName to set
+     */
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
     /**
      * Return the id of the shoppingList to which the message refers.
      *

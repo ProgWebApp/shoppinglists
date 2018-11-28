@@ -293,7 +293,7 @@
                                 </c:if>
                                 <ul id="prodotti" class="list-group">
                                     <c:forEach items="${products}" var="product">
-                                        <li id="${product.id}" class="list-group-item justify-content-between align-items-center">
+                                        <li id="${product.id}" class="list-group-item justify-content-between align-items-center" <c:if test="${not product.necessary}">style="text-decoration: line-through"</c:if>>
                                             <input type="checkbox" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
                                             ${product.name}
                                             <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
@@ -309,7 +309,10 @@
                                         <label for="comment">Chat:</label>
                                         <div class="form-control chat" id="messageBoard">
                                             <c:forEach items="${messages}" var="message">
-                                                <div class="message<c:if test="${message.senderId==user.id}"> message-right</c:if>">${message.body}</div>
+                                                <div class="message<c:if test="${message.senderId==user.id}"> message-right</c:if>">
+                                                    <c:if test="${message.senderId!=user.id}"><span style="font-weight: bold">${message.senderName}</span><br></c:if>
+                                                    ${message.body}
+                                                </div>
                                             </c:forEach>
                                         </div>
                                     </div>

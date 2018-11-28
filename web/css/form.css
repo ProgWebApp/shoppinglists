@@ -15,12 +15,13 @@
     color: white;
 }
 .btn-custom{
-    font: 17px monospace;
+    font-size: 17px;
     background-color:#ff6336;
     padding: 4px 7px 4px 7px;
     border-radius: 5px 5px; 
     color:white;
-    margin:8px 1px 8px 1px;
+    border: none;
+    height: 35px;
 }
 input:focus {
     outline: none;

@@ -92,7 +92,7 @@
                     },
                     success: function (data) {
                         console.log(data);
-                        $("#anteprima").html(data.shoppingList.name + "<br>" + data.shoppingList.description);
+                        $("#anteprima").html("");
                         for (var i in data.products) {
                             $("#anteprima").append("<li id = \"" + data.products[i].id + "\" class = \"list-group-item justify-content-between align-items-center\" >" + data.products[i].name + "</li>");
                         }

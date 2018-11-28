@@ -35,6 +35,11 @@
                 <%@include file="include/navigationBar.jsp" %>
             </div>
             <div id="body">
+                <div class="row">
+                    <div class="right">
+                        <button class="btn-custom" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}'">Aggiungi prodotto</button>
+                    </div>
+                    <div class="right">
                 <c:choose>
                     <c:when test="${empty user}">
                         <form action="${contextPath}ProductCategoryPublic" method="GET">
@@ -46,14 +51,15 @@
                                 <input type="hidden" name="res" value="1"> 
                             </c:when>
                         </c:choose>
-                        <select name="order">
+                        <select class="btn-custom" name="order" onchange="this.form.submit()">
                             <option value="1" <c:if test="${order==1}">selected</c:if>>Nome prodotto AZ</option> 
                             <option value="2" <c:if test="${order==2}">selected</c:if>>Nome prodotto ZA</option>  
                         </select>
-                        <input type="submit">
                     </form>
-                    <div class="myContainer row">    
-                        <div class="col-12">
+                    </div>
+                </div>
+                    <div class="row">    
+                        <div class="myContainer col-12">
                             <div class="panel panel-default-custom">
                                 <div class="panel-heading-custom">
                                     <img src="${contextPath}images/productCategories/${productCategory.logoPath}" alt="Logo" class="small-logo" height="40px" width="40px"> 
@@ -91,7 +97,7 @@
                                 </div>
                             </c:forEach>
                         </div>
-                    </div>
+            </div>
                     <%@include file="include/footer.jsp" %>
             </div>
     </body>

@@ -5,22 +5,15 @@
         <title>Product</title>
         <%@include file="include/generalMeta.jsp" %>
         <style>
-
             .carousel .item {
                 height: 300px;
             }
-
-
-
-
             .item img {
                 position: absolute;
                 top: 0;
                 left: 0;
                 min-height: 300px;
             }
-
-
             .carousel{
                 width: 900px;
                 margin: auto;
@@ -73,7 +66,7 @@
 
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
-                        <c:set var = "count" scope = "session" value = "0"/>
+                        <c:set var = "count" value = "0"/>
                         <c:forEach items="${product.photoPath}" var="photo">
                             <c:choose>
                                 <c:when test = "${count == 0}">
@@ -86,11 +79,11 @@
                                 </c:choose>
                                 <c:set var = "count" value = "${count+1}"/>
                             </c:forEach>
-                            <c:remove var = "count" scope = "session"/>
                     </ol>
                     <div class="carousel-inner">
-                        <c:set var = "count" scope = "session" value = "0"/>
+                        <c:set var = "count" value = "0"/>
                         <c:forEach items="${product.photoPath}" var="photo">
+                            ${count}
                             <c:choose>
                                 <c:when test = "${count == 0}">
                                     <div class="item active">
