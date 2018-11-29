@@ -6,7 +6,15 @@
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200) {
-    console.log("Hai " + this.responseText + " notifiche");
+    if (this.responseText != 0){
+    document.getElementById("notification").style.display = "block";
+    document.getElementById("messageNotification").style.display = "block";
+    if(this.responseText == 1){
+    document.getElementById("messageNotification").getElementsByTagName('a')[0].innerHTML = json.elements.length + " nuovo messaggio";
+    }else{
+    document.getElementById("messageNotification").getElementsByTagName('a')[0].innerHTML = json.elements.length + " nuovi messaggi";
+    }
+    }
     }
     };
     xhttp.open("GET", "${pageContext.response.encodeURL(contextPath.concat("restricted/NotificationsServlet"))}", true);
@@ -53,9 +61,16 @@
     xhttp.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200) {
     json = JSON.parse(this.responseText);
-    console.log("ci sono " + json.elements.length + " negozi vicini");
+    if (json.elements.length != 0){
+    document.getElementById("notification").style.display = "block";
+    document.getElementById("mapNotification").style.display = "block";
+    if(json.elements.length == 1){
+        document.getElementById("mapNotification").getElementsByTagName('a')[0].innerHTML = json.elements.length + " negozio nelle vicinanze";
+    }else{
+        document.getElementById("mapNotification").getElementsByTagName('a')[0].innerHTML = json.elements.length + " negozi nelle vicinanze";
     }
-    };
+    }
+    }};
     xhttp.open("POST", "http://www.overpass-api.de/api/interpreter", true);
     xhttp.send("data=" + myquery);
     }
@@ -125,6 +140,19 @@
     <div class="mynav-right">
         <c:choose>
             <c:when test="${not empty user}">
+                <div id="notification" class="mynav-item dropdown">
+                    <div class="dropdown-toggle" data-toggle="dropdown">
+                        <img class="navIcon" src="${contextPath}images/myIconsNav/notification-play.png">
+                    </div>
+                    <ul class="dropdown-menu  dropdown-menu-right">
+                        <li id="messageNotification">
+                            <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingLists.jsp"))}">Nuovi messaggi</a>
+                        </li>
+                        <li id="mapNotification">
+                            <a href="${pageContext.response.encodeURL(contextPath.concat("map.jsp"))}">Negozi nelle vicinanze</a>
+                        </li>
+                    </ul>
+                </div>
                 <div class="mynav-item hide-elem" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/user.jsp"))}'">
                     <img class="navIcon" src="${contextPath}images/myIconsNav/user.png">
                     <span>Profilo</span>
@@ -135,7 +163,7 @@
                 </div>
                 <div class="mynav-item dropdown" >
                     <div class="dropdown-toggle" data-toggle="dropdown">
-                        <img class="navIcon" src="${contextPath}images/myIconsNav/menu.png">
+                        <img class="navIcon" src="${contextPath}images/myIconsNav/menu2.png">
                         <span class="hide-elem">Men&ugrave;</span>
                     </div>
                     <ul class="dropdown-menu  dropdown-menu-right">
@@ -173,13 +201,13 @@
                 </div>
             </c:when>
             <c:when test="${empty user}">
-                <div class="mynav-item hide-elem" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("login.jsp"))}'">
-                        <img class="navIcon" src="${contextPath}images/myIconsNav/login.png">
-                        <span>Login</span>
+                <div class="mynav-item hide-elem" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("login.jsp"))}'">
+                    <img class="navIcon" src="${contextPath}images/myIconsNav/login.png">
+                    <span>Login</span>
                 </div>
                 <div class="mynav-item dropdown" >
                     <div class="dropdown-toggle" data-toggle="dropdown">
-                        <img class="navIcon" src="${contextPath}images/myIconsNav/menu.png">
+                        <img class="navIcon" src="${contextPath}images/myIconsNav/menu2.png">
                         <span class="hide-elem">Men&ugrave;</span>
                     </div>
                     <ul class="dropdown-menu  dropdown-menu-right">

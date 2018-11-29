@@ -88,35 +88,21 @@ a:hover{
     padding: 7px; 
     float: left;
     line-height: 26px;
-    height: 38px;
-}
-.mynav-item > a:link {
-    color: white;
-    text-decoration: none;
-}
-.mynav-item > a:visited{
-    color: white;
-    text-decoration: none;
-}
-.mynav-item > a:hover{
-    color: white;
-    text-decoration: none;
-}
-.mynav-item > a:active {
-    color: white;
-    text-decoration: none;
+    height: 40px;
+    cursor: pointer;
 }
 .search{
     width: calc(100% - 100px);
-    max-width: 400px;
-    float: left;
+    max-width: 500px;
+    padding: 5px 7px;
 }
 .search > input {
     width: 100%;
-    height: 26px;
+    height: 30px;
     color: black;
     border: none;
     padding-left: 3px;
+    padding-top: 6px;
 }
 .dropdown-menu{
     top:120%;
@@ -128,7 +114,16 @@ a:hover{
 .navIcon{
     height: 26px;
     width: 26px;
-    border-image-width: 0px;
+    vertical-align: text-bottom;
+}
+#notification{
+    display: none;
+}
+#messageNotification{
+    display: none;
+}
+#mapNotification{
+    display: none;
 }
 @media only screen and (max-width:767px){
     .hide-elem{
