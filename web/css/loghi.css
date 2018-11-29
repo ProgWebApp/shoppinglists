@@ -6,6 +6,13 @@
     float:left;
     margin-right:10px;
 }
+.medium-logo{
+    width: 100%;
+    object-fit: cover;
+    height: 40px;
+    width:40px;
+    float:left;
+}
 .logo{
     width: 100%;
     object-fit: cover;
@@ -34,4 +41,12 @@
     height: 75px; 
     float: left; 
     margin-left: 20px; 
+}
+
+.list-logo-right{
+    float: right;
+    height: 20px;
+    width: 20px;
+    line-height: 0px;
+    margin: 10px;
 }

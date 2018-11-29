@@ -5,6 +5,26 @@
     border-radius: 5px;
     padding: 20px;
 }
+input[type="file"]{
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+input[type="checkbox"]{
+    display: none;
+}
+
+.container-logo input[type="checkbox"]:checked + label{
+    border: 2px solid blue;
+    border-radius: 10px;
+}
+
+input[type="checkbox"]:checked + label > .my-text-content{
+    text-decoration: line-through;
+}
+#avatar{
+    display: none;
+}
 .acc-btn{
     background-color: #ff6336;
     color: white;
@@ -68,3 +88,6 @@ input:focus {
     float: right;
 }
 
+label{
+    margin-bottom: 0px;
+}

@@ -55,6 +55,7 @@ public class UserServlet extends HttpServlet {
                     activeUser.setAvatarPath(filename);
                     userDAO.update(activeUser);
                 } catch (FileAlreadyExistsException | RuntimeException | DAOException ex) {
+                    System.out.println(ex.getCause().getMessage());
                     request.getSession().setAttribute("message", 11);
                 }
             }

@@ -15,3 +15,39 @@
     height: 150px;
     width:150px;
 }
+.avatar-img{
+    position: relative;
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+}
+.shoppingList-img{
+    width: 150px;
+    float: left;
+    border-radius: 10px;
+    margin: 0px 20px 20px 0px;
+}
+.avatarContainer{
+    width: 200px;
+    height: 200px;
+    margin: 0px auto 10px auto;
+}
+
+.input-img{
+    position: relative;
+    bottom: 100px;
+    width: 200px;
+    height: 100px;
+    background-color: #ffffffa8;
+    border-radius: 0px 0px 100px 100px;
+    display: none;
+    padding-top: 30px;
+}
+
+.avatar-img:hover + .input-img{
+    display: block;
+}
+.input-img:hover{
+    display: block;
+}

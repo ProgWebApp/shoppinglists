@@ -94,7 +94,13 @@
                         console.log(data);
                         $("#anteprima").html("");
                         for (var i in data.products) {
-                            $("#anteprima").append("<li id = \"" + data.products[i].id + "\" class = \"list-group-item justify-content-between align-items-center\" >" + data.products[i].name + "</li>");
+                            $("#anteprima").append("<li id = \"" + data.products[i].id + "\" class = \"list-group-item justify-content-between align-items-center my-list-item\" >"+
+                            "<input type=\"checkbox\" id=\"checkbox_"+data.products[i].id+"\" "+((data.products[i].necessary==="false") ? "checked" : "")+" onclick=\"checkProduct("+id+","+data.products[i].id+")\">"+
+                            "<label for=\"checkbox_"+data.products[i].id+"\">"+
+                            "<img src=\"${contextPath}images/productCategories/icons/"+data.products[i].logoPath+"\" class=\"medium-logo\">"+
+                            "<div class=\"my-text-content\">"+data.products[i].name+ "</div>"+
+                            "</label>"+
+                            "</li>");
                         }
                         return false;
                     },
@@ -103,61 +109,89 @@
                     }
                 });
             }
+            /* SETTA UN PRODOTTO COME SETTATO/NON SETTATO */
+            function checkProduct(shoppingListId, productId) {
+                $.ajax({
+                    url: "${pageContext.response.encodeURL(contextPath.concat("ProductListServlet"))}",
+                    data: {
+                        shoppingListId: shoppingListId,
+                        productId: productId,
+                        action: function () {
+                            if ($("#checkbox_" + productId).is(":checked")) {
+                                return 1;
+                            } else {
+                                return 2;
+                            }
+                        }
+                    },
+                    success: function (data) {
+                        return false;
+                    },
+                    error(xhr, status, error) {
+                        console.log(error);
+                        alert("L'utente non ha i permessi per la modifica della lista");
+                        if ($("#checkbox_" + productId).is(":checked")) {
+                            $("#checkbox_" + productId).prop('checked', false);
+                        } else {
+                            $("#checkbox_" + productId).prop('checked', false);
+                        }
+                    }
+                });
+            }
         </script>
     </head>
     <body>
-    <div id="containerPage">
-        <div id="header">
-            <div class="jumbotron">
-                <div class="container text-center">
-                    <h1>Liste della spesa di ${user.firstName}</h1>      
+        <div id="containerPage">
+            <div id="header">
+                <div class="jumbotron">
+                    <div class="container text-center">
+                        <h1>Liste della spesa di ${user.firstName}</h1>      
+                    </div>
+                </div>
+                <%@include file="../include/navigationBar.jsp"%>
+            </div>
+            <div id="body">
+                <div class="container-fluid">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="pre-scrollable">
+                            <ul class="list-group">
+                                <li>
+                                    <button onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}'" class="list-group-item list-group-item-action my-list-item">
+                                        <div class="my-text-content">
+                                            Aggiungi nuova lista
+                                        </div>
+                                        <img class="list-logo-right" src="${contextPath}images/myIconsNav/plus.png">
+                                    </button>
+                                </li>
+                                <c:set var="i" value="0"/>    
+                                <c:forEach items="${shoppingLists}" var="shoppingList">
+                                    <li id="${shoppingList.id}">
+                                        <button class="list-group-item group-item-custom my-list-item" onclick="showAnteprima(${shoppingList.id})">
+                                            <img src="${contextPath}images/shoppingListCategories/${shoppingList.listCategoryIcon}" alt="Logo" class="medium-logo"> 
+                                            <div class="my-text-content">
+                                            ${shoppingList.name}${shoppingList.notifications}
+                                            </div>
+                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})">
+                                            <span class="list-logo-right" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}'; event.stopPropagation();">
+                                                <span class="glyphicon glyphicon-list-alt"></span>
+                                            </span>
+                                        </button>
+                                    </li>
+                                    <c:set var="i" value="${i + 1}"/>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-sm-5">
+                        <div id="anteprima" class="list-group" >
+                        </div>
+                    </div>
                 </div>
             </div>
-            <%@include file="../include/navigationBar.jsp"%>
+            <%@include file="../include/footer.jsp" %>
         </div>
-        <div id="body">
-            <div class="container-fluid">
-            <div class="col-sm-1">
-            </div>
-            <div class="col-sm-5">
-                <div class="pre-scrollable">
-                    <ul class="list-group">
-                        <c:set var="i" value="0"/>    
-                        <c:forEach items="${shoppingLists}" var="shoppingList">
-                            <li id="${shoppingList.id}">
-                                <button type="button" class="list-group-item group-item-custom" onclick="showAnteprima(${shoppingList.id})">
-                                    <img src="${contextPath}images/shoppingListCategories/${shoppingList.listCategoryIcon}" alt="Logo" class="small-logo" height="40px" width="40px"> 
-                                    ${shoppingList.name}${shoppingList.notifications}
-                                    <a onclick="deleteList(${shoppingList.id})" class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
-                                        <c:choose>
-                                            <c:when test="${empty user}">
-                                            <a class="pull-right" style="color:black" href="${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic?res=1"))}" title="Modifica">
-                                                <span class="glyphicon glyphicon-list-alt" style="margin:0px 10px 0px 0px"></span>
-                                            </a>
-                                        </c:when>
-                                        <c:when test="${not empty user}">
-                                            <a class="pull-right" style="color:black" href="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}" title="Modifica">
-                                                <span class="glyphicon glyphicon-list-alt" style="margin:0px 10px 0px 0px"></span>
-                                            </a>
-                                        </c:when>
-                                    </c:choose>
-                                </button>
-                            </li>
-                            <c:set var="i" value="${i + 1}"/>
-                        </c:forEach>
-                        <li>
-                            <button type="button" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}'" class="list-group-item list-group-item-action">Aggiungi nuova lista </button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-sm-5">
-                <div id="anteprima" class="list-group" >
-                </div>
-            </div>
-        </div>
-    </div>
-    <%@include file="../include/footer.jsp" %>
-</div>
-</body>
+    </body>
 </html>

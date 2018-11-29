@@ -99,7 +99,7 @@
                             </c:when>
                             </c:choose>
                                 <div class="panel-heading-custom" >
-                                    <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="small-logo" height="40px" width="40px"> 
+                                    <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="small-logo"> 
                                     ${product.name}
                                 </div>
                                 <c:forEach items="${product.photoPath}" var="photo" end="0">

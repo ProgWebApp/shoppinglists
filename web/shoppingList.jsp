@@ -186,11 +186,6 @@
                         }
                     },
                     success: function (data) {
-                        if ($("#checkbox_" + productId).is(":checked")) {
-                            $("#" + productId).css({"text-decoration": "line-through"});
-                        } else {
-                            $("#" + productId).css({"text-decoration": "none"});
-                        }
                         return false;
                     },
                     error(xhr, status, error) {
@@ -254,9 +249,9 @@
         </script>
     </head>
     <body <c:if test="${permissions==1||permissions==2}">onload="scrollChat()"</c:if>>
-            <div id="containerPage">
-                <div id="header">
-                    <div class="jumbotron" style="background-image: url('${contextPath}images/shoppingList/${shoppingList.imagePath}');">
+        <div id="containerPage">
+            <div id="header">
+                <div class="jumbotron">
                     <h1>${shoppingList.name}</h1>
                     <p>Categoria: ${shoppingListCategory.name}</p>
                 </div>
@@ -268,51 +263,74 @@
                         <c:when test="${empty user}">
                             <div class="col-sm-3">
                             </div>
-                            <div class="col-sm-5 pre-scrollable">
-                                <h4>${shoppingList.description}</h4>
+                            <div class="col-sm-5">
+                                <div class="pull-left">
+                                    <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
+                                </div>
+                                <div class="pull-right">
+                                    <h4>Descrizione: ${shoppingList.description}</h4>
+                                </div>
+                                <br>
                                 <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control">
-                                <ul id="prodotti" class="list-group">
-                                    <c:forEach items="${products}" var="product">
-                                        <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
-                                            <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
-                                        </li>
-                                    </c:forEach>
-                                </ul>
+                                <div class="pre-scrollable">
+                                    <ul id="prodotti" class="list-group">
+                                        <c:forEach items="${products}" var="product">
+                                            <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
+                                                <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                         </c:when>
                         <c:when test="${not empty user}">
                             <div class="col-sm-1">
                             </div>
-                            <div class="col-sm-5 pre-scrollable">
-                                <h4>${shoppingList.description}</h4>
+                            <div class="col-sm-5">
+                                <div class="pull-left">
+                                    <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
+                                </div>
+                                <div class="pull-right">
+                                    <h4>Descrizione: ${shoppingList.description}</h4>
+                                </div>
+                                <br>
                                 <c:if test="${permissions==2}">
-                                    <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control">
+                                <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control">
                                 </c:if>
-                                <ul id="prodotti" class="list-group">
-                                    <c:forEach items="${products}" var="product">
-                                        <li id="${product.id}" class="list-group-item justify-content-between align-items-center" <c:if test="${not product.necessary}">style="text-decoration: line-through"</c:if>>
-                                            <input type="checkbox" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
-                                            ${product.name}
-                                            <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
-                                        </li>
-                                    </c:forEach>
-                                </ul>
+                                <div class="pre-scrollable">
+                                    <ul id="prodotti" class="list-group">
+                                        <c:forEach items="${products}" var="product">
+                                            <li id="${product.id}" class="list-group-item justify-content-between align-items-center my-list-item">                                                    
+                                                <input type="checkbox" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
+                                                <label for="checkbox_${product.id}">
+                                                    <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="medium-logo">
+                                                    <div class="my-text-content">
+                                                        ${product.name}
+                                                    </div>
+                                                </label>
+                                                <c:if test="${permissions==2}">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick='deleteProduct(${product.id})'>
+                                                </c:if>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                             <div class="col-sm-1">
                             </div>
                             <div class="col-sm-4">
                                 <div class="row">
-                                    <div>
-                                        <label for="comment">Chat:</label>
                                         <div class="form-control chat" id="messageBoard">
                                             <c:forEach items="${messages}" var="message">
                                                 <div class="message<c:if test="${message.senderId==user.id}"> message-right</c:if>">
-                                                    <c:if test="${message.senderId!=user.id}"><span style="font-weight: bold">${message.senderName}</span><br></c:if>
+                                                    <c:if test="${message.senderId!=user.id}">
+                                                        <span style="font-weight: bold">${message.senderName}</span>
+                                                        <br>
+                                                    </c:if>
                                                     ${message.body}
                                                 </div>
                                             </c:forEach>
                                         </div>
-                                    </div>
                                     <div class="input-group">
                                         <input id="newtext" class="form-control" type="text">
                                         <div class="input-group-btn">
@@ -322,27 +340,29 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <ul id="utenti" class="list-group user-list-group">
-                                        <li class="list-group-item justify-content-between align-items-center">
-                                            <label> Utenti che condividono la lista: </label>
-                                        </li>
-                                        <c:if test="${permissions==2}">
-                                            <li class="list-group-item justify-content-between align-items-center">
-                                                <input type="text" id="searchUsers" name="searchUsers" class="form-control">
-                                            </li>
-                                        </c:if>
-                                        <c:forEach items="${users}" var="user">
-                                            <li id="${user.id}" class="list-group-item justify-content-between align-items-center">${user.firstName} ${user.lastName}
-                                                <c:if test="${permissions==2}">
-                                                    <span class="pull-right glyphicon glyphicon-remove" title="Elimina" style="color:black;font-size:15px;margin-left:5px;" onclick="changePermissions(${user.id}, 0)"></span>
-                                                    <select class="pull-right" onchange="changePermissions(${user.id}, this.value)">
-                                                        <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
-                                                        <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
-                                                        </select>  
-                                                </c:if>
-                                            </li>
-                                        </c:forEach>
-                                    </ul>
+                                    <c:if test="${permissions==2}">
+                                    <input type="text" id="searchUsers" name="searchUsers" class="form-control">
+                                    </c:if>
+                                    <div class="pre-scrollable">
+                                        <ul id="utenti" class="list-group user-list-group">
+                                            <c:forEach items="${users}" var="user">
+                                                <li id="${user.id}" class="list-group-item justify-content-between align-items-center my-list-item">
+                                                    <div class="my-text-content">
+                                                        ${user.firstName} ${user.lastName}
+                                                    </div>
+                                                    <c:if test="${permissions==2}">
+                                                        <img class="list-logo-right" src="${contextPath}images/myIconsNav/cancel.png" onclick="changePermissions(${user.id}, 0)">
+                                                        <div class="my-text-content pull-right">
+                                                            <select onchange="changePermissions(${user.id}, this.value)">
+                                                                <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
+                                                                <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
+                                                            </select> 
+                                                        </div>
+                                                    </c:if>
+                                                </li>
+                                            </c:forEach>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </c:when>
