@@ -94,13 +94,13 @@
                         console.log(data);
                         $("#anteprima").html("");
                         for (var i in data.products) {
-                            $("#anteprima").append("<li id = \"" + data.products[i].id + "\" class = \"list-group-item justify-content-between align-items-center my-list-item\" >"+
-                            "<input type=\"checkbox\" id=\"checkbox_"+data.products[i].id+"\" "+((data.products[i].necessary==="false") ? "checked" : "")+" onclick=\"checkProduct("+id+","+data.products[i].id+")\">"+
-                            "<label for=\"checkbox_"+data.products[i].id+"\">"+
-                            "<img src=\"${contextPath}images/productCategories/icons/"+data.products[i].logoPath+"\" class=\"medium-logo\">"+
-                            "<div class=\"my-text-content\">"+data.products[i].name+ "</div>"+
-                            "</label>"+
-                            "</li>");
+                            $("#anteprima").append("<li id = \"" + data.products[i].id + "\" class = \"list-group-item justify-content-between align-items-center my-list-item\" >" +
+                                    "<input type=\"checkbox\" id=\"checkbox_" + data.products[i].id + "\" " + ((data.products[i].necessary === "false") ? "checked" : "") + " onclick=\"checkProduct(" + id + "," + data.products[i].id + ")\">" +
+                                    "<label for=\"checkbox_" + data.products[i].id + "\">" +
+                                    "<img src=\"${contextPath}images/productCategories/icons/" + data.products[i].logoPath + "\" class=\"medium-logo\">" +
+                                    "<div class=\"my-text-content\">" + data.products[i].name + "</div>" +
+                                    "</label>" +
+                                    "</li>");
                         }
                         return false;
                     },
@@ -151,42 +151,45 @@
                 <%@include file="../include/navigationBar.jsp"%>
             </div>
             <div id="body">
-                <div class="container-fluid">
-                    <div class="col-sm-1">
-                    </div>
-                    <div class="col-sm-5">
-                        <div class="pre-scrollable">
-                            <ul class="list-group">
-                                <li>
-                                    <button onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}'" class="list-group-item list-group-item-action my-list-item">
-                                        <div class="my-text-content">
-                                            Aggiungi nuova lista
-                                        </div>
-                                        <img class="list-logo-right" src="${contextPath}images/myIconsNav/plus.png">
-                                    </button>
-                                </li>
-                                <c:set var="i" value="0"/>    
-                                <c:forEach items="${shoppingLists}" var="shoppingList">
-                                    <li id="${shoppingList.id}">
-                                        <button class="list-group-item group-item-custom my-list-item" onclick="showAnteprima(${shoppingList.id})">
-                                            <img src="${contextPath}images/shoppingListCategories/${shoppingList.listCategoryIcon}" alt="Logo" class="medium-logo"> 
+                <div class="bod-container">
+                    <div class="container-fluid">
+                        <div class="col-sm-1">
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="pre-scrollable">
+                                <ul class="list-group">
+                                    <li>
+                                        <button onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}'" class="list-group-item list-group-item-action my-list-item">
                                             <div class="my-text-content">
-                                            ${shoppingList.name}${shoppingList.notifications}
+                                                Aggiungi nuova lista
                                             </div>
-                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})">
-                                            <span class="list-logo-right" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}'; event.stopPropagation();">
-                                                <span class="glyphicon glyphicon-list-alt"></span>
-                                            </span>
+                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/plus.png">
                                         </button>
                                     </li>
-                                    <c:set var="i" value="${i + 1}"/>
-                                </c:forEach>
-                            </ul>
+                                    <c:set var="i" value="0"/>    
+                                    <c:forEach items="${shoppingLists}" var="shoppingList">
+                                        <li id="${shoppingList.id}">
+                                            <button class="list-group-item group-item-custom my-list-item" onclick="showAnteprima(${shoppingList.id})">
+                                                <img src="${contextPath}images/shoppingListCategories/${shoppingList.listCategoryIcon}" alt="Logo" class="medium-logo"> 
+                                                <div class="my-text-content">
+                                                    ${shoppingList.name}${shoppingList.notifications}
+                                                </div>
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})">
+                                                <span class="list-logo-right" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}';
+                                                        event.stopPropagation();">
+                                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                                </span>
+                                            </button>
+                                        </li>
+                                        <c:set var="i" value="${i + 1}"/>
+                                    </c:forEach>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <br>
-                    <div class="col-sm-5">
-                        <div id="anteprima" class="list-group" >
+                        <br>
+                        <div class="col-sm-5">
+                            <div id="anteprima" class="list-group" >
+                            </div>
                         </div>
                     </div>
                 </div>

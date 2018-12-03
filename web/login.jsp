@@ -48,10 +48,10 @@
                                 <div class="checkbox">
                                     <label><input type="checkbox" name="rememberMe" value="true"> Ricordami</label>
                                 </div>      
-                                <button type="submit" class="btn btn-default acc-btn">Accedi</button>
+                                <button type="submit" class="btn-custom">Accedi</button>
                                 <br><br>
-                                <a style="color:grey" href="${pageContext.response.encodeURL(contextPath.concat("retrievePassword.jsp"))}"> Password dimenticata? </a> <br>
-                                <a style="color:grey" href="${pageContext.response.encodeURL(contextPath.concat("registration.jsp"))}"> Non ancora iscritto? Registrati! </a>
+                                <a style="color:#555" href="${pageContext.response.encodeURL(contextPath.concat("retrievePassword.jsp"))}"> Password dimenticata? </a> <br>
+                                <a style="color:#555" href="${pageContext.response.encodeURL(contextPath.concat("registration.jsp"))}"> Non ancora iscritto? Registrati! </a>
                             </form>
                             <c:remove var="message" scope="session" />
                         </div>

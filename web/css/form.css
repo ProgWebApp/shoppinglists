@@ -1,9 +1,10 @@
 .form-container{
-    background-color: #ffe0cc;
+    background-color: #fafafa;
     text-align: left;
-    border: 2px solid #ff6336;
-    border-radius: 5px;
+    border: 2px solid #4290ff;
+    border-radius: 3px;
     padding: 20px;
+    box-shadow: 3px 5px rgb(0,0,0,0.5);
 }
 input[type="file"]{
     max-width: 300px;
@@ -11,7 +12,7 @@ input[type="file"]{
 }
 
 input[type="checkbox"]{
-    display: none;
+    /*display: none;*/
 }
 
 .container-logo input[type="checkbox"]:checked + label{
@@ -25,23 +26,18 @@ input[type="checkbox"]:checked + label > .my-text-content{
 #avatar{
     display: none;
 }
-.acc-btn{
-    background-color: #ff6336;
-    color: white;
-    border: 0px;
-}
 .btn-default:hover{
     background-color: #ff6336;
     color: white;
 }
 .btn-custom{
     font-size: 17px;
-    background-color:#ff6336;
+    background-color:#ddd;
     padding: 4px 7px 4px 7px;
-    border-radius: 5px 5px; 
-    color:white;
-    border: none;
-    height: 35px;
+    border-radius: 0px; 
+    border: 2px solid black;
+    color: black;
+    margin: 8px 1px 8px 1px;
 }
 input:focus {
     outline: none;
