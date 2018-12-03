@@ -63,13 +63,16 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="avatar">Carica un'immagine da usare come avatar</label>
-                                    <input type="file" id="avatar" name="avatar" class="form-control" placeholder="Avatar">
+                                    <input type="file" id="reg_avatar" name="avatar" class="form-control" placeholder="Avatar">
                                 </div>
                                 <div class="checkbox">
-                                    <label><input type="checkbox" name="privacy" value="1" <c:if test="${privacy==1}">checked</c:if>> Ho letto e accetto i termini di utilizzo</label>
+                                    <label>
+                                        <input type="checkbox" name="privacy" value="1" <c:if test="${privacy==1}">checked</c:if>> 
+                                            Ho letto e accetto i termini di utilizzo
+                                        </label>
                                     </div>
 
-                                    <button type="submit" class="btn btn-default acc-btn">Registrati</button>
+                                    <button type="submit" class="btn-custom">Registrati</button>
                                     <br><br>
                                     <a style="color:grey" href="${pageContext.response.encodeURL(contextPath.concat("login.jsp"))}"> Gi&#224; iscritto? Effettua il login </a>
                             </form>

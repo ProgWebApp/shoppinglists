@@ -10,14 +10,7 @@
     height: 40px;
     line-height: 20px;
 }
-.list-button{
-    display:block;
-    background-color:#FFFFFF;
-    padding: 1px 3px 1px 4px;
-    border-radius: 3px 3px;
-    margin: 0px 4px 5px 4px;
-    border: 0px;
-}
+
 button.list-group-item-action-list{
     background-color:#B9E5FF;
     color:black;
@@ -38,6 +31,11 @@ button.list-group-item-action-prod{
     font-size:18px;
     height: 50px;
 }
+.creat-but{
+   
+    margin-bottom: 5px !important;
+    border: 1px solid #4290ff;
+}
 .user-list-group{
     font-size:13px;
 }
@@ -49,16 +47,13 @@ button.list-group-item-action-prod{
     margin: 0px 2px 3px 2px;
     border: 1px solid black;
 }
-button.user-list-group-item-action{
-    background-color:#ffe0cc;
-    color:black;
-    margin: 6px 0px 6px 0px;
-    border:0px;
-}
+
 .pre-scrollable{
     max-height:300px;
     overflow-y: auto;
     width: 100%;
+    border:1px #e6e6e6 solid;
+    padding: 4px;
 }
 @media only screen and (min-width:768px){
 div.pre-scrollable{

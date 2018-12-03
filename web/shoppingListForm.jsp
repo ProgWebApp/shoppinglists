@@ -91,7 +91,7 @@
                                 <c:if test="${not empty shoppingList.id}">
                                 <input type="hidden" name="shoppingListId" value="${shoppingList.id}">
                                 </c:if>
-                                <button type="submit" class="btn btn-default acc-btn">Conferma</button>
+                                <button type="submit" class="btn-custom">Conferma</button>
                             </form>
                         </div>
                     </div>

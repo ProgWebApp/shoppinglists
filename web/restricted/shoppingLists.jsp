@@ -159,7 +159,7 @@
                             <div class="pre-scrollable">
                                 <ul class="list-group">
                                     <li>
-                                        <button onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}'" class="list-group-item list-group-item-action my-list-item">
+                                        <button onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}'" class="list-group-item creat-but my-list-item">
                                             <div class="my-text-content">
                                                 Aggiungi nuova lista
                                             </div>

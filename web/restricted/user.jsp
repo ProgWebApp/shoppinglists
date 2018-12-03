@@ -74,7 +74,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <button class="btn-custom" onclick="deleteUser()">Elimina account</button>
+                            <button class="btn-del" onclick="deleteUser()">Elimina account</button>
                         </div>
                     </div>
                     <br><hr class="divisore"><br>
@@ -99,7 +99,7 @@
                                             <td>Nome</td>
                                             <td>
                                                 <div class="input-group ">
-                                                    <input type="text" class="form-control" name="firstName" id="firstname" placeholder="First name" value="<c:out value="${user.firstName}"/>">
+                                                    <input type="text" class="form-control" name="firstName" id="firstname" placeholder="First name" value="<c:out value="${user.firstName}"/>"autofocus>
                                                 </div>
                                             </td>
                                         </tr>
@@ -107,7 +107,7 @@
                                             <td>Cognome</td>
                                             <td>
                                                 <div class="input-group">
-                                                    <input type="text" name="lastName" class="form-control" id="lastname" placeholder="Last name" value="<c:out value="${user.lastName}"/>"autofocus>
+                                                    <input type="text" name="lastName" class="form-control" id="lastname" placeholder="Last name" value="<c:out value="${user.lastName}"/>">
                                                 </div>
                                             </td>
                                         </tr>

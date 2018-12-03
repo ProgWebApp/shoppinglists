@@ -6,11 +6,15 @@
     padding: 20px;
     box-shadow: 3px 5px rgb(0,0,0,0.5);
 }
+
 input[type="file"]{
     max-width: 300px;
     margin: 0 auto;
 }
-
+.form-container , input[type="file"]{
+    max-width: 100%;
+    margin: 0 auto;
+}
 input[type="checkbox"]{
     /*display: none;*/
 }
@@ -26,19 +30,37 @@ input[type="checkbox"]:checked + label > .my-text-content{
 #avatar{
     display: none;
 }
-.btn-default:hover{
-    background-color: #ff6336;
-    color: white;
-}
+
 .btn-custom{
-    font-size: 17px;
-    background-color:#ddd;
+    font-size: 16px;
+    background-color:#eee;
     padding: 4px 7px 4px 7px;
-    border-radius: 0px; 
-    border: 2px solid black;
+    border-radius: 3px; 
+    border: 1px solid #888;
     color: black;
     margin: 8px 1px 8px 1px;
 }
+.btn-custom:hover{
+    background-color: #4290ff;
+    color: white;
+    border: 1px solid white;
+}
+.btn-del{
+    font-size: 16px;
+    background-color:#fc7979;
+    padding: 4px 7px 4px 7px;
+    border-radius: 3px; 
+    border: 1px solid #e83737;
+    color: black;
+    margin: 8px 1px 8px 1px;
+}
+.btn-del:hover{
+    background-color: #e83737;
+    color: white;
+    border: 1px solid white;
+}
+
+
 input:focus {
     outline: none;
 }
