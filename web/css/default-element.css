@@ -64,6 +64,19 @@ body {
     margin-right: 0px;
     margin-left: 0px;
 }
+.container-fluid{
+    padding: 0px;
+}
+@media screen and (max-width: 768px) {   
+    .col-sm-5{
+        padding: 0px;
+        margin-bottom: 15px;
+    }
+    .col-sm-6{
+        padding: 0px;
+        margin-bottom: 15px;
+    }
+}
 .jumbotron {
     background: none;
     margin-bottom: 0px;
@@ -95,7 +108,7 @@ a:active {
 }
 .right{
     float: right;
-    padding: 0px 15px 15px 0px;
+    margin: 0px 15px 15px 0px;
 }
 .bod-container{
     margin-top:15px;

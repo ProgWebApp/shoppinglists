@@ -24,10 +24,11 @@
     width:150px;
 }
 .avatar-img{
+    background-color: #ffffffb3;
     position: relative;
     object-fit: cover;
-    width: 200px;
-    height: 200px;
+    min-width: 200px;
+    min-height: 200px;
     border-radius: 100%;
 }
 .shoppingList-img{
@@ -60,3 +61,4 @@
 .input-img:hover{
     display: block;
 }
+

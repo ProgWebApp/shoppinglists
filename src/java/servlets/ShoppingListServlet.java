@@ -151,7 +151,6 @@ public class ShoppingListServlet extends HttpServlet {
                 }
                 sb.append("]");
                 sb.append("}");
-                System.out.println(sb);
                 PrintWriter out = response.getWriter();
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
