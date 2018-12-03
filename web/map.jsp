@@ -109,7 +109,7 @@
                         }).addTo(mymap);
                     }
                 };
-                xhttp.open("POST", "http://www.overpass-api.de/api/interpreter", true);
+                xhttp.open("POST", "https://www.overpass-api.de/api/interpreter", true);
                 xhttp.send("data=" + myquery);
             }
 

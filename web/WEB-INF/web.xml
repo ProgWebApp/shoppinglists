@@ -183,10 +183,6 @@
         <url-pattern>/MapServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>DownloadImages</servlet-name>
-        <url-pattern>/DownloadImages</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>UsersSearchServlet</servlet-name>
         <url-pattern>/restricted/UsersSearchServlet</url-pattern>
     </servlet-mapping>
@@ -239,6 +235,10 @@
     <servlet-mapping>
         <servlet-name>ShoppingListsServlet</servlet-name>
         <url-pattern>/restricted/ShoppingListsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DownloadImages</servlet-name>
+        <url-pattern>/dwn</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
