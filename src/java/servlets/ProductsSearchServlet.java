@@ -60,52 +60,50 @@ public class ProductsSearchServlet extends HttpServlet {
         List<Product> products;
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
 
-        if (!query.isEmpty()) {
-            if (request.getParameter("shoppingListId") != null) {
+        if (query.isEmpty()) {
+            query = "";
+        }
+        if (request.getParameter("shoppingListId") != null) {
+            try {
+                Integer shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
                 try {
-                    Integer shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
-                    try {
-                        Integer shoppingListCategoryId = (shoppingListDAO.getByPrimaryKey(shoppingListId)).getListCategoryId();
-                        products = productDAO.searchByNameAndCategory(query, shoppingListCategoryId, user.getId(), null);
-                        List<Product> productsAlreadyIn = shoppingListDAO.getProducts(shoppingListId);
-                        products.removeAll(productsAlreadyIn);
-                    } catch (DAOException ex) {
-                        System.out.println("dao exception" + ex.getCause().getMessage());
-                        response.setStatus(500);
-                        return;
-                    }
-                } catch (NumberFormatException ex) {
-                    System.out.println("number exception");
-                    response.setStatus(400);
-                    return;
-                }
-            } else {
-                try {
-                    products = productDAO.searchByName(query, user.getId(), null);
+                    Integer shoppingListCategoryId = (shoppingListDAO.getByPrimaryKey(shoppingListId)).getListCategoryId();
+                    products = productDAO.searchByNameAndCategory(query, shoppingListCategoryId, user.getId(), null);
+                    List<Product> productsAlreadyIn = shoppingListDAO.getProducts(shoppingListId);
+                    products.removeAll(productsAlreadyIn);
                 } catch (DAOException ex) {
                     System.out.println("dao exception" + ex.getCause().getMessage());
                     response.setStatus(500);
                     return;
                 }
+            } catch (NumberFormatException ex) {
+                System.out.println("number exception");
+                response.setStatus(400);
+                return;
             }
-            StringBuilder sb = new StringBuilder();
-            sb.append("[");
-            for (int i = 0; i < products.size(); i++) {
-                if (i > 0) {
-                    sb.append(",");
-                }
-                sb.append(products.get(i).toJson());
-            }
-            sb.append("]");
-            PrintWriter out = response.getWriter();
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            out.print(sb);
-            out.flush();
         } else {
-            System.out.println("query vuota, non cerco nulla");
-            response.setStatus(400);
-            return;
+            try {
+                products = productDAO.searchByName(query, user.getId(), null);
+            } catch (DAOException ex) {
+                System.out.println("dao exception" + ex.getCause().getMessage());
+                response.setStatus(500);
+                return;
+            }
         }
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (int i = 0; i < products.size(); i++) {
+            if (i > 0) {
+                sb.append(",");
+            }
+            sb.append(products.get(i).toJson());
+        }
+        sb.append("]");
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.print(sb);
+        out.flush();
+
     }
 }

@@ -30,10 +30,31 @@ body {
    background-color: #ff6336;
    color: #FFFFFF;
 }
-
+.description{
+    padding-right: 10px;
+}
+.clickable{
+    box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
+}
+.clickable:hover{
+    box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.4);
+}
 .row{
     margin-right: 0px;
     margin-left: 0px;
+}
+.container-fluid{
+    padding: 0px;
+}
+@media screen and (max-width: 768px) {   
+    .col-sm-5{
+        padding: 0px;
+        margin-bottom: 15px;
+    }
+    .col-sm-6{
+        padding: 0px;
+        margin-bottom: 15px;
+    }
 }
 .jumbotron {
     background: none;
@@ -66,8 +87,19 @@ a:hover{
 }
 .right{
     float: right;
-    padding: 0px 15px 15px 0px;
+    margin: 0px 15px 15px 0px;
 }
+.icons-right-2{
+    min-width: 80px;
+}
+.wrap{
+    display: flex;
+    flex-wrap: wrap;
+}
+.flex{
+    flex: 1;
+}
+
 /* ---------------------------  BARRA DI NAVIGAZIONE ------------------------*/
 .mynav{
     width: 100%;

@@ -1,21 +1,25 @@
-.panel-heading-custom-list {
-    background-color: #B9E5FF;
-    padding:0px 0px 6px 7px;
+.panel-heading-custom{
+    padding:10px;
     color: black;
-    border: 2px solid #A0A4E5;
+    border-radius: 10px 10px 0px 0px;
 }
-.panel-body-custom-list {
+.panel-body-custom{
     border:0px;
-    margin-top:5px;
 }
-.panel-heading-custom-prod {
-    background-color: #9AFF91;
-    padding:0px 0px 6px 7px;
+.panel-footer-custom {
+    padding:10px;
     color: black;
-    border: 2px solid #3FA52B;
+    border: none;
+    border-radius: 0px 0px 10px 10px;
+    width: 100%;
 }
-.panel-body-custom-prod {
-    border:0px;
-    margin-top:5px;
+.prod-category{
+        background-color: #9AFF91;
+}
+.list-category{
+        background-color: #B9E5FF;
+}
+.category-list{
+    margin: 0px;
 }
 

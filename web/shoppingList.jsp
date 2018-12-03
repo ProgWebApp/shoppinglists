@@ -53,10 +53,16 @@
                                     productId: ui.item.value,
                                     action: 3
                                 },
-                                success: function () {
-                                    $("#prodotti").append("<li id=" + ui.item.value + " class=\"list-group-item justify-content-between align-items-center\">" + ui.item.label
-                                            + " <span class='pull-right glyphicon glyphicon-remove' style='color:red' onclick='deleteProduct(" + ui.item.value + ")' title='Elimina'>"
-                                            + "</span></li>");
+                                success: function (data) {
+                                    $("#emptyProducts").hide();
+                                    $("#prodotti").append("<li id=" + data.product.id + " class=\"list-group-item justify-content-between align-items-center my-list-item\">" +
+                                            "<input type=\"checkbox\" id=\"checkbox_" + data.product.id + "\" onclick=\"checkProduct(" + data.product.id + ")\" >" +
+                                            "<label for=\"checkbox_" + data.product.id + "\">" +
+                                            "<img src=\"${contextPath}images/productCategories/icons/" + data.product.logoPath + "\" class=\"medium-logo\">" +
+                                            "<div class=\"my-text-content\">" + data.product.name + "</div>" +
+                                            "</label>" +
+                                            "<img class=\"list-logo-right\" src=\"${contextPath}images/myIconsNav/rubbish.png\" onclick=\"deleteProduct(" + data.product.id + ")\">" +
+                                            "</li>");
                                     $("#searchAddProducts").val("");
                                 },
                                 error() {
@@ -77,12 +83,16 @@
                     }
                 });
             });
+
             /* RIMOZIONE PRODOTTO DALLA LISTA */
             function deleteProduct(productId) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
                         var element = document.getElementById(productId);
+                        if (element.parentNode.getElementsByTagName("li").length == 1) {
+                            $("#emptyProducts").show();
+                        }
                         element.parentNode.removeChild(element);
                     } else if (this.readyState === 4 && this.status === 400) {
                         alert("Non hai il permesso per la modifica della lista");
@@ -199,25 +209,6 @@
                     }
                 });
             }
-            /* RIMUOVI UN PRODOTTO DALLA LISTA */
-            function deleteProduct(productId) {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState === 4 && this.status === 200) {
-                        var element = document.getElementById(productId);
-                        element.parentNode.removeChild(element);
-                    } else if (this.readyState === 4 && this.status === 400) {
-                        alert("Non hai il permesso per la modifica della lista");
-                    } else if (this.readyState === 4 && this.status === 500) {
-                        alert("Errore del server, impossibile modificare i prodotti");
-                    }
-                };
-                var url = "${pageContext.response.encodeURL(contextPath.concat("ProductListServlet"))}";
-                if (productId !== '') {
-                    xhttp.open("GET", url + "?action=0&shoppingListId=${shoppingList.id}&productId=" + productId, true);
-                    xhttp.send();
-                }
-            }
 
             /* AGGIUNTA MESSAGGIO */
             function addMessage() {
@@ -246,13 +237,31 @@
                 var element = document.getElementById("messageBoard");
                 element.scrollTop = element.scrollHeight - element.clientHeight;
             }
+            /* ELIMINAZIONE DELLA LISTA */
+            function deleteShoppingList(id) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 204) {
+                        window.location.href = "${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingLists.jsp"))}";
+                    } else if (this.readyState === 4 && this.status === 400) {
+                        alert("Bad request!");
+                    } else if (this.readyState === 4 && this.status === 403) {
+                        alert("You are not allowed to delete the product!");
+                    } else if (this.readyState === 4 && this.status === 500) {
+                        alert("Impossible to delete the product!");
+                    }
+                };
+                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet"))}";
+                xhttp.open("DELETE", url + "?shoppinListId=" + id, true);
+                xhttp.send();
+            }
         </script>
     </head>
     <body <c:if test="${permissions==1||permissions==2}">onload="scrollChat()"</c:if>>
-        <div id="containerPage">
-            <div id="header">
-                <div class="jumbotron">
-                    <h1>${shoppingList.name}</h1>
+            <div id="containerPage">
+                <div id="header">
+                    <div class="jumbotron">
+                        <h1>${shoppingList.name}</h1>
                     <p>Categoria: ${shoppingListCategory.name}</p>
                 </div>
                 <%@include file="include/navigationBar.jsp"%>
@@ -264,19 +273,33 @@
                             <div class="col-sm-3">
                             </div>
                             <div class="col-sm-5">
-                                <div class="pull-left">
-                                    <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
-                                </div>
-                                <div class="pull-right">
-                                    <h4>Descrizione: ${shoppingList.description}</h4>
+                                <div class="row">
+                                    <div class="col-sm-6">    
+                                        <!--<div class="pull-left">-->
+                                        <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>Descrizione: ${shoppingList.description}</h4>
+                                        <button class="btn-custom right clickable" onclick="deleteShoppingList(${shoppingList.id})">Elimina</button>
+                                        <button class="btn-custom right clickable" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic?res=2"))}'">Modifica</button>
+                                    </div>
                                 </div>
                                 <br>
                                 <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control">
+
                                 <div class="pre-scrollable">
                                     <ul id="prodotti" class="list-group">
+                                        <div id="emptyProducts" style="<c:if test="${not empty products}">display:none;</c:if>">Nessun prodotto in lista</div>
                                         <c:forEach items="${products}" var="product">
-                                            <li id="${product.id}" class="list-group-item justify-content-between align-items-center">${product.name} 
-                                                <span class="pull-right glyphicon glyphicon-remove" style="color:red" onclick='deleteProduct(${product.id})' title="Elimina"></span>
+                                            <li id="${product.id}" class="list-group-item justify-content-between align-items-center my-list-item">
+                                                <input type="checkbox" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
+                                                <label for="checkbox_${product.id}">
+                                                    <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="medium-logo">
+                                                    <div class="my-text-content">
+                                                        ${product.name}
+                                                    </div>
+                                                </label>
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick='deleteProduct(${product.id})'>
                                             </li>
                                         </c:forEach>
                                     </ul>
@@ -287,18 +310,26 @@
                             <div class="col-sm-1">
                             </div>
                             <div class="col-sm-5">
-                                <div class="pull-left">
-                                    <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
-                                </div>
-                                <div class="pull-right">
-                                    <h4>Descrizione: ${shoppingList.description}</h4>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <!--<div class="pull-left">-->
+                                        <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>Descrizione: ${shoppingList.description}</h4>
+                                        <c:if test="${permissions==2}">
+                                            <button class="btn-custom right" onclick="deleteShoppingList(${shoppingList.id})">Elimina</button>
+                                            <button class="btn-custom right" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=2&shoppingListId=".concat(shoppingListId.id)))}'">Modifica</button>
+                                        </c:if>
+                                    </div>
                                 </div>
                                 <br>
                                 <c:if test="${permissions==2}">
-                                <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control">
+                                    <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control" placeholder="Aggiungi prodotto...">
                                 </c:if>
                                 <div class="pre-scrollable">
                                     <ul id="prodotti" class="list-group">
+                                        <div id="emptyProducts" style="<c:if test="${not empty products}">display:none;</c:if>">Nessun prodotto in lista</div>
                                         <c:forEach items="${products}" var="product">
                                             <li id="${product.id}" class="list-group-item justify-content-between align-items-center my-list-item">                                                    
                                                 <input type="checkbox" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
@@ -309,28 +340,26 @@
                                                     </div>
                                                 </label>
                                                 <c:if test="${permissions==2}">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick='deleteProduct(${product.id})'>
+                                                    <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick='deleteProduct(${product.id})'>
                                                 </c:if>
                                             </li>
                                         </c:forEach>
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-sm-1">
-                            </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-5">
                                 <div class="row">
-                                        <div class="form-control chat" id="messageBoard">
-                                            <c:forEach items="${messages}" var="message">
-                                                <div class="message<c:if test="${message.senderId==user.id}"> message-right</c:if>">
-                                                    <c:if test="${message.senderId!=user.id}">
-                                                        <span style="font-weight: bold">${message.senderName}</span>
-                                                        <br>
-                                                    </c:if>
-                                                    ${message.body}
-                                                </div>
-                                            </c:forEach>
-                                        </div>
+                                    <div class="form-control chat" id="messageBoard">
+                                        <c:forEach items="${messages}" var="message">
+                                            <div class="message<c:if test="${message.senderId==user.id}"> message-right</c:if>">
+                                                <c:if test="${message.senderId!=user.id}">
+                                                    <span style="font-weight: bold">${message.senderName}</span>
+                                                    <br>
+                                                </c:if>
+                                                ${message.body}
+                                            </div>
+                                        </c:forEach>
+                                    </div>
                                     <div class="input-group">
                                         <input id="newtext" class="form-control" type="text">
                                         <div class="input-group-btn">
@@ -341,7 +370,7 @@
                                 <br>
                                 <div class="row">
                                     <c:if test="${permissions==2}">
-                                    <input type="text" id="searchUsers" name="searchUsers" class="form-control">
+                                        <input type="text" id="searchUsers" name="searchUsers" class="form-control" placeholder="Condividi...">
                                     </c:if>
                                     <div class="pre-scrollable">
                                         <ul id="utenti" class="list-group user-list-group">
@@ -351,13 +380,13 @@
                                                         ${user.firstName} ${user.lastName}
                                                     </div>
                                                     <c:if test="${permissions==2}">
-                                                        <img class="list-logo-right" src="${contextPath}images/myIconsNav/cancel.png" onclick="changePermissions(${user.id}, 0)">
                                                         <div class="my-text-content pull-right">
                                                             <select onchange="changePermissions(${user.id}, this.value)">
-                                                                <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
-                                                                <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
-                                                            </select> 
-                                                        </div>
+                                                                <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza</option>
+                                                                <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica</option>
+                                                                <option value=0 >Rimuovi</option>
+                                                                </select> 
+                                                            </div>
                                                     </c:if>
                                                 </li>
                                             </c:forEach>

@@ -1,5 +1,6 @@
 .list-group{
     font-size:18px;
+    margin-bottom: 0px
 }
 .my-list-item{
     padding: 5px;
@@ -18,26 +19,12 @@
     margin: 0px 4px 5px 4px;
     border: 0px;
 }
-button.list-group-item-action-list{
-    background-color:#B9E5FF;
-    color:black;
-    margin: 6px 0px 6px 0px;
-    border:0px;
-    height: 50px;
-    line-height: 0px;
-}
-button.list-group-item-action-prod{
-    background-color:#9AFF91;
-    color:black;
-    margin: 6px 0px 6px 0px;
-    border:0px;
-    height: 50px;
-    line-height: 0px;
-}
+
 .list-group-item{
     font-size:18px;
     height: 50px;
 }
+
 .user-list-group{
     font-size:13px;
 }

@@ -15,6 +15,7 @@ import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -176,6 +177,24 @@ public class ProductListServlet extends HttpServlet {
                             if (user != null && productDAO.getByPrimaryKey(productId).isReserved()) {
                                 productDAO.shareProductToList(productId, shoppingListId);
                             }
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("{\"product\": ");
+                            sb.append("{"
+                                    + "\"id\": \"" + product.getId() + "\", "
+                                    + "\"name\": \"" + product.getName() + "\", "
+                                    + "\"notes\": \"" + product.getNotes() + "\", "
+                                    + "\"logoPath\": \"" + product.getLogoPath() + "\", "
+                                    + "\"photoPath\": \"" + product.getPhotoPath() + "\", "
+                                    + "\"productCategoryId\": \"" + product.getProductCategoryId() + "\", "
+                                    + "\"ownerId\": \"" + product.getOwnerId() + "\", "
+                                    + "\"reserved\": \"" + product.isReserved() + "\", "
+                                    + "\"necessary\": \"" + product.getNecessary() + "\""
+                                    + "}}");
+                            PrintWriter out = response.getWriter();
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+                            out.print(sb);
+                            out.flush();
                         } else {
                             response.setStatus(403);
                         }

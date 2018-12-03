@@ -50,3 +50,14 @@
     line-height: 0px;
     margin: 10px;
 }
+.rubbish{
+    float: right;
+    height: 20px;
+    width: 20px;
+    line-height: 0px;
+    margin: 10px;
+    background-image: url("../images/myIconsNav/rubbish.png");  
+}
+.rubbish:hover{
+    background-image: url("../images/myIconsNav/rubbish-open.png");  
+}

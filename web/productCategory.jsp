@@ -62,7 +62,7 @@
                         <div class="myContainer col-12">
                             <div class="panel panel-default-custom">
                                 <div class="panel-heading-custom">
-                                    <img src="${contextPath}images/productCategories/${productCategory.logoPath}" alt="Logo" class="small-logo" height="40px" width="40px"> 
+                                    <img src="${contextPath}images/productCategories/${productCategory.logoPath}" class="small-logo" height="40px" width="40px"> 
                                     ${productCategory.name}
                                 </div>
                                 <div>
@@ -86,7 +86,7 @@
                                             </c:when>
                                         </c:choose>
                                         <div class="panel-heading-custom" >
-                                            <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="small-logo" height="40px" width="40px"> 
+                                            <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="small-logo" height="40px" width="40px"> 
                                             ${product.name}
                                         </div>
                                         <c:forEach items="${product.photoPath}" var="photo" end="0">
