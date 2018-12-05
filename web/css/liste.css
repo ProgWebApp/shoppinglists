@@ -1,3 +1,20 @@
+#contenuto.list-size-cust{
+
+}
+@media only screen and (max-width:1024px){
+    .list-size-cust{
+        width: 100% !important;
+    }
+
+}
+.list-title{
+    font-size: 19px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+
+    font-weight: normal;
+}
+
 .list-group{
     font-size:18px;
 }
@@ -32,9 +49,12 @@ button.list-group-item-action-prod{
     height: 50px;
 }
 .creat-but{
-   
     margin-bottom: 5px !important;
     border: 1px solid #4290ff;
+}
+.list-element{
+    display:inline-block;
+    cursor: pointer;
 }
 .user-list-group{
     font-size:13px;
@@ -52,13 +72,14 @@ button.list-group-item-action-prod{
     max-height:300px;
     overflow-y: auto;
     width: 100%;
-    border:1px #e6e6e6 solid;
     padding: 4px;
+    box-shadow: 1px 3px #dee9fc;
 }
 @media only screen and (min-width:768px){
-div.pre-scrollable{
-    max-height:450px;
-}
+    div.pre-scrollable{
+        min-height:450px;
+        max-height:450px;
+    }
 }
 .dd-list{
     padding:0px 15px 0px 15px;

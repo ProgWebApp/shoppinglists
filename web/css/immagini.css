@@ -9,6 +9,14 @@
     float: left; 
     margin-left: 20px; 
 }
+.container-img-medium {
+    position: relative;
+    width: 75px; 
+    height: 75px; 
+    float: left; 
+    margin-right: 20px;
+
+}
 .fit-image-small{
     width: 100%;
     object-fit: cover;

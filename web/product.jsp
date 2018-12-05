@@ -68,8 +68,10 @@
         <div id="containerPage">
             <div id="header">
                 <div class="jumbotron">
-                    <h2>${product.name}</h2>
-                    <h4>Categoria: ${productCategory.name}</h4>
+                    <div class="container text-center">
+                        <h2>${product.name}</h2>
+                        <h4>Categoria: ${productCategory.name}</h4>
+                    </div>
                 </div>
                 <%@include file="include/navigationBar.jsp" %>
             </div>
@@ -103,14 +105,14 @@
                                     <button class="btn-custom" type="button" onclick="addProdToList(${product.id}, ${myList})">Aggiungi alla mia lista</button>
                                 </c:when>
                             </c:choose>
-                        
-                        
+
+
                             <c:if test="${modifiable}">
-                                <button class="btn-custom" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=2&productId=".concat(product.id)))}'">Modifica</button>
+                                <button class="btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=2&productId=".concat(product.id)))}'">Modifica</button>
                                 <button class="btn-custom" onclick="deleteProduct(${product.id})">Elimina</button>                            
                             </c:if>
                         </div>
-                        
+
                     </div>
                     <div class="col-sm-5">
                         <div id="myCarousel" class="carousel slide" data-ride="carousel">

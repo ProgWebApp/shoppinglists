@@ -106,20 +106,24 @@
                                     <span id="logo">
                                     </span>
                                 </div>
-                                        <br>
+                                <br>
                                 <div class="form-group">
                                     <label for="logo">Aggiungi nuove immagini:</label>
                                     <input type="file" id="photos" name="photos" class="form-control" placeholder="Images" multiple="multiple">
                                 </div>
                                 <div>
                                     <c:if test="${not empty product.photoPath}">
-                                        Remove images:
-                                        <c:forEach items="${product.photoPath}" var="photo">
-                                            <div class="container-img">
-                                                <input type="checkbox" id="${photo}" name="removePhotos" value="${photo}">
-                                                <label for="${photo}"><img height="50px" src="${contextPath}images/products/${photo}"  class="fit-image-small img-responsive" alt="Img Prod"></label>
+                                        <div class="form-group">
+                                            <label for="categorie">Seleziona le immagini che vuoi rimuovere:</label>
+                                            <div class="row">
+                                                <c:forEach items="${product.photoPath}" var="photo">
+                                                    <div class="container-img-medium">
+                                                        <input type="checkbox" id="${photo}" name="removePhotos" value="${photo}" class="checkbox-img">
+                                                        <label for="${photo}"><img class="fit-logo img-responsive" src="${contextPath}images/products/${photo}" alt="Img Prod"></label>
+                                                    </div>
+                                                </c:forEach>
                                             </div>
-                                        </c:forEach>
+                                        </div>
                                     </c:if>
                                 </div>
                                 <c:if test="${not empty product.id}">
@@ -132,6 +136,6 @@
                 </div>
             </div>
             <%@include file="../include/footer.jsp" %>
-            </div>
+        </div>
     </body>
 </html>

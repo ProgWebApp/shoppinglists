@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Lista Alimentari</title>
+        <title>Pagina Lista</title>
         <%@include file="include/generalMeta.jsp" %>
         <script src="${contextPath}jquery-ui-1.12.1/jquery-ui.js"></script>
 
@@ -252,8 +252,11 @@
         <div id="containerPage">
             <div id="header">
                 <div class="jumbotron">
-                    <h1>${shoppingList.name}</h1>
-                    <p>Categoria: ${shoppingListCategory.name}</p>
+                    <div class="container text-center">
+                        <h1>${shoppingList.name}</h1>
+                        <p>Categoria: ${shoppingListCategory.name}</p>     
+                    </div>
+                    
                 </div>
                 <%@include file="include/navigationBar.jsp"%>
             </div>

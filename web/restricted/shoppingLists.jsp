@@ -151,11 +151,12 @@
                 <%@include file="../include/navigationBar.jsp"%>
             </div>
             <div id="body">
-                <div class="bod-container">
+                <div class="bod-container list-size-cust">
                     <div class="container-fluid">
-                        <div class="col-sm-1">
+                        <div id="spaziatura" class="col-sm-1">
                         </div>
-                        <div class="col-sm-5">
+                        <div id="contenuto" class="col-sm-5 list-size-cust">
+                            <label class='list-title'> Liste create </label>
                             <div class="pre-scrollable">
                                 <ul class="list-group">
                                     <li>
@@ -168,28 +169,33 @@
                                     </li>
                                     <c:set var="i" value="0"/>    
                                     <c:forEach items="${shoppingLists}" var="shoppingList">
-                                        <li id="${shoppingList.id}">
-                                            <button class="list-group-item group-item-custom my-list-item" onclick="showAnteprima(${shoppingList.id})">
+                                        <li id="${shoppingList.id}" class="list-group-item group-item-custom my-list-item" >
+                                            <div class='list-element' onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}';
+                                                                event.stopPropagation();" title="Visualizza">
                                                 <img src="${contextPath}images/shoppingListCategories/${shoppingList.listCategoryIcon}" alt="Logo" class="medium-logo"> 
                                                 <div class="my-text-content">
                                                     ${shoppingList.name}${shoppingList.notifications}
                                                 </div>
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})">
-                                                <span class="list-logo-right" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}';
-                                                        event.stopPropagation();">
-                                                    <span class="glyphicon glyphicon-list-alt"></span>
-                                                </span>
-                                            </button>
+                                            </div>
+                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})" title="Elimina">
+
+                                            <span class="list-logo-right" onclick="showAnteprima(${shoppingList.id})">
+                                                <span class="glyphicon glyphicon-list-alt" title="Anteprima"></span>
+                                            </span>
                                         </li>
+
                                         <c:set var="i" value="${i + 1}"/>
                                     </c:forEach>
                                 </ul>
                             </div>
                         </div>
-                        <br>
-                        <div class="col-sm-5">
+                        <div id="contenuto" class="col-sm-5 list-size-cust">
+                            <label class='list-title'> Anteprima prodotti </label>
                             <div id="anteprima" class="list-group" >
+                                <h5>Clicca su <span class="glyphicon glyphicon-list-alt"></span> per vedere l'anteprima dei prodotti</h5>
                             </div>
+                        </div>
+                        <div id="spaziatura" class="col-sm-1">
                         </div>
                     </div>
                 </div>

@@ -35,7 +35,15 @@ body {
     color: black;
     border-top: 8px solid #aaa;
 }
+@media only screen and (max-width:1024px){
+    #spaziatura{
+        display:none;
+    }
 
+}
+#contenuto{
+    margin-bottom: 20px;
+}
 .row{
     margin-right: 0px;
     margin-left: 0px;
@@ -89,6 +97,13 @@ a:active {
         margin-right:auto;
         width: 80%;
     }
+}
+@media only screen and (max-width:768px){
+    .bod-container{
+        padding-left:0px;
+        padding-right:0px;
+    }
+
 }
 .divisore{
     border-top: 1px solid #999;
