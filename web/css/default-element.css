@@ -100,8 +100,8 @@ a:active {
 }
 @media only screen and (max-width:768px){
     .bod-container{
-        padding-left:0px;
-        padding-right:0px;
+        padding-left:4px;
+        padding-right:4px;
     }
 
 }

@@ -76,43 +76,47 @@
                 <%@include file="include/navigationBar.jsp" %>
             </div>
             <div id="body">
-
                 <div class="row">
                     <div class="col-sm-1">
                     </div>
-
                     <div class="col-sm-5">
-                        <div style="height: 100px;">
-                            <div style="height: 100px; width: 100px; float:left;">
-                                <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="logo">
+                        <div class="bod-container">
+                            <div style="height: 100px;">
+                                <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="logo" class="big-logo">
                             </div>
                             <div>
                                 <h3>Descrizione</h3>
                                 <p>${product.notes}</p>
+                                <br>
+                                <hr class="divisore">
+                            </div>
+                            <div>
+                                <c:choose>
+                                    <c:when test="${not empty shoppingLists}">
+                                        <label>Scegli a quale lista vuoi aggiungere:</label>
+                                        <select id="selectList" onchange="addProdToList(${product.id}, this.value)">
+                                            <option disabled selected hidden>Aggiungi ad una lista...</option>
+                                            <c:forEach items="${shoppingLists}" var="shoppingList">
+                                                <option value="${shoppingList.id}">${shoppingList.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <br>
+                                        <hr class="divisore">
+                                    </c:when>
+                                    <c:when test="${not empty myList}">
+                                        <button class="btn-custom" type="button" onclick="addProdToList(${product.id}, ${myList})">Aggiungi alla mia lista</button>
+
+                                    </c:when>
+                                </c:choose>
+                            </div>
+                            <div>
+
+                                <c:if test="${modifiable}">
+                                    <button class="btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=2&productId=".concat(product.id)))}'">Modifica</button>
+                                    <button class="btn-del" onclick="deleteProduct(${product.id})">Elimina</button>                            
+                                </c:if>
                             </div>
                         </div>
-                        <div>
-                            <c:choose>
-                                <c:when test="${not empty shoppingLists}">
-                                    <select id="selectList" class="btn-custom" onchange="addProdToList(${product.id}, this.value)">
-                                        <option disabled selected hidden>Aggiungi ad una lista...</option>
-                                        <c:forEach items="${shoppingLists}" var="shoppingList">
-                                            <option value="${shoppingList.id}">${shoppingList.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </c:when>
-                                <c:when test="${not empty myList}">
-                                    <button class="btn-custom" type="button" onclick="addProdToList(${product.id}, ${myList})">Aggiungi alla mia lista</button>
-                                </c:when>
-                            </c:choose>
-
-
-                            <c:if test="${modifiable}">
-                                <button class="btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=2&productId=".concat(product.id)))}'">Modifica</button>
-                                <button class="btn-custom" onclick="deleteProduct(${product.id})">Elimina</button>                            
-                            </c:if>
-                        </div>
-
                     </div>
                     <div class="col-sm-5">
                         <div id="myCarousel" class="carousel slide" data-ride="carousel">
