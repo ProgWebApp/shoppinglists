@@ -31,8 +31,10 @@
     border-radius: 100%;
 }
 .shoppingList-img{
-    width: 150px;
-    float: left;
+    width: 200px;
+    object-fit: cover;
+    height: 150px;
+    display:block;
     border-radius: 10px;
     margin: 0px 20px 20px 0px;
 }

@@ -10,24 +10,15 @@
                 object-fit:cover;
             }
             .carousel .item {
-                height: 300px;
+                height: 350px;
             }
             .item img {
                 position: absolute;
                 top: 0;
                 left: 0;
-                min-height: 300px;
+                min-height: 350px;
             }
-            /*@media screen and (min-width: 1200px) {
-                .carousel{
-                    width: 900px;
-                    margin: auto;
-                }
-                .carousel .item {
-                    height: 300px;
-                    width: 900px;
-                }
-            }*/
+            
         </style>
         <script>
             function addProdToList(prod, list) {
@@ -88,11 +79,12 @@
                                 <h3>Descrizione</h3>
                                 <p>${product.notes}</p>
                                 <br>
-                                <hr class="divisore">
+                                
                             </div>
                             <div>
                                 <c:choose>
                                     <c:when test="${not empty shoppingLists}">
+                                        <hr class="divisore">
                                         <label>Scegli a quale lista vuoi aggiungere:</label>
                                         <select id="selectList" onchange="addProdToList(${product.id}, this.value)">
                                             <option disabled selected hidden>Aggiungi ad una lista...</option>
@@ -141,12 +133,12 @@
                                     <c:choose>
                                         <c:when test = "${count == 0}">
                                             <div class="item active">
-                                                <img src="${contextPath}images/products/${photo}" alt="img-pasta" class="fit-image">
+                                                <img src="${contextPath}images/products/${photo}" alt="img-prodotto" class="fit-image">
                                             </div>
                                         </c:when>
                                         <c:otherwise>
                                             <div class="item">
-                                                <img src="${contextPath}images/products/${photo}" alt="img-pasta" class="fit-image">
+                                                <img src="${contextPath}images/products/${photo}" alt="img-prodotto" class="fit-image">
                                             </div>
                                         </c:otherwise>
                                     </c:choose>

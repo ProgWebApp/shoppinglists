@@ -1,6 +1,3 @@
-#contenuto.list-size-cust{
-
-}
 @media only screen and (max-width:1024px){
     .list-size-cust{
         width: 100% !important;
@@ -75,10 +72,17 @@ button.list-group-item-action-prod{
     padding: 4px;
     box-shadow: 1px 3px #dee9fc;
 }
-@media only screen and (min-width:768px){
+@media only screen and (min-width:800px){
     div.pre-scrollable{
         min-height:450px;
         max-height:450px;
+    }
+}
+@media only screen and (max-width:800px){
+    div.pre-scrollable{
+        min-height:150px;
+        max-height:450px;
+        
     }
 }
 .dd-list{
