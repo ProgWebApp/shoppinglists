@@ -301,11 +301,10 @@
                                     </div>
                                     
                                     <br>                                        
-                                    <label class='list-title'> Prodotti </label>
+                                    <label class="list-title"> Prodotti </label>
                                     <c:if test="${permissions==2}">
-                                        <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control">
+                                        <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control" placeholder="Cerca prodotti da aggiungere...">
                                     </c:if>
-
                                     <div class="pre-scrollable">
                                         <ul id="prodotti" class="list-group">
                                             <c:forEach items="${products}" var="product">
@@ -342,7 +341,7 @@
                                             </c:forEach>
                                         </div>
                                         <div class="input-group">
-                                            <input id="newtext" class="form-control" type="text">
+                                            <input id="newtext" class="form-control" type="text" placeholder="Scrivi messaggio...">
                                             <div class="input-group-btn">
                                                 <button class="btn btn-default" onclick="addMessage()">Invia</button>
                                             </div>
@@ -352,7 +351,7 @@
                                     <div class="row">
                                         <label class='list-title'> Utenti che condividono la lista </label>
                                         <c:if test="${permissions==2}">
-                                            <input type="text" id="searchUsers" name="searchUsers" class="form-control">
+                                            <input type="text" id="searchUsers" name="searchUsers" class="form-control" placeholder="Cerca utenti...">
                                         </c:if>
                                             
                                         <div class="pre-scrollable">

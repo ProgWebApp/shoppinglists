@@ -157,6 +157,7 @@
                         </div>
                         <div id="contenuto" class="col-sm-5 list-size-cust">
                             <label class='list-title'> Liste create </label>
+
                             <div class="pre-scrollable">
                                 <ul class="list-group">
                                     <li>
@@ -171,7 +172,7 @@
                                     <c:forEach items="${shoppingLists}" var="shoppingList">
                                         <li id="${shoppingList.id}" class="list-group-item group-item-custom my-list-item" >
                                             <div class='list-element' onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}';
-                                                                event.stopPropagation();" title="Visualizza">
+                                                    event.stopPropagation();" title="Visualizza">
                                                 <img src="${contextPath}images/shoppingListCategories/${shoppingList.listCategoryIcon}" alt="Logo" class="medium-logo"> 
                                                 <div class="my-text-content">
                                                     ${shoppingList.name}${shoppingList.notifications}
