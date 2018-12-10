@@ -45,9 +45,10 @@
 
 .list-logo-right{
     float: right;
-    height: 20px;
-    width: 20px;
+    height: 25px;
+    width: 25px;
     line-height: 0px;
     margin: 10px;
     cursor: pointer;
+    vertical-align:middle;
 }

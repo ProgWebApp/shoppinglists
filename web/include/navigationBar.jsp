@@ -142,7 +142,7 @@
             <c:when test="${not empty user}">
                 <div id="notification" class="mynav-item dropdown">
                     <div class="dropdown-toggle" data-toggle="dropdown">
-                        <img class="navIcon" src="${contextPath}images/myIconsNav/notification-play.png">
+                        <img class="navIcon" src="${contextPath}images/myIconsNav/notification-adv.png">
                     </div>
                     <ul class="dropdown-menu  dropdown-menu-right">
                         <li id="messageNotification">

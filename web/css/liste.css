@@ -88,3 +88,7 @@ button.list-group-item-action-prod{
 .dd-list{
     padding:0px 15px 0px 15px;
 }
+@media only screen and (min-width:447px){
+.descript{
+    margin-top:30px;
+}}

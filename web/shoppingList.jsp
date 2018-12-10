@@ -268,14 +268,17 @@
                                 <div class="col-sm-3">
                                 </div>
                                 <div class="col-sm-5">
+                                    <div style="overflow: auto;">
                                     <div class="pull-left">
                                         <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
                                     </div>
                                     <div>
                                         <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
                                     </div>
+                                    </div>
                                     <br>
-                                    <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control">
+                                    <label class="list-title"> Prodotti </label>
+                                    <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control" placeholder="Cerca prodotti da aggiungere...">
                                     <div class="pre-scrollable">
                                         <ul id="prodotti" class="list-group">
                                             <c:forEach items="${products}" var="product">
@@ -295,7 +298,7 @@
                                     <div class="pull-left">
                                         <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
                                     </div>
-                                    <div>
+                                    <div class="descript">
                                         <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
                                     </div>
                                     </div>
