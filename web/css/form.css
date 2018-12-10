@@ -30,7 +30,15 @@ input[type="checkbox"]:checked + label > .my-text-content{
 #avatar{
     display: none;
 }
-
+.select-custom{
+    font-size: 16px;
+    background-color:#eee;
+    padding: 4px 7px 4px 7px;
+    border-radius: 3px; 
+    border: 1px solid #888;
+    color: black;
+    margin: 8px 1px 8px 1px;
+}
 .btn-custom{
     font-size: 16px;
     background-color:#eee;
