@@ -269,11 +269,13 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <div style="overflow: auto;">
-                                    <div class="pull-left">
-                                        <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
-                                    </div>
-                                    <div>
-                                        <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
+
+                                        <div class="pull-left">
+                                            <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
+                                        </div>
+                                        <div>
+                                            <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
+                                        </div>
                                     </div>
                                     </div>
                                     <br>
@@ -295,14 +297,13 @@
                                 </div>
                                 <div id="contenuto-lrg" class="col-sm-5">
                                     <div style="overflow: auto;">
-                                    <div class="pull-left">
-                                        <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
+                                        <div class="pull-left">
+                                            <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
+                                        </div>
+                                        <div class="descript">
+                                            <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
+                                        </div>
                                     </div>
-                                    <div class="descript">
-                                        <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
-                                    </div>
-                                    </div>
-                                    
                                     <br>                                        
                                     <label class="list-title"> Prodotti </label>
                                     <c:if test="${permissions==2}">
@@ -356,7 +357,7 @@
                                         <c:if test="${permissions==2}">
                                             <input type="text" id="searchUsers" name="searchUsers" class="form-control" placeholder="Cerca utenti...">
                                         </c:if>
-                                            
+
                                         <div class="pre-scrollable">
                                             <ul id="utenti" class="list-group user-list-group">
                                                 <c:forEach items="${users}" var="user">
@@ -379,7 +380,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </c:when>
                         </c:choose>
                     </div>

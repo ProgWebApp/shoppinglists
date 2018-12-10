@@ -9,9 +9,9 @@
     if (this.responseText != 0){
     document.getElementById("notification").style.display = "block";
     document.getElementById("messageNotification").style.display = "block";
-    if(this.responseText == 1){
+    if (this.responseText == 1){
     document.getElementById("messageNotification").getElementsByTagName('a')[0].innerHTML = json.elements.length + " nuovo messaggio";
-    }else{
+    } else{
     document.getElementById("messageNotification").getElementsByTagName('a')[0].innerHTML = json.elements.length + " nuovi messaggi";
     }
     }
@@ -64,10 +64,10 @@
     if (json.elements.length != 0){
     document.getElementById("notification").style.display = "block";
     document.getElementById("mapNotification").style.display = "block";
-    if(json.elements.length == 1){
-        document.getElementById("mapNotification").getElementsByTagName('a')[0].innerHTML = json.elements.length + " negozio nelle vicinanze";
-    }else{
-        document.getElementById("mapNotification").getElementsByTagName('a')[0].innerHTML = json.elements.length + " negozi nelle vicinanze";
+    if (json.elements.length == 1){
+    document.getElementById("mapNotification").getElementsByTagName('a')[0].innerHTML = json.elements.length + " negozio nelle vicinanze";
+    } else{
+    document.getElementById("mapNotification").getElementsByTagName('a')[0].innerHTML = json.elements.length + " negozi nelle vicinanze";
     }
     }
     }};
