@@ -46,66 +46,65 @@
 
     <body>
         <div id="containerPage">
-            <div id="header">
-                <div class="jumbotron">
-                    <h2>Le mie categorie</h2>
-                    <h4>Riepilogo delle categorie create</h4>
+                <div id="header">
+                    <div class="jumbotron">
+                        <div class="container text-center">
+                    <h1>Le mie categorie</h1>
+                    <p>Riepilogo delle categorie create</p>
+                        </div>
                 </div>
                 <%@include file="../include/navigationBar.jsp" %>
             </div>
             <div id="body">
+                <div class="bod-container list-size-cust">
                 <div class="container-fluid">
-                    <div class="col-sm-1">
-                    </div>
                     
-                    <div class="col-sm-5">
-                        <div class="panel-heading-custom-list">
-                            <h3>Categorie liste della spesa</h3>
-                        </div>
-                        <div class="panel-body-custom-list">
-                            <div class="pre-scrollable">
+                    <div class="col-sm-6">
+                        <label class="list-title"> Categorie Liste della spesa </label>
+                           <div class="pre-scrollable">
                                 <ul class="list-group">
                                     <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
-                                        <li class="list-group-item justify-content-between align-items-center dropdown">
-                                            <div class="dropdown pull-left" style="cursor: pointer;" onclick="window.location.href='${contextPath}restricted/ShoppingListCategoryServlet?res=1&shoppingListCategoryId=${shoppingListCategory.id}'">
+                                        <li class="list-group-item group-item-custom my-list-item">
+                                            <div class="list-element" onclick="window.location.href='${contextPath}restricted/ShoppingListCategoryServlet?res=1&shoppingListCategoryId=${shoppingListCategory.id}'" title="Visualizza">
                                                 <img src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo" class="small-logo"> 
+                                                <div class="my-text-content">
                                                 ${shoppingListCategory.name}
+                                                </div>
                                             </div>
-                                            <a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
-                                            <a class="pull-right" style="color:black;margin-right:5px;" href="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}" title="Modifica"><span class="glyphicon glyphicon-pencil"></span></a>
+                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="" title="Elimina">
+                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}" title="Modifica">
                                         </li>
                                     </c:forEach>
-                                    <button type="button" class="list-group-item list-group-item-action-list">Crea nuova categoria liste</button>
+                                    <button type="button" class="list-btn-custom">Crea nuova categoria liste</button>
                                 </ul>
                             </div>
                         </div>
-                    </div>
                     
-                    <div class="col-sm-5">
-                        <div class="panel-heading-custom-prod">
-                            <h3>Categorie prodotti</h3>
-                        </div>
-                        <div class="panel-body-custom-prod">
-                            <div class="pre-scrollable">
+                    <div class="col-sm-6">
+                        
+                        <label class="list-title"> Categorie prodotti </label>
+                           <div class="pre-scrollable">
                                 <ul class="list-group">
                                     <c:forEach items="${productCategories}" var="productCategory">
-                                        <li class="list-group-item justify-content-between align-items-center dropdown">
-                                            <div class="dropdown pull-left" style="cursor: pointer;" onclick="window.location.href='${contextPath}restricted/ProductCategoryServlet?res=1&productCategoryId=${productCategory.id}'">
+                                        <li class="list-group-item group-item-custom my-list-item">
+                                            <div class="list-element" onclick="window.location.href='${contextPath}restricted/ProductCategoryServlet?res=1&productCategoryId=${productCategory.id}'" title="Visualizza">
                                                 <img src="${contextPath}images/productCategories/${productCategory.logoPath}" alt="Logo" class="small-logo"> 
+                                                <div class="my-text-content">
                                                 ${productCategory.name}
+                                                </div>
                                             </div>
-                                            <a class="pull-right" style="color:red" href="#" title="Elimina"><span class="glyphicon glyphicon-remove"></span></a>
-                                            <a class="pull-right" style="color:black;margin-right:5px;" href="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}" title="Modifica"><span class="glyphicon glyphicon-pencil"></span></a>
+                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="" title="Elimina">
+                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}" title="Modifica">
                                         </li>
                                     </c:forEach>
-                                    <button type="button" class="list-group-item list-group-item-action-prod">Crea nuova categoria prodotti</button>
+                                    <button type="button" class="list-btn-custom">Crea nuova categoria prodotti</button>
                                 </ul>
-                            </div>
                         </div>
+                        
                     </div>
                     
-                    <div class="col-sm-1">
-                    </div>
+                    
+                </div>
                 </div>
             </div>
             <%@include file="../include/footer.jsp" %>

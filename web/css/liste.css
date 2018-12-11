@@ -64,6 +64,23 @@ button.list-group-item-action-prod{
     border: 1px solid black;
 }
 
+.list-btn-custom{
+    background-color:#eee;
+    padding: 4px 7px 4px 7px;
+    border-radius: 3px; 
+    border: 1px solid #888;
+    color: black;
+    margin: 8px 1px 8px 1px;
+    font-size: 18px;
+    height: 45px;
+    width: 100%;
+}
+.list-btn-custom:hover{
+    background-color: #4290ff;
+    color: white;
+    border: 1px solid white;
+}
+
 .pre-scrollable{
     max-height:300px;
     overflow-y: auto;
