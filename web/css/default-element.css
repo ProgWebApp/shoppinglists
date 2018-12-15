@@ -106,20 +106,7 @@ a:active {
     padding: 25px;
     box-shadow: 3px 5px rgb(0,0,0,0.5);
 }
-@media only screen and (min-width:768px){
-    .bod-container{
-        margin-left:auto;
-        margin-right:auto;
-        width: 80%;
-    }
-}
-@media only screen and (max-width:768px){
-    .bod-container{
-        padding-left:4px;
-        padding-right:4px;
-    }
 
-}
 .divisore{
     border-top: 1px solid #999;
 }
@@ -135,6 +122,72 @@ a:active {
     border-radius: 3px;
     padding: 5px;
     box-shadow: 3px 5px rgb(0,0,0,0.5);
+}
+.elem-container-left{
+    margin-left: 10%;
+    height:auto;
+    width: 50%;
+    overflow:hidden;
+    float:left;
+    margin-top:15px;
+    margin-bottom:15px;
+    background-color: #fafafa;
+    text-align: left;
+    border: 2px solid #4290ff;
+    border-radius: 3px;
+    padding: 5px;
+    box-shadow: 3px 5px rgb(0,0,0,0.5);
+}
+.elem-img{
+    margin:15px;
+    height: 200px;
+    float:left;
+    width: 40%;
+}
+.elem-img > img{
+    width: 100%;
+    object-fit: cover;
+    height: 200px;
+    float:left;
+    margin-right:10px;
+}
+.elem-text{
+    float:right;
+    width: 60%;
+}
+@media only screen and (max-width:920px){
+    .elem-container-left{
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 80%;
+    }
+    .elem-container{
+        margin-right: 10%;
+    }
+
+}
+@media only screen and (min-width:790px){
+    .bod-container{
+        margin-left:auto;
+        margin-right:auto;
+        width: 80%;
+    }
+}
+@media only screen and (max-width:790px){
+    .bod-container{
+        padding-left:4px;
+        padding-right:4px;
+    }
+
+}
+@media only screen and (max-width:590px){
+    .elem-img{
+        width: 90%;
+    }
+    .elem-text{
+
+        width: 90%;
+    }   
 }
 /* ---------------------------  BARRA DI NAVIGAZIONE ------------------------*/
 .mynav{

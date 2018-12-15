@@ -92,7 +92,7 @@
 
                 <div class="bod-container">
                     <div class="container-fluid">
-                        
+
                         <c:forEach items="${products}" var="product">
                             <c:choose>
                                 <c:when test="${not empty user}">
@@ -107,17 +107,17 @@
                                         ${product.name}
                                     </div>
                                     <div class="panel-body-prods" >
-                                    <c:forEach items="${product.photoPath}" var="photo" end="0">
-                                        <img class="fit-image img-responsive" src="${contextPath}images/products/${photo}"  alt="${product.name}">
-                                    </c:forEach>
+                                        <c:forEach items="${product.photoPath}" var="photo" end="0">
+                                            <img class="fit-image img-responsive" src="${contextPath}images/products/${photo}"  alt="${product.name}">
+                                        </c:forEach>
                                     </div>
                                 </div>
-                        </c:forEach>
+                            </c:forEach>
 
+                        </div>
                     </div>
                 </div>
+                <%@include file="include/footer.jsp" %>
             </div>
-            <%@include file="include/footer.jsp" %>
-        </div>
     </body>
 </html>

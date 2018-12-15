@@ -65,7 +65,7 @@
                                 <ul class="list-group">
                                     <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
                                         <li class="list-group-item group-item-custom my-list-item">
-                                            <div class="list-element" onclick="window.location.href='${contextPath}restricted/ShoppingListCategoryServlet?res=1&shoppingListCategoryId=${shoppingListCategory.id}'" title="Visualizza">
+                                            <div class="list-element" style="cursor:default;">
                                                 <img src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo" class="small-logo"> 
                                                 <div class="my-text-content">
                                                 ${shoppingListCategory.name}

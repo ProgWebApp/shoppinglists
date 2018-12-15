@@ -18,7 +18,7 @@
                 left: 0;
                 min-height: 350px;
             }
-            
+
         </style>
         <script>
             function addProdToList(prod, list) {
@@ -60,7 +60,7 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">
-                        <h2>${product.name}</h2>
+                        <h1>${product.name}</h1>
                         <h4>Categoria: ${productCategory.name}</h4>
                     </div>
                 </div>
@@ -75,12 +75,13 @@
                             <div style="height: 100px;">
                                 <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="logo" class="big-logo">
                             </div>
+                            <hr>
                             <div>
-                                <h3>Descrizione</h3>
+                                <h3>Descrizione:</h3>
                                 <p>${product.notes}</p>
                                 <br>
-                                
                             </div>
+                            <hr>
                             <div>
                                 <c:choose>
                                     <c:when test="${not empty shoppingLists}">
