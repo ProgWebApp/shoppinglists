@@ -68,7 +68,6 @@ input[type="checkbox"]:checked + label > .my-text-content{
     border: 1px solid white;
 }
 
-
 input:focus {
     outline: none;
 }

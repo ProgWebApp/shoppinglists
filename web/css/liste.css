@@ -10,7 +10,6 @@
     border-bottom: 2px solid #4290ff;
     font-weight: bold;
 }
-
 .list-group{
     font-size:18px;
 }
@@ -22,23 +21,6 @@
     float: left;
     height: 40px;
     line-height: 20px;
-}
-
-button.list-group-item-action-list{
-    background-color:#B9E5FF;
-    color:black;
-    margin: 6px 0px 6px 0px;
-    border:0px;
-    height: 50px;
-    line-height: 0px;
-}
-button.list-group-item-action-prod{
-    background-color:#9AFF91;
-    color:black;
-    margin: 6px 0px 6px 0px;
-    border:0px;
-    height: 50px;
-    line-height: 0px;
 }
 .list-group-item{
     font-size:18px;
@@ -54,14 +36,6 @@ button.list-group-item-action-prod{
 }
 .user-list-group{
     font-size:13px;
-}
-.user-list-button{
-    display:block;
-    background-color:#e6e6e6;
-    padding: 0px 2px 0px 2px;
-    border-radius: 2px 2px;
-    margin: 0px 2px 3px 2px;
-    border: 1px solid black;
 }
 
 .list-btn-custom{
@@ -86,7 +60,6 @@ button.list-group-item-action-prod{
     overflow-y: auto;
     width: 100%;
     padding: 4px;
-    /*box-shadow: 1px 3px #dee9fc;*/
 }
 @media only screen and (min-width:800px){
     div.pre-scrollable{
@@ -101,12 +74,8 @@ button.list-group-item-action-prod{
 
     }
 }
-.dd-list{
-    padding:0px 15px 0px 15px;
-}
 @media only screen and (min-width:447px){
-
-.descript{
-    margin-top:30px;
-}
+    .descript{
+        margin-top:30px;
+    }
 }

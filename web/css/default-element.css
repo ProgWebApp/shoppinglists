@@ -8,9 +8,7 @@ body {
     background-attachment: fixed;
     background-size:cover
 }
-.myContainer{
-    padding: 0px 15px;
-}
+
 #containerPage{
     min-height:100%;
     position:relative;
