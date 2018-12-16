@@ -177,15 +177,15 @@
                                                 <div class="my-text-content">
                                                     ${shoppingList.name}
                                                 </div>
-                                                    <c:choose>
-                                                      <c:when  test="${shoppingList.notifications=='0'}">
+                                                <c:choose>
+                                                    <c:when  test="${shoppingList.notifications=='0'}">
                                                         <img style="width:25px;height:25px;margin-top:7px;" src="${contextPath}images/myIconsNav/notification.png">
-                                                      </c:when>
-                                                      <c:otherwise>
-                                                          <img style="width:25px;height:25px;margin-top:7px;" src="${contextPath}images/myIconsNav/notification-adv.png">
-                                                      </c:otherwise>
-                                                    </c:choose>
- 
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <img style="width:25px;height:25px;margin-top:7px;" src="${contextPath}images/myIconsNav/notification-adv.png">
+                                                    </c:otherwise>
+                                                </c:choose>
+
 
                                             </div>
                                             <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})" title="Elimina">

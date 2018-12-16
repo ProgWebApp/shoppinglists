@@ -1,3 +1,17 @@
+.panels-container{
+    margin-top:15px;
+    margin-bottom:15px;
+    background-color: #fafafa;
+    text-align: left;
+    border: 2px solid #4290ff;
+    border-radius: 3px;
+    padding: 25px;
+    box-shadow: 3px 5px rgb(0,0,0,0.5);
+    width:96%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
 .panel > .panel-heading-custom {
     background-color: #ddd;
     font: 17px sans-serif;
@@ -7,12 +21,12 @@
     border-bottom: 2px solid #aaa;
     border-radius: 10px 10px 0px 0px; 
     cursor: pointer;
-
 }
 .panel-default-custom {
     border:none;
     border-radius: 10px 10px 0px 0px;
     background-color: #eee;
+    box-shadow: 3px 5px rgb(26,56,100,0.5);
 }
 .panel-body-custom{
     width:100%;
@@ -21,4 +35,6 @@
     padding:8px;
     background-color: #eee;
 }
-
+.panel-body-custom > img {
+    height:230px;
+}

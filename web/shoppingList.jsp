@@ -125,13 +125,18 @@
                                 action: 1,
                             },
                             success: function () {
-                                $("#utenti").append("<li id=\"" + ui.item.value + "\"class=\"list-group-item justify-content-between align-items-center\">" + ui.item.label
-                                        + " <span class=\"pull-right glyphicon glyphicon-remove\" title=\"Elimina\" style=\"color:black;font-size:15px;margin-left:5px;\" onclick=\"deleteUser(" + ui.item.value + ")\"></span>"
-                                        + " <select class=\"pull-right\" onchange=\"changePermissions(" + ui.item.value + ", this.value)\">"
+                                $("#utenti").append("<li id=\"" + ui.item.value + "\"class=\"list-group-item justify-content-between align-items-center my-list-item\">"
+                                        + "<div class=\"my-text-content\">"
+                                        + ui.item.label
+                                        + "</div>"
+                                        + " <img class=\"list-logo-right\" src=\"${contextPath}images/myIconsNav/cancel.png\" onclick=\"changePermissions(${user.id}, 0)\">"
+                                        + "<div class=\"my-text-content pull-right\">"
+                                        + " <select onchange=\"changePermissions(" + ui.item.value + ", this.value)\">"
                                         + "     <option value=1>Visualizza lista</option>"
                                         + "     <option value=2>Modifica lista</option>"
                                         + " </select>"
-                                        + " </li>");
+                                        + " </li>"
+                                        + "</div>");
                                 $("#searchUsers").val("");
                             },
                             error(xhr, status, err) {
@@ -256,7 +261,6 @@
                             <h1>${shoppingList.name}</h1>
                         <p>Categoria: ${shoppingListCategory.name}</p>     
                     </div>
-
                 </div>
                 <%@include file="include/navigationBar.jsp"%>
             </div>
