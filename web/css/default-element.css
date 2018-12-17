@@ -106,10 +106,7 @@ a:active {
     color: black;
     text-decoration: none;
 }
-.right{
-    float: right;
-    margin: 0px 15px 15px 0px;
-}
+
 .bod-container{
     margin-top:15px;
     margin-bottom:25px;
@@ -175,9 +172,7 @@ a:active {
         margin-right: 10%;
         width: 80%;
     }
-    .elem-container{
-        margin-right: 10%;
-    }
+    
 
 }
 @media only screen and (min-width:790px){
@@ -185,6 +180,9 @@ a:active {
         margin-left:auto;
         margin-right:auto;
         width: 80%;
+    }
+    .elem-container{
+        margin-right:10%;
     }
 }
 @media only screen and (max-width:790px){

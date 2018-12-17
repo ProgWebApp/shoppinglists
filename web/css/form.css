@@ -38,6 +38,7 @@ input[type="checkbox"]:checked + label > .my-text-content{
     border: 1px solid #888;
     color: black;
     margin: 8px 1px 8px 1px;
+    height: 32px;
 }
 .btn-custom{
     font-size: 16px;
@@ -51,7 +52,7 @@ input[type="checkbox"]:checked + label > .my-text-content{
 .btn-custom:hover{
     background-color: #4290ff;
     color: white;
-    border: 1px solid white;
+    border: 1px solid black;
 }
 .btn-del{
     font-size: 16px;

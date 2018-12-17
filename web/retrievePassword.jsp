@@ -38,7 +38,7 @@
                                     <input type="email" id="email" name="email" class="form-control" placeholder="Inserisci Email">
                                 </div>
                                 <input type="hidden" name="res" value="1">
-                                <button type="submit" class="btn btn-default acc-btn">Salva</button>
+                                <button type="submit" class="btn-custom">Salva</button>
                                 <br>
                             </form>
                         </div>

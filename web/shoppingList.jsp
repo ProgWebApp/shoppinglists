@@ -278,17 +278,15 @@
                     <div class="container-fluid">
                         <c:choose>
                             <c:when test="${empty user}">
-                                <div class="col-sm-3">
-                                </div>
-                                <div class="col-sm-5">
-                                    <div style="overflow: auto;">
-
-                                        <div class="pull-left">
-                                            <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
-                                        </div>
-                                        <div>
-                                            <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
-                                        </div>
+                                <div id="spaziatura-lrg" class="col-sm-1">
+                            </div>
+                            <div id="contenuto-lrg" class="col-sm-5">
+                                <div style="overflow: auto;">
+                                    <div class="pull-left">
+                                        <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
+                                    </div>
+                                    <div class="descript">
+                                        <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
                                     </div>
                                 </div>
                                 <br>

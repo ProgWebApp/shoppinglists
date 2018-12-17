@@ -52,3 +52,14 @@
     cursor: pointer;
     vertical-align:middle;
 }
+
+@media screen  and (max-width:525px){
+    .list-logo{ 
+        display:none;
+    }
+    .my-text-content{
+        white-space: nowrap;
+        overflow:hidden;
+        text-overflow: ellipsis;
+    }
+}

@@ -5,10 +5,6 @@
         <title>Product</title>
         <%@include file="include/generalMeta.jsp" %>
         <style>
-            .fit-image{
-                width: 100%;
-                object-fit:cover;
-            }
             .carousel .item {
                 height: 350px;
             }
@@ -17,6 +13,16 @@
                 top: 0;
                 left: 0;
                 min-height: 350px;
+            }
+            .carousel-control{
+                color: #fff !important;
+                text-decoration: none;
+                filter: alpha(opacity=90);
+                outline: 0;
+                opacity: .7;}
+
+            .carousel {
+                margin-top: 15px;
             }
 
         </style>
