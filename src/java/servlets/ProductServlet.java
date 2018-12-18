@@ -13,7 +13,6 @@ import db.factories.DAOFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
@@ -90,7 +89,7 @@ public class ProductServlet extends HttpServlet {
         }
         if (product == null) {
             if (res == 0) {
-                response.setStatus(403);
+                response.sendError(403);
             } else {
                 response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
             }
