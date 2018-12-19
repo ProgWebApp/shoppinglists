@@ -114,7 +114,7 @@
                                             </div>
                                         </li>
                                     </c:forEach>
-                                    <button type="button" class="list-btn-custom">Crea nuova categoria liste</button>
+                                    <button type="button" class="list-btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategoryForm.jsp"))}'">Crea nuova categoria liste</button>
                                 </ul>
                             </div>
                         </div>
@@ -137,7 +137,7 @@
                                             </div>
                                         </li>
                                     </c:forEach>
-                                    <button type="button" class="list-btn-custom">Crea nuova categoria prodotti</button>
+                                    <button type="button" class="list-btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/productCategoryForm.jsp"))}'">Crea nuova categoria prodotti</button>
                                 </ul>
                             </div>
                         </div>
