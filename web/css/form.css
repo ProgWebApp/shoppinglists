@@ -43,7 +43,7 @@ input[type="checkbox"]:checked + label > .my-text-content{
     border: 1px solid #888;
     color: black;
     margin: 8px 1px 8px 1px;
-    height: 32px;
+    height: 32.5px;
 }
 .btn-custom{
     font-size: 16px;

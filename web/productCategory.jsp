@@ -45,31 +45,16 @@
                             <div class="elem-tex">
                                 <h3>Descrizione della categoria:</h3>
                                 <p>${productCategory.description}</p>
-                                <br>
-                                <hr>
-
-                                <div>
-
-                                    <button class="btn-custom" onclick="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}">Modifica</button>
-                                    <button class="btn-del" onclick="deleteProductCategory(${productCategory.id})">Elimina</button>                            
-
-                                </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
-
                 <div class="bod-container">
                     <div class="container-fluid">
                         <div class="row">
-
-
-                            <div style="margin-right:10px;margin-left:10px;float:right;">
+                            <div style="margin-right:10px; margin-left:10px; float:right;">
                                 <c:choose>
                                     <c:when test="${empty user}">
-
                                         <form action="${contextPath}ProductCategoryPublic" method="GET">
                                             <input type="hidden" name="productCategoryId" value="${productCategory.id}">
                                         </c:when>
@@ -83,15 +68,17 @@
                                             <option value="1" <c:if test="${order==1}">selected</c:if>>Nome prodotto AZ</option> 
                                             <option value="2" <c:if test="${order==2}">selected</c:if>>Nome prodotto ZA</option>  
                                             </select>
+                                            <div style="float:right;">
+                                                <button class="btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}'">
+                                                Crea prodotto
+                                            </button>
+                                        </div>
+                                    </form>
 
-                                        </form>
-                                </div>
-                                <label style="float:right;margin-top:10px;font-size:17px;">Ordina:</label>
                             </div>
-
-                            <div class="row">
+                        </div>
+                        <div class="row">
                             <c:forEach items="${products}" var="product">
-
                                 <c:choose>
                                     <c:when test="${product.isReserved()}">
                                         <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">
@@ -100,8 +87,7 @@
                                             <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
                                             </c:when>
                                         </c:choose>
-                                        <div class="panel-heading-prods" >
-                                            <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="medium-logo"> 
+                                        <div class="panel-heading-prods">
                                             ${product.name}
                                         </div>
                                         <div class="panel-body-prods" >
@@ -112,14 +98,8 @@
                                     </div>
                                 </c:forEach>
                             </div>
-                            <div class="row">
-                                <div style="float:left;">
-                                    <button class="btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}'">Aggiungi prodotto</button>
-                                </div>
-                            </div>
                         </div>
                     </div>
-
                 </div>
                 <%@include file="include/footer.jsp" %>
             </div>
