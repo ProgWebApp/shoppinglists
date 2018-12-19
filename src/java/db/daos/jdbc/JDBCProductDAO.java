@@ -368,28 +368,28 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
                 stm.setInt(1, productCategoryId);
             } else {
                 if (order == null) {
-                    stm = CON.prepareStatement("SELECT DISTINCT id, name, notes, logo, photo, owner, reserved, product_category FROM products, users_products"
+                    stm = CON.prepareStatement("SELECT id, name, notes, logo, photo, owner, reserved, product_category FROM products LEFT JOIN users_products "
+                            + " ON products.id = users_products.product"
                             + " WHERE products.product_category = ?"
                             + " AND (products.reserved = false"
-                            + " OR (products.id = users_products.product"
-                            + " AND users_products.user_id = ?))"
+                            + " OR users_products.user_id = ?)"
                             + " ORDER BY products.name ASC");
                 } else {
                     switch (order) {
                         case 1:
-                            stm = CON.prepareStatement("SELECT DISTINCT id, name, notes, logo, photo, owner, reserved, product_category FROM products, users_products"
+                            stm = CON.prepareStatement("SELECT id, name, notes, logo, photo, owner, reserved, product_category FROM products LEFT JOIN users_products "
+                                    + " ON products.id = users_products.product"
                                     + " WHERE products.product_category = ?"
                                     + " AND (products.reserved = false"
-                                    + " OR (products.id = users_products.product"
-                                    + " AND users_products.user_id = ?))"
-                                    + " ORDER BY products.name ASC ");
+                                    + " OR users_products.user_id = ?)"
+                                    + " ORDER BY products.name ASC");
                             break;
                         case 2:
-                            stm = CON.prepareStatement("SELECT DISTINCT id, name, notes, logo, photo, owner, reserved, product_category FROM products, users_products"
+                            stm = CON.prepareStatement("SELECT id, name, notes, logo, photo, owner, reserved, product_category FROM products LEFT JOIN users_products "
+                                    + " ON products.id = users_products.product"
                                     + " WHERE products.product_category = ?"
                                     + " AND (products.reserved = false"
-                                    + " OR (products.id = users_products.product"
-                                    + " AND users_products.user_id = ?))"
+                                    + " OR users_products.user_id = ?)"
                                     + " ORDER BY products.name DESC");
                             break;
                     }
@@ -404,7 +404,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             }
             return products;
         } catch (SQLException ex) {
-            System.out.println("SQLException "+ex.getMessage());
+            System.out.println("SQLException " + ex.getMessage());
             throw new DAOException("Impossible to get the list of products for the passed productCategoryId and userId", ex);
         }
     }

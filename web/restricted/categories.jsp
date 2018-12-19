@@ -42,8 +42,45 @@
     <head>
         <title>Le mie categorie</title>
         <%@include file="../include/generalMeta.jsp"%>
+        <script>
+            function deleteProductCategory(id) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 204) {
+                        var element = document.getElementById("prod" + id);
+                        element.parentNode.removeChild(element);
+                    } else if (this.readyState === 4 && this.status === 400) {
+                        alert("Bad request!");
+                    } else if (this.readyState === 4 && this.status === 403) {
+                        alert("You are not allowed to delete the productCategory!");
+                    } else if (this.readyState === 4 && this.status === 500) {
+                        alert("Impossible to delete the productCategory!");
+                    }
+                };
+                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet"))}";
+                xhttp.open("DELETE", url + "?productCategoryId=" + id, true);
+                xhttp.send();
+            }
+            function deleteShoppingListCategory(id) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 204) {
+                        var element = document.getElementById("list" + id);
+                        element.parentNode.removeChild(element);
+                    } else if (this.readyState === 4 && this.status === 400) {
+                        alert("Bad request!");
+                    } else if (this.readyState === 4 && this.status === 403) {
+                        alert("You are not allowed to delete the shoppingListCategory!");
+                    } else if (this.readyState === 4 && this.status === 500) {
+                        alert("Impossible to delete the shoppingListCategory!");
+                    }
+                };
+                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet"))}";
+                xhttp.open("DELETE", url + "?shoppingListCategoryId=" + id, true);
+                xhttp.send();
+            }
+        </script>
     </head>
-
     <body>
         <div id="containerPage">
             <div id="header">
@@ -71,16 +108,13 @@
                                         </button>
                                     </li>
                                     <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
-                                        <li class="list-group-item group-item-custom my-list-item">
-                                            <div>
-                                                <img src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo" class="small-logo list-logo"> 
-                                                <div class="my-text-content">
-                                                    ${shoppingListCategory.name}
-                                                </div>
+                                        <li id="list${shoppingListCategory.id}" class="list-group-item group-item-custom my-list-item">
+                                            <div class="my-text-content">
+                                                ${shoppingListCategory.name}
                                             </div>
                                             <div class="icon-cont">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="" title="Elimina">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}" title="Modifica">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteShoppingListCategory(${shoppingListCategory.id})" title="Elimina">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}'" title="Modifica">
                                             </div>
                                         </li>
                                     </c:forEach>
@@ -100,16 +134,13 @@
                                         </button>
                                     </li>
                                     <c:forEach items="${productCategories}" var="productCategory">
-                                        <li class="list-group-item group-item-custom my-list-item">
-                                            <div onclick="window.location.href = '${contextPath}restricted/ProductCategoryServlet?res=1&productCategoryId=${productCategory.id}'" title="Visualizza">
-                                                <img src="${contextPath}images/productCategories/${productCategory.logoPath}" alt="Logo" class="small-logo list-logo"> 
-                                                <div class="my-text-content">
-                                                    ${productCategory.name}
-                                                </div>
+                                        <li id="prod${productCategory.id}" class="list-group-item group-item-custom my-list-item">
+                                            <div class="my-text-content" onclick="window.location.href = '${contextPath}restricted/ProductCategoryServlet?res=1&productCategoryId=${productCategory.id}'">
+                                                ${productCategory.name}
                                             </div>
                                             <div class="icon-cont">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="" title="Elimina">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}" title="Modifica">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteProductCategory(${productCategory.id})" title="Elimina">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}'" title="Modifica">
                                             </div>
                                         </li>
                                     </c:forEach>

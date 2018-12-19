@@ -106,7 +106,7 @@
                                         </div>
                                         <div class="panel-body-prods" >
                                             <c:forEach items="${product.photoPath}" var="photo" end="0">
-                                                <img class="fit-image img-responsive" src="${contextPath}images/products/${photo}"  alt="${product.name}">
+                                                <img class="fit-image img-responsive" src="${contextPath}images/products/${photo}" alt="${product.name}">
                                             </c:forEach>
                                         </div>
                                     </div>

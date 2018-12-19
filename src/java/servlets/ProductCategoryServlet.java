@@ -210,8 +210,8 @@ public class ProductCategoryServlet extends HttpServlet {
             throw new ServletException("Impossible to insert or update the productCategory", ex);
         }
 
-        /* REDIRECT ALLA PAGINA DELLA CATEGORIA DI PRODOTTO */
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/ProductCategoryServlet?res=1&productCategoryId=" + productCategoryId));
+        /* REDIRECT ALLA PAGINA DELLE CATEGORIE */
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/categories.jsp"));
     }
 
     @Override

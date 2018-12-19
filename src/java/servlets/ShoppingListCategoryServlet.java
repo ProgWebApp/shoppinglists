@@ -230,7 +230,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         }
 
         /* REDIRECT ALLA PAGINA DELLA CATEGORIA DI LISTA */
-        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/ShoppingListCategoryServlet?res=1&shoppingListCategoryId=" + shoppingListCategoryId));
+        response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "restricted/categories.jsp"));
     }
 
     @Override
