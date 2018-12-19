@@ -72,7 +72,7 @@
                                                 </div>
                                             </div>
                                             <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="" title="Elimina">
-                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}" title="Modifica">
+                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}'" title="Modifica">
                                         </li>
                                     </c:forEach>
                                     <button type="button" class="list-btn-custom">Crea nuova categoria liste</button>
