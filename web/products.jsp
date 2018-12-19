@@ -97,10 +97,24 @@
                                 <c:when test="${empty user}">
                                     <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
                                     </c:when>
+
                                 </c:choose>
                                 <div class="panel-heading-prods" >
                                     <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="medium-logo"> 
                                     ${product.name}
+
+                                    <c:if test="${empty user}">
+                                        <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
+                                        </c:if>
+                                    <div class="panel-heading-prods" >
+                                        ${product.name}
+                                    </div>
+                                    <div class="panel-body-prods" >
+                                        <c:forEach items="${product.photoPath}" var="photo" end="0">
+                                            <img class="fit-image img-responsive" src="${contextPath}images/products/${photo}"  alt="${product.name}">
+                                        </c:forEach>
+                                    </div>
+
                                 </div>
                                 <div class="panel-body-prods" >
                                     <c:forEach items="${product.photoPath}" var="photo" end="0">

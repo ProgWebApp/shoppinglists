@@ -1,48 +1,52 @@
+.panel-default-prods {
+    border: none;
+    border-radius: 5px 5px 0px 0px;
+    background-color: #eee;
+    width: calc(20% - 20px);
+    float: left;
+    margin: 10px;
+    border-bottom: 3px solid #4290ff;
+    box-shadow: 3px 5px rgb(26,56,100,0.5);
+    cursor: pointer;
+}
 .panel-heading-prods {
     background-color: #ddd;
-    font: 18px sans-serif;
-    font-weight: bold;
+    font: 17px sans-serif;
     text-align: center;
-    padding:10px;
+    padding: 10px;
     color: black;
     border-bottom: 2px solid #4290ff;
-    border-radius: 5px 5px 0px 0px; 
-    cursor: pointer;
-    height: 60px;
+    border-radius: 5px 5px 0px 0px;
 }
 .panel-body-prods {
     width:100%;
     border-radius: 0px;
-    display:block;
-    padding:8px;
+    display: block;
+    padding: 0px;
     background-color: #eee;
-    border:none;
+    border: none;
 }
-.panel-default-prods {
-    border:none;
-    border-radius: 5px 5px 0px 0px;
-    background-color: #eee;
-    width:23%;
-    float:left;
-    margin:10px;
-    border-bottom: 3px solid #4290ff;
-    box-shadow: 3px 5px rgb(26,56,100,0.5);
-}
+
 .panel-body-prods > img {
     height:250px;
 }
-@media only screen and (max-width:1660px){
+@media only screen and (max-width: 1250px){
     .panel-default-prods{
-        width:31%;
+        width: calc(25% - 20px);
     }
 }
-@media only screen and (max-width:1210px){
+@media only screen and (max-width: 1000px){
     .panel-default-prods{
-        width:46%;
+        width: calc(33% - 20px);
     }
 }
-@media only screen and (max-width:640px){
+@media only screen and (max-width: 768px){
     .panel-default-prods{
-        width:95%;
+        width: calc(50% - 20px);
+    }
+}
+@media only screen and (max-width: 500px){
+    .panel-default-prods{
+        width: calc(100% - 20px);
     }
 }

@@ -386,15 +386,19 @@
                                             <ul id="utenti" class="list-group user-list-group">
                                                 <c:forEach items="${users}" var="user">
                                                     <li id="${user.id}" class="list-group-item justify-content-between align-items-center my-list-item">
-                                                        <div class="my-text-content">
-                                                            ${user.firstName} ${user.lastName}
+                                                        <div class='list-element'>
+                                                            <div class="my-text-content">
+                                                                ${user.firstName} ${user.lastName}
+                                                            </div>
                                                         </div>
                                                         <c:if test="${permissions==2}">
-                                                            <div class="my-text-content pull-right">
-                                                                <select onchange="changePermissions(${user.id}, this.value)">
-                                                                    <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
-                                                                    <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
-                                                                    </select> 
+                                                            <div class="list-actions">
+                                                                <div class="my-text-content pull-right">
+                                                                    <select onchange="changePermissions(${user.id}, this.value)">
+                                                                        <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
+                                                                        <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
+                                                                        </select> 
+                                                                    </div>
                                                                 </div>
                                                         </c:if>
                                                     </li>

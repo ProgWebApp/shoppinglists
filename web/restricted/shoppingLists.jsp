@@ -171,13 +171,13 @@
                                     <c:forEach items="${shoppingLists}" var="shoppingList">
                                         <li id="${shoppingList.id}" class="list-group-item group-item-custom my-list-item" >
                                             <div class='list-element'>
-                                            <div onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}';
-                                                    event.stopPropagation();" title="Visualizza">
-                                                <img src="${contextPath}images/shoppingListCategories/${shoppingList.listCategoryIcon}" alt="Logo" class="medium-logo list-logo"> 
-                                                <div class="my-text-content">
-                                                    ${shoppingList.name}
+                                                <div onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}';
+                                                        event.stopPropagation();" title="Visualizza">
+                                                    <img src="${contextPath}images/shoppingListCategories/${shoppingList.listCategoryIcon}" alt="Logo" class="medium-logo list-logo"> 
+                                                    <div class="my-text-content">
+                                                        ${shoppingList.name}
+                                                    </div>
                                                 </div>
-                                            </div>
                                             </div>
                                             <div class="list-actions">
                                                 <c:if  test="${shoppingList.notifications!='0'}">
@@ -187,7 +187,6 @@
                                                 <span class="list-logo-right antepr" onclick="showAnteprima(${shoppingList.id})">
                                                     <span class="glyphicon glyphicon-list-alt" title="Anteprima"></span>
                                                 </span>
-
                                             </div>
                                         </li>
                                         <c:set var="i" value="${i + 1}"/>
@@ -196,17 +195,17 @@
                             </div>
                         </div>
 
-                            <label class='list-title'> Anteprima prodotti </label>
-                            <div id="anteprima" class="list-group" >
-                                <h5>Clicca su <span class="glyphicon glyphicon-list-alt"></span> per vedere l'anteprima dei prodotti</h5>
-                            </div>
+                        <label class='list-title'> Anteprima prodotti </label>
+                        <div id="anteprima" class="list-group" >
+                            <h5>Clicca su <span class="glyphicon glyphicon-list-alt"></span> per vedere l'anteprima dei prodotti</h5>
                         </div>
-                        <div id="spaziatura" class="col-sm-1">
-                        </div>
+                    </div>
+                    <div id="spaziatura" class="col-sm-1">
                     </div>
                 </div>
             </div>
-            <%@include file="../include/footer.jsp" %>
         </div>
-    </body>
+        <%@include file="../include/footer.jsp" %>
+    </div>
+</body>
 </html>

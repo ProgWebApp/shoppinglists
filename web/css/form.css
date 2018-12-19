@@ -38,12 +38,13 @@ input[type="checkbox"]:checked + label > .my-text-content{
 .select-custom{
     font-size: 16px;
     background-color:#eee;
-    padding: 4px 7px 4px 7px;
+    padding: 5px 7px 4px 7px;
     border-radius: 3px; 
     border: 1px solid #888;
     color: black;
     margin: 8px 1px 8px 1px;
     height: 32.5px;
+    float: right;
 }
 .btn-custom{
     font-size: 16px;
