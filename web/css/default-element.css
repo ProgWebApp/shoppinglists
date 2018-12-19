@@ -168,8 +168,8 @@ a:active {
     .elem-container-left{
         margin-left: 10%;
         width: 80%;
+    }
 }
-
 @media only screen and (min-width: 767px) and (max-width:1300px){
     #contenuto-lrg{
         margin-bottom: 20px;
@@ -183,7 +183,7 @@ a:active {
         display:none;
     }
 }
-}@media only screen and (max-width:1024px){
+@media only screen and (max-width:1024px){
     #spaziatura{
         display:none !important;
     }
