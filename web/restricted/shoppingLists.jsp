@@ -160,10 +160,8 @@
                             <div class="pre-scrollable">
                                 <ul class="list-group">
                                     <li>
-
                                         <button onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}'" class="list-group-item btn-custom">
                                             <div class="my-text-content">
-
                                                 Aggiungi nuova lista
                                             </div>
                                             <img class="list-logo-right" src="${contextPath}images/myIconsNav/plus.png">
@@ -172,6 +170,7 @@
                                     <c:set var="i" value="0"/>    
                                     <c:forEach items="${shoppingLists}" var="shoppingList">
                                         <li id="${shoppingList.id}" class="list-group-item group-item-custom my-list-item" >
+                                            <div class='list-element'>
                                             <div onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}';
                                                     event.stopPropagation();" title="Visualizza">
                                                 <img src="${contextPath}images/shoppingListCategories/${shoppingList.listCategoryIcon}" alt="Logo" class="medium-logo list-logo"> 
@@ -179,7 +178,7 @@
                                                     ${shoppingList.name}
                                                 </div>
                                             </div>
-
+                                            </div>
                                             <div class="list-actions">
                                                 <c:if  test="${shoppingList.notifications!='0'}">
                                                     <img class="list-logo-right" src="${contextPath}images/myIconsNav/notification.png">
