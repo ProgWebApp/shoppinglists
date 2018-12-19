@@ -162,7 +162,7 @@
                                 <ul class="list-group">
                                     <li>
                                         <button onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}'" class="list-group-item creat-but my-list-item">
-                                            <div class="my-text-content">
+                                            <div class="width-1 my-text-content">
                                                 Aggiungi nuova lista
                                             </div>
                                             <img class="list-logo-right" src="${contextPath}images/myIconsNav/plus.png">
@@ -171,25 +171,22 @@
                                     <c:set var="i" value="0"/>    
                                     <c:forEach items="${shoppingLists}" var="shoppingList">
                                         <li id="${shoppingList.id}" class="list-group-item group-item-custom my-list-item" >
-                                            <div class='list-element' onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}';
+                                            <div onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}';
                                                     event.stopPropagation();" title="Visualizza">
                                                 <img src="${contextPath}images/shoppingListCategories/${shoppingList.listCategoryIcon}" alt="Logo" class="medium-logo list-logo"> 
                                                 <div class="my-text-content">
                                                     ${shoppingList.name}
                                                 </div>
-                                                
                                             </div>
-                                            
-                                                    <c:if  test="${shoppingList.notifications!='0'}">
-                                                        <img class="list-logo-right" src="${contextPath}images/myIconsNav/notification.png">
-                                                    </c:if>
-                                                    
-                                                   
-                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})" title="Elimina">
-
-                                            <span class="list-logo-right" onclick="showAnteprima(${shoppingList.id})">
-                                                <span class="glyphicon glyphicon-list-alt" title="Anteprima"></span>
-                                            </span>
+                                            <div class="icon-cont">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})" title="Elimina">
+                                                <span class="list-logo-right hide-anteprima" onclick="showAnteprima(${shoppingList.id})">
+                                                    <span class="glyphicon glyphicon-list-alt" title="Anteprima"></span>
+                                                </span>
+                                                <c:if  test="${shoppingList.notifications==0}">
+                                                    <img class="list-logo-right" src="${contextPath}images/myIconsNav/notification.png">
+                                                </c:if>
+                                            </div>
                                         </li>
 
                                         <c:set var="i" value="${i + 1}"/>
@@ -197,7 +194,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div id="contenuto" class="col-sm-5 list-size-cust">
+                        <div id="contenuto" class="col-sm-5 list-size-cust hide-anteprima">
                             <label class='list-title'> Anteprima prodotti </label>
                             <div id="anteprima" class="list-group" >
                                 <h5>Clicca su <span class="glyphicon glyphicon-list-alt"></span> per vedere l'anteprima dei prodotti</h5>

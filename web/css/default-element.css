@@ -8,7 +8,6 @@ body {
     background-attachment: fixed;
     background-size:cover
 }
-
 #containerPage{
     min-height:100%;
     position:relative;
@@ -33,32 +32,8 @@ body {
     color: black;
     border-top: 8px solid #aaa;
 }
-@media only screen and (max-width:1400px){
-    #spaziatura{
-        display:none !important;
-    }
-    #contenuto{
-        width: 50%;
-    }
-}
-
 #contenuto{
     margin-bottom: 20px;
-}
-
-@media only screen and (min-width: 767px) and (max-width:1300px){
-    #contenuto-lrg{
-        margin-bottom: 20px;
-        width: 60% !important;
-        margin:auto;
-        float:none;
-    }
-}
-@media only screen and (max-width:1300px){
-    #spaziatura-lrg{
-        display:none;
-    }
-
 }
 .row{
     margin-right: 0px;
@@ -66,16 +41,6 @@ body {
 }
 .container-fluid{
     padding: 0px;
-}
-@media screen and (max-width: 768px) {   
-    .col-sm-5{
-        padding: 0px;
-        margin-bottom: 15px;
-    }
-    .col-sm-6{
-        padding: 0px;
-        margin-bottom: 15px;
-    }
 }
 .jumbotron {
     background: none;
@@ -166,17 +131,28 @@ a:active {
     float:right;
     width: 60%;
 }
-@media only screen and (max-width:920px){
-    .elem-container-left{
-        margin-left: 10%;
-        margin-right: 10%;
-        width: 80%;
+@media screen and (max-width:590px){
+    .elem-img{
+        width: 90%;
     }
-    
-
+    .elem-text{
+        width: 90%;
+    }   
 }
-@media only screen and (min-width:790px){
+@media screen and (max-width: 768px) {   
+    .col-sm-5{
+        padding: 0px;
+        margin-bottom: 15px;
+    }
+    .col-sm-6{
+        padding: 0px;
+        margin-bottom: 15px;
+    }
+}
+@media screen and (min-width:768px){
     .bod-container{
+        padding-left:4px;
+        padding-right:4px;
         margin-left:auto;
         margin-right:auto;
         width: 80%;
@@ -185,22 +161,35 @@ a:active {
         margin-right:10%;
     }
 }
-@media only screen and (max-width:790px){
-    .bod-container{
-        padding-left:4px;
-        padding-right:4px;
+@media screen and (max-width:920px){
+    .elem-container-left{
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 80%;
     }
-
 }
-@media only screen and (max-width:590px){
-    .elem-img{
-        width: 90%;
+@media screen and (min-width: 768px) and (max-width:1300px){
+    #contenuto-lrg{
+        margin-bottom: 20px;
+        width: 60% !important;
+        margin:auto;
+        float:none;
     }
-    .elem-text{
-
-        width: 90%;
-    }   
 }
+@media screen and (max-width:1300px){
+    #spaziatura-lrg{
+        display:none;
+    }
+}
+@media screen and (max-width:1400px){
+    #spaziatura{
+        display:none !important;
+    }
+    #contenuto{
+        width: 50%;
+    }
+}
+
 /* ---------------------------  BARRA DI NAVIGAZIONE ------------------------*/
 .mynav{
     width: 100%;
@@ -275,7 +264,7 @@ a:active {
 #mapNotification{
     display: none;
 }
-@media only screen and (max-width:767px){
+@media screen and (max-width:767px){
     .hide-elem{
         display: none !important;
     }
@@ -288,7 +277,7 @@ a:active {
         width:70%;
     }
 }
-@media only screen and (min-width:768px){
+@media screen and (min-width:768px){
     li.hide-elem-men{
         display: none !important;
     }

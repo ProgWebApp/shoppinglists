@@ -4,6 +4,7 @@
     }
 }
 .list-title{
+    display: inline-block;
     font-size: 19px;
     padding-top: 15px;
     margin-bottom: 15px;
@@ -17,11 +18,16 @@
 .my-list-item{
     padding: 5px;
 }
+.width-1{
+    width: calc(100% - 40px) !important;
+}
 .my-text-content{
-    padding: 10px;
+    width: calc(100% - 160px);
+    padding: 10px 0px 10px 10px;
     float: left;
     height: 40px;
     line-height: 20px;
+    cursor: pointer;
 }
 .list-group-item{
     font-size:18px;
@@ -31,14 +37,12 @@
     margin-bottom: 5px !important;
     border: 1px solid #4290ff;
 }
-.list-element{
-    display:inline-block;
-    cursor: pointer;
+.icon-cont{
+    float: right;
 }
 .user-list-group{
     font-size:13px;
 }
-
 .list-btn-custom{
     background-color:#eee;
     padding: 4px 7px 4px 7px;
@@ -55,7 +59,6 @@
     color: white;
     border: 1px solid white;
 }
-
 .pre-scrollable{
     max-height:300px;
     overflow-y: auto;
@@ -72,7 +75,6 @@
     div.pre-scrollable{
         min-height:150px;
         max-height:450px;
-
     }
 }
 @media only screen and (min-width:447px){

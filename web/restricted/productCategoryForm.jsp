@@ -44,7 +44,7 @@
                                     <c:if test="${not empty productCategory.logoPath}">
                                         <img class="logo" src="${contextPath}images/productCategories/${productCategory.logoPath}">
                                     </c:if>
-                                    <label for="logo">Carica un logo per la categoria prodotto:</label>
+                                    <label for="logo">Carica un'immagine per la categoria di prodotto:</label>
                                     <input type="file" id="logo" name="logo" class="form-control">
                                 </div>
                                 <div class="form-group">

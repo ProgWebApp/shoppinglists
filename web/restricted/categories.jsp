@@ -46,65 +46,77 @@
 
     <body>
         <div id="containerPage">
-                <div id="header">
-                    <div class="jumbotron">
-                        <div class="container text-center">
-                    <h1>Le mie categorie</h1>
-                    <p>Riepilogo delle categorie create</p>
-                        </div>
+            <div id="header">
+                <div class="jumbotron">
+                    <div class="container text-center">
+                        <h1>Le mie categorie</h1>
+                        <p>Riepilogo delle categorie create</p>
+                    </div>
                 </div>
                 <%@include file="../include/navigationBar.jsp" %>
             </div>
             <div id="body">
                 <div class="bod-container list-size-cust">
-                <div class="container-fluid">
-                    
-                    <div class="col-sm-6">
-                        <label class="list-title"> Categorie Liste della spesa </label>
-                           <div class="pre-scrollable">
+                    <div class="container-fluid">
+                        <div class="col-sm-6">
+                            <div class="list-title"> Categorie Liste della spesa </div>
+                            <div class="pre-scrollable">
                                 <ul class="list-group">
+                                    <li>
+                                        <button onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategoryForm.jsp"))}'" class="list-group-item creat-but my-list-item">
+                                            <div class="width-1 my-text-content">
+                                                Aggiungi categoria di lista
+                                            </div>
+                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/plus.png">
+                                        </button>
+                                    </li>
                                     <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
                                         <li class="list-group-item group-item-custom my-list-item">
-                                            <div class="list-element" style="cursor:default;">
-                                                <img src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo" class="small-logo"> 
+                                            <div>
+                                                <img src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo" class="small-logo list-logo"> 
                                                 <div class="my-text-content">
-                                                ${shoppingListCategory.name}
+                                                    ${shoppingListCategory.name}
                                                 </div>
                                             </div>
-                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="" title="Elimina">
-                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}'" title="Modifica">
+                                            <div class="icon-cont">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="" title="Elimina">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}" title="Modifica">
+                                            </div>
                                         </li>
                                     </c:forEach>
-                                    <button type="button" class="list-btn-custom">Crea nuova categoria liste</button>
                                 </ul>
                             </div>
                         </div>
-                    
-                    <div class="col-sm-6">
-                        
-                        <label class="list-title"> Categorie prodotti </label>
-                           <div class="pre-scrollable">
+                        <div class="col-sm-6">
+                            <div class="list-title"> Categorie prodotti </div>
+                            <div class="pre-scrollable">
                                 <ul class="list-group">
+                                    <li>
+                                        <button onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/productCategoryForm.jsp"))}'" class="list-group-item creat-but my-list-item">
+                                            <div class="width-1 my-text-content">
+                                                Aggiungi categoria di prodotto
+                                            </div>
+                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/plus.png">
+                                        </button>
+                                    </li>
                                     <c:forEach items="${productCategories}" var="productCategory">
                                         <li class="list-group-item group-item-custom my-list-item">
-                                            <div class="list-element" onclick="window.location.href='${contextPath}restricted/ProductCategoryServlet?res=1&productCategoryId=${productCategory.id}'" title="Visualizza">
-                                                <img src="${contextPath}images/productCategories/${productCategory.logoPath}" alt="Logo" class="small-logo"> 
+                                            <div onclick="window.location.href = '${contextPath}restricted/ProductCategoryServlet?res=1&productCategoryId=${productCategory.id}'" title="Visualizza">
+                                                <img src="${contextPath}images/productCategories/${productCategory.logoPath}" alt="Logo" class="small-logo list-logo"> 
                                                 <div class="my-text-content">
-                                                ${productCategory.name}
+                                                    ${productCategory.name}
                                                 </div>
                                             </div>
-                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="" title="Elimina">
-                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}" title="Modifica">
+                                            <div class="icon-cont">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="" title="Elimina">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}" title="Modifica">
+                                            </div>
                                         </li>
                                     </c:forEach>
-                                    <button type="button" class="list-btn-custom">Crea nuova categoria prodotti</button>
                                 </ul>
+                            </div>
                         </div>
-                        
                     </div>
-                    
-                    
-                </div>
                 </div>
             </div>
             <%@include file="../include/footer.jsp" %>

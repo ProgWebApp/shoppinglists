@@ -115,7 +115,6 @@ public class ShoppingListServlet extends HttpServlet {
                 }
                 try {
                     products = shoppingListDAO.getProducts(shoppingListId);
-                    category = shoppingListCategoryDAO.getByPrimaryKey(shoppingList.getListCategoryId());
                 } catch (DAOException ex) {
                     response.setStatus(500);
                     return;
