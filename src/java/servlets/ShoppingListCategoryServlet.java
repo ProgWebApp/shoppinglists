@@ -160,8 +160,8 @@ public class ShoppingListCategoryServlet extends HttpServlet {
             emptyLogo = true;
         }
         /* SHOP */
-        //String shoppingListCategoryShop = request.getParameter("shop");
-        //shoppingListCategory.setShop(shoppingListCategoryShop);
+        String shoppingListCategoryShop = request.getParameter("shop");
+        shoppingListCategory.setShop(shoppingListCategoryShop);
         
         /* PRODUCT CATEGORY */
         List<String> productCategoriesSelected = new ArrayList();

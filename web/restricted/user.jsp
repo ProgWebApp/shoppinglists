@@ -41,7 +41,7 @@
                         <div class="text-center col-sm-4">
                             <div class="avatarContainer">
                                 <img class="avatar-img" src="${contextPath}/images/avatars/<c:out value="${user.avatarPath}"/>" alt="Avatar">
-                                <label class="input-img" for="avatar">
+                                <label class="avatar-input-img" for="avatar">
                                     Modifica immagine
                                 </label>
                             </div>

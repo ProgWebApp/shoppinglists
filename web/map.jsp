@@ -10,7 +10,11 @@
 <html>
     <head>
         <style>
-            #mapid { min-height: 380px; }
+            #mapid { 
+                height: 100%;
+                width: 100%;
+                position: relative;
+            }
         </style>
         <link rel="stylesheet" href="./leaflet/leaflet.css" />
         <script src="./leaflet/leaflet.js"></script>
@@ -29,7 +33,7 @@
                 </div>
                 <%@include file="include/navigationBar.jsp"%>
             </div>
-            <div id="body">
+            <div id="mapbody">
                 <div id="mapid" class="map"></div>
             </div>
             <%@include file="include/footer.jsp"%>
@@ -101,7 +105,7 @@
                                 return {color: feature.properties.color};
                             }
                         }).bindPopup(function (layer) {
-                            return layer.feature.properties.name+" "+layer.feature.properties.shop;
+                            return layer.feature.properties.name+"<br>"+layer.feature.properties.shop;
                         }).addTo(mymap);
                         L.tileLayer('https://a.tile.openstreetmap.org/{z}/{x}/{y}.png ', {
                             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',

@@ -23,6 +23,12 @@ body {
     padding-bottom:65px;
     height: calc(100% - 250px);
 }
+#mapbody{
+    padding-bottom:53px;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+}
 #footer {
     position:absolute;
     bottom:0;

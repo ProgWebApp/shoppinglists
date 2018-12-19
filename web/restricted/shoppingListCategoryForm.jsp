@@ -35,8 +35,8 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">
-                        <h2>Area di creazione categoria Lista</h2><br>
-                        <h4>Crea una nuova tipologia di categoria per le liste</h4><br>
+                        <h2>Categoria di lista</h2><br>
+                        <h4>Crea o modifica la categoria</h4><br>
                     </div>
                 </div>
                 <%@include file="../include/navigationBar.jsp"%>
@@ -57,22 +57,26 @@
                                     </c:when>
                                 </c:choose>
                                 <div class="form-group">
-                                    <label for="nome">Nome Categoria:</label>
+                                    <label for="nome">Nome:</label>
                                     <input type="text" id="name" name="name" class="form-control" placeholder="Nome" value="${shoppingListCategory.name}" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Descrizione:</label>
-                                    <input type="text" id="description" name="description" class="form-control" placeholder="Descrizione" value="${shoppingListCategory.description}">
+                                    <textarea id="description" name="description" class="form-control" placeholder="Descrizione">${shoppingListCategory.description}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <c:if test="${not empty shoppingListCategory.logoPath}">
                                         <img src="${contextPath}images/shoppingListCategories/<c:out value="${shoppingListCategory.logoPath}"/>" alt="Logo" height="80" width="80">
                                     </c:if>
-                                    <label for="logo">Carica un logo per la categoria:</label>
+                                    <label for="logo">Logo:</label>
                                     <input type="file" id="logo" name="logo" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="categorie">Seleziona le categorie di prodotti che possono essere inserite in questa lista:</label>
+                                    <label for="shop">Negozio:</label>
+                                    <%@include file="../include/shops.jsp"%>
+                                </div>    
+                                <div class="form-group">
+                                    <label for="categorie">Seleziona le categorie di prodotti da associare a questa lista:</label>
                                     <div class="checkboxes-group">
                                         <c:if test="${not empty productCategories}">
                                             <c:forEach items="${productCategories}" var="productCategory">
@@ -87,7 +91,7 @@
                                 <c:if test="${not empty shoppingListCategory.id}">
                                     <input type="hidden" name="shoppingListCategoryId" value="${shoppingListCategory.id}">
                                 </c:if>
-                                <button type="submit" class="btn btn-default acc-btn">Invia</button>
+                                <button type="submit" class="btn btn-default acc-btn">Salva</button>
                             </form>
                         </div>
                     </div>
