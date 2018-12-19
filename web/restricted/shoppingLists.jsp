@@ -95,11 +95,13 @@
                         $("#anteprima").html("");
                         for (var i in data.products) {
                             $("#anteprima").append("<li id = \"" + data.products[i].id + "\" class = \"list-group-item justify-content-between align-items-center my-list-item\" >" +
+                                    "<div class='list-element'>"+
                                     "<input type=\"checkbox\" id=\"checkbox_" + data.products[i].id + "\" " + ((data.products[i].necessary === "false") ? "checked" : "") + " onclick=\"checkProduct(" + id + "," + data.products[i].id + ")\">" +
                                     "<label for=\"checkbox_" + data.products[i].id + "\">" +
                                     "<img src=\"${contextPath}images/productCategories/icons/" + data.products[i].logoPath + "\" class=\"medium-logo\">" +
                                     "<div class=\"my-text-content\">" + data.products[i].name + "</div>" +
                                     "</label>" +
+                                    "</div>"+
                                     "</li>");
                         }
                         return false;
@@ -159,14 +161,6 @@
                             <label class='list-title'> Liste create </label>
                             <div class="pre-scrollable">
                                 <ul class="list-group">
-                                    <li>
-                                        <button onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}'" class="list-group-item btn-custom">
-                                            <div class="my-text-content">
-                                                Aggiungi nuova lista
-                                            </div>
-                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/plus.png">
-                                        </button>
-                                    </li>
                                     <c:set var="i" value="0"/>    
                                     <c:forEach items="${shoppingLists}" var="shoppingList">
                                         <li id="${shoppingList.id}" class="list-group-item group-item-custom my-list-item" >
@@ -191,14 +185,16 @@
                                         </li>
                                         <c:set var="i" value="${i + 1}"/>
                                     </c:forEach>
+                                    <button onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("shoppingListForm.jsp"))}'" type="button" class="list-btn-custom">Crea nuova lista</button>
                                 </ul>
                             </div>
                         </div>
-
-                        <label class='list-title'> Anteprima prodotti </label>
+                                <div class="antepr">
+                                <label class='list-title'> Anteprima prodotti </label>
                         <div id="anteprima" class="list-group" >
                             <h5>Clicca su <span class="glyphicon glyphicon-list-alt"></span> per vedere l'anteprima dei prodotti</h5>
                         </div>
+                                </div>
                     </div>
                     <div id="spaziatura" class="col-sm-1">
                     </div>

@@ -114,6 +114,7 @@
                                             </div>
                                         </li>
                                     </c:forEach>
+                                    <button type="button" class="list-btn-custom">Crea nuova categoria liste</button>
                                 </ul>
                             </div>
                         </div>
@@ -136,6 +137,7 @@
                                             </div>
                                         </li>
                                     </c:forEach>
+                                    <button type="button" class="list-btn-custom">Crea nuova categoria prodotti</button>
                                 </ul>
                             </div>
                         </div>

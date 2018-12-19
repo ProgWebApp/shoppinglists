@@ -88,7 +88,7 @@
                                             </c:when>
                                         </c:choose>
                                         <div class="panel-heading-prods">
-                                            ${product.name}
+                                            <div class="panel-heading-title"> ${product.name}</div>
                                         </div>
                                         <div class="panel-body-prods" >
                                             <c:forEach items="${product.photoPath}" var="photo" end="0">

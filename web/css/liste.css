@@ -6,6 +6,7 @@
         display:none;
     }
 }
+
 .list-title{
     display: inline-block;
     font-size: 19px;
@@ -21,9 +22,7 @@
 .my-list-item{
     padding: 5px;
 }
-.width-1{
-    width: calc(100% - 40px) !important;
-}
+
 .my-text-content{
     padding: 10px;
     height: 40px;
@@ -38,6 +37,7 @@
 .list-element{
     display:inline-block;
     cursor: pointer;
+    height: 50px;
     flex: 1;
     min-width: 0;
     white-space: nowrap;

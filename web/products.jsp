@@ -88,8 +88,8 @@
                     </div>
                 </div>
                 <div class="container-fluid" style="margin-top:25px;">
-
                     <c:forEach items="${products}" var="product">
+
                         <c:choose>
                             <c:when test="${not empty user}">
                                 <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">
@@ -97,24 +97,10 @@
                                 <c:when test="${empty user}">
                                     <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
                                     </c:when>
-
                                 </c:choose>
                                 <div class="panel-heading-prods" >
-                                    <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="medium-logo"> 
-                                    ${product.name}
-
-                                    <c:if test="${empty user}">
-                                        <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
-                                        </c:if>
-                                    <div class="panel-heading-prods" >
-                                        ${product.name}
-                                    </div>
-                                    <div class="panel-body-prods" >
-                                        <c:forEach items="${product.photoPath}" var="photo" end="0">
-                                            <img class="fit-image img-responsive" src="${contextPath}images/products/${photo}"  alt="${product.name}">
-                                        </c:forEach>
-                                    </div>
-
+                                    <img style="display:block;" src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="medium-logo"> 
+                                    <div class="panel-heading-title">${product.name}</div>
                                 </div>
                                 <div class="panel-body-prods" >
                                     <c:forEach items="${product.photoPath}" var="photo" end="0">
@@ -122,7 +108,9 @@
                                     </c:forEach>
                                 </div>
                             </div>
+
                         </c:forEach>
+
                     </div>
                 </div>
                 <%@include file="include/footer.jsp" %>

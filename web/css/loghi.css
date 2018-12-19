@@ -58,13 +58,4 @@
     .list-logo{ 
         display:none;
     }
-    .my-text-content{
-        width: calc(100% - 80px);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .hide-anteprima{
-        display: none;
-    }
 }
