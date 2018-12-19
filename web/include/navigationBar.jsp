@@ -195,6 +195,12 @@
                             <hr>
                         </li>
                         <li>
+                            <a href="${pageContext.response.encodeURL(contextPath.concat("map.jsp"))}">Mappa</a>
+                        </li>
+                        <li>
+                            <hr>
+                        </li>
+                        <li>
                             <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Categorie</a>
                         </li>
                     </ul>
@@ -219,6 +225,12 @@
                         </li>
                         <li>
                             <a href="${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic?res=1"))}">La mia lista</a>
+                        </li>
+                        <li>
+                            <hr>
+                        </li>
+                        <li>
+                            <a href="${pageContext.response.encodeURL(contextPath.concat("map.jsp"))}">Mappa</a>
                         </li>
                     </ul>
                 </div>

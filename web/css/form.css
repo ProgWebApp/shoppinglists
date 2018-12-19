@@ -7,19 +7,24 @@
     box-shadow: 3px 5px rgb(0,0,0,0.5);
 }
 
+textarea{
+    height: 100px !important;
+}
 input[type="file"]{
     max-width: 300px;
     margin: 0 auto;
 }
+
 .form-container , input[type="file"]{
     max-width: 100%;
     margin: 0 auto;
 }
-input[type="checkbox"]{
-    /*display: none;*/
-}
 
 .container-logo input[type="checkbox"]:checked + label{
+    border: 2px solid blue;
+    border-radius: 10px;
+}
+.container-logo input[type="radio"]:checked + label{
     border: 2px solid blue;
     border-radius: 10px;
 }
@@ -88,12 +93,15 @@ input:focus {
         margin: 5px;
     }
 }
-.checkbox-img { 
+.input-img { 
     position: absolute; 
     top: 0px; 
     right: 0px;
     height: 20px;
     width: 20px;
+}
+.input-hide{
+    display: none !important;
 }
 .chat{
     height: 180px;

@@ -12,8 +12,8 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">
-                        <h2>Area di creazione categoria Prodotto</h2><br>
-                        <h4>Crea una nuova tipologia di categoria per i prodotti</h4><br>
+                        <h2>Categoria di prodotto</h2><br>
+                        <h4>Crea o modifica la categoria di prodotto</h4><br>
                     </div>
                 </div>    
                 <%@include file="../include/navigationBar.jsp" %>
@@ -33,31 +33,31 @@
                                     </c:when>
                                 </c:choose>
                                 <div class="form-group">
-                                    <label for="name">Nome Categoria:</label>
+                                    <label for="name">Nome:</label>
                                     <input type="text" id="name" name="name" class="form-control" placeholder="Inserisci nome della categoria" value="${productCategory.name}" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Descrizione:</label>
-                                    <input type="text" id="description" name="description" class="form-control" placeholder="Inserisci una descrizione" value="${productCategory.description}">
+                                    <textarea id="description" name="description" class="form-control" placeholder="Inserisci una descrizione">${productCategory.description}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <c:if test="${not empty productCategory.logoPath}">
                                         <img class="logo" src="${contextPath}images/productCategories/${productCategory.logoPath}">
                                     </c:if>
-                                    <label for="logo">Carica un'immagine per la categoria di prodotto:</label>
+                                    <label for="logo">Immagine:</label>
                                     <input type="file" id="logo" name="logo" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="logo">Carica le icone utilizzabili dai prodotti in questa categoria:</label>
+                                    <label for="logo">Aggiungi icone per la categoria:</label>
                                     <input type="file" id="icons" name="icons" class="form-control" multiple="multiple">
                                 </div>
                                 <c:if test="${not empty productCategory.iconPath}">
                                     <div class="form-group">
-                                        <label for="categorie">Seleziona le icone che vuoi rimuovere:</label>
+                                        <label for="categorie">Seleziona le icone da rimuovere:</label>
                                         <div class="row">
                                             <c:forEach items="${productCategory.iconPath}" var="icon">
                                                 <div class="container-logo">
-                                                    <input type="checkbox" id="${icon}" name="removeIcons" value="${icon}" class="checkbox-img">
+                                                    <input type="checkbox" id="${icon}" name="removeIcons" value="${icon}" class="input-img input-hide">
                                                     <label for="${icon}"><img src="${contextPath}images/productCategories/icons/${icon}" class="fit-logo img-responsive" alt="Icon"></label>
                                                 </div>
                                             </c:forEach>
@@ -65,7 +65,7 @@
                                     </div>
                                 </c:if>
                                 <c:if test="${not empty productCategory.id}"><input type="hidden" name="productCategoryId" value="${productCategory.id}"></c:if>
-                                    <button type="submit" class="btn btn-default acc-btn">Invia</button>
+                                    <button type="submit" class="btn btn-default acc-btn">Salva</button>
                                 </form>
                             </div>
                         </div>

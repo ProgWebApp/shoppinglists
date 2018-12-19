@@ -40,7 +40,8 @@
     width: 75px; 
     height: 75px; 
     float: left; 
-    margin-left: 20px; 
+    margin-left: 20px;
+    margin-top: 20px;
 }
 
 .list-logo-right{

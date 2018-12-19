@@ -101,7 +101,7 @@
                                 return {color: feature.properties.color};
                             }
                         }).bindPopup(function (layer) {
-                            return layer.feature.properties.name;
+                            return layer.feature.properties.name+" "+layer.feature.properties.shop;
                         }).addTo(mymap);
                         L.tileLayer('https://a.tile.openstreetmap.org/{z}/{x}/{y}.png ', {
                             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',

@@ -27,7 +27,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Modifica prodotto</title>
+        <title>Prodotto</title>
         <%@include file="../include/generalMeta.jsp" %>
         <script>
             function showIcons(logo, category) {
@@ -38,12 +38,15 @@
                         var response = JSON.parse(this.responseText);
                         div.innerHTML = "";
                         response.icons.forEach(function (icon) {
-                            var radio = '<input id="' + icon + '" type="radio" name="logo" value="' + icon + '">'
+                            var radio = '<div class="container-logo">'
+                                    + '<input id="' + icon + '" type="radio" name="logo" value="' + icon + '" class="input-img input-hide">'
                                     + '<label for="' + icon + '">'
-                                    + '<img height="50px" src="${contextPath}images/productCategories/icons/' + icon + '">'
-                                    + '</label>';
+                                    + '<img src="${contextPath}images/productCategories/icons/' + icon + '" class="fit-logo img-responsive">'
+                                    + '</label>'
+                                    + '</div>';
                             div.innerHTML += radio;
                         });
+                        div.innerHTML += "<div style=\"clear: both;\"></div>";
                     }
                 };
                 var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/IconsServlet"))}";
@@ -59,8 +62,8 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">
-                        <h2>Area di modifica del prodotto</h2><br>
-                        <h4>Modifica le caratteristiche e le immagini del prodotto</h4><br> 
+                        <h2>Prodotto</h2><br>
+                        <h4>Crea o modifica il prodotto</h4><br> 
                     </div>
                 </div>
                 <%@include file="../include/navigationBar.jsp" %>
@@ -76,23 +79,23 @@
                                     <c:when test="${message==1}">
                                         Compila i campi mancanti!
                                         <c:if test="${empty product.name}">Name</c:if>
-                                        <c:if test="${empty product.notes}">Notes</c:if>
-                                        <c:if test="${empty product.productCategoryId}">Category</c:if>
+                                        <c:if test="${empty product.notes}">Note</c:if>
+                                        <c:if test="${empty product.productCategoryId}">Categoria</c:if>
                                         <c:if test="${empty product.logoPath}">Logo</c:if>
                                     </c:when>
                                 </c:choose>
                                 <div class="form-group">
-                                    <label for="nome">Nome prodotto:</label>
+                                    <label for="nome">Nome:</label>
                                     <input type="text" id="name" name="name" class="form-control" placeholder="Inserisci nome prodotto" value="${product.name}${param.name}" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <label for="Cognome">Note:</label>
-                                    <input type="text" id="notes" name="notes" class="form-control" placeholder="Inserisce note" value="${product.notes}">
+                                    <textarea id="notes" name="notes" class="form-control" placeholder="Inserisce note">${product.notes}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="category">Category: </label>
+                                    <label for="category">Categoria: </label>
                                     <select id="category" name="category" class="form-control" onchange="showIcons('logo', this.value)">
-                                        <option value="" <c:if test="${empty product.productCategoryId}">selected</c:if> disabled>Select category...</option>
+                                        <option value="" <c:if test="${empty product.productCategoryId}">selected</c:if> disabled>Scegli categoria...</option>
                                         <c:forEach items="${categories}" var="category">
                                             <option value="${category.id}" <c:if test="${category.id==product.productCategoryId}">selected</c:if>>${category.name}</option>
                                         </c:forEach>
@@ -102,19 +105,20 @@
                                     <c:if test="${not empty product.logoPath}">
                                         <img class="small-logo" src="${contextPath}images/productCategories/icons/${product.logoPath}">
                                     </c:if>
-                                    <label for="logo">Seleziona un nuovo logo: </label>
-                                    <span id="logo">
-                                    </span>
+                                    <label for="logo">Scegli logo: </label>
+                                    <div id="logo">
+                                        
+                                    </div>
                                 </div>
-                                <br>
+                                        <br>
                                 <div class="form-group">
-                                    <label for="logo">Aggiungi nuove immagini:</label>
+                                    <label for="logo">Aggiungi immagini:</label>
                                     <input type="file" id="photos" name="photos" class="form-control" placeholder="Images" multiple="multiple">
                                 </div>
                                 <div>
                                     <c:if test="${not empty product.photoPath}">
                                         <div class="form-group">
-                                            <label for="categorie">Seleziona le immagini che vuoi rimuovere:</label>
+                                            <label for="categorie">Seleziona le immagini da rimuovere:</label>
                                             <div class="row">
                                                 <c:forEach items="${product.photoPath}" var="photo">
                                                     <div class="container-img-medium">
@@ -129,7 +133,7 @@
                                 <c:if test="${not empty product.id}">
                                     <input type="hidden" name="productId" value="${product.id}">
                                 </c:if>
-                                <button type="submit" class="btn-custom">Invia</button>
+                                <button type="submit" class="btn-custom">Salva</button>
                             </form>
                         </div>
                     </div>
