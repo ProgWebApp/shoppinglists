@@ -87,7 +87,7 @@
                                 <c:if test="${not empty shoppingListCategory.id}">
                                     <input type="hidden" name="shoppingListCategoryId" value="${shoppingListCategory.id}">
                                 </c:if>
-                                <button type="submit" class="btn btn-default acc-btn">Invia</button>
+                                <button type="submit" class="btn-custom">Invia</button>
                             </form>
                         </div>
                     </div>

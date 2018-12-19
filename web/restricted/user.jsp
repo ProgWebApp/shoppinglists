@@ -36,16 +36,13 @@
             <div id="body">
                 <div class="bod-container">
                     <div class="row">
-                        <div class="text-center col-sm-2">
-                        </div>
-                        <div class="text-center col-sm-4">
+                        <div class="text-center col-sm-6">
                             <div class="avatarContainer">
                                 <img class="avatar-img" src="${contextPath}/images/avatars/<c:out value="${user.avatarPath}"/>" alt="Avatar">
                                 <label class="input-img" for="avatar">
                                     Modifica immagine
                                 </label>
                             </div>
-
                             <form action="${pageContext.response.encodeURL(contextPath.concat("restricted/UserServlet"))}" method="POST" enctype="multipart/form-data">
                                 <c:choose>
                                     <c:when test="${message==11}">
@@ -56,7 +53,7 @@
                                 <input type="hidden" name="changeAvatar" value=1>
                             </form>
                         </div>
-                        <div class=" text-center col-sm-4">
+                        <div class=" text-center col-sm-6">
                             <h3>Informazioni personali</h3>
                             <table class="table table-custom">
                                 <tbody>

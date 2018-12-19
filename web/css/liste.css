@@ -1,6 +1,9 @@
-@media only screen and (max-width:1250px){
+@media only screen and (max-width:768px){
     .list-size-cust{
         width: 100% !important;
+    }
+    .antepr{
+        display:none;
     }
 }
 .list-title{
@@ -22,9 +25,7 @@
     width: calc(100% - 40px) !important;
 }
 .my-text-content{
-    width: calc(100% - 160px);
-    padding: 10px 0px 10px 10px;
-    float: left;
+    padding: 10px;
     height: 40px;
     line-height: 20px;
     cursor: pointer;
@@ -32,13 +33,23 @@
 .list-group-item{
     font-size:18px;
     height: 50px;
+    display: flex;
 }
-.creat-but{
-    margin-bottom: 5px !important;
-    border: 1px solid #4290ff;
+
+
+.list-element{
+    display:inline-block;
+    cursor: pointer;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-.icon-cont{
-    float: right;
+list-actions{
+    float:right;
+    white-space: nowrap;
+
 }
 .user-list-group{
     font-size:13px;
@@ -65,18 +76,13 @@
     width: 100%;
     padding: 4px;
 }
-@media only screen and (min-width:800px){
+@media only screen and (min-width:769px){
     div.pre-scrollable{
         min-height:450px;
         max-height:450px;
     }
 }
-@media only screen and (max-width:800px){
-    div.pre-scrollable{
-        min-height:150px;
-        max-height:450px;
-    }
-}
+
 @media only screen and (min-width:447px){
     .descript{
         margin-top:30px;

@@ -278,134 +278,138 @@
                     <div class="container-fluid">
                         <c:choose>
                             <c:when test="${empty user}">
-                                <div id="spaziatura-lrg" class="col-sm-1">
-                            </div>
-                            <div id="contenuto-lrg" class="col-sm-5">
-                                <div style="overflow: auto;">
-                                    <div class="pull-left">
-                                        <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
-                                    </div>
-                                    <div class="descript">
-                                        <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
-                                    </div>
+                                <div id="spaziatura" class="col-sm-1">
                                 </div>
-                                <br>
-                                <label class="list-title"> Prodotti </label>
-                                <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control" placeholder="Cerca prodotti da aggiungere...">
-                                <div class="pre-scrollable">
-                                    <ul id="prodotti" class="list-group">
-                                        <div id="emptyProducts" style="<c:if test="${not empty products}">display:none;</c:if>">Nessun prodotto in lista</div>
-                                        <c:forEach items="${products}" var="product">
-                                            <li id="${product.id}" class="list-group-item justify-content-between align-items-center my-list-item">
-                                                <input type="checkbox" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
-                                                <label for="checkbox_${product.id}">
-                                                    <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="medium-logo">
-                                                    <div class="my-text-content">
-                                                        ${product.name}
-                                                    </div>
-                                                </label>
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick='deleteProduct(${product.id})'>
-                                            </li>
-                                        </c:forEach>
-                                    </ul>
-                                </div>
-                            </div>
-                        </c:when>
-                        <c:when test="${not empty user}">
-                            <div id="spaziatura-lrg" class="col-sm-1">
-                            </div>
-                            <div id="contenuto-lrg" class="col-sm-5">
-                                <div style="overflow: auto;">
-                                    <div class="pull-left">
-                                        <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
-                                    </div>
-                                    <div class="descript">
-                                        <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
-                                    </div>
-                                </div>
-                                <br>                                        
-                                <label class="list-title"> Prodotti </label>
-                                <c:if test="${permissions==2}">
-                                    <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control" placeholder="Cerca prodotti da aggiungere...">
-                                </c:if>
-                                <div class="pre-scrollable">
-                                    <ul id="prodotti" class="list-group">
-                                        <div id="emptyProducts" style="<c:if test="${not empty products}">display:none;</c:if>">Nessun prodotto in lista</div>
-                                        <c:forEach items="${products}" var="product">
-                                            <li id="${product.id}" class="list-group-item justify-content-between align-items-center my-list-item">                                                    
-                                                <input type="checkbox" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
-                                                <label for="checkbox_${product.id}">
-                                                    <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="medium-logo">
-                                                    <div class="my-text-content">
-                                                        ${product.name}
-                                                    </div>
-                                                </label>
-                                                <c:if test="${permissions==2}">
-                                                    <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick='deleteProduct(${product.id})'>
-                                                </c:if>
-                                            </li>
-                                        </c:forEach>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div id="spaziatura-lrg" class="col-sm-1">
-                            </div>
-                            <div id="contenuto-lrg" class="col-sm-5">
-                                <div class="row">
-                                    <label class='list-title'> Chat </label>
-                                    <div class="form-control chat" id="messageBoard">
-                                        <c:forEach items="${messages}" var="message">
-                                            <div class="message<c:if test="${message.senderId==user.id}"> message-right</c:if>">
-                                                <c:if test="${message.senderId!=user.id}">
-                                                    <span style="font-weight: bold">${message.senderName}</span>
-                                                    <br>
-                                                </c:if>
-                                                ${message.body}
-                                            </div>
-                                        </c:forEach>
-                                    </div>
-                                    <div class="input-group">
-                                        <input id="newtext" class="form-control" type="text" placeholder="Scrivi messaggio...">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default" onclick="addMessage()">Invia</button>
+                                <div id="contenuto" class="col-sm-5">
+                                    <div style="overflow: auto;">
+                                        <div class="pull-left">
+                                            <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
+                                        </div>
+                                        <div class="descript">
+                                            <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
                                         </div>
                                     </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <label class='list-title'> Utenti che condividono la lista </label>
-                                    <c:if test="${permissions==2}">
-                                        <input type="text" id="searchUsers" name="searchUsers" class="form-control" placeholder="Cerca utenti...">
-                                    </c:if>
-
+                                    <br>
+                                    <label class="list-title"> Prodotti </label>
+                                    <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control" placeholder="Cerca prodotti da aggiungere...">
                                     <div class="pre-scrollable">
-                                        <ul id="utenti" class="list-group user-list-group">
-                                            <c:forEach items="${users}" var="user">
-                                                <li id="${user.id}" class="list-group-item justify-content-between align-items-center my-list-item">
-                                                    <div class="my-text-content">
-                                                        ${user.firstName} ${user.lastName}
+                                        <ul id="prodotti" class="list-group">
+                                            <div id="emptyProducts" style="<c:if test="${not empty products}">display:none;</c:if>">Nessun prodotto in lista</div>
+                                            <c:forEach items="${products}" var="product">
+                                                <li id="${product.id}" class="list-group-item justify-content-between align-items-center my-list-item">
+                                                    <input type="checkbox" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
+                                                    <label for="checkbox_${product.id}">
+                                                        <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="medium-logo">
+                                                        <div class="my-text-content">
+                                                            ${product.name}
+                                                        </div>
+                                                    </label>
+                                                    <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick='deleteProduct(${product.id})'>
+                                                </li>
+                                            </c:forEach>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </c:when>
+                            <c:when test="${not empty user}">
+                                <div id="spaziatura" class="col-sm-1">
+                                </div>
+                                <div id="contenuto" class="list-size-cust col-sm-5">
+                                    <div style="overflow: auto;">
+                                        <div class="pull-left">
+                                            <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
+                                        </div>
+                                        <div class="descript">
+                                            <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
+                                        </div>
+                                    </div>
+                                    <br>                                        
+                                    <label class="list-title"> Prodotti </label>
+                                    <c:if test="${permissions==2}">
+                                        <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control" placeholder="Cerca prodotti da aggiungere...">
+                                    </c:if>
+                                    <div class="pre-scrollable">
+                                        <ul id="prodotti" class="list-group">
+                                            <div id="emptyProducts" style="<c:if test="${not empty products}">display:none;</c:if>">Nessun prodotto in lista</div>
+                                            <c:forEach items="${products}" var="product">
+                                                <li id="${product.id}" class="list-group-item group-item-custom my-list-item">
+                                                    <div class='list-element'>
+                                                        <input type="checkbox" style="display:none;" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
+                                                        <label for="checkbox_${product.id}">
+                                                            <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="medium-logo list-logo">
+                                                            <div class="my-text-content">
+                                                                ${product.name}
+                                                            </div>
+                                                        </label>
                                                     </div>
                                                     <c:if test="${permissions==2}">
-                                                        <div class="my-text-content pull-right">
-                                                            <select onchange="changePermissions(${user.id}, this.value)">
-                                                                <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
-                                                                <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
-                                                                </select> 
-                                                            </div>
+                                                        <div class="list-actions">
+                                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick='deleteProduct(${product.id})'>
+                                                        </div>
                                                     </c:if>
                                                 </li>
                                             </c:forEach>
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
+                                <div id="spaziatura" class="col-sm-1">
+                                </div>
+                                <div id="contenuto" class="list-size-cust col-sm-5">
+                                    <div class="row">
+                                        <label class='list-title'> Chat </label>
+                                        <div class="form-control chat" id="messageBoard">
+                                            <c:forEach items="${messages}" var="message">
+                                                <div class="message<c:if test="${message.senderId==user.id}"> message-right</c:if>">
+                                                    <c:if test="${message.senderId!=user.id}">
+                                                        <span style="font-weight: bold">${message.senderName}</span>
+                                                        <br>
+                                                    </c:if>
+                                                    ${message.body}
+                                                </div>
+                                            </c:forEach>
+                                        </div>
+                                        <div class="input-group">
+                                            <input id="newtext" class="form-control" type="text" placeholder="Scrivi messaggio...">
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-default" onclick="addMessage()">Invia</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <label class='list-title'> Utenti che condividono la lista </label>
+                                        <c:if test="${permissions==2}">
+                                            <input type="text" id="searchUsers" name="searchUsers" class="form-control" placeholder="Cerca utenti...">
+                                        </c:if>
 
-                        </c:when>
-                    </c:choose>
+                                        <div class="pre-scrollable">
+                                            <ul id="utenti" class="list-group user-list-group">
+                                                <c:forEach items="${users}" var="user">
+                                                    <li id="${user.id}" class="list-group-item justify-content-between align-items-center my-list-item">
+                                                        <div class="my-text-content">
+                                                            ${user.firstName} ${user.lastName}
+                                                        </div>
+                                                        <c:if test="${permissions==2}">
+                                                            <div class="my-text-content pull-right">
+                                                                <select onchange="changePermissions(${user.id}, this.value)">
+                                                                    <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
+                                                                    <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
+                                                                    </select> 
+                                                                </div>
+                                                        </c:if>
+                                                    </li>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </c:when>
+                        </c:choose>
+                    </div>
                 </div>
             </div>
+            <%@include file="include/footer.jsp" %>
         </div>
-        <%@include file="include/footer.jsp" %>
-    </div>
-</body>
+    </body>
 </html>

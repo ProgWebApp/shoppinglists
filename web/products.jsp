@@ -72,49 +72,43 @@
             </div>
             <div id="body" >
                 <div class="row">
-                    <div class="elem-container">
-                        <div style="float:right;">
-                            <button class="btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}'">Aggiungi prodotto</button>
-                        </div>
-                        <div style="margin-right:10px;float:right;">
-                            <form action="products.jsp" method="GET">
-                                <select class="select-custom" name="order" onchange="this.form.submit()">
-                                    <option value="1" <c:if test="${order==1}">selected</c:if>>Nome prodotto A-Z</option> 
-                                    <option value="2" <c:if test="${order==2}">selected</c:if>>Nome prodotto Z-A</option> 
-                                    <option value="3" <c:if test="${order==3}">selected</c:if>>Nome categoria A-Z</option>
-                                    <option value="4" <c:if test="${order==4}">selected</c:if>>Nome categoria Z-A</option>     
-                                    </select>
-                                    <input type="hidden" name="query" value="${query}">
-                            </form>
-                        </div>
+                    <div style="float:right;">
+                        <button class="btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}'">Aggiungi prodotto</button>
+                    </div>
+                    <div style="margin-right:10px;float:right;">
+                        <form action="products.jsp" method="GET">
+                            <select class="select-custom" name="order" onchange="this.form.submit()">
+                                <option value="1" <c:if test="${order==1}">selected</c:if>>Nome prodotto A-Z</option> 
+                                <option value="2" <c:if test="${order==2}">selected</c:if>>Nome prodotto Z-A</option> 
+                                <option value="3" <c:if test="${order==3}">selected</c:if>>Nome categoria A-Z</option>
+                                <option value="4" <c:if test="${order==4}">selected</c:if>>Nome categoria Z-A</option>     
+                                </select>
+                                <input type="hidden" name="query" value="${query}">
+                        </form>
                     </div>
                 </div>
+                <div class="container-fluid" style="margin-top:25px;">
 
-                <div class="bod-container">
-                    <div class="container-fluid">
-
-                        <c:forEach items="${products}" var="product">
-                            <c:choose>
-                                <c:when test="${not empty user}">
-                                    <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">
+                    <c:forEach items="${products}" var="product">
+                        <c:choose>
+                            <c:when test="${not empty user}">
+                                <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">
+                                </c:when>
+                                <c:when test="${empty user}">
+                                    <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
                                     </c:when>
-                                    <c:when test="${empty user}">
-                                        <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
-                                        </c:when>
-                                    </c:choose>
-                                    <div class="panel-heading-prods" >
-                                        <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="medium-logo"> 
-                                        ${product.name}
-                                    </div>
-                                    <div class="panel-body-prods" >
-                                        <c:forEach items="${product.photoPath}" var="photo" end="0">
-                                            <img class="fit-image img-responsive" src="${contextPath}images/products/${photo}"  alt="${product.name}">
-                                        </c:forEach>
-                                    </div>
+                                </c:choose>
+                                <div class="panel-heading-prods" >
+                                    <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="medium-logo"> 
+                                    ${product.name}
                                 </div>
-                            </c:forEach>
-
-                        </div>
+                                <div class="panel-body-prods" >
+                                    <c:forEach items="${product.photoPath}" var="photo" end="0">
+                                        <img class="fit-image img-responsive" src="${contextPath}images/products/${photo}"  alt="${product.name}">
+                                    </c:forEach>
+                                </div>
+                            </div>
+                        </c:forEach>
                     </div>
                 </div>
                 <%@include file="include/footer.jsp" %>
