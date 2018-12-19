@@ -95,13 +95,13 @@
                         $("#anteprima").html("");
                         for (var i in data.products) {
                             $("#anteprima").append("<li id = \"" + data.products[i].id + "\" class = \"list-group-item justify-content-between align-items-center my-list-item\" >" +
-                                    "<div class='list-element'>"+
+                                    "<div class='list-element'>" +
                                     "<input type=\"checkbox\" id=\"checkbox_" + data.products[i].id + "\" " + ((data.products[i].necessary === "false") ? "checked" : "") + " onclick=\"checkProduct(" + id + "," + data.products[i].id + ")\">" +
                                     "<label for=\"checkbox_" + data.products[i].id + "\">" +
                                     "<img src=\"${contextPath}images/productCategories/icons/" + data.products[i].logoPath + "\" class=\"medium-logo\">" +
                                     "<div class=\"my-text-content\">" + data.products[i].name + "</div>" +
                                     "</label>" +
-                                    "</div>"+
+                                    "</div>" +
                                     "</li>");
                         }
                         return false;
@@ -189,19 +189,18 @@
                                 </ul>
                             </div>
                         </div>
-                                <div class="antepr">
-                                <label class='list-title'> Anteprima prodotti </label>
-                        <div id="anteprima" class="list-group" >
-                            <h5>Clicca su <span class="glyphicon glyphicon-list-alt"></span> per vedere l'anteprima dei prodotti</h5>
+                        <div class="antepr">
+                            <label class='list-title'> Anteprima prodotti </label>
+                            <div id="anteprima" class="list-group" >
+                                <h5>Clicca su <span class="glyphicon glyphicon-list-alt"></span> per vedere l'anteprima dei prodotti</h5>
+                            </div>
                         </div>
-                                </div>
-                    </div>
-                    <div id="spaziatura" class="col-sm-1">
+                        <div id="spaziatura" class="col-sm-1">
+                        </div>
                     </div>
                 </div>
             </div>
+            <%@include file="../include/footer.jsp" %>
         </div>
-        <%@include file="../include/footer.jsp" %>
-    </div>
-</body>
+    </body>
 </html>

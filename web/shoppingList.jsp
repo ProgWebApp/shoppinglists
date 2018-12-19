@@ -395,8 +395,8 @@
                                                             <div class="list-actions">
                                                                 <div class="my-text-content pull-right">
                                                                     <select onchange="changePermissions(${user.id}, this.value)">
-                                                                        <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza lista</option>
-                                                                        <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica lista</option>
+                                                                        <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza</option>
+                                                                        <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica</option>
                                                                         </select> 
                                                                     </div>
                                                                 </div>

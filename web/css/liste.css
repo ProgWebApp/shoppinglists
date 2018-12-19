@@ -28,7 +28,7 @@
     height: 40px;
     line-height: 20px;
     cursor: pointer;
-     white-space: nowrap;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }

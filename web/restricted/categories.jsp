@@ -95,13 +95,12 @@
             <div id="body">
                 <div class="bod-container list-size-cust">
                     <div class="container-fluid">
-
                         <div class="col-sm-6">
                             <label class="list-title"> Categorie Liste della spesa </label>
                             <div class="pre-scrollable">
                                 <ul class="list-group">
                                     <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
-                                        <li class="list-group-item group-item-custom my-list-item">
+                                        <li id="list${shoppingListCategory.id}" class="list-group-item group-item-custom my-list-item">
                                             <div class="list-element" style="cursor:default;">
                                                 <img src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo" class="medium-logo list-logo"> 
                                                 <div class="my-text-content">
@@ -109,22 +108,21 @@
                                                 </div>
                                             </div>
                                             <div class="list-actions">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="" title="Elimina">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}" title="Modifica">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteShoppingListCategory(${shoppingListCategory.id})" title="Elimina">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}'" title="Modifica">
                                             </div>
                                         </li>
                                     </c:forEach>
-                                    <button type="button" class="list-btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategoryForm.jsp"))}'">Crea nuova categoria liste</button>
+                                    <button type="button" class="list-btn-custom" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategoryForm.jsp"))}'">Crea nuova categoria liste</button>
                                 </ul>
                             </div>
                         </div>
-
                         <div class="col-sm-6">
                             <label class="list-title"> Categorie prodotti </label>
                             <div class="pre-scrollable">
                                 <ul class="list-group">
                                     <c:forEach items="${productCategories}" var="productCategory">
-                                        <li class="list-group-item group-item-custom my-list-item">
+                                        <li id="prod${productCategory.id}" class="list-group-item group-item-custom my-list-item">
                                             <div class="list-element" onclick="window.location.href = '${contextPath}restricted/ProductCategoryServlet?res=1&productCategoryId=${productCategory.id}'" title="Visualizza">
                                                 <img src="${contextPath}images/productCategories/${productCategory.logoPath}" alt="Logo" class="medium-logo list-logo"> 
                                                 <div class="my-text-content">
@@ -132,12 +130,12 @@
                                                 </div>
                                             </div>
                                             <div class="list-actions">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="" title="Elimina">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}" title="Modifica">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteProductCategory(${productCategory.id})" title="Elimina">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}'" title="Modifica">
                                             </div>
                                         </li>
                                     </c:forEach>
-                                    <button type="button" class="list-btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/productCategoryForm.jsp"))}'">Crea nuova categoria prodotti</button>
+                                    <button type="button" class="list-btn-custom" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("restricted/productCategoryForm.jsp"))}'">Crea nuova categoria prodotti</button>
                                 </ul>
                             </div>
                         </div>

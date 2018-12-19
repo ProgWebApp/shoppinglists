@@ -89,7 +89,6 @@
                 </div>
                 <div class="container-fluid" style="margin-top:25px;">
                     <c:forEach items="${products}" var="product">
-
                         <c:choose>
                             <c:when test="${not empty user}">
                                 <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">
@@ -108,7 +107,6 @@
                                     </c:forEach>
                                 </div>
                             </div>
-
                         </c:forEach>
 
                     </div>
