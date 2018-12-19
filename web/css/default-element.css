@@ -228,7 +228,18 @@ a:active {
 }
 .mynav-item:hover{
     color:black;
-    text-decoration: underline;
+    text-decoration: none;
+    background-color: #ccc;
+    border-radius: 3px;
+    box-shadow: 1px 2px #bbb;
+}
+.mynav-item.search:hover{
+    cursor: auto;
+    color:black;
+    text-decoration: none;
+    background-color: #ddd;
+    border-radius: 0px;
+    box-shadow: 0px 0px;
 }
 .search{
     width: calc(100% - 100px);
