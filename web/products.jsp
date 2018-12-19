@@ -103,7 +103,6 @@
                                         </c:when>
                                     </c:choose>
                                     <div class="panel-heading-prods" >
-                                        <img src="${contextPath}images/productCategories/icons/${product.logoPath}" alt="Logo" class="medium-logo"> 
                                         ${product.name}
                                     </div>
                                     <div class="panel-body-prods" >

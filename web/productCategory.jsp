@@ -42,7 +42,7 @@
                             <div class="elem-img">
                                 <img src="${contextPath}images/productCategories/${productCategory.logoPath}" alt="img-cat">
                             </div>
-                            <div class="elem-tex">
+                            <div class="elem-text">
                                 <h3>Descrizione della categoria:</h3>
                                 <p>${productCategory.description}</p>
                             </div>
