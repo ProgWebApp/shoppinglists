@@ -28,6 +28,9 @@
     height: 40px;
     line-height: 20px;
     cursor: pointer;
+     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .list-group-item{
     font-size:18px;
@@ -40,10 +43,8 @@
     height: 50px;
     flex: 1;
     min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
+
 list-actions{
     float:right;
     white-space: nowrap;
