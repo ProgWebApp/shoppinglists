@@ -246,16 +246,4 @@
     </c:if>
     getLocation();
 </script>
- <script>
-    window.onscroll = function() {stickit()};
-    var navbar = document.getElementById("mynavbar");
-    var sticky = navbar.offsetTop;
-    
-    function stickit() {
-    if (window.pageYOffset >= sticky) {
-    navbar.classList.add("sticky")
-    } else {
-    navbar.classList.remove("sticky");
-    }
-    }
-</script>
+ 

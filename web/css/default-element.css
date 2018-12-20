@@ -281,3 +281,6 @@ a:active {
   top: 0;
   width: 100%;
 }
+.stickybody {
+  padding-top: 75px !important;
+}
