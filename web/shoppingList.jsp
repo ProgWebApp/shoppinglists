@@ -324,9 +324,8 @@
                                 </div>
                             </c:when>
                             <c:when test="${not empty user}">
-                                <div id="spaziatura" class="col-sm-1">
-                                </div>
-                                <div id="contenuto" class="list-size-cust col-sm-5">
+                                
+                                <div id="contenuto" class="list-size-cust col-sm-6">
                                     <div style="overflow: auto;">
                                         <div class="pull-left">
                                             <img class="shoppingList-img" src="${contextPath}images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
@@ -364,9 +363,8 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div id="spaziatura" class="col-sm-1">
-                                </div>
-                                <div id="contenuto" class="list-size-cust col-sm-5">
+                                
+                                <div id="contenuto" class="list-size-cust col-sm-6">
                                     <div class="row">
                                         <label class='list-title'> Chat </label>
                                         <div class="form-control chat" id="messageBoard">

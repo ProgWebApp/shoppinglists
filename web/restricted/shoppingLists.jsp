@@ -96,7 +96,7 @@
                         for (var i in data.products) {
                             $("#anteprima").append("<li id = \"" + data.products[i].id + "\" class = \"list-group-item justify-content-between align-items-center my-list-item\" >" +
                                     "<div class='list-element'>" +
-                                    "<input type=\"checkbox\" id=\"checkbox_" + data.products[i].id + "\" " + ((data.products[i].necessary === "false") ? "checked" : "") + " onclick=\"checkProduct(" + id + "," + data.products[i].id + ")\">" +
+                                    "<input style=\"display:none;\" type=\"checkbox\" id=\"checkbox_" + data.products[i].id + "\" " + ((data.products[i].necessary === "false") ? "checked" : "") + " onclick=\"checkProduct(" + id + "," + data.products[i].id + ")\">" +
                                     "<label for=\"checkbox_" + data.products[i].id + "\">" +
                                     "<img src=\"${contextPath}images/productCategories/icons/" + data.products[i].logoPath + "\" class=\"medium-logo\">" +
                                     "<div class=\"my-text-content\">" + data.products[i].name + "</div>" +
@@ -189,7 +189,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="antepr">
+                        <div id="contenuto" class="antepr col-sm-5 list-size-cust">
                             <label class='list-title'> Anteprima prodotti </label>
                             <div id="anteprima" class="list-group" >
                                 <h5>Clicca su <span class="glyphicon glyphicon-list-alt"></span> per vedere l'anteprima dei prodotti</h5>

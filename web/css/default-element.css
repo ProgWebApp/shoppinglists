@@ -106,9 +106,8 @@ a:active {
     box-shadow: 3px 5px rgb(0,0,0,0.5);
 }
 .elem-container-left{
-    margin-left: 10%;
+    
     height:auto;
-    width: 50%;
     overflow:hidden;
     float:left;
     margin-top:15px;
@@ -170,19 +169,7 @@ a:active {
         width: 80%;
     }
 }
-@media only screen and (min-width: 767px) and (max-width:1300px){
-    #contenuto-lrg{
-        margin-bottom: 20px;
-        width: 60% !important;
-        margin:auto;
-        float:none;
-    }
-}
-@media only screen and (max-width:1300px){
-    #spaziatura-lrg{
-        display:none;
-    }
-}
+
 @media only screen and (max-width:1024px){
     #spaziatura{
         display:none !important;
@@ -192,11 +179,7 @@ a:active {
     }
 }
 @media only screen and (max-width:920px){
-    .elem-container-left{
-        margin-left: 10%;
-        margin-right: 10%;
-        width: 80%;
-    }
+    
     .elem-text{
         width: calc(100% - 30px);
     }
@@ -275,7 +258,7 @@ a:active {
 #mapNotification{
     display: none;
 }
-@media screen and (max-width:767px){
+@media screen and (max-width:768px){
     .hide-elem{
         display: none !important;
     }
@@ -288,7 +271,7 @@ a:active {
         width:70%;
     }
 }
-@media screen and (min-width:768px){
+@media screen and (min-width:769px){
     li.hide-elem-men{
         display: none !important;
     }

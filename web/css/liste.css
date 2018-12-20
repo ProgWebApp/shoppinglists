@@ -6,7 +6,9 @@
         display:none;
     }
 }
-
+.antepr{
+    padding-left:25px;
+}
 .list-title{
     display: inline-block;
     font-size: 19px;

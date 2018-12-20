@@ -102,7 +102,6 @@
                                     <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
                                         <li id="list${shoppingListCategory.id}" class="list-group-item group-item-custom my-list-item">
                                             <div class="list-element" style="cursor:default;">
-                                                <img src="${contextPath}images/shoppingListCategories/${shoppingListCategory.logoPath}" alt="Logo" class="medium-logo list-logo"> 
                                                 <div class="my-text-content">
                                                     ${shoppingListCategory.name}
                                                 </div>
@@ -124,7 +123,6 @@
                                     <c:forEach items="${productCategories}" var="productCategory">
                                         <li id="prod${productCategory.id}" class="list-group-item group-item-custom my-list-item">
                                             <div class="list-element" onclick="window.location.href = '${contextPath}restricted/ProductCategoryServlet?res=1&productCategoryId=${productCategory.id}'" title="Visualizza">
-                                                <img src="${contextPath}images/productCategories/${productCategory.logoPath}" alt="Logo" class="medium-logo list-logo"> 
                                                 <div class="my-text-content">
                                                     ${productCategory.name}
                                                 </div>
