@@ -167,7 +167,7 @@
                                             <div class='list-element'>
                                                 <div onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=1&shoppingListId=").concat(shoppingList.id))}';
                                                         event.stopPropagation();" title="Visualizza">
-                                                    <c:if  test="${shoppingList.notifications!='1'}">
+                                                    <c:if  test="${shoppingList.notifications!='0'}">
                                                         <img class="list-logo-left" src="${contextPath}images/myIconsNav/notification.png">
                                                     </c:if>
                                                     <img src="${contextPath}images/shoppingListCategories/${shoppingList.listCategoryIcon}" alt="Logo" class="medium-logo list-logo"> 
