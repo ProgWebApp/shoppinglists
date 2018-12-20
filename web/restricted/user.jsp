@@ -96,7 +96,7 @@
                                             <td>Nome</td>
                                             <td>
                                                 <div class="input-group ">
-                                                    <input type="text" class="form-control" name="firstName" id="firstname" placeholder="First name" value="<c:out value="${user.firstName}"/>"autofocus>
+                                                    <input type="text" class="form-control" name="firstName" id="firstname" placeholder="First name" value="<c:out value="${user.firstName}"/>">
                                                 </div>
                                             </td>
                                         </tr>

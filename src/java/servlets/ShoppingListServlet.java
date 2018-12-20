@@ -139,7 +139,7 @@ public class ShoppingListServlet extends HttpServlet {
                     sb.append("{"
                             + "\"id\": \""+products.get(i).getId()+"\", "
                             + "\"name\": \""+products.get(i).getName()+"\", "
-                            + "\"notes\": \""+products.get(i).getNotes()+"\", "
+                            + "\"notes\": \""+escape(products.get(i).getNotes())+"\", "
                             + "\"logoPath\": \""+products.get(i).getLogoPath()+"\", "
                             + "\"photoPath\": \""+products.get(i).getPhotoPath()+"\", "
                             + "\"productCategoryId\": \""+products.get(i).getProductCategoryId()+"\", "
@@ -344,4 +344,15 @@ public class ShoppingListServlet extends HttpServlet {
         }
     }
 
+    private String escape(String raw) {
+        String escaped = raw;
+        escaped = escaped.replace("\\", "\\\\");
+        escaped = escaped.replace("\"", "\\\"");
+        escaped = escaped.replace("\b", "\\b");
+        escaped = escaped.replace("\f", "\\f");
+        escaped = escaped.replace("\n", "\\n");
+        escaped = escaped.replace("\r", "\\r");
+        escaped = escaped.replace("\t", "\\t");
+        return escaped;
+    }
 }

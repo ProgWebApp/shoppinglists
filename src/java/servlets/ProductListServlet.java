@@ -182,7 +182,7 @@ public class ProductListServlet extends HttpServlet {
                             sb.append("{"
                                     + "\"id\": \"" + product.getId() + "\", "
                                     + "\"name\": \"" + product.getName() + "\", "
-                                    + "\"notes\": \"" + product.getNotes() + "\", "
+                                    + "\"notes\": \"" + escape(product.getNotes()) + "\", "
                                     + "\"logoPath\": \"" + product.getLogoPath() + "\", "
                                     + "\"photoPath\": \"" + product.getPhotoPath() + "\", "
                                     + "\"productCategoryId\": \"" + product.getProductCategoryId() + "\", "
@@ -208,4 +208,15 @@ public class ProductListServlet extends HttpServlet {
         }
     }
 
+    private String escape(String raw) {
+        String escaped = raw;
+        escaped = escaped.replace("\\", "\\\\");
+        escaped = escaped.replace("\"", "\\\"");
+        escaped = escaped.replace("\b", "\\b");
+        escaped = escaped.replace("\f", "\\f");
+        escaped = escaped.replace("\n", "\\n");
+        escaped = escaped.replace("\r", "\\r");
+        escaped = escaped.replace("\t", "\\t");
+        return escaped;
+    }
 }

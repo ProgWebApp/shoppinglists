@@ -56,16 +56,23 @@
                                 success: function (data) {
                                     $("#emptyProducts").hide();
                                     $("#prodotti").append("<li id=" + data.product.id + " class=\"list-group-item justify-content-between align-items-center my-list-item\">" +
-                                            "<input type=\"checkbox\" id=\"checkbox_" + data.product.id + "\" onclick=\"checkProduct(" + data.product.id + ")\" >" +
+                                            "<div class=\"list-element\">" +
+                                            "<input type=\"checkbox\" style=\"display:none;\" id=\"checkbox_" + data.product.id + "\" onclick=\"checkProduct(" + data.product.id + ")\" >" +
                                             "<label for=\"checkbox_" + data.product.id + "\">" +
-                                            "<img src=\"${contextPath}images/productCategories/icons/" + data.product.logoPath + "\" class=\"medium-logo\">" +
+                                            "<img src=\"${contextPath}images/productCategories/icons/" + data.product.logoPath + "\" class=\"medium-logo list-logo\">" +
                                             "<div class=\"my-text-content\">" + data.product.name + "</div>" +
                                             "</label>" +
+                                            "</div>" +
+                                            "<div class=\"list-actions\">" +
                                             "<img class=\"list-logo-right\" src=\"${contextPath}images/myIconsNav/rubbish.png\" onclick=\"deleteProduct(" + data.product.id + ")\">" +
+                                            "</div>" +
                                             "</li>");
                                     $("#searchAddProducts").val("");
                                 },
-                                error() {
+                                error(xhr, status, err) {
+                                    console.log(xhr);
+                                    console.log(status);
+                                    console.log(err);
                                     alert("L'utente non ha i permessi per la modifica della lista");
                                 }
                             });

@@ -5,16 +5,13 @@
  */
 package servlets;
 
-import db.daos.ProductCategoryDAO;
 import db.daos.ShoppingListCategoryDAO;
 import db.entities.ProductCategory;
 import db.entities.ShoppingListCategory;
-import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.DAOFactoryException;
 import db.factories.DAOFactory;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
