@@ -95,7 +95,7 @@
     }
     });
     },
-        minLength: 2,
+            minLength: 2,
             response: function (event, ui) {
     <c:if test="${not empty user}">
             ui.content.push({label: "Aggiungi \"" + $("#searchProducts").val() + "\" ai miei prodotti", value: 0});
@@ -128,7 +128,8 @@
     }
     });
     });</script>
-<div class="mynav">
+       
+<div id="mynavbar" class="mynav">
     <div class="mynav-left">
         <div class="mynav-item" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("index.jsp"))}'">
             <img class="navIcon" src="${contextPath}images/myIconsNav/home.png">
@@ -244,4 +245,17 @@
     getNotifications();
     </c:if>
     getLocation();
+</script>
+ <script>
+    window.onscroll = function() {stickit()};
+    var navbar = document.getElementById("mynavbar");
+    var sticky = navbar.offsetTop;
+    
+    function stickit() {
+    if (window.pageYOffset >= sticky) {
+    navbar.classList.add("sticky")
+    } else {
+    navbar.classList.remove("sticky");
+    }
+    }
 </script>

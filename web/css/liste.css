@@ -6,9 +6,7 @@
         display:none;
     }
 }
-.antepr{
-    padding-left:25px;
-}
+
 .list-title{
     display: inline-block;
     font-size: 19px;
@@ -87,4 +85,8 @@ list-actions{
     .descript{
         margin-top:30px;
     }
+}
+
+.list-control-butto{
+    display: inline-block;
 }

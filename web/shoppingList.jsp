@@ -301,6 +301,7 @@
                                             <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
                                         </div>
                                     </div>
+                                       
                                     <br>
                                     <label class="list-title"> Prodotti </label>
                                     <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control" placeholder="Cerca prodotti da aggiungere...">
@@ -332,9 +333,14 @@
                                         </div>
                                         <div class="descript">
                                             <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
+                                            <div class="list-control-butto">
+                                            <img class="control-logo" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})" title="Elimina Lista">
+                                            <img class="control-logo" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=2&shoppingListId=").concat(shoppingList.id))}'" title="Modifica lista">
+                                         </div> 
                                         </div>
                                     </div>
-                                    <br>                                        
+                                         
+                                         <br>
                                     <label class="list-title"> Prodotti </label>
                                     <c:if test="${permissions==2}">
                                         <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control" placeholder="Cerca prodotti da aggiungere...">
@@ -347,7 +353,7 @@
                                                     <div class='list-element'>
                                                         <input type="checkbox" style="display:none;" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
                                                         <label for="checkbox_${product.id}">
-                                                            <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="medium-logo list-logo">
+                                                            <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="medium-logo">
                                                             <div class="my-text-content">
                                                                 ${product.name}
                                                             </div>
@@ -355,7 +361,7 @@
                                                     </div>
                                                     <c:if test="${permissions==2}">
                                                         <div class="list-actions">
-                                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick='deleteProduct(${product.id})'>
+                                                            <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick='deleteProduct(${product.id})' title="Rimuovi prodotto">
                                                         </div>
                                                     </c:if>
                                                 </li>
