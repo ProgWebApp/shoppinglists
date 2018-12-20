@@ -61,10 +61,10 @@
                         <div class="row">
                             <c:forEach items="${products}" var="product">
                                 <c:choose>
-                                    <c:when test="${product.isReserved()}">
+                                    <c:when test="${not empty user}">
                                         <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=1&productId=").concat(product.id))}'">
                                         </c:when>
-                                        <c:when test="${not product.isReserved()}">
+                                        <c:when test="${empty user}">
                                             <div class="panel-default-prods" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ProductPublic?productId=").concat(product.id))}'">
                                             </c:when>
                                         </c:choose>

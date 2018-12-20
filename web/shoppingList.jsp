@@ -329,7 +329,7 @@
                                 <div id="contenuto" class="list-size-cust col-sm-5">
                                     <div style="overflow: auto;">
                                         <div class="pull-left">
-                                            <img class="shoppingList-img" src="${contextPath}/images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
+                                            <img class="shoppingList-img" src="${contextPath}images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
                                         </div>
                                         <div class="descript">
                                             <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
