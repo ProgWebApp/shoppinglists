@@ -9,10 +9,10 @@
     if (this.responseText != 0){
     document.getElementById("notification").style.display = "block";
     document.getElementById("messageNotification").style.display = "block";
-    if (this.responseText == 1){
-    document.getElementById("messageNotification").getElementsByTagName('a')[0].innerHTML = json.elements.length + " nuovo messaggio";
+    if (this.responseText == "1"){
+    document.getElementById("messageNotification").getElementsByTagName('a')[0].innerHTML = this.responseText + " nuovo messaggio";
     } else{
-    document.getElementById("messageNotification").getElementsByTagName('a')[0].innerHTML = json.elements.length + " nuovi messaggi";
+    document.getElementById("messageNotification").getElementsByTagName('a')[0].innerHTML = this.responseText + " nuovi messaggi";
     }
     }
     }
@@ -95,6 +95,7 @@
     }
     });
     },
+        minLength: 2,
             response: function (event, ui) {
     <c:if test="${not empty user}">
             ui.content.push({label: "Aggiungi \"" + $("#searchProducts").val() + "\" ai miei prodotti", value: 0});

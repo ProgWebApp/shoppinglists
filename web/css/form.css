@@ -21,11 +21,10 @@ input[type="file"]{
 }
 
 .container-logo input[type="checkbox"]:checked + label{
-    border: 2px solid blue;
-    border-radius: 10px;
+    border: 2px solid red;
 }
 .container-logo input[type="radio"]:checked + label{
-    border: 2px solid blue;
+    border: 2px solid lightgreen;
     border-radius: 10px;
 }
 

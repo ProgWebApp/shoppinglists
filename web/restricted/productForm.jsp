@@ -121,8 +121,8 @@
                                             <label for="categorie">Seleziona le immagini da rimuovere:</label>
                                             <div class="row">
                                                 <c:forEach items="${product.photoPath}" var="photo">
-                                                    <div class="container-img-medium">
-                                                        <input type="checkbox" id="${photo}" name="removePhotos" value="${photo}" class="checkbox-img">
+                                                    <div class="container-logo">
+                                                        <input type="checkbox" id="${photo}" name="removePhotos" value="${photo}" class="input-img input-hide">
                                                         <label for="${photo}"><img class="fit-logo img-responsive" src="${contextPath}images/products/${photo}" alt="Img Prod"></label>
                                                     </div>
                                                 </c:forEach>
