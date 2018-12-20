@@ -136,15 +136,20 @@
                             },
                             success: function () {
                                 $("#utenti").append("<li id=\"" + ui.item.value + "\"class=\"list-group-item justify-content-between align-items-center my-list-item\">"
+                                        + "<div class=\"list-element\">"
                                         + "<div class=\"my-text-content\">"
                                         + ui.item.label
                                         + "</div>"
-                                        + " <img class=\"list-logo-right\" src=\"${contextPath}images/myIconsNav/cancel.png\" onclick=\"changePermissions(${user.id}, 0)\">"
+                                        + "</div>"
+                                        + "<div class=\"list-actions\">"
                                         + "<div class=\"my-text-content pull-right\">"
                                         + " <select onchange=\"changePermissions(" + ui.item.value + ", this.value)\">"
-                                        + "     <option value=1>Visualizza lista</option>"
-                                        + "     <option value=2>Modifica lista</option>"
+                                        + "     <option value=1>Visualizza</option>"
+                                        + "     <option value=2>Modifica</option>"
+                                        + "     <option value=0>Elimina</option>"
                                         + " </select>"
+                                        + "</div>"
+                                        + "</div>"
                                         + " </li>"
                                         + "</div>");
                                 $("#searchUsers").val("");
@@ -165,7 +170,7 @@
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
-                        if (permissions === 0) {
+                        if (permissions == 0) {
                             var element = document.getElementById(userId);
                             element.parentNode.removeChild(element);
                         }
@@ -177,7 +182,7 @@
                 };
                 var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShareListsServlet"))}";
                 var action = 2;
-                if (permissions === 0) {
+                if (permissions == 0) {
                     action = 0;
                 }
                 if (userId !== '' && permissions !== '') {
@@ -381,22 +386,22 @@
                                         <c:if test="${permissions==2}">
                                             <input type="text" id="searchUsers" name="searchUsers" class="form-control" placeholder="Cerca utenti...">
                                         </c:if>
-
                                         <div class="pre-scrollable">
                                             <ul id="utenti" class="list-group user-list-group">
-                                                <c:forEach items="${users}" var="user">
-                                                    <li id="${user.id}" class="list-group-item justify-content-between align-items-center my-list-item">
+                                                <c:forEach items="${users}" var="user_list">
+                                                    <li id="${user_list.id}" class="list-group-item justify-content-between align-items-center my-list-item">
                                                         <div class='list-element'>
                                                             <div class="my-text-content">
-                                                                ${user.firstName} ${user.lastName}
+                                                                ${user_list.firstName} ${user_list.lastName}
                                                             </div>
                                                         </div>
-                                                        <c:if test="${permissions==2}">
+                                                        <c:if test="${permissions==2 && user_list.id!=user.id}">
                                                             <div class="list-actions">
                                                                 <div class="my-text-content pull-right">
-                                                                    <select onchange="changePermissions(${user.id}, this.value)">
-                                                                        <option value=1 <c:if test="${user.permissions==1}">selected</c:if>>Visualizza</option>
-                                                                        <option value=2 <c:if test="${user.permissions==2}">selected</c:if>>Modifica</option>
+                                                                    <select onchange="changePermissions(${user_list.id}, this.value)">
+                                                                        <option value=1 <c:if test="${user_list.permissions==1}">selected</c:if>>Visualizza</option>
+                                                                        <option value=2 <c:if test="${user_list.permissions==2}">selected</c:if>>Modifica</option>
+                                                                        <option value=0>Elimina</option>
                                                                         </select> 
                                                                     </div>
                                                                 </div>

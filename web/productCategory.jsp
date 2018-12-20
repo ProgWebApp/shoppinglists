@@ -4,25 +4,6 @@
     <head>
         <title>Product Category</title>
         <%@include file="include/generalMeta.jsp" %>
-        <script>
-            function deleteProductCategory(id) {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState === 4 && this.status === 204) {
-                        window.location.href = "${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}";
-                    } else if (this.readyState === 4 && this.status === 400) {
-                        alert("Bad request!");
-                    } else if (this.readyState === 4 && this.status === 403) {
-                        alert("You are not allowed to delete the productCategory!");
-                    } else if (this.readyState === 4 && this.status === 500) {
-                        alert("Impossible to delete the productCategory!");
-                    }
-                };
-                var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet"))}";
-                xhttp.open("DELETE", url + "?productCategoryId=" + id, true);
-                xhttp.send();
-            }
-        </script>
     </head>
     <body>
         <div id="containerPage">
@@ -69,7 +50,7 @@
                                             <option value="2" <c:if test="${order==2}">selected</c:if>>Nome prodotto ZA</option>  
                                             </select>
                                             <div style="float:right;">
-                                                <button class="btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}'">
+                                                <button type="button" class="btn-custom" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}'">
                                                 Crea prodotto
                                             </button>
                                         </div>

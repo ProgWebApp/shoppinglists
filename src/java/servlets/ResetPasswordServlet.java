@@ -73,7 +73,7 @@ public class ResetPasswordServlet extends HttpServlet {
 
                     String hostName = request.getServerName() + ":" + request.getServerPort();
                     String testo = "Per completare la procedura di ripristino della password clicca sul seguente link:\n"
-                            + "http://" + hostName + request.getAttribute("contextPath") + "ResetPasswordServlet?check=" + check + "\n"
+                            + "https://" + hostName + request.getAttribute("contextPath") + "ResetPasswordServlet?check=" + check + "\n"
                             + "Nel caso il link non dovesse funzionare copialo nella barra del browser e premi invio.\n"
                             + "Questa è una mail generata automaticamente, si prega di non ispondere a questo messaggio.";
                     Email.send(email, "Reimpostazione password shopping-list", testo);
@@ -114,6 +114,7 @@ public class ResetPasswordServlet extends HttpServlet {
                 } catch (DAOException ex) {
                     Logger.getLogger(ResetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                request.getSession().setAttribute("message", 5);
                 response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "login.jsp"));
                 break;
         }

@@ -36,6 +36,9 @@
                                     <c:when test="${message==4}">
                                         Il codice di controllo inserito non è valido
                                     </c:when>
+                                    <c:when test="${message==5}">
+                                        Passwors aggiornata con successo!
+                                    </c:when>
                                 </c:choose>
                                 <div class="form-group">
                                     <label for="email">Email:</label>

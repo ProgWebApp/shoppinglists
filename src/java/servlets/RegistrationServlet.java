@@ -130,7 +130,7 @@ public class RegistrationServlet extends HttpServlet {
             /* Invio mail di iscrizione all'utente */
             String hostName = request.getServerName() + ":" + request.getServerPort();
             String testo = "Grazie per esserti iscritto al sito, per completare la registrazione clicca sul seguente link:\n"
-                    + "http://" + hostName + request.getAttribute("contextPath") + "VerifyEmailServlet?check=" + check + "\n"
+                    + "https://" + hostName + request.getAttribute("contextPath") + "VerifyEmailServlet?check=" + check + "\n"
                     + "Nel caso il link non dovesse funzionare copialo nella barra del browser e premi invio.\n"
                     + "Questa è una mail generata automaticamente, si prega di non ispondere a questo messaggio.";
             Email.send(userEmail, "Registrazione shopping-list", testo);

@@ -62,7 +62,12 @@ public class MapServlet extends HttpServlet {
             }
         }
         if (user == null && userId == null) {
-            response.setStatus(403);
+            String json = "{\"shops\":[]}";
+            PrintWriter out = response.getWriter();
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            out.print(json);
+            out.flush();
             return;
         }
         try {
