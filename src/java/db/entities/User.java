@@ -3,7 +3,7 @@ package db.entities;
 import java.io.Serializable;
 
 /**
- * The entity that describe a {@code user}.
+ * The entity that describe a user.
  */
 public class User implements Serializable{
 
@@ -198,6 +198,10 @@ public class User implements Serializable{
         this.permissions = permissions;
     }
     
+    /**
+     * 
+     * @return a string that contains name, surname and the id of the user
+     */
     public String toJson() {
         String json = "{\"label\": \""+firstName+" "+lastName+"\", \"value\": "+id+"}";
         return json;

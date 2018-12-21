@@ -11,12 +11,12 @@ import java.util.List;
 public interface MessageDAO extends DAO<Message, Integer> {
 
     /**
-     * Returns the list of {@link Message message} that refers to the
-     * {@code shoppingList} passed as paramenter.
+     * Returns the list of {@link Message} that refers to the
+     * {@link ShoppingList} passed as paramenter.
      *
-     * @param shoppingListId the shoppingList which the message refers to.
-     * @return the list of {@link Message message} that refers to the
-     * {@code shoppingList} passed as paramenter, o an empty list.
+     * @param shoppingListId the id of the {@link ShoppingList} which the message refers to.
+     * @return the list of {@link Message} that refers to the
+     * passed shoppingList o an empty list.
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */

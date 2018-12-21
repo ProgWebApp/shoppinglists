@@ -278,12 +278,12 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
     }
 
     @Override
-    public ShoppingList getByCookie(String userId) throws DAOException {
-        if (userId == null) {
-            throw new DAOException("userId is a mandatory field", new NullPointerException("userId is null"));
+    public ShoppingList getByCookie(String cookie) throws DAOException {
+        if (cookie == null) {
+            throw new DAOException("cookie is a mandatory field", new NullPointerException("cookie is null"));
         }
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM lists WHERE cookie = ?")) {
-            stm.setString(1, userId);
+            stm.setString(1, cookie);
             ResultSet rs = stm.executeQuery();
             ShoppingList shoppingList;
             if (!rs.isBeforeFirst()) {
@@ -294,7 +294,7 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
             }
             return shoppingList;
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of shoppingLists for the passed userId", ex);
+            throw new DAOException("Impossible to get the list of shoppingLists for the passed cookie", ex);
         }
     }
 
@@ -543,10 +543,10 @@ public class JDBCShoppingListDAO extends JDBCDAO<ShoppingList, Integer> implemen
 
     /**
      *
-     * @param shoppingListId
-     * @param userId
-     * @return
-     * @throws DAOException
+     * @param shoppingListId the shoppingListId of the {@link ShoppingList} we are checking
+     * @param userId the userId of the {@link User} we are checking
+     * @return the permission of the passed {@link User} on the passed {@link ShoppingList}
+     * @throws DAOException if an error occurred during the persist action.
      */
     @Override
     public Integer getPermission(Integer shoppingListId, Integer userId) throws DAOException {

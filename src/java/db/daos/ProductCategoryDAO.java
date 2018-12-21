@@ -4,7 +4,7 @@ import db.entities.ProductCategory;
 
 /**
  * All concrete DAOs must implement this interface to handle the persistence
- * system that interact with {@link ProductCategory productCategory}.
+ * system that interact with {@link ProductCategory}.
  */
 public interface ProductCategoryDAO extends DAO<ProductCategory, Integer>{
     

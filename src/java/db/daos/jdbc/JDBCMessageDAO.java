@@ -30,7 +30,7 @@ public class JDBCMessageDAO extends JDBCDAO<Message, Integer> implements Message
      * Persists the new {@code Message} passed as parameter to the storage
      * system.
      *
-     * @param message the new {@code message} to persist.
+     * @param message the new message to persist.
      * @return the id of the new persisted record.
      * @throws DAOException if an error occurred during the persist action.
      */
@@ -63,7 +63,7 @@ public class JDBCMessageDAO extends JDBCDAO<Message, Integer> implements Message
      * Persists the alredy existing {@code Message} passed as parameter to the
      * storage system.
      *
-     * @param message the {@code message} to persist.
+     * @param message the message to persist.
      * @throws DAOException if an error occurred during the persist action.
      */
     @Override
@@ -94,7 +94,7 @@ public class JDBCMessageDAO extends JDBCDAO<Message, Integer> implements Message
      * Delete the alredy existing {@code Message} passed as parameter from the
      * storage system.
      *
-     * @param message the primaryKey of the {@code message} to delete.
+     * @param primaryKey the primaryKey of the message to delete.
      * @throws DAOException if an error occurred during the delting action.
      */
     @Override
@@ -111,7 +111,7 @@ public class JDBCMessageDAO extends JDBCDAO<Message, Integer> implements Message
     }
 
     /**
-     * Returns the number of {@link Message message} stored on the persistence
+     * Returns the number of {@link Message} stored on the persistence
      * system of the application.
      *
      * @return the number of records present into the storage system.
@@ -134,11 +134,11 @@ public class JDBCMessageDAO extends JDBCDAO<Message, Integer> implements Message
     }
 
     /**
-     * Returns the {@link Message message} with the primary key equals to the
+     * Returns the {@link Message} with the primary key equals to the
      * one passed as parameter.
      *
-     * @param primaryKey the {@code id} of the {@code message} to get.
-     * @return the {@code message} with the id equals to the one passed as
+     * @param primaryKey the id of the message to get.
+     * @return the message with the id equals to the one passed as
      * parameter.
      * @throws DAOException if an error occurred during the information
      * retrieving.
@@ -161,10 +161,10 @@ public class JDBCMessageDAO extends JDBCDAO<Message, Integer> implements Message
     }
 
     /**
-     * Returns the list of all the valid {@link Message message} stored by the
+     * Returns the list of all the valid {@link Message} stored by the
      * storage system.
      *
-     * @return the list of all the valid {@code message}.
+     * @return the list of all the valid message.
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
@@ -185,7 +185,17 @@ public class JDBCMessageDAO extends JDBCDAO<Message, Integer> implements Message
             throw new DAOException("Impossible to get the list of messages", ex);
         }
     }
-
+    
+    /**
+     * Returns the list of {@link Message} that refers to the
+     * {@link ShoppingList} passed as paramenter.
+     *
+     * @param shoppingListId the id of the {@link ShoppingList} which the message refers to.
+     * @return the list of {@link Message} that refers to the
+     * passed shoppingList o an empty list.
+     * @throws DAOException if an error occurred during the information
+     * retrieving.
+     */
     @Override
     public List<Message> getByShoppingList(Integer shoppingListId) throws DAOException {
         if (shoppingListId == null) {
@@ -212,12 +222,11 @@ public class JDBCMessageDAO extends JDBCDAO<Message, Integer> implements Message
     }
 
     /**
-     * Convinience method for setting all the fileds of a {@code message} after
+     * Convinience method for setting all the fileds of a {@link Message} after
      * retriving it from the storage system.
      *
-     * @param rs the {@link ResultSet} of the query that retrives the
-     * {@code message}
-     * @return the new {@code message}
+     * @param rs the {@link ResultSet} of the query that retrives the message
+     * @return the new message
      * @throws SQLException if an error occurred during the information
      * retriving
      */

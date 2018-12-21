@@ -57,19 +57,18 @@ public class ProductListServlet extends HttpServlet {
 
     /**
      * Handles the HTTP <code>POST</code> method.
+     * productId identifica il prodotto della lista
+     * necessary specifica se prodotto è necessario o meno
+     * action specifica l'azione da eseguire:
+     *  0: toglie il prodotto dalla lista
+     *  1: setta il prodotto come non necessario (comprato)
+     *  2: setta il prodotto come necessario (da comprare)
+     *  3: aggiunge il prodotto alla lista in questione
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * @param shoppingListId identifica la lista in questione
-     * @param productId identifica il prodotto della lista
-     * @param necessary specifica se prodotto è necessario o meno
-     * @param action specifica l'azione da eseguire:
-     * @ 0 -> toglie il prodotto dalla lista
-     * @ 1 -> setta il prodotto come non necessario (comprato)
-     * @ 2 -> setta il prodotto come necessario (da comprare)
-     * @ 3 -> aggiunge il prodotto alla lista in questione
+     * @throws ServletException if a servlet-specific error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -3,6 +3,7 @@ package db.daos.jdbc;
 import db.daos.ShoppingListCategoryDAO;
 import db.entities.ProductCategory;
 import db.entities.ShoppingListCategory;
+import db.entities.User;
 import db.exceptions.DAOException;
 import db.exceptions.UniqueConstraintException;
 import java.sql.Connection;
@@ -278,8 +279,8 @@ public class JDBCShoppingListCategoryDAO extends JDBCDAO<ShoppingListCategory, I
      * Returns the list of all the valid shops where the user has to buy something
      * system.
      *
-     * @param user the user which we are checking
-     * @return the list of all the shops where {@code user} has to buy something
+     * @param userId the userId of the {@link User user} which we are checking
+     * @return the list of all the shops where user has to buy something
      * @throws DAOException if an error occurred during the information
      * retrieving.
      */
