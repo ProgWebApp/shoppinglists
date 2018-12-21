@@ -178,7 +178,7 @@
                 xhttp.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
                         if (permissions == 0) {
-                            var element = document.getElementById("user"+userId);
+                            var element = document.getElementById("user" + userId);
                             element.parentNode.removeChild(element);
                         }
                     } else if (this.readyState === 4 && this.status === 400) {
@@ -301,7 +301,7 @@
                                             <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
                                         </div>
                                     </div>
-                                       
+
                                     <br>
                                     <label class="list-title"> Prodotti </label>
                                     <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control" placeholder="Cerca prodotti da aggiungere...">
@@ -325,7 +325,6 @@
                                 </div>
                             </c:when>
                             <c:when test="${not empty user}">
-                                
                                 <div id="contenuto" class="list-size-cust col-sm-6">
                                     <div style="overflow: auto;">
                                         <div class="pull-left">
@@ -334,13 +333,13 @@
                                         <div class="descript">
                                             <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
                                             <div class="list-control-butto">
-                                            <img class="control-logo" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=2&shoppingListId=").concat(shoppingList.id))}'" title="Modifica lista">
-                                            <img class="control-logo" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})" title="Elimina Lista">
-                                         </div> 
+                                                <img class="control-logo" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=2&shoppingListId=").concat(shoppingList.id))}'" title="Modifica lista">
+                                                <img class="control-logo" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})" title="Elimina Lista">
+                                            </div> 
                                         </div>
                                     </div>
-                                         
-                                         <br>
+
+                                    <br>
                                     <label class="list-title"> Prodotti </label>
                                     <c:if test="${permissions==2}">
                                         <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control" placeholder="Cerca prodotti da aggiungere...">
@@ -369,7 +368,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                
+
                                 <div id="contenuto" class="list-size-cust col-sm-6">
                                     <div class="row">
                                         <label class='list-title'> Chat </label>
@@ -412,7 +411,7 @@
                                                                     <select onchange="changePermissions(${user_list.id}, this.value)">
                                                                         <option value=1 <c:if test="${user_list.permissions==1}">selected</c:if>>Visualizza</option>
                                                                         <option value=2 <c:if test="${user_list.permissions==2}">selected</c:if>>Modifica</option>
-                                                                        <option value=0>Elimina</option>
+                                                                            <option value=0>Elimina</option>
                                                                         </select> 
                                                                     </div>
                                                                 </div>

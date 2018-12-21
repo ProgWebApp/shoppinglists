@@ -106,7 +106,7 @@ a:active {
     box-shadow: 3px 5px rgb(0,0,0,0.5);
 }
 .elem-container-left{
-    
+    width: 100%;
     height:auto;
     overflow:hidden;
     float:left;
@@ -194,6 +194,7 @@ a:active {
     color: Black;
     border-bottom: 8px solid #aaa;
     border-top: 1px solid #aaa;
+    z-index: 1000;
 }
 .mynav-left{
     float: left;
