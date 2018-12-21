@@ -2,27 +2,7 @@
     width: 100%;
     object-fit: cover;
 }
-.container-img {
-    position: relative;
-    width: 150px; 
-    height: 150px; 
-    float: left; 
-    margin-left: 20px; 
-}
-.container-img-medium {
-    position: relative;
-    width: 75px; 
-    height: 75px; 
-    float: left; 
-    margin-right: 20px;
 
-}
-.fit-image-small{
-    width: 100%;
-    object-fit: cover;
-    height: 150px;
-    width:150px;
-}
 .avatar-img{
     background-color: #ffffffb3;
     position: relative;

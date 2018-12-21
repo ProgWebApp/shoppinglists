@@ -44,8 +44,7 @@
     flex: 1;
     min-width: 0;
 }
-
-list-actions{
+.list-actions{
     float:right;
     white-space: nowrap;
 }
