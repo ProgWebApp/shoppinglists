@@ -142,7 +142,7 @@
                                 action: 1,
                             },
                             success: function () {
-                                $("#utenti").append("<li id=\"" + ui.item.value + "\"class=\"list-group-item justify-content-between align-items-center my-list-item\">"
+                                $("#utenti").append("<li id=\"user" + ui.item.value + "\"class=\"list-group-item justify-content-between align-items-center my-list-item\">"
                                         + "<div class=\"list-element\">"
                                         + "<div class=\"my-text-content\">"
                                         + ui.item.label
@@ -178,7 +178,7 @@
                 xhttp.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
                         if (permissions == 0) {
-                            var element = document.getElementById(userId);
+                            var element = document.getElementById("user"+userId);
                             element.parentNode.removeChild(element);
                         }
                     } else if (this.readyState === 4 && this.status === 400) {
@@ -334,8 +334,8 @@
                                         <div class="descript">
                                             <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
                                             <div class="list-control-butto">
-                                            <img class="control-logo" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})" title="Elimina Lista">
                                             <img class="control-logo" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=2&shoppingListId=").concat(shoppingList.id))}'" title="Modifica lista">
+                                            <img class="control-logo" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})" title="Elimina Lista">
                                          </div> 
                                         </div>
                                     </div>
@@ -400,7 +400,7 @@
                                         <div class="pre-scrollable">
                                             <ul id="utenti" class="list-group user-list-group">
                                                 <c:forEach items="${users}" var="user_list">
-                                                    <li id="${user_list.id}" class="list-group-item justify-content-between align-items-center my-list-item">
+                                                    <li id="user${user_list.id}" class="list-group-item justify-content-between align-items-center my-list-item">
                                                         <div class='list-element'>
                                                             <div class="my-text-content">
                                                                 ${user_list.firstName} ${user_list.lastName}

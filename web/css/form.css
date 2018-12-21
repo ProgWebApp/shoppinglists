@@ -32,7 +32,7 @@ input[type="checkbox"]:checked + label > .my-text-content{
     text-decoration: line-through;
 }
 input[type="checkbox"]:checked + label > .medium-logo{
-    filter: greyscale(100%);
+    filter: grayscale(50%);
     opacity: 0.5;
 }
 #avatar{
