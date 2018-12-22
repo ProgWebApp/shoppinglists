@@ -35,6 +35,7 @@
                             }
                         });
                     },
+                    minLength: 2,
                     response: function (event, ui) {
             <c:if test="${not empty user}">
                         ui.content.push({label: "Aggiungi \"" + $("#searchAddProducts").val() + "\" ai miei prodotti", value: 0});

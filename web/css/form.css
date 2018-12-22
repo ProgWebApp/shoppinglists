@@ -128,3 +128,8 @@ input:focus {
 label{
     margin-bottom: 0px;
 }
+.ui-autocomplete {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
