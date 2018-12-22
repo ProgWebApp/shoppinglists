@@ -112,7 +112,7 @@
 
                                 <c:if test="${modifiable}">
                                     <button class="btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=2&productId=".concat(product.id)))}'">Modifica</button>
-                                    <button class="btn-del" onclick="deleteProduct(${product.id})">Elimina</button>                            
+                                    <button class="btn-del" data-toggle="modal" data-target="#myModal">Elimina</button>                            
                                 </c:if>
                             </div>
                         </div>
@@ -166,6 +166,22 @@
                 </div>
             </div>
             <%@include file="include/footer.jsp" %>
+        </div>
+        <div class="modal fade" id="myModal" role="elimina">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Attenzione</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Sei sicuro di voler eliminare questo prodotto? Così facendo esso verrà rimosso da tutte le liste in cui è presente</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-del" onclick="deleteProduct(${product.id})">Elimina</button>
+                        <button type="button" class="btn-custom" data-dismiss="modal">Annulla</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

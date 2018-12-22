@@ -18,3 +18,4 @@
 <link rel="stylesheet" type="text/css" href="${contextPath}css/main-panel.css">
 <link rel="stylesheet" type="text/css" href="${contextPath}css/panel-custom.css">
 <link rel="stylesheet" type="text/css" href="${contextPath}css/table.css">
+<link rel="stylesheet" type="text/css" href="${contextPath}css/modal.css">

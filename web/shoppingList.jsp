@@ -300,6 +300,10 @@
                                         </div>
                                         <div class="descript">
                                             <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
+                                            <div class="list-control-butto">
+                                                <img class="control-logo" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=2&shoppingListId=").concat(shoppingList.id))}'" title="Modifica lista">
+                                                <img class="control-logo" src="${contextPath}images/myIconsNav/rubbish.png" data-toggle="modal" data-target="#myModal" title="Elimina Lista">
+                                            </div> 
                                         </div>
                                     </div>
 
@@ -335,7 +339,7 @@
                                             <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
                                             <div class="list-control-butto">
                                                 <img class="control-logo" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=2&shoppingListId=").concat(shoppingList.id))}'" title="Modifica lista">
-                                                <img class="control-logo" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingList.id})" title="Elimina Lista">
+                                                <img class="control-logo" src="${contextPath}images/myIconsNav/rubbish.png" data-toggle="modal" data-target="#myModal" title="Elimina Lista">
                                             </div> 
                                         </div>
                                     </div>
@@ -430,6 +434,22 @@
                 </div>
             </div>
             <%@include file="include/footer.jsp" %>
+        </div>
+        <div class="modal fade" id="myModal" role="elimina">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Attenzione</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Sei sicuro di voler eliminare questa lista? Così facendo essa verrà rimossa in maniera definitiva</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-del" onclick="deleteList(${shoppingList.id})" >Elimina</button>
+                        <button type="button" class="btn-custom" data-dismiss="modal">Annulla</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

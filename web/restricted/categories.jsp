@@ -108,7 +108,7 @@
                                                 </div>
                                             </div>
                                             <div class="list-actions">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteShoppingListCategory(${shoppingListCategory.id})" title="Elimina">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" data-toggle="modal" data-target="#myModal2" title="Elimina">
                                                 <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}'" title="Modifica">
                                             </div>
                                         </li>
@@ -129,7 +129,7 @@
                                                 </div>
                                             </div>
                                             <div class="list-actions">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteProductCategory(${productCategory.id})" title="Elimina">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" data-toggle="modal" data-target="#myModal" title="Elimina">
                                                 <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}'" title="Modifica">
                                             </div>
                                         </li>
@@ -141,6 +141,38 @@
                 </div>
             </div>
             <%@include file="../include/footer.jsp" %>
+        </div>
+        <div class="modal fade" id="myModal" role="elimina">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Attenzione!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Sei sicuro di voler eliminare questa categoria? Così facendo esso verranno eliminati anche tutti i prodotti appartenenti</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-del" onclick="deleteProductCategory(${productCategory.id})">Elimina</button>
+                        <button type="button" class="btn-custom" data-dismiss="modal">Annulla</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal2" role="elimina">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Attenzione!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Sei sicuro di voler eliminare questa categoria? Così facendo esso verranno eliminate anche tutte le liste appartenenti</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-del" onclick="deleteShoppingListCategory(${shoppingListCategory.id})">Elimina</button>
+                        <button type="button" class="btn-custom" data-dismiss="modal">Annulla</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>
