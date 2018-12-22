@@ -21,6 +21,9 @@
     padding-top:10px;
     font: 17px sans-serif;
     text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .panel-body-prods {
     width:100%;

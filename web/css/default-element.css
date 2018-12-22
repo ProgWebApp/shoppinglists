@@ -88,7 +88,10 @@ a:active {
     padding: 25px;
     box-shadow: 3px 5px rgb(0,0,0,0.5);
 }
-
+.invis-container{
+    margin-top:15px;
+    margin-bottom:25px;
+}
 .divisore{
     border-top: 1px solid #999;
 }
@@ -145,6 +148,11 @@ a:active {
 }
 @media only screen and (min-width:1025px){
     .bod-container{
+        margin-left:auto;
+        margin-right:auto;
+        width: 80%;
+    }
+    .invis-container{
         margin-left:auto;
         margin-right:auto;
         width: 80%;
