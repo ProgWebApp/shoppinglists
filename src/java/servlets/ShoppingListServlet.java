@@ -66,7 +66,7 @@ public class ShoppingListServlet extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if (request.getParameter("shoppingListId") == null || request.getParameter("res") == null) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
         /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
@@ -79,7 +79,7 @@ public class ShoppingListServlet extends HttpServlet {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException ex) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -89,14 +89,14 @@ public class ShoppingListServlet extends HttpServlet {
             shoppingList = shoppingListDAO.getIfVisible(shoppingListId, user.getId());
         } catch (DAOException ex) {
             System.out.println("fallita la ricerca della lista");
-            response.setStatus(500);
+            response.sendError(500);
             return;
         }
         if (shoppingList == null) {
             if (res == 0) {
-                response.setStatus(403);
+                response.sendError(403);
             } else {
-                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+                response.sendError(403);
             }
             return;
         }
@@ -116,7 +116,7 @@ public class ShoppingListServlet extends HttpServlet {
                 try {
                     products = shoppingListDAO.getProducts(shoppingListId);
                 } catch (DAOException ex) {
-                    response.setStatus(500);
+                    response.sendError(500);
                     return;
                 }
                 StringBuilder sb = new StringBuilder();
@@ -166,7 +166,7 @@ public class ShoppingListServlet extends HttpServlet {
                     messages = messageDAO.getByShoppingList(shoppingListId);
                     shoppingListDAO.removeNotifications(shoppingListId, user.getId());
                 } catch (DAOException ex) {
-                    response.setStatus(500);
+                    response.sendError(500);
                     return;
                 }
                 request.setAttribute("permissions", checkPermissions(user, shoppingList));
@@ -181,7 +181,7 @@ public class ShoppingListServlet extends HttpServlet {
                 if (checkPermissions(user, shoppingList) == 2) {
                     getServletContext().getRequestDispatcher("/shoppingListForm.jsp").forward(request, response);
                 } else {
-                    response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+                    response.sendError(403);
                 }
                 break;
         }
@@ -218,7 +218,7 @@ public class ShoppingListServlet extends HttpServlet {
             }
             /* SE LA LISTA ESISTE, CONTROLLO I PERMESSI DELL'UTENTE */
             if (checkPermissions(user, shoppingList) != 2) {
-                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+                response.sendError(403);
                 return;
             }
         }
@@ -297,7 +297,7 @@ public class ShoppingListServlet extends HttpServlet {
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if (request.getParameter("shoppingListId") == null) {
             System.out.println("1");
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -307,7 +307,7 @@ public class ShoppingListServlet extends HttpServlet {
             shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
         } catch (NumberFormatException ex) {
             System.out.println("2");
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -316,23 +316,23 @@ public class ShoppingListServlet extends HttpServlet {
         try {
             shoppingList = shoppingListDAO.getByPrimaryKey(shoppingListId);
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
             return;
         }
 
         /* CONTROLLO CHE L'UTENTE ABBIA I PERMESSI */
         User user = (User) request.getSession().getAttribute("user");
         if (checkPermissions(user, shoppingList) != 2) {
-            response.setStatus(403);
+            response.sendError(403);
             return;
         }
 
         /* RISPONDO */
         try {
             shoppingListDAO.delete(shoppingListId);
-            response.setStatus(204);
+            response.sendError(204);
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
         }
     }
 

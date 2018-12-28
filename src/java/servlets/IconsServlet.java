@@ -38,7 +38,7 @@ public class IconsServlet extends HttpServlet {
         try {
             productCategoryId = Integer.valueOf(request.getParameter("category"));
         } catch (RuntimeException ex) {
-            response.setStatus(403);
+            response.sendError(403);
             return;
         }
         if (productCategoryId != null) {
@@ -59,7 +59,7 @@ public class IconsServlet extends HttpServlet {
                 out.print(json);
                 out.flush();
             } catch (DAOException ex) {
-                response.setStatus(500);
+                response.sendError(500);
             }
         }
     }

@@ -57,7 +57,7 @@ public class ProductPublic extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if (request.getParameter("productId") == null) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -66,7 +66,7 @@ public class ProductPublic extends HttpServlet {
         try {
             productId = Integer.valueOf(request.getParameter("productId"));
         } catch (NumberFormatException ex) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -75,15 +75,15 @@ public class ProductPublic extends HttpServlet {
         try {
             product = productDAO.getByPrimaryKey(productId);
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
             return;
         }
         if (product == null) {
-            response.setStatus(403);
+            response.sendError(400);
             return;
         }
         if (product.isReserved()) {
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+            response.sendError(403);
             return;
         }
 
@@ -104,7 +104,7 @@ public class ProductPublic extends HttpServlet {
             try {
                 shoppingList = shoppingListDAO.getByCookie(userId);
             } catch (DAOException ex) {
-                response.setStatus(500);
+                response.sendError(500);
                 return;
             }
         }
@@ -118,7 +118,7 @@ public class ProductPublic extends HttpServlet {
                 request.setAttribute("myList", shoppingList.getId());
             }
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
             return;
         }
         request.setAttribute("product", product);

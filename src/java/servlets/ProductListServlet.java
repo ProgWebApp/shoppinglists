@@ -90,7 +90,7 @@ public class ProductListServlet extends HttpServlet {
 
         /* SE NON ESISTE UTENTE LOGGATO NE UTENTE ANONIMO RESTITUISCO ERRORE */
         if (user == null && userId == null) {
-            response.setStatus(403);
+            response.sendError(403);
             return;
         }
 
@@ -108,11 +108,11 @@ public class ProductListServlet extends HttpServlet {
                 shoppingList = shoppingListDAO.getByCookie(userId);
                 shoppingListId = shoppingList.getId();
                 if (shoppingListId == null) {
-                    response.setStatus(403);
+                    response.sendError(400);
                     return;
                 }
             } catch (DAOException ex) {
-                response.setStatus(403);
+                response.sendError(500);
                 return;
             }
         }
@@ -126,8 +126,7 @@ public class ProductListServlet extends HttpServlet {
                 productId = Integer.valueOf(request.getParameter("productId"));
                 action = Integer.valueOf(request.getParameter("action"));
             } catch (RuntimeException ex) {
-                System.out.println("e3");
-                response.setStatus(400);
+                response.sendError(500);
                 return;
             }
             try {
@@ -145,7 +144,7 @@ public class ProductListServlet extends HttpServlet {
                 System.out.println(shoppingList);
                 System.out.println(product);
                 if (shoppingList == null || product == null) {
-                    response.setStatus(403);
+                    response.sendError(403);
                     return;
                 }
                 switch (action) {
@@ -153,21 +152,21 @@ public class ProductListServlet extends HttpServlet {
                         if ((user != null && permissions == 2) || userId != null) {
                             shoppingListDAO.removeProduct(shoppingListId, productId);
                         } else {
-                            response.setStatus(403);
+                            response.sendError(403);
                         }
                         break;
                     case 1:
                         if ((user != null && (permissions == 1 || permissions == 2)) || userId != null) {
                             shoppingListDAO.updateProduct(shoppingListId, productId, quantity, false);
                         } else {
-                            response.setStatus(403);
+                            response.sendError(403);
                         }
                         break;
                     case 2:
                         if ((user != null && (permissions == 1 || permissions == 2)) || userId != null) {
                             shoppingListDAO.updateProduct(shoppingListId, productId, quantity, true);
                         } else {
-                            response.setStatus(403);
+                            response.sendError(403);
                         }
                         break;
                     case 3:
@@ -195,15 +194,15 @@ public class ProductListServlet extends HttpServlet {
                             out.print(sb);
                             out.flush();
                         } else {
-                            response.setStatus(403);
+                            response.sendError(403);
                         }
                         break;
                 }
             } catch (DAOException ex) {
-                response.setStatus(500);
+                response.sendError(500);
             }
         } else {
-            response.setStatus(400);
+            response.sendError(400);
         }
     }
 

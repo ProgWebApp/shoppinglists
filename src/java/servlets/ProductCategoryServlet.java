@@ -58,7 +58,7 @@ public class ProductCategoryServlet extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if (request.getParameter("productCategoryId") == null || request.getParameter("res") == null) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -76,7 +76,7 @@ public class ProductCategoryServlet extends HttpServlet {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException ex) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -88,7 +88,7 @@ public class ProductCategoryServlet extends HttpServlet {
             products = productDAO.getByProductCategory(productCategoryId, user.getId(), order);
         } catch (DAOException ex) {
             System.out.println("Impossibile restituire la categoria di prodotto e/o i prodotti");
-            response.setStatus(500);
+            response.sendError(500);
             return;
         }
 
@@ -102,7 +102,7 @@ public class ProductCategoryServlet extends HttpServlet {
                 break;
             case 2:
                 if (!user.isAdmin()) {
-                    response.setStatus(403);
+                    response.sendError(403);
                 } else {
                     getServletContext().getRequestDispatcher("/restricted/productCategoryForm.jsp").forward(request, response);
                 }
@@ -117,7 +117,7 @@ public class ProductCategoryServlet extends HttpServlet {
         
         /* CONTROLLO CHE L'UTENTE SIA ADMIN */
         if (!user.isAdmin()) {
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+            response.sendError(403);
             return;
         }
 
@@ -219,7 +219,7 @@ public class ProductCategoryServlet extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if (request.getParameter("productCategoryId") == null) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -228,23 +228,23 @@ public class ProductCategoryServlet extends HttpServlet {
         try {
             productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));
         } catch (NumberFormatException ex) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
         /* CONTROLLO CHE L'UTENTE SIA ADMIN */
         User user = (User) request.getSession().getAttribute("user");
         if (!user.isAdmin()) {
-            response.setStatus(403);
+            response.sendError(403);
             return;
         }
 
         /* RISPONDO */
         try {
             productCategoryDAO.delete(productCategoryId);
-            response.setStatus(204);
+            response.sendError(204);
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
         }
     }
 }

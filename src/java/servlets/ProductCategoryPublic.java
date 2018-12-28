@@ -51,7 +51,7 @@ public class ProductCategoryPublic extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if (request.getParameter("productCategoryId") == null) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -65,7 +65,7 @@ public class ProductCategoryPublic extends HttpServlet {
             productCategoryId = Integer.valueOf(request.getParameter("productCategoryId"));
         } catch (NumberFormatException ex) {
             System.out.println("Fallita conversione dei parametri");
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -76,7 +76,7 @@ public class ProductCategoryPublic extends HttpServlet {
             productCategory = productCategoryDao.getByPrimaryKey(productCategoryId);
             products = productDAO.getByProductCategory(productCategoryId, null, order);
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
             return;
         }
 

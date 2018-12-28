@@ -51,7 +51,7 @@ public class ShareListsServlet extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI OBBLIGATORI*/
         if (request.getParameter("userId") == null || request.getParameter("shoppingListId") == null || request.getParameter("action") == null) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -64,7 +64,7 @@ public class ShareListsServlet extends HttpServlet {
             shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
             action = Integer.valueOf(request.getParameter("action"));
         } catch (NumberFormatException ex) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -75,7 +75,7 @@ public class ShareListsServlet extends HttpServlet {
                 permissions = Integer.valueOf(request.getParameter("permissions"));
             } catch (NumberFormatException ex) {
             System.out.println("fallita conversione");
-                response.setStatus(400);
+                response.sendError(400);
                 return;
             }
         } else {
@@ -99,10 +99,10 @@ public class ShareListsServlet extends HttpServlet {
                         break;
                 }
             } else {
-                response.setStatus(403);
+                response.sendError(403);
             }
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
         }
     }
 

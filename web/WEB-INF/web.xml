@@ -20,6 +20,10 @@
         <filter-name>UserFilter</filter-name>
         <filter-class>filters.UserFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>filters.AdminFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>ContextPathFilter</filter-name>
         <url-pattern>*</url-pattern>
@@ -31,6 +35,14 @@
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/restricted/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/restricted/categories.jsp</url-pattern>
+        <url-pattern>/restricted/shoppingListCategoryForm.jsp</url-pattern>
+        <url-pattern>/restricted/productCategoryForm.jsp</url-pattern>
+        <url-pattern>/dwn</url-pattern>
+        <url-pattern>/restricted/ShoppingListCategoryServlet</url-pattern>
     </filter-mapping>
     <listener>
         <description>ServletContextListener</description>
@@ -247,6 +259,22 @@
     </session-config>
     <error-page>
         <error-code>403</error-code>
-        <location>/error.jsp</location>
+        <location>/error403.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>400</error-code>
+        <location>/error400.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error500.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>ServletException</exception-type>
+        <location>/error500.jsp</location>
     </error-page>
 </web-app>

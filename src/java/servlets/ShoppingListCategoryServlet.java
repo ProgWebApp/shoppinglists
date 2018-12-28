@@ -59,7 +59,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if (request.getParameter("shoppingListCategoryId") == null || request.getParameter("res") == null) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -73,7 +73,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException ex) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -84,7 +84,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
             shoppingListCategory = shoppingListCategoryDAO.getByPrimaryKey(shoppingListCategoryId);
             productCategoriesSelected = shoppingListCategoryDAO.getProductCategories(shoppingListCategoryId);
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
             return;
         }
 
@@ -97,7 +97,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
                 break;
             case 2:
                 if (!user.isAdmin()) {
-                    response.setStatus(403);
+                    response.sendError(403);
                 } else {
                     getServletContext().getRequestDispatcher("/restricted/shoppingListCategoryForm.jsp").forward(request, response);
                 }
@@ -122,7 +122,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
 
         /* SE LA CATEGORIA DI LISTA ESISTE, CONTROLLO CHE L'UTENTE SIA ADMIN */
         if (!user.isAdmin()) {
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+            response.sendError(403);
             return;
         }
 
@@ -238,7 +238,7 @@ public class ShoppingListCategoryServlet extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if (request.getParameter("shoppingListCategoryId") == null) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -247,23 +247,23 @@ public class ShoppingListCategoryServlet extends HttpServlet {
         try {
             shoppingListCategoryId = Integer.valueOf(request.getParameter("shoppingListCategoryId"));
         } catch (NumberFormatException ex) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
         /* CONTROLLO CHE L'UTENTE SIA ADMIN*/
         User user = (User) request.getSession().getAttribute("user");
         if (!user.isAdmin()) {
-            response.setStatus(403);
+            response.sendError(403);
             return;
         }
 
         /* RISPONDO */
         try {
             shoppingListCategoryDAO.delete(shoppingListCategoryId);
-            response.setStatus(204);
+            response.sendError(204);
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
         }
     }
 }

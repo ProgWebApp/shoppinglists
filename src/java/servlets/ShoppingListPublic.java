@@ -54,7 +54,7 @@ public class ShoppingListPublic extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if (request.getParameter("res") == null) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
         /* RESTITUISCO UN ERRORE SE I PAREMETRI NON SONO CONFORMI */
@@ -65,7 +65,7 @@ public class ShoppingListPublic extends HttpServlet {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException ex) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -86,7 +86,7 @@ public class ShoppingListPublic extends HttpServlet {
             try {
                 shoppingList = shoppingListDAO.getByCookie(userId);
             } catch (DAOException ex) {
-                response.setStatus(500);
+                response.sendError(500);
                 return;
             }
         }
@@ -107,7 +107,7 @@ public class ShoppingListPublic extends HttpServlet {
                     products = shoppingListDAO.getProducts(shoppingList.getId());
                     category = shoppingListCategoryDAO.getByPrimaryKey(shoppingList.getListCategoryId());
                 } catch (DAOException ex) {
-                    response.setStatus(500);
+                    response.sendError(500);
                     return;
                 }
                 request.setAttribute("products", products);
@@ -139,7 +139,7 @@ public class ShoppingListPublic extends HttpServlet {
             try {
                 shoppingList = shoppingListDAO.getByCookie(userId);
             } catch (DAOException ex) {
-                response.setStatus(500);
+                response.sendError(500);
                 return;
             }
         } else {

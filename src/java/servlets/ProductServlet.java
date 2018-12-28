@@ -61,7 +61,7 @@ public class ProductServlet extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if (request.getParameter("productId") == null || request.getParameter("res") == null) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -75,7 +75,7 @@ public class ProductServlet extends HttpServlet {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException ex) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -84,14 +84,14 @@ public class ProductServlet extends HttpServlet {
         try {
             product = productDAO.getIfVisible(productId, user.getId());
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
             return;
         }
         if (product == null) {
             if (res == 0) {
                 response.sendError(403);
             } else {
-                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+                response.sendError(403);
             }
             return;
         }
@@ -118,7 +118,7 @@ public class ProductServlet extends HttpServlet {
                     category = productCategoryDAO.getByPrimaryKey(product.getProductCategoryId());
                     shoppingLists = shoppingListDAO.getListsByProductCategory(product.getProductCategoryId(), user.getId());
                 } catch (DAOException ex) {
-                    response.setStatus(500);
+                    response.sendError(500);
                     return;
                 }
                 request.setAttribute("productCategory", category);
@@ -129,7 +129,7 @@ public class ProductServlet extends HttpServlet {
                 if (checkPermissions(user, product) == 0) {
                     getServletContext().getRequestDispatcher("/restricted/productForm.jsp").forward(request, response);
                 } else {
-                    response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+                    response.sendError(403);
                 }
                 break;
         }
@@ -157,7 +157,7 @@ public class ProductServlet extends HttpServlet {
             }
             /* SE IL PRODOTTO ESISTE, CONTROLLO I PERMESSI DELL'UTENTE */
             if (checkPermissions(user, product) != 0) {
-                response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "noPermissions.jsp"));
+                response.sendError(403);
                 return;
             }
         }
@@ -276,7 +276,7 @@ public class ProductServlet extends HttpServlet {
 
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if (request.getParameter("productId") == null) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -285,7 +285,7 @@ public class ProductServlet extends HttpServlet {
         try {
             productId = Integer.valueOf(request.getParameter("productId"));
         } catch (NumberFormatException ex) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
 
@@ -294,23 +294,23 @@ public class ProductServlet extends HttpServlet {
         try {
             product = productDAO.getByPrimaryKey(productId);
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
             return;
         }
 
         /* CONTROLLO CHE L'UTENTE ABBIA I PERMESSI */
         User user = (User) request.getSession().getAttribute("user");
         if (checkPermissions(user, product) != 0) {
-            response.setStatus(403);
+            response.sendError(403);
             return;
         }
 
         /* RISPONDO */
         try {
             productDAO.delete(productId);
-            response.setStatus(204);
+            response.sendError(204);
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
         }
     }
 

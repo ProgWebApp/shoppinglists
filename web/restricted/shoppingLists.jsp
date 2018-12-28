@@ -23,7 +23,6 @@
             throw new ServletException("Impossible to get dao factory for product storage system", ex);
         }
     }
-
 %>
 <%
     User user = (User) request.getSession().getAttribute("user");
@@ -53,11 +52,9 @@
         <title>Liste</title>
         <%@include file="../include/generalMeta.jsp" %>
         <style>
-
             button:focus{
                 outline:none;
             }
-
             a.disabled {
                 pointer-events: none;
                 cursor: default;
@@ -177,7 +174,7 @@
                                                 <span class="list-logo-right antepr" onclick="showAnteprima(${shoppingList.id})">
                                                     <span class="glyphicon glyphicon-list-alt" title="Anteprima"></span>
                                                 </span>
-                                                <c:if  test="${shoppingList.notifications!='1'}">
+                                                <c:if  test="${shoppingList.notifications!='0'}">
                                                     <img class="list-logo-right" src="${contextPath}images/myIconsNav/notification.png">
                                                 </c:if>
                                             </div>

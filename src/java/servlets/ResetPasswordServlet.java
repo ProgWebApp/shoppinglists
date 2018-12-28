@@ -44,7 +44,7 @@ public class ResetPasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter("res") == null) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
         Integer res;
@@ -52,7 +52,7 @@ public class ResetPasswordServlet extends HttpServlet {
         try {
             res = Integer.valueOf(request.getParameter("res"));
         } catch (NumberFormatException ex) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
         switch (res) {

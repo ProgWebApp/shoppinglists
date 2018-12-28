@@ -40,7 +40,7 @@ public class NotificationsServlet extends HttpServlet {
             out.print(notifications);
             out.flush();
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
         }
     }
 }

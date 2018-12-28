@@ -61,12 +61,12 @@ public class ProductsSearchPublic extends HttpServlet {
                     products.removeAll(productsAlreadyIn);
                 } catch (DAOException ex) {
                     System.out.println("dao exception" + ex.getCause().getMessage());
-                    response.setStatus(500);
+                    response.sendError(500);
                     return;
                 }
             } catch (NumberFormatException ex) {
                 System.out.println("number exception");
-                response.setStatus(400);
+                response.sendError(400);
                 return;
             }
         } else {
@@ -74,7 +74,7 @@ public class ProductsSearchPublic extends HttpServlet {
                 products = productDAO.searchByName(query, null, null);
             } catch (DAOException ex) {
                 System.out.println("dao exception" + ex.getCause().getMessage());
-                response.setStatus(500);
+                response.sendError(500);
                 return;
             }
         }

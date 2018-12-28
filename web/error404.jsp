@@ -1,6 +1,6 @@
 <%-- 
-    Document   : error
-    Created on : 7-dic-2018, 14.14.58
+    Document   : error 404
+    Created on : 28-dic-2018, 11.57.16
     Author     : Cosimo
 --%>
 
@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Ops... this page doesn't exist</h1>
     </body>
 </html>

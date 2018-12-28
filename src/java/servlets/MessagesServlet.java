@@ -47,7 +47,7 @@ public class MessagesServlet extends HttpServlet {
         
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if(request.getParameter("body")==null || request.getParameter("shoppingListId")==null){
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
         Integer shoppingListId;
@@ -55,18 +55,18 @@ public class MessagesServlet extends HttpServlet {
         try {
             shoppingListId = Integer.valueOf(request.getParameter("shoppingListId"));
         } catch (NumberFormatException ex) {
-            response.setStatus(400);
+            response.sendError(400);
             return;
         }
         try {
             permissions = shoppingListDAO.getPermission(shoppingListId, userId);
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
             return;
         }
         
         if(permissions!=1 && permissions!=2){
-            response.setStatus(403);
+            response.sendError(403);
             return;
         }
         Message message = new Message();
@@ -78,7 +78,7 @@ public class MessagesServlet extends HttpServlet {
             messageDAO.insert(message);
             shoppingListDAO.addNotifications(shoppingListId, userId);
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
         }
     }
 }

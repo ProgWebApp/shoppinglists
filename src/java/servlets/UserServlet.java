@@ -120,7 +120,7 @@ public class UserServlet extends HttpServlet {
             session.invalidate();
             response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "index.jsp"));
         } catch (DAOException ex) {
-            response.setStatus(500);
+            response.sendError(500);
         }
     }
 }
