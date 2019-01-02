@@ -128,7 +128,7 @@
     }
     });
     });</script>
-       
+
 <div id="mynavbar" class="mynav">
     <div class="mynav-left">
         <div class="mynav-item" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("index.jsp"))}'">
@@ -199,12 +199,14 @@
                         <li>
                             <a href="${pageContext.response.encodeURL(contextPath.concat("map.jsp"))}">Mappa</a>
                         </li>
-                        <li>
-                            <hr>
-                        </li>
-                        <li>
-                            <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Categorie</a>
-                        </li>
+                        <c:if test="${user.isAdmin()}">
+                            <li>
+                                <hr>
+                            </li>
+                            <li>
+                                <a href="${pageContext.response.encodeURL(contextPath.concat("restricted/categories.jsp"))}">Categorie</a>
+                            </li>
+                        </c:if>
                     </ul>
                 </div>
             </c:when>
@@ -246,4 +248,3 @@
     </c:if>
     getLocation();
 </script>
- 
