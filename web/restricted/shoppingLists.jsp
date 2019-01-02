@@ -175,7 +175,7 @@
                                                     <span class="glyphicon glyphicon-list-alt" title="Anteprima"></span>
                                                 </span>
                                                 <c:if  test="${shoppingList.notifications!='0'}">
-                                                    <img class="list-logo-right" src="${contextPath}images/myIconsNav/notification.png">
+                                                    <img class="list-logo-right" src="${contextPath}images/myIconsNav/message.png">
                                                 </c:if>
                                             </div>
                                         </li>

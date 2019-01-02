@@ -293,7 +293,7 @@ public class ShoppingListServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("0");
+
         /* RESTITUISCO UN ERRORE SE NON HO RICEVUTO TUTTI I PARAMETRI */
         if (request.getParameter("shoppingListId") == null) {
             System.out.println("1");

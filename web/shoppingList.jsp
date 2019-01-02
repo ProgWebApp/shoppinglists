@@ -260,17 +260,29 @@
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 204) {
+            <c:if test="${not empty user}">
                         window.location.href = "${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingLists.jsp"))}";
+            </c:if>
+            <c:if test="${empty user}">
+                        window.location.href = "${pageContext.response.encodeURL(contextPath.concat("index.jsp"))}";
+            </c:if>
+
                     } else if (this.readyState === 4 && this.status === 400) {
                         alert("Bad request!");
                     } else if (this.readyState === 4 && this.status === 403) {
-                        alert("You are not allowed to delete the product!");
+                        alert("You are not allowed to delete the list!");
                     } else if (this.readyState === 4 && this.status === 500) {
-                        alert("Impossible to delete the product!");
+                        alert("Impossible to delete the list!");
                     }
                 };
+            <c:if test="${not empty user}">
                 var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet"))}";
-                xhttp.open("DELETE", url + "?shoppinListId=" + id, true);
+                xhttp.open("DELETE", url + "?shoppingListId=" + id, true);
+            </c:if>
+            <c:if test="${empty user}">
+                var url = "${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic"))}";
+                xhttp.open("DELETE", url, true);
+            </c:if>
                 xhttp.send();
             }
         </script>
@@ -301,7 +313,7 @@
                                         <div class="descript">
                                             <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
                                             <div class="list-control-butto">
-                                                <img class="control-logo" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=2&shoppingListId=").concat(shoppingList.id))}'" title="Modifica lista">
+                                                <img class="control-logo" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic?res=2&shoppingListId=").concat(shoppingList.id))}'" title="Modifica lista">
                                                 <img class="control-logo" src="${contextPath}images/myIconsNav/rubbish.png" data-toggle="modal" data-target="#myModal" title="Elimina Lista">
                                             </div> 
                                         </div>
@@ -315,14 +327,18 @@
                                             <div id="emptyProducts" style="<c:if test="${not empty products}">display:none;</c:if>">Nessun prodotto in lista</div>
                                             <c:forEach items="${products}" var="product">
                                                 <li id="${product.id}" class="list-group-item justify-content-between align-items-center my-list-item">
-                                                    <input type="checkbox" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
-                                                    <label for="checkbox_${product.id}">
-                                                        <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="medium-logo">
-                                                        <div class="my-text-content">
-                                                            ${product.name}
-                                                        </div>
-                                                    </label>
-                                                    <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick='deleteProduct(${product.id})'>
+                                                    <div class='list-element'>
+                                                        <input type="checkbox" style="display:none;" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
+                                                        <label for="checkbox_${product.id}">
+                                                            <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="medium-logo">
+                                                            <div class="my-text-content">
+                                                                ${product.name}
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                    <div class="list-actions">
+                                                        <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick='deleteProduct(${product.id})'>
+                                                    </div>
                                                 </li>
                                             </c:forEach>
                                         </ul>
@@ -337,10 +353,12 @@
                                         </div>
                                         <div class="descript">
                                             <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
+                                            <c:if test="${permissions==2}">
                                             <div class="list-control-butto">
                                                 <img class="control-logo" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=2&shoppingListId=").concat(shoppingList.id))}'" title="Modifica lista">
                                                 <img class="control-logo" src="${contextPath}images/myIconsNav/rubbish.png" data-toggle="modal" data-target="#myModal" title="Elimina Lista">
                                             </div> 
+                                            </c:if>
                                         </div>
                                     </div>
 
@@ -353,11 +371,11 @@
                                         <ul id="prodotti" class="list-group">
                                             <div id="emptyProducts" style="<c:if test="${not empty products}">display:none;</c:if>">Nessun prodotto in lista</div>
                                             <c:forEach items="${products}" var="product">
-                                                <li id="${product.id}" class="list-group-item group-item-custom my-list-item">
+                                                <li id="${product.id}" class="list-group-item justify-content-between align-items-center my-list-item">
                                                     <div class='list-element'>
                                                         <input type="checkbox" style="display:none;" id="checkbox_${product.id}" <c:if test="${not product.necessary}">checked</c:if> onclick="checkProduct(${product.id})">
                                                         <label for="checkbox_${product.id}">
-                                                            <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="medium-logo">
+                                                            <img src="${contextPath}images/productCategories/icons/${product.logoPath}" class="medium-logo list-logo">
                                                             <div class="my-text-content">
                                                                 ${product.name}
                                                             </div>
@@ -445,7 +463,7 @@
                         <p>Sei sicuro di voler eliminare questa lista? Così facendo essa verrà rimossa in maniera definitiva</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn-del" onclick="deleteList(${shoppingList.id})" >Elimina</button>
+                        <button type="button" class="btn-del" onclick="deleteShoppingList(${shoppingList.id})" >Elimina</button>
                         <button type="button" class="btn-custom" data-dismiss="modal">Annulla</button>
                     </div>
                 </div>

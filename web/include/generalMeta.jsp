@@ -3,13 +3,13 @@
 <noscript>
   <meta http-equiv="refresh" content="0;url=${contextPath}errorjs.jsp">
 </noscript>
+<!-- BOOTSTRAP -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" crossorigin="anonymous">
 <!-- JQUERY -->
-<!--<script src="${contextPath}jquery-ui-1.12.1/jquery-ui.js"></script>-->
 <script src="${contextPath}jquery-ui-1.12.1/external/jquery/jquery.js"></script>
 <link rel="stylesheet" type="text/css" href="${contextPath}jquery-ui-1.12.1/jquery-ui.css">
 <!-- OUR CSS -->
@@ -18,7 +18,6 @@
 <link rel="stylesheet" type="text/css" href="${contextPath}css/immagini.css">
 <link rel="stylesheet" type="text/css" href="${contextPath}css/liste.css">
 <link rel="stylesheet" type="text/css" href="${contextPath}css/loghi.css">
-<link rel="stylesheet" type="text/css" href="${contextPath}css/main-panel.css">
 <link rel="stylesheet" type="text/css" href="${contextPath}css/panel-custom.css">
 <link rel="stylesheet" type="text/css" href="${contextPath}css/table.css">
 <link rel="stylesheet" type="text/css" href="${contextPath}css/modal.css">

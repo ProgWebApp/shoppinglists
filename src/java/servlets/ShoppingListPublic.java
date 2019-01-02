@@ -219,4 +219,44 @@ public class ShoppingListPublic extends HttpServlet {
         /* REDIRECT ALLA PAGINA DELLA LISTA */
         response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "ShoppingListPublic?res=1"));
     }
+    
+     @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        /* RECUPERO L'UTENTE, SE ESISTE */
+        String userId = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("userId")) {
+                    userId = cookie.getValue();
+                }
+            }
+        }
+
+        /* SE L'UTENTE ESISTE RECUPERO LA LISTA*/
+        ShoppingList shoppingList = null;
+        if (userId != null) {
+            try {
+                shoppingList = shoppingListDAO.getByCookie(userId);
+            } catch (DAOException ex) {
+                response.sendError(500);
+                return;
+            }
+        }
+
+        /* SE L'UTENTE NON ESISTE O NON HA UNA LISTA, REINDIRIZZO L'UTENTE ALLA PAGINA DI CREAZIONE DELLA LISTA */
+        if (userId == null || shoppingList == null) {
+            response.sendError(403);
+            return;
+        }
+
+        /* RISPONDO */
+        try {
+            shoppingListDAO.delete(shoppingList.getId());
+            response.sendError(204);
+        } catch (DAOException ex) {
+            response.sendError(500);
+        }
+    }
 }

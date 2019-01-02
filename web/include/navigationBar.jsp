@@ -1,6 +1,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script src="${contextPath}jquery-ui-1.12.1/jquery-ui.js"></script>
 <script>
+    <c:if test="${not empty user}">
+    window.setInterval(getNotifications, 5000);
+    </c:if>
+    window.setInterval(getLocation, 60000);
     /* RECUPERA IL NUMERO DI NOTIFICHE DI MESSAGGI */
     function getNotifications() {
     var xhttp = new XMLHttpRequest();

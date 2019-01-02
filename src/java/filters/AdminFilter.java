@@ -7,9 +7,6 @@ package filters;
 
 import db.entities.User;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -43,7 +40,7 @@ public class AdminFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        HttpSession session = ((HttpServletRequest) request).getSession(false);
+        HttpSession session = ((HttpServletRequest) request).getSession(true);
         User user = (User) session.getAttribute("user");
         if (!user.isAdmin()) {
             httpResponse.sendError(403);
