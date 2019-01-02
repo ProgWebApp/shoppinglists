@@ -293,7 +293,7 @@
                             <c:when test="${empty user}">
                                 <div id="spaziatura" class="col-sm-1">
                                 </div>
-                                <div id="contenuto" class="col-sm-5">
+                                <div id="contenuto-anon" class="col-sm-8">
                                     <div style="overflow: auto;">
                                         <div class="pull-left">
                                             <img class="shoppingList-img" src="${contextPath}images/shoppingList/<c:out value="${shoppingList.imagePath}"/>">
