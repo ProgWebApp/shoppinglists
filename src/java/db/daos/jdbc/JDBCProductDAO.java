@@ -692,21 +692,22 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             throw new DAOException("productId and shoppingListId are mandatory fields", new NullPointerException("productId or shoppingListId are null"));
         }
         try (PreparedStatement ps1 = CON.prepareStatement("SELECT user_id FROM users_lists WHERE list = ?");
-                PreparedStatement ps2 = CON.prepareStatement("INSERT INTO users_products (user_id, product) VALUES (?,?)")) {
+                PreparedStatement ps2 = CON.prepareStatement("INSERT INTO users_products (user_id, product) VALUES (?,?) ON CONFLICT (user_id, product) DO NOTHING")) {
 
             ps1.setInt(1, shoppingListId);
-
+            
             ResultSet rs = ps1.executeQuery();
             while (rs.next()) {
-
+                System.out.println(rs.isLast());
+                System.out.println(rs.getInt("user_id"));
                 ps2.setInt(1, rs.getInt("user_id"));
                 ps2.setInt(2, productId);
                 ps2.executeUpdate();
             }
         } catch (SQLException ex) {
-            if (!ex.getSQLState().equals("23505")) {
+            //if (!ex.getSQLState().equals("23505")) {
                 throw new DAOException("Impossible to get the list of users for the passed shoppingList", ex);
-            }
+            //}
         }
     }
 
@@ -767,7 +768,7 @@ public class JDBCProductDAO extends JDBCDAO<Product, Integer> implements Product
             throw new DAOException("shoppingListId and userId are mandatory fields", new NullPointerException("productId or userId are null"));
         }
         try (PreparedStatement stm1 = CON.prepareStatement("SELECT product FROM list_products, products WHERE product=id AND list = ? AND reserved=true");
-                PreparedStatement stm2 = CON.prepareStatement("INSERT INTO users_products (user_id, product) VALUES (?,?)")) {
+                PreparedStatement stm2 = CON.prepareStatement("INSERT INTO users_products (user_id, product) VALUES (?,?) ON CONFLICT (user_id, product) DO NOTHING")) {
             stm1.setInt(1, shoppingListId);
             ResultSet rs = stm1.executeQuery();
             while (rs.next()) {

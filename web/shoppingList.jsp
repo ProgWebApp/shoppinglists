@@ -250,6 +250,13 @@
                 xhttp.open("GET", "MessagesServlet?shoppingListId=${shoppingList.id}&body=" + text, true);
                 xhttp.send();
             }
+            $(function () {
+                $("#newtext").keypress(function (e) {
+                    if (e.which === 13 && $("#newtext").val() !== "") {
+                        addMessage();
+                    }
+                });
+            });
             /* SCROLLA LA CHAT VERSO IL BASSO */
             function scrollChat() {
                 var element = document.getElementById("messageBoard");
@@ -354,10 +361,10 @@
                                         <div class="descript">
                                             <h4><b>Descrizione:</b> ${shoppingList.description}</h4>
                                             <c:if test="${permissions==2}">
-                                            <div class="list-control-butto">
-                                                <img class="control-logo" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=2&shoppingListId=").concat(shoppingList.id))}'" title="Modifica lista">
-                                                <img class="control-logo" src="${contextPath}images/myIconsNav/rubbish.png" data-toggle="modal" data-target="#myModal" title="Elimina Lista">
-                                            </div> 
+                                                <div class="list-control-butto">
+                                                    <img class="control-logo" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet?res=2&shoppingListId=").concat(shoppingList.id))}'" title="Modifica lista">
+                                                    <img class="control-logo" src="${contextPath}images/myIconsNav/rubbish.png" data-toggle="modal" data-target="#myModal" title="Elimina Lista">
+                                                </div> 
                                             </c:if>
                                         </div>
                                     </div>

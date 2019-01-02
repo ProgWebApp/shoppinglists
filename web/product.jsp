@@ -87,11 +87,10 @@
                                 <p>${product.notes}</p>
                                 <br>
                             </div>
-                            <hr>
                             <div>
                                 <c:choose>
                                     <c:when test="${not empty shoppingLists}">
-                                        <hr class="divisore">
+                            <hr class="divisore">
                                         <label>Scegli a quale lista vuoi aggiungere:</label>
                                         <select id="selectList" onchange="addProdToList(${product.id}, this.value)">
                                             <option disabled selected hidden>Aggiungi ad una lista...</option>
@@ -100,16 +99,16 @@
                                             </c:forEach>
                                         </select>
                                         <br>
-                                        <hr class="divisore">
+                            <hr class="divisore">
                                     </c:when>
                                     <c:when test="${not empty myList}">
+                            <hr class="divisore">
                                         <button class="btn-custom" type="button" onclick="addProdToList(${product.id}, ${myList})">Aggiungi alla mia lista</button>
-
+                            <hr class="divisore">
                                     </c:when>
                                 </c:choose>
                             </div>
                             <div>
-
                                 <c:if test="${modifiable}">
                                     <button class="btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductServlet?res=2&productId=".concat(product.id)))}'">Modifica</button>
                                     <button class="btn-del" data-toggle="modal" data-target="#myModal">Elimina</button>                            
