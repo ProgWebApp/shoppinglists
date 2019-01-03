@@ -43,6 +43,14 @@
         <title>Le mie categorie</title>
         <%@include file="../include/generalMeta.jsp"%>
         <script>
+            function deleteList(list) {
+                document.getElementById('to-list-btn').onclick = function() { deleteShoppingListCategory(list);};
+                $("#myModal2").modal("show");
+            }
+            function deleteprod(prod) {
+                document.getElementById('to-prod-btn').onclick = function() { deleteProductCategory(prod);};
+                $("#myModal").modal("show");
+            }
             function deleteProductCategory(id) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
@@ -108,7 +116,7 @@
                                                 </div>
                                             </div>
                                             <div class="list-actions">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" data-toggle="modal" data-target="#myModal2" title="Elimina">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteList(${shoppingListCategory.id})" title="Elimina">
                                                 <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListCategoryServlet?res=2&shoppingListCategoryId=").concat(shoppingListCategory.id))}'" title="Modifica">
                                             </div>
                                         </li>
@@ -129,7 +137,7 @@
                                                 </div>
                                             </div>
                                             <div class="list-actions">
-                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" data-toggle="modal" data-target="#myModal" title="Elimina">
+                                                <img class="list-logo-right" src="${contextPath}images/myIconsNav/rubbish.png" onclick="deleteprod(${productCategory.id})" title="Elimina">
                                                 <img class="list-logo-right" src="${contextPath}images/myIconsNav/edit.png" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/ProductCategoryServlet?res=2&productCategoryId=").concat(productCategory.id))}'" title="Modifica">
                                             </div>
                                         </li>
@@ -152,7 +160,7 @@
                         <p>Sei sicuro di voler eliminare questa categoria? Così facendo esso verranno eliminati anche tutti i prodotti appartenenti</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn-del" onclick="deleteProductCategory(${productCategory.id})">Elimina</button>
+                        <button type="button" id="to-prod-btn" class="btn-del" data-dismiss="modal">Elimina</button>
                         <button type="button" class="btn-custom" data-dismiss="modal">Annulla</button>
                     </div>
                 </div>
@@ -168,7 +176,7 @@
                         <p>Sei sicuro di voler eliminare questa categoria? Così facendo esso verranno eliminate anche tutte le liste appartenenti</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn-del" onclick="deleteShoppingListCategory(${shoppingListCategory.id})">Elimina</button>
+                        <button type="button" id="to-list-btn" class="btn-del" data-dismiss="modal">Elimina</button>
                         <button type="button" class="btn-custom" data-dismiss="modal">Annulla</button>
                     </div>
                 </div>
