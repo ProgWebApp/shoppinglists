@@ -65,7 +65,7 @@
                                     </div>
                                 </c:if>
                                 <c:if test="${not empty productCategory.id}"><input type="hidden" name="productCategoryId" value="${productCategory.id}"></c:if>
-                                    <button type="submit" class="btn btn-default acc-btn">Salva</button>
+                                    <button type="submit" class="btn-custom">Salva</button>
                                 </form>
                             </div>
                         </div>
