@@ -18,7 +18,7 @@
     display:block;
     border-radius: 10px;
     margin: 0px 20px 20px 0px;
-    border: 1px dashed #4290ff;
+    border: 0px;
 }
 .avatarContainer{
     width: 200px;
