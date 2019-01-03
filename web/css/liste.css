@@ -73,8 +73,11 @@
 }
 @media only screen and (min-width:769px){
     div.pre-scrollable{
-        min-height:450px;
-        max-height:450px;
+        min-height:400px;
+        max-height:400px;
+    }
+    div.list-small{
+        min-height:220px !important;
     }
 }
 

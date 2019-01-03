@@ -374,7 +374,7 @@
                                     <c:if test="${permissions==2}">
                                         <input type="text" id="searchAddProducts" name="searchAddProducts" class="form-control" placeholder="Cerca prodotti da aggiungere...">
                                     </c:if>
-                                    <div class="pre-scrollable">
+                                    <div class="pre-scrollable list-small">
                                         <ul id="prodotti" class="list-group">
                                             <div id="emptyProducts" style="<c:if test="${not empty products}">display:none;</c:if>">Nessun prodotto in lista</div>
                                             <c:forEach items="${products}" var="product">
@@ -426,7 +426,7 @@
                                         <c:if test="${permissions==2}">
                                             <input type="text" id="searchUsers" name="searchUsers" class="form-control" placeholder="Cerca utenti...">
                                         </c:if>
-                                        <div class="pre-scrollable">
+                                        <div class="pre-scrollable list-small">
                                             <ul id="utenti" class="list-group user-list-group">
                                                 <c:forEach items="${users}" var="user_list">
                                                     <li id="user${user_list.id}" class="list-group-item justify-content-between align-items-center my-list-item">
