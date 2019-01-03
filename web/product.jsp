@@ -31,8 +31,9 @@
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
-                        alert("Prodotto aggiunto!");
-                    } else if (this.readyState === 4 && this.status === 403) {
+                        document.getElementById('to-list-btn').setAttribute( "onclick", "window.location.href = '" + ${contextPath} + "restricted/ShoppingListServlet?res=1&shoppingListId=" + list + "';event.stopPropagation();");
+                        $("#addModal").modal("show");
+                        } else if (this.readyState === 4 && this.status === 403) {
                         alert("Non hai il permesso per la modifica della lista");
                     } else if (this.readyState === 4 && this.status === 500) {
                         alert("Errore del server, impossibile modificare i permessi");
@@ -59,6 +60,7 @@
                 xhttp.open("DELETE", url + "?productId=" + id, true);
                 xhttp.send();
             }
+            
         </script>
     </head>
     <body>
@@ -178,6 +180,22 @@
                     <div class="modal-footer">
                         <button type="button" class="btn-del" onclick="deleteProduct(${product.id})">Elimina</button>
                         <button type="button" class="btn-custom" data-dismiss="modal">Annulla</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addModal" role="recap">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Aggiunto</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Il prodotto è stato aggiunto con successo</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="to-list-btn" type="button" class="btn-custom" onclick="">Vai alla lista</button>
+                        <button type="button" class="btn-custom" data-dismiss="modal">Indietro</button>
                     </div>
                 </div>
             </div>
