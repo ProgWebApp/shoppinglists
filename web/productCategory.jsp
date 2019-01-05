@@ -8,7 +8,7 @@
     <body>
         <div id="containerPage">
             <div id="header">
-                <div class="jumbotron myBackground" >
+                <div class="jumbotron" >
                     <div class="container text-center">
                         <h1>${productCategory.name}</h1> 
                         <h4>Riepilogo dei prodotti di questa categoria</h4>

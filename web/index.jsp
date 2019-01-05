@@ -37,7 +37,7 @@
                 <div class="jumbotron">
                     <div class="container text-center">
                         <h1>ListeSpesa</h1>      
-                        <p>Crea le tue liste per portarle sempre con te</p>
+                        <h4>Crea le tue liste per portarle sempre con te</h4>
                     </div>
                 </div>
                 <%@include file="include/navigationBar.jsp"%>

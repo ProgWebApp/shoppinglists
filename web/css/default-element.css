@@ -6,7 +6,7 @@ body {
     background-image: url("../images/background/sfondo.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-size:cover
+    background-size:cover;
 }
 #containerPage{
     min-height:100%;
@@ -231,8 +231,9 @@ a:active {
     height: 30px;
     color: black;
     border: none;
-    padding-left: 3px;
-    padding-top: 6px;
+    padding-left: 7px;
+    padding-top: 4px;
+    border-radius: 4px;
 }
 .dropdown-menu{
     top:120%;

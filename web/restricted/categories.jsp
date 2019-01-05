@@ -94,8 +94,8 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">
-                        <h1>Le mie categorie</h1>
-                        <p>Riepilogo delle categorie create</p>
+                        <h1>Categorie</h1>
+                        <h4>Riepilogo delle categorie create</h4>
                     </div>
                 </div>
                 <%@include file="../include/navigationBar.jsp" %>
@@ -105,7 +105,7 @@
                     <div class="container-fluid">
                         <div class="col-sm-6">
                             <label class="list-title"> Categorie Liste della spesa </label>
-                            <button type="button" class="list-btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategoryForm.jsp"))}'">Crea nuova categoria liste</button>
+                            <button type="button" class="list-btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/shoppingListCategoryForm.jsp"))}'">Crea nuova categoria</button>
                             <div class="pre-scrollable">
                                 <ul class="list-group">
                                     <c:forEach items="${shoppingListCategories}" var="shoppingListCategory">
@@ -126,7 +126,7 @@
                         </div>
                         <div class="col-sm-6">
                             <label class="list-title"> Categorie prodotti </label>
-                            <button type="button" class="list-btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/productCategoryForm.jsp"))}'">Crea nuova categoria prodotti</button>
+                            <button type="button" class="list-btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/productCategoryForm.jsp"))}'">Crea nuova categoria</button>
                             <div class="pre-scrollable">
                                 <ul class="list-group">
                                     <c:forEach items="${productCategories}" var="productCategory">

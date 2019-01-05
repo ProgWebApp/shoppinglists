@@ -246,9 +246,10 @@
                     }
                 };
                 var url = "${pageContext.response.encodeURL(contextPath.concat("restricted/MessagesServlet"))}";
-                console.log(url);
-                xhttp.open("GET", "MessagesServlet?shoppingListId=${shoppingList.id}&body=" + text, true);
-                xhttp.send();
+                if (text !== "") {
+                    xhttp.open("GET", "MessagesServlet?shoppingListId=${shoppingList.id}&body=" + text, true);
+                    xhttp.send();
+                }
             }
             $(function () {
                 $("#newtext").keypress(function (e) {
@@ -300,7 +301,7 @@
                     <div class="jumbotron">
                         <div class="container text-center">
                             <h1>${shoppingList.name}</h1>
-                        <p>Categoria: ${shoppingListCategory.name}</p>     
+                        <h4>Categoria: ${shoppingListCategory.name}</h4>     
                     </div>
                 </div>
                 <%@include file="include/navigationBar.jsp"%>

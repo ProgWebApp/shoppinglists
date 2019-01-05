@@ -35,8 +35,8 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">
-                        <h2>Area di modifica delle liste</h2><br>
-                        <h4>Modifica le caratteristiche e le immagini delle liste<br>o creane una nuova</h4><br>
+                        <h1>Lista della spesa</h1>
+                        <h4>Crea o modifica la lista della spesa</h4>
                     </div>
                 </div>
                 <%@include file="include/navigationBar.jsp"%>

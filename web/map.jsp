@@ -27,8 +27,8 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">
-                        <h1>Trova i negozi vicini a te</h1>      
-                        <p>Trova i negozi più vicini dove poter completare la lista</p>
+                        <h1>Mappa negozi</h1>      
+                        <h4>Trova i negozi più vicini dove poter completare la lista</h4>
                     </div>
                 </div>
                 <%@include file="include/navigationBar.jsp"%>

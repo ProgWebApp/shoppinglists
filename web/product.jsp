@@ -31,7 +31,7 @@
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
-                        document.getElementById('to-list-btn').setAttribute( "onclick", "window.location.href = '" + ${contextPath} + "restricted/ShoppingListServlet?res=1&shoppingListId=" + list + "';event.stopPropagation();");
+                        document.getElementById('to-list-btn').setAttribute( "onclick", "window.location.href = '${contextPath}restricted/ShoppingListServlet?res=1&shoppingListId=" + list + "';event.stopPropagation();");
                         $("#addModal").modal("show");
                         } else if (this.readyState === 4 && this.status === 403) {
                         alert("Non hai il permesso per la modifica della lista");

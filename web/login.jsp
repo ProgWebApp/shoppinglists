@@ -10,8 +10,8 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">
-                        <h1>Area di login</h1>      
-                        <p>Esegui il login per poter usufruire di tutti i servizi disponibili</p>
+                        <h1>Login</h1>      
+                        <h4>Esegui il login per usufruire di tutti i servizi</h4>
                     </div>
                 </div>
                 <%@include file="include/navigationBar.jsp"%>

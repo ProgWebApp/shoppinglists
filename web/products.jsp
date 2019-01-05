@@ -65,7 +65,7 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">
-                        <h1>I miei prodotti</h1>      
+                        <h1>I miei prodotti</h1>    
                     </div>
                 </div>
                 <%@include file="include/navigationBar.jsp" %>

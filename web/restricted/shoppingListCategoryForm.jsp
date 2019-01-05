@@ -35,8 +35,8 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">
-                        <h2>Categoria di lista</h2><br>
-                        <h4>Crea o modifica la categoria</h4><br>
+                        <h1>Categoria di lista</h1>
+                        <h4>Crea o modifica la categoria</h4>
                     </div>
                 </div>
                 <%@include file="../include/navigationBar.jsp"%>

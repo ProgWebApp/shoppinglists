@@ -10,8 +10,8 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">
-                        <h1>Area di registrazione</h1>      
-                        <p>Registrati per poter usufruire di tutti i servizi disponibili</p>
+                        <h1>Registrazione</h1>      
+                        <h4>Registrati per usufruire di tutti i servizi</h4>
                     </div>
                 </div>
                 <%@include file="include/navigationBar.jsp" %>

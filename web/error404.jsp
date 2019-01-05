@@ -11,7 +11,7 @@
             <div id="header">
                 <div class="jumbotron">
                     <div class="container text-center">
-                        <h1>An error occurred</h1> 
+                        <h1>Error 404</h1> 
                     </div>
                 </div>
                 <%@include file="include/navigationBar.jsp"%>
@@ -20,8 +20,8 @@
                 <div class="col-sm-2">
                 </div>
                 <div class="col-sm-8">
-                    <div class="bod-container" style="width:100%;text-align:center;margin-top:20%;">
-                        <h1>Ops... this page doesn't exist</h1>
+                    <div class="bod-container" style="width:100%;text-align:center;margin-top:10%;">
+                        <h2>Ops... this page doesn't exist</h2>
                     </div>
                 </div>
             </div>
