@@ -3,6 +3,7 @@ package db.daos.jdbc;
 import db.daos.MessageDAO;
 import db.entities.Message;
 import db.entities.Product;
+import db.entities.ShoppingList;
 import db.exceptions.DAOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

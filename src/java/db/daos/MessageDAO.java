@@ -1,6 +1,7 @@
 package db.daos;
 
 import db.entities.Message;
+import db.entities.ShoppingList;
 import db.exceptions.DAOException;
 import java.util.List;
 

@@ -13,7 +13,7 @@ import java.util.List;
 public interface ShoppingListCategoryDAO extends DAO<ShoppingListCategory, Integer> {
 
     /**
-     * Adds the passed {@link PruductCategory} to the passed
+     * Adds the passed {@link ProductCategory} to the passed
      * {@link ShoppingListCategory}.
      *
      * @param shoppingListCategoryId the id of the {@link ShoppingListCategory} in which
@@ -25,7 +25,7 @@ public interface ShoppingListCategoryDAO extends DAO<ShoppingListCategory, Integ
     public void addProductCategory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException;
 
     /**
-     * Removes the passed {@link PruductCategory} from the passed
+     * Removes the passed {@link ProductCategory} from the passed
      * {@link ShoppingListCategory}.
      *
      * @param shoppingListCategoryId the id of the {@link ShoppingListCategory} from
@@ -37,7 +37,7 @@ public interface ShoppingListCategoryDAO extends DAO<ShoppingListCategory, Integ
     public void removeProductCategory(Integer shoppingListCategoryId, Integer productCategoryId) throws DAOException;
 
     /**
-     * Returns the list of {@link PruductCategory} linked with the
+     * Returns the list of {@link ProductCategory} linked with the
      * {@link ShoppingListCategory}.
      *
      * @param shoppingListCategoryId the id of the {@link ShoppingListCategory}.

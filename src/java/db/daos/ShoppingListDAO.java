@@ -1,6 +1,7 @@
 package db.daos;
 
 import db.entities.Product;
+import db.entities.ProductCategory;
 import db.entities.ShoppingList;
 import db.entities.User;
 import db.exceptions.DAOException;
@@ -96,7 +97,7 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
 
     /**
      * Returns the list of all the {@link User} that are members of the passed
-     * {@link shoppingList}
+     * {@link ShoppingList}
      *
      * @param shoppingListId the id of the {@link ShoppingList}.
      * @return the list of all the {@link User} that are members of the passed
@@ -135,7 +136,7 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
     public Integer getNotificationsByUser(Integer userId) throws DAOException;
 
     /**
-     * Adds the passed {@link Pruduct} to the passed {@link ShoppingList}.
+     * Adds the passed {@link Product} to the passed {@link ShoppingList}.
      *
      * @param shoppingListId the id of the {@link ShoppingList} in which to add the
      * product.
@@ -147,7 +148,7 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
     public void addProduct(Integer shoppingListId, Integer productId, int quantity, boolean necessary) throws DAOException;
 
     /**
-     * Removes the passed {@link Pruduct} from the passed {@link ShoppingList}.
+     * Removes the passed {@link Product} from the passed {@link ShoppingList}.
      *
      * @param shoppingListId the id of the {@link ShoppingList} from which to remove the
      * product.
@@ -157,7 +158,7 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
     public void removeProduct(Integer shoppingListId, Integer productId) throws DAOException;
 
     /**
-     * Updates the properties of the passed {@link Pruduct} in the passed
+     * Updates the properties of the passed {@link Product} in the passed
      * {@link ShoppingList}.
      *
      * @param shoppingListId the id of the {@link ShoppingList} in which to update the
@@ -174,7 +175,7 @@ public interface ShoppingListDAO extends DAO<ShoppingList, Integer> {
      * Returns the list of the {@link Product} in the passed {@link ShoppingList}
      *
      * @param shoppingListId the id of the {@link ShoppingList}.
-     * @return the list of the {@link Products} in the passed {@link ShoppingList}.
+     * @return the list of the {@link Product} in the passed {@link ShoppingList}.
      * @throws DAOException if an error occurred during the persist action.
      */
     public List<Product> getProducts(Integer shoppingListId) throws DAOException;

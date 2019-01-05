@@ -1,6 +1,10 @@
 package db.daos;
 
 import db.entities.Product;
+import db.entities.User;
+import db.entities.ShoppingListCategory;
+import db.entities.ProductCategory;
+import db.entities.ShoppingList;
 import db.exceptions.DAOException;
 import java.util.List;
 
