@@ -89,11 +89,11 @@
                                     <input type="text" id="name" name="name" class="form-control" placeholder="Inserisci nome prodotto" value="${product.name}${param.name}" autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <label for="Cognome">Note:</label>
+                                    <label for="Note">Note:</label>
                                     <textarea id="notes" name="notes" class="form-control" placeholder="Inserisce note">${product.notes}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="category">Categoria: </label>
+                                    <label for="category">Categoria:</label>
                                     <select id="category" name="category" class="form-control" onchange="showIcons('logo', this.value)">
                                         <option value="" <c:if test="${empty product.productCategoryId}">selected</c:if> disabled>Scegli categoria...</option>
                                         <c:forEach items="${categories}" var="category">
@@ -107,10 +107,10 @@
                                     </c:if>
                                     <label for="logo">Scegli logo: </label>
                                     <div id="logo">
-                                        
+
                                     </div>
                                 </div>
-                                        <br>
+                                <br>
                                 <div class="form-group">
                                     <label for="logo">Aggiungi immagini:</label>
                                     <input type="file" id="photos" name="photos" class="form-control" placeholder="Images" multiple="multiple">

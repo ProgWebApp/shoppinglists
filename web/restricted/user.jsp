@@ -28,7 +28,6 @@
                 <div class="jumbotron">
                     <div class="container">
                         <h1>${user.firstName} ${user.lastName}</h1>
-
                     </div>
                 </div>
                 <%@include file="../include/navigationBar.jsp" %>
@@ -71,7 +70,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <button class="btn-del" onclick="deleteUser()">Elimina account</button>
+                            <button class="btn-del"  data-toggle="modal" data-target="#myModal">Elimina account</button>
                         </div>
                     </div>
                     <br><hr class="divisore"><br>
@@ -182,6 +181,22 @@
             </div>
             <c:remove var="message" scope="session" />
             <%@include file="../include/footer.jsp" %>
+        </div>
+        <div class="modal fade" id="myModal" role="elimina">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Attenzione</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Sei sicuro di voler eliminare questo Profilo? Così facendo non sarà più possibile recuperare le liste e i prodotti creati</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-del"  onclick="deleteUser()">Elimina</button>
+                        <button type="button" class="btn-custom" data-dismiss="modal">Annulla</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

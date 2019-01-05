@@ -108,7 +108,6 @@
                                 </div>
                             </div>
                         </c:forEach>
-
                     </div>
                 </div>
                 <%@include file="include/footer.jsp" %>

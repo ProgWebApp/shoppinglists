@@ -48,51 +48,51 @@
                     <div class="col-sm-8">
                         <div class="form-container ">
                             <c:choose>
-                            <c:when test="${empty user}">
-                            <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic"))}" method="POST" enctype="multipart/form-data">
-                            </c:when>
-                            <c:when test="${not empty user}">
-                            <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet"))}" method="POST" enctype="multipart/form-data">
-                            </c:when>
-                            </c:choose>
-                            <c:choose>
-                                <c:when test="${message==1}">
-                                Compila i campi mancanti!
-                                <c:if test="${empty shoppingList.name}">Name</c:if>
-                                <c:if test="${empty shoppingList.description}">Description</c:if>
-                                <c:if test="${empty shoppingList.listCategoryId}">Category</c:if>
-                                <c:if test="${empty shoppingList.imagePath}">Image</c:if>
-                                </c:when>
-                                </c:choose>
-                                <div class="form-group">
-                                    <label for="name">Nome Lista: </label>
-                                    <input type="text" id="name" name="name" class="form-control" placeholder="Nome" value="${shoppingList.name}" autofocus>
-                                </div>
-                                <div class="form-group">
-                                    <label for="description">Descrizione Lista: </label>
-                                    <input type="text" id="description" name="description" class="form-control" placeholder="Descrizione" value="${shoppingList.description}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="shoppingListCategory">Categoria della lista: </label>
-                                    <select id="shoppingListCategory" name="shoppingListCategory" class="form-control">
-                                        <option value="" <c:if test="${empty shoppingList.listCategoryId}">selected</c:if> disabled>Seleziona la categoria della Lista...</option>
-                                        <c:forEach items="${categories}" var="category">
-                                        <option value="${category.id}" <c:if test="${category.id==shoppingList.listCategoryId}">selected</c:if>>${category.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <c:if test="${not empty shoppingList.imagePath}">
-                                    <img src="${contextPath}images/shoppingList/<c:out value="${shoppingList.imagePath}"/>" class="big-logo">
+                                <c:when test="${empty user}">
+                                    <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("ShoppingListPublic"))}" method="POST" enctype="multipart/form-data">
+                                    </c:when>
+                                    <c:when test="${not empty user}">
+                                        <form class="form-signin" action="${pageContext.response.encodeURL(contextPath.concat("restricted/ShoppingListServlet"))}" method="POST" enctype="multipart/form-data">
+                                        </c:when>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when test="${message==1}">
+                                            Compila i campi mancanti!
+                                            <c:if test="${empty shoppingList.name}">Name</c:if>
+                                            <c:if test="${empty shoppingList.description}">Description</c:if>
+                                            <c:if test="${empty shoppingList.listCategoryId}">Category</c:if>
+                                            <c:if test="${empty shoppingList.imagePath}">Image</c:if>
+                                        </c:when>
+                                    </c:choose>
+                                    <div class="form-group">
+                                        <label for="name">Nome Lista: </label>
+                                        <input type="text" id="name" name="name" class="form-control" placeholder="Nome" value="${shoppingList.name}" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">Descrizione Lista: </label>
+                                        <input type="text" id="description" name="description" class="form-control" placeholder="Descrizione" value="${shoppingList.description}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="shoppingListCategory">Categoria della lista: </label>
+                                        <select id="shoppingListCategory" name="shoppingListCategory" class="form-control">
+                                            <option value="" <c:if test="${empty shoppingList.listCategoryId}">selected</c:if> disabled>Seleziona la categoria della Lista...</option>
+                                            <c:forEach items="${categories}" var="category">
+                                                <option value="${category.id}" <c:if test="${category.id==shoppingList.listCategoryId}">selected</c:if>>${category.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <c:if test="${not empty shoppingList.imagePath}">
+                                            <img src="${contextPath}images/shoppingList/<c:out value="${shoppingList.imagePath}"/>" class="big-logo">
+                                        </c:if>
+                                        <label for="image">Aggiungi nuova immagine:</label>
+                                        <input type="file" id="logo" name="image" class="form-control">
+                                    </div>
+                                    <c:if test="${not empty shoppingList.id}">
+                                        <input type="hidden" name="shoppingListId" value="${shoppingList.id}">
                                     </c:if>
-                                    <label for="image">Aggiungi nuova immagine:</label>
-                                    <input type="file" id="logo" name="image" class="form-control">
-                                </div>
-                                <c:if test="${not empty shoppingList.id}">
-                                <input type="hidden" name="shoppingListId" value="${shoppingList.id}">
-                                </c:if>
-                                <button type="submit" class="btn-custom">Conferma</button>
-                            </form>
+                                    <button type="submit" class="btn-custom">Conferma</button>
+                                </form>
                         </div>
                     </div>
                 </div>

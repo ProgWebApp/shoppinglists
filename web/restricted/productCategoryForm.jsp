@@ -4,8 +4,6 @@
     <head>
         <title>Modifica categoria</title>
         <%@include file="../include/generalMeta.jsp" %>
-
-
     </head>
     <body>
         <div id="containerPage">

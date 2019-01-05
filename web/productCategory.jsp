@@ -50,12 +50,11 @@
                                             <option value="2" <c:if test="${order==2}">selected</c:if>>Nome prodotto ZA</option>  
                                             </select>
                                             <div style="float:right;">
-                                                <button type="button" class="btn-custom" onclick="window.location.href='${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}'">
+                                                <button type="button" class="btn-custom" onclick="window.location.href = '${pageContext.response.encodeURL(contextPath.concat("restricted/productForm.jsp"))}'">
                                                 Crea prodotto
                                             </button>
                                         </div>
                                     </form>
-
                             </div>
                         </div>
                         <div class="row">
