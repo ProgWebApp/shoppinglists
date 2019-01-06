@@ -21,7 +21,7 @@
                 <div class="col-sm-2">
                 </div>
                 <div class="col-sm-8">
-                    <div class="bod-container" style="width:100%;text-align:center;margin-top:20%;">
+                    <div class="bod-container" style="width:100%;text-align:center;margin-top:10%;">
                         <h2>Ops... there's an error in your request</h2>
                     </div>
                 </div>
