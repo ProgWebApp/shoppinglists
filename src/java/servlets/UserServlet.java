@@ -118,7 +118,7 @@ public class UserServlet extends HttpServlet {
         try {
             userDAO.delete(activeUser.getId());
             session.invalidate();
-            response.sendRedirect(response.encodeRedirectURL(request.getAttribute("contextPath") + "index.jsp"));
+            response.sendError(204);
         } catch (DAOException ex) {
             response.sendError(500);
         }
